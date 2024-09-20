@@ -77,27 +77,4 @@ Basic r/w operations might not work on external memory on Kitkat devices. Don't 
 
 See our [Privacy Policy](https://github.com/TeamAmaze/AmazeFileManager/wiki/Privacy-Policy)
 
-Vendors/Developers
-----
-The device vendors/ROM developers are free to include Amaze apk pre-installed in system. There is no fee required; *but you must comply with the license* (for more information read the [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.en.html) or newer).
 
-We strongly recommend using apk signed by us (either Play Store version or from AFH link above) so that users would be able to update directly from Play Store after distribution. Furthermore, a change in digital signature will break plug-ins.
-
-### License: 
-
-    Copyright (C) 2014-2018 Arpit Khurana <arpitkh96@gmail.com>
-    Copyright (C) 2014-2024 Vishal Nehra <vishalmeham2@gmail.com>
-    Copyright (C) 2017-2024 Emmanuel Messulam <emmanuelbendavid@gmail.com>
-    Copyright (C) 2018-2024 Raymond Lai <airwave209gt at gmail.com>
-    Copyright (C) 2019-2024 Vishnu Sanal T <t.v.s10123 at gmail.com>
-    This file is part of Amaze File Manager.
-    Amaze File Manager is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.

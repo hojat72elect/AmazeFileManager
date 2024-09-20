@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.services
 
 import android.app.PendingIntent
@@ -36,8 +34,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
@@ -50,6 +46,8 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipOutputStream
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Suppress("TooManyFunctions") // Hack.
 class ZipService : AbstractProgressiveService() {

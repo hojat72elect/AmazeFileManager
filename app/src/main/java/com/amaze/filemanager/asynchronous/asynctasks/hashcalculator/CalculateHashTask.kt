@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2014-2021 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
- * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
- *
- * This file is part of Amaze File Manager.
- *
- * Amaze File Manager is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.amaze.filemanager.asynchronous.asynctasks.hashcalculator
 
 import android.content.Context
@@ -29,11 +9,11 @@ import com.amaze.filemanager.R
 import com.amaze.filemanager.asynchronous.asynctasks.Task
 import com.amaze.filemanager.filesystem.HybridFileParcelable
 import com.amaze.filemanager.filesystem.files.FileUtils
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.lang.ref.WeakReference
 import java.util.Locale
 import java.util.concurrent.Callable
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 data class Hash(val md5: String, val sha: String)
 
@@ -92,8 +72,8 @@ class CalculateHashTask(
                 Toast.makeText(
                     context,
                     context.resources.getString(R.string.md5).uppercase(Locale.getDefault()) +
-                        " " +
-                        context.resources.getString(R.string.properties_copied_clipboard),
+                            " " +
+                            context.resources.getString(R.string.properties_copied_clipboard),
                     Toast.LENGTH_SHORT,
                 )
                     .show()
@@ -104,7 +84,7 @@ class CalculateHashTask(
                 Toast.makeText(
                     context,
                     context.resources.getString(R.string.hash_sha256) + " " +
-                        context.resources.getString(R.string.properties_copied_clipboard),
+                            context.resources.getString(R.string.properties_copied_clipboard),
                     Toast.LENGTH_SHORT,
                 )
                     .show()

@@ -1,10 +1,7 @@
-
-
 package com.amaze.filemanager.database.models.utilities;
 
-import com.amaze.filemanager.database.UtilitiesDatabase;
-
 import androidx.room.Entity;
+import com.amaze.filemanager.database.UtilitiesDatabase;
 
 /**
  * {@link Entity} representation of <code>grid</code> table in utilities.db.
@@ -14,7 +11,7 @@ import androidx.room.Entity;
 @Entity(tableName = UtilitiesDatabase.TABLE_GRID)
 public class Grid extends OperationData {
 
-  public Grid(String path) {
-    super(path);
-  }
+    public Grid(String path) {
+        super(path);
+    }
 }

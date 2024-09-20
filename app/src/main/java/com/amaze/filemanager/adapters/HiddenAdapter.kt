@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.adapters
 
 import android.app.Activity

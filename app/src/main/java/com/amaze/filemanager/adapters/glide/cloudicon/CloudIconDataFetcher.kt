@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.adapters.glide.cloudicon
 
 import android.content.Context

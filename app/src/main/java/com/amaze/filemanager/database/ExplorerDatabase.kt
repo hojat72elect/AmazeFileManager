@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.database
 
 import android.content.Context
@@ -79,17 +77,17 @@ abstract class ExplorerDatabase : RoomDatabase() {
             object : Migration(1, 2) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     val CREATE_TABLE_ENCRYPTED = (
-                        "CREATE TABLE " +
-                            TABLE_ENCRYPTED +
-                            "(" +
-                            COLUMN_ENCRYPTED_ID +
-                            " INTEGER PRIMARY KEY," +
-                            COLUMN_ENCRYPTED_PATH +
-                            " TEXT," +
-                            COLUMN_ENCRYPTED_PASSWORD +
-                            " TEXT" +
-                            ")"
-                    )
+                            "CREATE TABLE " +
+                                    TABLE_ENCRYPTED +
+                                    "(" +
+                                    COLUMN_ENCRYPTED_ID +
+                                    " INTEGER PRIMARY KEY," +
+                                    COLUMN_ENCRYPTED_PATH +
+                                    " TEXT," +
+                                    COLUMN_ENCRYPTED_PASSWORD +
+                                    " TEXT" +
+                                    ")"
+                            )
                     database.execSQL(CREATE_TABLE_ENCRYPTED)
                 }
             }
@@ -99,17 +97,17 @@ abstract class ExplorerDatabase : RoomDatabase() {
             object : Migration(2, 3) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     val CREATE_TABLE_CLOUD = (
-                        "CREATE TABLE " +
-                            TABLE_CLOUD_PERSIST +
-                            "(" +
-                            COLUMN_CLOUD_ID +
-                            " INTEGER PRIMARY KEY," +
-                            COLUMN_CLOUD_SERVICE +
-                            " INTEGER," +
-                            COLUMN_CLOUD_PERSIST +
-                            " TEXT" +
-                            ")"
-                    )
+                            "CREATE TABLE " +
+                                    TABLE_CLOUD_PERSIST +
+                                    "(" +
+                                    COLUMN_CLOUD_ID +
+                                    " INTEGER PRIMARY KEY," +
+                                    COLUMN_CLOUD_SERVICE +
+                                    " INTEGER," +
+                                    COLUMN_CLOUD_PERSIST +
+                                    " TEXT" +
+                                    ")"
+                            )
                     database.execSQL(CREATE_TABLE_CLOUD)
                 }
             }
@@ -132,13 +130,13 @@ abstract class ExplorerDatabase : RoomDatabase() {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "CREATE TABLE " +
-                            TABLE_SORT +
-                            "(" +
-                            COLUMN_SORT_PATH +
-                            " TEXT PRIMARY KEY," +
-                            COLUMN_SORT_TYPE +
-                            " INTEGER" +
-                            ")",
+                                TABLE_SORT +
+                                "(" +
+                                COLUMN_SORT_PATH +
+                                " TEXT PRIMARY KEY," +
+                                COLUMN_SORT_TYPE +
+                                " INTEGER" +
+                                ")",
                     )
                 }
             }
@@ -147,35 +145,35 @@ abstract class ExplorerDatabase : RoomDatabase() {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "CREATE TABLE " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_TAB +
-                            "(" +
-                            COLUMN_TAB_NO +
-                            " INTEGER PRIMARY KEY NOT NULL, " +
-                            COLUMN_PATH +
-                            " TEXT, " +
-                            COLUMN_HOME +
-                            " TEXT)",
+                                TEMP_TABLE_PREFIX +
+                                TABLE_TAB +
+                                "(" +
+                                COLUMN_TAB_NO +
+                                " INTEGER PRIMARY KEY NOT NULL, " +
+                                COLUMN_PATH +
+                                " TEXT, " +
+                                COLUMN_HOME +
+                                " TEXT)",
                     )
                     database.execSQL(
                         "INSERT INTO " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_TAB +
-                            "(" +
-                            COLUMN_TAB_NO +
-                            "," +
-                            COLUMN_PATH +
-                            "," +
-                            COLUMN_HOME +
-                            ")" +
-                            " SELECT " +
-                            COLUMN_TAB_NO +
-                            "," +
-                            COLUMN_PATH +
-                            "," +
-                            COLUMN_HOME +
-                            " FROM " +
-                            TABLE_TAB,
+                                TEMP_TABLE_PREFIX +
+                                TABLE_TAB +
+                                "(" +
+                                COLUMN_TAB_NO +
+                                "," +
+                                COLUMN_PATH +
+                                "," +
+                                COLUMN_HOME +
+                                ")" +
+                                " SELECT " +
+                                COLUMN_TAB_NO +
+                                "," +
+                                COLUMN_PATH +
+                                "," +
+                                COLUMN_HOME +
+                                " FROM " +
+                                TABLE_TAB,
                     )
                     database.execSQL("DROP TABLE $TABLE_TAB")
                     database.execSQL(
@@ -183,13 +181,13 @@ abstract class ExplorerDatabase : RoomDatabase() {
                     )
                     database.execSQL(
                         "CREATE TABLE " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_SORT +
-                            "(" +
-                            COLUMN_SORT_PATH +
-                            " TEXT PRIMARY KEY NOT NULL, " +
-                            COLUMN_SORT_TYPE +
-                            " INTEGER NOT NULL)",
+                                TEMP_TABLE_PREFIX +
+                                TABLE_SORT +
+                                "(" +
+                                COLUMN_SORT_PATH +
+                                " TEXT PRIMARY KEY NOT NULL, " +
+                                COLUMN_SORT_TYPE +
+                                " INTEGER NOT NULL)",
                     )
                     database.execSQL(
                         "INSERT INTO $TEMP_TABLE_PREFIX$TABLE_SORT SELECT * FROM $TABLE_SORT",
@@ -200,57 +198,57 @@ abstract class ExplorerDatabase : RoomDatabase() {
                     )
                     database.execSQL(
                         "CREATE TABLE " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_ENCRYPTED +
-                            "(" +
-                            COLUMN_ENCRYPTED_ID +
-                            " INTEGER PRIMARY KEY NOT NULL," +
-                            COLUMN_ENCRYPTED_PATH +
-                            " TEXT," +
-                            COLUMN_ENCRYPTED_PASSWORD +
-                            " TEXT)",
+                                TEMP_TABLE_PREFIX +
+                                TABLE_ENCRYPTED +
+                                "(" +
+                                COLUMN_ENCRYPTED_ID +
+                                " INTEGER PRIMARY KEY NOT NULL," +
+                                COLUMN_ENCRYPTED_PATH +
+                                " TEXT," +
+                                COLUMN_ENCRYPTED_PASSWORD +
+                                " TEXT)",
                     )
                     database.execSQL(
                         "INSERT INTO " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_ENCRYPTED +
-                            " SELECT * FROM " +
-                            TABLE_ENCRYPTED,
+                                TEMP_TABLE_PREFIX +
+                                TABLE_ENCRYPTED +
+                                " SELECT * FROM " +
+                                TABLE_ENCRYPTED,
                     )
                     database.execSQL("DROP TABLE $TABLE_ENCRYPTED")
                     database.execSQL(
                         "ALTER TABLE " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_ENCRYPTED +
-                            " RENAME TO " +
-                            TABLE_ENCRYPTED,
+                                TEMP_TABLE_PREFIX +
+                                TABLE_ENCRYPTED +
+                                " RENAME TO " +
+                                TABLE_ENCRYPTED,
                     )
                     database.execSQL(
                         "CREATE TABLE " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_CLOUD_PERSIST +
-                            "(" +
-                            COLUMN_CLOUD_ID +
-                            " INTEGER PRIMARY KEY NOT NULL," +
-                            COLUMN_CLOUD_SERVICE +
-                            " INTEGER," +
-                            COLUMN_CLOUD_PERSIST +
-                            " TEXT)",
+                                TEMP_TABLE_PREFIX +
+                                TABLE_CLOUD_PERSIST +
+                                "(" +
+                                COLUMN_CLOUD_ID +
+                                " INTEGER PRIMARY KEY NOT NULL," +
+                                COLUMN_CLOUD_SERVICE +
+                                " INTEGER," +
+                                COLUMN_CLOUD_PERSIST +
+                                " TEXT)",
                     )
                     database.execSQL(
                         "INSERT INTO " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_CLOUD_PERSIST +
-                            " SELECT * FROM " +
-                            TABLE_CLOUD_PERSIST,
+                                TEMP_TABLE_PREFIX +
+                                TABLE_CLOUD_PERSIST +
+                                " SELECT * FROM " +
+                                TABLE_CLOUD_PERSIST,
                     )
                     database.execSQL("DROP TABLE $TABLE_CLOUD_PERSIST")
                     database.execSQL(
                         "ALTER TABLE " +
-                            TEMP_TABLE_PREFIX +
-                            TABLE_CLOUD_PERSIST +
-                            " RENAME TO " +
-                            TABLE_CLOUD_PERSIST,
+                                TEMP_TABLE_PREFIX +
+                                TABLE_CLOUD_PERSIST +
+                                " RENAME TO " +
+                                TABLE_CLOUD_PERSIST,
                     )
                 }
             }
@@ -259,12 +257,12 @@ abstract class ExplorerDatabase : RoomDatabase() {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "UPDATE " +
-                            TABLE_CLOUD_PERSIST +
-                            " SET " +
-                            COLUMN_CLOUD_SERVICE +
-                            " = " +
-                            COLUMN_CLOUD_SERVICE +
-                            "+1",
+                                TABLE_CLOUD_PERSIST +
+                                " SET " +
+                                COLUMN_CLOUD_SERVICE +
+                                " = " +
+                                COLUMN_CLOUD_SERVICE +
+                                "+1",
                     )
                 }
             }
@@ -273,12 +271,12 @@ abstract class ExplorerDatabase : RoomDatabase() {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "UPDATE " +
-                            TABLE_CLOUD_PERSIST +
-                            " SET " +
-                            COLUMN_CLOUD_SERVICE +
-                            " = " +
-                            COLUMN_CLOUD_SERVICE +
-                            "+1",
+                                TABLE_CLOUD_PERSIST +
+                                " SET " +
+                                COLUMN_CLOUD_SERVICE +
+                                " = " +
+                                COLUMN_CLOUD_SERVICE +
+                                "+1",
                     )
                 }
             }
@@ -288,12 +286,12 @@ abstract class ExplorerDatabase : RoomDatabase() {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "UPDATE " +
-                            TABLE_CLOUD_PERSIST +
-                            " SET " +
-                            COLUMN_CLOUD_SERVICE +
-                            " = " +
-                            COLUMN_CLOUD_SERVICE +
-                            "+1",
+                                TABLE_CLOUD_PERSIST +
+                                " SET " +
+                                COLUMN_CLOUD_SERVICE +
+                                " = " +
+                                COLUMN_CLOUD_SERVICE +
+                                "+1",
                     )
                 }
             }
@@ -303,12 +301,12 @@ abstract class ExplorerDatabase : RoomDatabase() {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "UPDATE " +
-                            TABLE_CLOUD_PERSIST +
-                            " SET " +
-                            COLUMN_CLOUD_SERVICE +
-                            " = " +
-                            COLUMN_CLOUD_SERVICE +
-                            "-2",
+                                TABLE_CLOUD_PERSIST +
+                                " SET " +
+                                COLUMN_CLOUD_SERVICE +
+                                " = " +
+                                COLUMN_CLOUD_SERVICE +
+                                "-2",
                     )
                 }
             }

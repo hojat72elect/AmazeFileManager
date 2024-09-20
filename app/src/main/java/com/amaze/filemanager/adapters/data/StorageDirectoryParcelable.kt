@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.adapters.data
 
 import android.os.Parcel

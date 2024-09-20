@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.database
 
 import android.content.Context
@@ -18,12 +16,12 @@ import com.googlecode.concurrenttrees.radix.ConcurrentRadixTree
 import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharArrayNodeFactory
 import com.googlecode.concurrenttrees.radix.node.concrete.voidvalue.VoidValue
 import io.reactivex.schedulers.Schedulers
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.util.LinkedList
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * Created by Vishal on 29-05-2017. Class handles database with tables having list of various
@@ -60,6 +58,7 @@ class UtilsHandler(
                     .insert(Hidden(operationData.path))
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.HISTORY ->
                 utilitiesDatabase.historyEntryDao().run {
                     deleteByPath(operationData.path)
@@ -67,6 +66,7 @@ class UtilsHandler(
                         .subscribeOn(Schedulers.io())
                         .subscribe()
                 }
+
             Operation.LIST ->
                 utilitiesDatabase
                     .listEntryDao()
@@ -75,18 +75,21 @@ class UtilsHandler(
                     )
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.GRID ->
                 utilitiesDatabase
                     .gridEntryDao()
                     .insert(Grid(operationData.path))
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.BOOKMARKS ->
                 utilitiesDatabase
                     .bookmarkEntryDao()
                     .insert(Bookmark(operationData.name, operationData.path))
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.SMB ->
                 utilitiesDatabase.smbEntryDao().run {
                     deleteByNameAndPath(operationData.name, operationData.path)
@@ -94,6 +97,7 @@ class UtilsHandler(
                         .subscribeOn(Schedulers.io())
                         .subscribe()
                 }
+
             Operation.SFTP ->
                 utilitiesDatabase
                     .sftpEntryDao().run {
@@ -128,24 +132,28 @@ class UtilsHandler(
                     .deleteByPath(operationData.path)
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.HISTORY ->
                 utilitiesDatabase
                     .historyEntryDao()
                     .deleteByPath(operationData.path)
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.LIST ->
                 utilitiesDatabase
                     .listEntryDao()
                     .deleteByPath(operationData.path)
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.GRID ->
                 utilitiesDatabase
                     .gridEntryDao()
                     .deleteByPath(operationData.path)
                     .subscribeOn(Schedulers.io())
                     .subscribe()
+
             Operation.BOOKMARKS -> removeBookmarksPath(operationData.name, operationData.path)
             Operation.SMB -> removeSmbPath(operationData.name, operationData.path)
             Operation.SFTP -> removeSftpPath(operationData.name, operationData.path)
@@ -239,7 +247,8 @@ class UtilsHandler(
     val listViewList: ArrayList<String>
         get() =
             ArrayList(
-                utilitiesDatabase.listEntryDao().listPaths().subscribeOn(Schedulers.io()).blockingGet(),
+                utilitiesDatabase.listEntryDao().listPaths().subscribeOn(Schedulers.io())
+                    .blockingGet(),
             )
 
     /**
@@ -248,7 +257,8 @@ class UtilsHandler(
     val gridViewList: ArrayList<String>
         get() =
             ArrayList(
-                utilitiesDatabase.gridEntryDao().listPaths().subscribeOn(Schedulers.io()).blockingGet(),
+                utilitiesDatabase.gridEntryDao().listPaths().subscribeOn(Schedulers.io())
+                    .blockingGet(),
             )
 
     /**
@@ -488,6 +498,7 @@ class UtilsHandler(
             Operation.HISTORY ->
                 utilitiesDatabase.historyEntryDao().clear()
                     .subscribeOn(Schedulers.io()).subscribe()
+
             else -> {}
         }
     }

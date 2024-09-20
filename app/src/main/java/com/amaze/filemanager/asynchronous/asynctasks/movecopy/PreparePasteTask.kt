@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.movecopy
 
 import android.app.ProgressDialog
@@ -28,6 +26,8 @@ import com.amaze.filemanager.filesystem.files.FileUtils
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.amaze.filemanager.utils.OnFileFound
 import com.amaze.filemanager.utils.Utils
+import java.lang.ref.WeakReference
+import java.util.LinkedList
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +35,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.ref.WeakReference
-import java.util.LinkedList
 
 /**
  * This helper class works by checking the conflicts during paste operation. After checking
@@ -102,11 +100,11 @@ class PreparePasteTask(strongRefMain: MainActivity) {
 
         val isCloudOrRootMode =
             openMode == OpenMode.OTG ||
-                openMode == OpenMode.GDRIVE ||
-                openMode == OpenMode.DROPBOX ||
-                openMode == OpenMode.BOX ||
-                openMode == OpenMode.ONEDRIVE ||
-                openMode == OpenMode.ROOT
+                    openMode == OpenMode.GDRIVE ||
+                    openMode == OpenMode.DROPBOX ||
+                    openMode == OpenMode.BOX ||
+                    openMode == OpenMode.ONEDRIVE ||
+                    openMode == OpenMode.ROOT
 
         if (isCloudOrRootMode) {
             startService(filesToCopy, targetPath, openMode, isMove, isRootMode)
@@ -127,8 +125,8 @@ class PreparePasteTask(strongRefMain: MainActivity) {
 
         val isMoveSupported =
             isMove &&
-                destination.mode == openMode &&
-                MoveFiles.getOperationSupportedFileSystem().contains(openMode)
+                    destination.mode == openMode &&
+                    MoveFiles.getOperationSupportedFileSystem().contains(openMode)
 
         if (destination.usableSpace < totalBytes &&
             !isMoveSupported
@@ -197,7 +195,7 @@ class PreparePasteTask(strongRefMain: MainActivity) {
         val checkBox: AppCompatCheckBox = copyDialogBinding.checkBox
 
         Utils.setTint(contextRef, checkBox, accentColor)
-        dialogBuilder.theme(contextRef.appTheme.getMaterialDialogTheme())
+        dialogBuilder.theme(contextRef.appTheme.materialDialogTheme)
         dialogBuilder.title(contextRef.resources.getString(R.string.paste))
         dialogBuilder.positiveText(R.string.rename)
         dialogBuilder.neutralText(R.string.skip)
@@ -250,6 +248,7 @@ class PreparePasteTask(strongRefMain: MainActivity) {
                     }
                     conflictingDirActionMap[hybridFileParcelable] = Action.RENAME
                 }
+
                 DialogAction.NEGATIVE -> {
                     if (checkBox.isChecked) {
                         overwriteAll = true
@@ -257,6 +256,7 @@ class PreparePasteTask(strongRefMain: MainActivity) {
                     }
                     conflictingDirActionMap[hybridFileParcelable] = Action.OVERWRITE
                 }
+
                 DialogAction.NEUTRAL -> {
                     if (checkBox.isChecked) {
                         skipAll = true

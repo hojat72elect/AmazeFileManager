@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.database.typeconverters
 
 import androidx.room.TypeConverter

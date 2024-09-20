@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2014-2021 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
- * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
- *
- * This file is part of Amaze File Manager.
- *
- * Amaze File Manager is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.amaze.filemanager.asynchronous.asynctasks.texteditor.read
 
 import android.content.Context
@@ -33,11 +13,11 @@ import com.amaze.filemanager.ui.activities.texteditor.ReturnedValueOnReadFile
 import com.amaze.filemanager.ui.activities.texteditor.TextEditorActivity
 import com.amaze.filemanager.ui.activities.texteditor.TextEditorActivityViewModel
 import com.google.android.material.snackbar.Snackbar
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.Locale
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class ReadTextFileTask(
     activity: TextEditorActivity,
@@ -71,12 +51,15 @@ class ReadTextFileTask(
                 is StreamNotFoundException -> {
                     R.string.error_file_not_found
                 }
+
                 is IOException -> {
                     R.string.error_io
                 }
+
                 is OutOfMemoryError -> {
                     R.string.error_file_too_large
                 }
+
                 else -> {
                     R.string.error
                 }
@@ -102,9 +85,9 @@ class ReadTextFileTask(
         // file in cache, and not a root temporary file
         val isFileInCacheAndNotRoot =
             file.scheme == EditableFileAbstraction.Scheme.FILE &&
-                externalCacheDir != null &&
-                file.hybridFileParcelable.path.contains(externalCacheDir.path) &&
-                viewModel.cacheFile == null
+                    externalCacheDir != null &&
+                    file.hybridFileParcelable.path.contains(externalCacheDir.path) &&
+                    viewModel.cacheFile == null
 
         if (isFileInCacheAndNotRoot) {
             textEditorActivity.setReadOnly()
@@ -133,7 +116,10 @@ class ReadTextFileTask(
                 Snackbar.make(
                     textEditorActivity.mainTextView,
                     textEditorActivity.resources
-                        .getString(R.string.file_too_long, ReadTextFileCallable.MAX_FILE_SIZE_CHARS),
+                        .getString(
+                            R.string.file_too_long,
+                            ReadTextFileCallable.MAX_FILE_SIZE_CHARS
+                        ),
                     Snackbar.LENGTH_INDEFINITE,
                 )
             snackbar.setAction(

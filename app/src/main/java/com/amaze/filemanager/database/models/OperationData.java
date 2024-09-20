@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.database.models;
 
 import static com.amaze.filemanager.database.UtilsHandler.Operation.BOOKMARKS;
@@ -10,91 +8,91 @@ import static com.amaze.filemanager.database.UtilsHandler.Operation.LIST;
 import static com.amaze.filemanager.database.UtilsHandler.Operation.SFTP;
 import static com.amaze.filemanager.database.UtilsHandler.Operation.SMB;
 
+import android.text.TextUtils;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.amaze.filemanager.database.UtilsHandler;
 import com.amaze.filemanager.database.UtilsHandler.Operation;
 
-import android.text.TextUtils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 public class OperationData {
-  public final Operation type;
-  public final String path;
-  public final String name;
-  public final String hostKey;
-  public final String sshKeyName;
-  public final String sshKey;
+    public final Operation type;
+    public final String path;
+    public final String name;
+    public final String hostKey;
+    public final String sshKeyName;
+    public final String sshKey;
 
-  /**
-   * Constructor for types {@link Operation#HIDDEN}, {@link Operation#HISTORY}, {@link
-   * Operation#LIST} or {@link Operation#GRID}
-   */
-  public OperationData(Operation type, String path) {
-    if (type != HIDDEN && type != HISTORY && type != LIST && type != GRID) {
-      throw new IllegalArgumentException("Wrong constructor for object type");
+    /**
+     * Constructor for types {@link Operation#HIDDEN}, {@link Operation#HISTORY}, {@link
+     * Operation#LIST} or {@link Operation#GRID}
+     */
+    public OperationData(Operation type, String path) {
+        if (type != HIDDEN && type != HISTORY && type != LIST && type != GRID) {
+            throw new IllegalArgumentException("Wrong constructor for object type");
+        }
+
+        this.type = type;
+        this.path = path;
+
+        name = null;
+        hostKey = null;
+        sshKeyName = null;
+        sshKey = null;
     }
 
-    this.type = type;
-    this.path = path;
+    /**
+     * Constructor for types {@link Operation#BOOKMARKS} or {@link Operation#SMB}
+     */
+    public OperationData(Operation type, String name, String path) {
+        if (type != BOOKMARKS && type != SMB)
+            throw new IllegalArgumentException("Wrong constructor for object type");
 
-    name = null;
-    hostKey = null;
-    sshKeyName = null;
-    sshKey = null;
-  }
+        this.type = type;
+        this.path = path;
+        this.name = name;
 
-  /** Constructor for types {@link Operation#BOOKMARKS} or {@link Operation#SMB} */
-  public OperationData(Operation type, String name, String path) {
-    if (type != BOOKMARKS && type != SMB)
-      throw new IllegalArgumentException("Wrong constructor for object type");
+        hostKey = null;
+        sshKeyName = null;
+        sshKey = null;
+    }
 
-    this.type = type;
-    this.path = path;
-    this.name = name;
+    /**
+     * Constructor for {@link Operation#SFTP} {@param hostKey}, {@param sshKeyName} and {@param
+     * sshKey} may be null for when {@link OperationData} is used for {@link
+     * UtilsHandler#removeFromDatabase(OperationData)}
+     */
+    public OperationData(
+            @NonNull Operation type,
+            @NonNull String path,
+            @NonNull String name,
+            @Nullable String hostKey,
+            @Nullable String sshKeyName,
+            @Nullable String sshKey) {
+        if (type != SFTP) throw new IllegalArgumentException("Wrong constructor for object type");
 
-    hostKey = null;
-    sshKeyName = null;
-    sshKey = null;
-  }
+        this.type = type;
+        this.path = path;
+        this.name = name;
+        this.hostKey = hostKey;
+        this.sshKeyName = sshKeyName;
+        this.sshKey = sshKey;
+    }
 
-  /**
-   * Constructor for {@link Operation#SFTP} {@param hostKey}, {@param sshKeyName} and {@param
-   * sshKey} may be null for when {@link OperationData} is used for {@link
-   * UtilsHandler#removeFromDatabase(OperationData)}
-   */
-  public OperationData(
-      @NonNull Operation type,
-      @NonNull String path,
-      @NonNull String name,
-      @Nullable String hostKey,
-      @Nullable String sshKeyName,
-      @Nullable String sshKey) {
-    if (type != SFTP) throw new IllegalArgumentException("Wrong constructor for object type");
+    @NonNull
+    @Override
+    public String toString() {
+        StringBuilder sb =
+                new StringBuilder("OperationData type=[")
+                        .append(type)
+                        .append("],path=[")
+                        .append(path)
+                        .append("]");
 
-    this.type = type;
-    this.path = path;
-    this.name = name;
-    this.hostKey = hostKey;
-    this.sshKeyName = sshKeyName;
-    this.sshKey = sshKey;
-  }
+        if (!TextUtils.isEmpty(hostKey)) sb.append(",hostKey=[").append(hostKey).append(']');
 
-  @NonNull
-  @Override
-  public String toString() {
-    StringBuilder sb =
-        new StringBuilder("OperationData type=[")
-            .append(type)
-            .append("],path=[")
-            .append(path)
-            .append("]");
+        if (!TextUtils.isEmpty(sshKeyName))
+            sb.append(",sshKeyName=[").append(sshKeyName).append("],sshKey=[redacted]");
 
-    if (!TextUtils.isEmpty(hostKey)) sb.append(",hostKey=[").append(hostKey).append(']');
-
-    if (!TextUtils.isEmpty(sshKeyName))
-      sb.append(",sshKeyName=[").append(sshKeyName).append("],sshKey=[redacted]");
-
-    return sb.toString();
-  }
+        return sb.toString();
+    }
 }

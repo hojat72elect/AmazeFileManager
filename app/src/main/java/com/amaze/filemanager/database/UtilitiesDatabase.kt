@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.database
 
 import android.content.Context
@@ -29,9 +27,9 @@ import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo.Companion.AT
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo.Companion.COLON
 import com.amaze.filemanager.utils.PasswordUtil.decryptPassword
 import com.amaze.filemanager.utils.PasswordUtil.encryptPassword
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.security.GeneralSecurityException
+import org.slf4j.LoggerFactory
 
 /**
  * Repository for [Bookmark], [Grid], [Hidden], [History], [List],
@@ -112,108 +110,108 @@ abstract class UtilitiesDatabase : RoomDatabase() {
 
         private const val TEMP_TABLE_PREFIX = "temp_"
         private const val queryHistory = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_HISTORY +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_PATH +
-                " TEXT UNIQUE" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_HISTORY +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE" +
+                        ");"
+                )
         private const val queryHidden = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_HIDDEN +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_PATH +
-                " TEXT UNIQUE" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_HIDDEN +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE" +
+                        ");"
+                )
         private const val queryList = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_LIST +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_PATH +
-                " TEXT UNIQUE" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_LIST +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE" +
+                        ");"
+                )
         private const val queryGrid = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_GRID +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_PATH +
-                " TEXT UNIQUE" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_GRID +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE" +
+                        ");"
+                )
         private const val queryBookmarks = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_BOOKMARKS +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_NAME +
-                " TEXT," +
-                COLUMN_PATH +
-                " TEXT UNIQUE" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_BOOKMARKS +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_NAME +
+                        " TEXT," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE" +
+                        ");"
+                )
         private const val querySmb = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_SMB +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_NAME +
-                " TEXT," +
-                COLUMN_PATH +
-                " TEXT UNIQUE" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_SMB +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_NAME +
+                        " TEXT," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE" +
+                        ");"
+                )
         private const val querySftp = (
-            "CREATE TABLE IF NOT EXISTS " +
-                TABLE_SFTP +
-                " (" +
-                COLUMN_ID +
-                " INTEGER PRIMARY KEY," +
-                COLUMN_NAME +
-                " TEXT," +
-                COLUMN_PATH +
-                " TEXT UNIQUE," +
-                COLUMN_HOST_PUBKEY +
-                " TEXT," +
-                COLUMN_PRIVATE_KEY_NAME +
-                " TEXT," +
-                COLUMN_PRIVATE_KEY +
-                " TEXT" +
-                ");"
-        )
+                "CREATE TABLE IF NOT EXISTS " +
+                        TABLE_SFTP +
+                        " (" +
+                        COLUMN_ID +
+                        " INTEGER PRIMARY KEY," +
+                        COLUMN_NAME +
+                        " TEXT," +
+                        COLUMN_PATH +
+                        " TEXT UNIQUE," +
+                        COLUMN_HOST_PUBKEY +
+                        " TEXT," +
+                        COLUMN_PRIVATE_KEY_NAME +
+                        " TEXT," +
+                        COLUMN_PRIVATE_KEY +
+                        " TEXT" +
+                        ");"
+                )
 
         internal val MIGRATION_1_2: Migration =
             object : Migration(1, 2) {
                 override fun migrate(database: SupportSQLiteDatabase) {
                     database.execSQL(
                         "CREATE TABLE IF NOT EXISTS " +
-                            TABLE_SFTP +
-                            " (" +
-                            COLUMN_ID +
-                            " INTEGER PRIMARY KEY," +
-                            COLUMN_NAME +
-                            " TEXT," +
-                            COLUMN_PATH +
-                            " TEXT UNIQUE," +
-                            COLUMN_HOST_PUBKEY +
-                            " TEXT," +
-                            COLUMN_PRIVATE_KEY_NAME +
-                            " TEXT," +
-                            COLUMN_PRIVATE_KEY +
-                            " TEXT" +
-                            ");",
+                                TABLE_SFTP +
+                                " (" +
+                                COLUMN_ID +
+                                " INTEGER PRIMARY KEY," +
+                                COLUMN_NAME +
+                                " TEXT," +
+                                COLUMN_PATH +
+                                " TEXT UNIQUE," +
+                                COLUMN_HOST_PUBKEY +
+                                " TEXT," +
+                                COLUMN_PRIVATE_KEY_NAME +
+                                " TEXT," +
+                                COLUMN_PRIVATE_KEY +
+                                " TEXT" +
+                                ");",
                     )
                 }
             }
@@ -253,10 +251,10 @@ abstract class UtilitiesDatabase : RoomDatabase() {
                     database.execSQL(queryBookmarks.replace(TABLE_BOOKMARKS, backupTable))
                     database.execSQL(
                         "INSERT INTO " +
-                            backupTable +
-                            " SELECT * FROM " +
-                            TABLE_BOOKMARKS +
-                            " group by path;",
+                                backupTable +
+                                " SELECT * FROM " +
+                                TABLE_BOOKMARKS +
+                                " group by path;",
                     )
                     database.execSQL("DROP TABLE $TABLE_BOOKMARKS;")
                     database.execSQL("ALTER TABLE $backupTable RENAME TO $TABLE_BOOKMARKS;")
@@ -332,10 +330,10 @@ abstract class UtilitiesDatabase : RoomDatabase() {
                     )
                     database.execSQL(
                         "INSERT INTO " +
-                            backupTable +
-                            " SELECT * FROM " +
-                            TABLE_BOOKMARKS +
-                            " group by path;",
+                                backupTable +
+                                " SELECT * FROM " +
+                                TABLE_BOOKMARKS +
+                                " group by path;",
                     )
                     database.execSQL("DROP TABLE $TABLE_BOOKMARKS;")
                     database.execSQL("ALTER TABLE $backupTable RENAME TO $TABLE_BOOKMARKS;")
@@ -375,28 +373,28 @@ abstract class UtilitiesDatabase : RoomDatabase() {
                     )
                     database.execSQL(
                         "INSERT INTO " +
-                            backupTable +
-                            "(" +
-                            COLUMN_NAME +
-                            "," +
-                            COLUMN_PATH +
-                            ") SELECT DISTINCT(" +
-                            COLUMN_NAME +
-                            "), " +
-                            COLUMN_PATH +
-                            " FROM " +
-                            TABLE_BOOKMARKS,
+                                backupTable +
+                                "(" +
+                                COLUMN_NAME +
+                                "," +
+                                COLUMN_PATH +
+                                ") SELECT DISTINCT(" +
+                                COLUMN_NAME +
+                                "), " +
+                                COLUMN_PATH +
+                                " FROM " +
+                                TABLE_BOOKMARKS,
                     )
                     database.execSQL("DROP TABLE $TABLE_BOOKMARKS;")
                     database.execSQL("ALTER TABLE $backupTable RENAME TO $TABLE_BOOKMARKS;")
                     database.execSQL(
                         "CREATE UNIQUE INDEX 'bookmarks_idx' ON " +
-                            TABLE_BOOKMARKS +
-                            "(" +
-                            COLUMN_NAME +
-                            ", " +
-                            COLUMN_PATH +
-                            ");",
+                                TABLE_BOOKMARKS +
+                                "(" +
+                                COLUMN_NAME +
+                                ", " +
+                                COLUMN_PATH +
+                                ");",
                     )
                 }
             }
@@ -436,18 +434,18 @@ abstract class UtilitiesDatabase : RoomDatabase() {
                                 val newPath = oldPath.replace(password, newPassword!!)
                                 updateSqls.add(
                                     "UPDATE " +
-                                        tableName +
-                                        " SET PATH = '" +
-                                        newPath +
-                                        "' WHERE " +
-                                        COLUMN_NAME +
-                                        "='" +
-                                        name +
-                                        "' AND " +
-                                        COLUMN_PATH +
-                                        "='" +
-                                        oldPath +
-                                        "'",
+                                            tableName +
+                                            " SET PATH = '" +
+                                            newPath +
+                                            "' WHERE " +
+                                            COLUMN_NAME +
+                                            "='" +
+                                            name +
+                                            "' AND " +
+                                            COLUMN_PATH +
+                                            "='" +
+                                            oldPath +
+                                            "'",
                                 )
                             } catch (e: GeneralSecurityException) {
                                 logger.error("Error migrating database records")

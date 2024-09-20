@@ -1,15 +1,8 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.movecopy;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.concurrent.Callable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import android.content.Context;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 import com.amaze.filemanager.filesystem.HybridFile;
@@ -20,11 +13,12 @@ import com.amaze.filemanager.filesystem.files.FileUtils;
 import com.amaze.filemanager.filesystem.root.RenameFileCommand;
 import com.amaze.filemanager.utils.DataUtils;
 import com.cloudrail.si.interfaces.CloudStorage;
-
-import android.content.Context;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.WorkerThread;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.concurrent.Callable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * AsyncTask that moves files from source to destination by trying to rename files first, if they're
@@ -33,129 +27,129 @@ import androidx.annotation.WorkerThread;
  */
 public class MoveFiles implements Callable<MoveFilesReturn> {
 
-  private final Logger LOG = LoggerFactory.getLogger(MoveFiles.class);
+    private final Logger LOG = LoggerFactory.getLogger(MoveFiles.class);
 
-  private final ArrayList<ArrayList<HybridFileParcelable>> files;
-  private final ArrayList<String> paths;
-  private final Context context;
-  private final OpenMode mode;
-  private long totalBytes = 0L;
-  private final boolean isRootExplorer;
+    private final ArrayList<ArrayList<HybridFileParcelable>> files;
+    private final ArrayList<String> paths;
+    private final Context context;
+    private final OpenMode mode;
+    private final boolean isRootExplorer;
+    private long totalBytes = 0L;
 
-  public MoveFiles(
-      ArrayList<ArrayList<HybridFileParcelable>> files,
-      boolean isRootExplorer,
-      Context context,
-      OpenMode mode,
-      ArrayList<String> paths) {
-    this.context = context;
-    this.files = files;
-    this.mode = mode;
-    this.isRootExplorer = isRootExplorer;
-    this.paths = paths;
-  }
-
-  @WorkerThread
-  @Override
-  public MoveFilesReturn call() {
-    if (files.size() == 0) {
-      return new MoveFilesReturn(true, false, 0, 0);
+    public MoveFiles(
+            ArrayList<ArrayList<HybridFileParcelable>> files,
+            boolean isRootExplorer,
+            Context context,
+            OpenMode mode,
+            ArrayList<String> paths) {
+        this.context = context;
+        this.files = files;
+        this.mode = mode;
+        this.isRootExplorer = isRootExplorer;
+        this.paths = paths;
     }
 
-    for (ArrayList<HybridFileParcelable> filesCurrent : files) {
-      totalBytes += FileUtils.getTotalBytes(filesCurrent, context);
+    /**
+     * Maintains a list of filesystems supporting the move/rename implementation. Please update to
+     * return your {@link OpenMode} type if it is supported here
+     *
+     * @return
+     */
+    public static HashSet<OpenMode> getOperationSupportedFileSystem() {
+        HashSet<OpenMode> hashSet = new HashSet<>();
+        hashSet.add(OpenMode.SMB);
+        hashSet.add(OpenMode.FILE);
+        hashSet.add(OpenMode.DROPBOX);
+        hashSet.add(OpenMode.BOX);
+        hashSet.add(OpenMode.GDRIVE);
+        hashSet.add(OpenMode.ONEDRIVE);
+        return hashSet;
     }
-    HybridFile destination = new HybridFile(mode, paths.get(0));
-    long destinationSize = destination.getUsableSpace();
 
-    for (int i = 0; i < paths.size(); i++) {
-      for (HybridFileParcelable baseFile : files.get(i)) {
-        final MoveFilesReturn r = processFile(baseFile, paths.get(i), destinationSize);
-        if (r != null) {
-          return r;
+    @WorkerThread
+    @Override
+    public MoveFilesReturn call() {
+        if (files.size() == 0) {
+            return new MoveFilesReturn(true, false, 0, 0);
         }
-      }
-    }
-    return new MoveFilesReturn(true, false, destinationSize, totalBytes);
-  }
 
-  @Nullable
-  private MoveFilesReturn processFile(
-      HybridFileParcelable baseFile, String path, long destinationSize) {
-    String destPath = path + "/" + baseFile.getName(context);
-    if (baseFile.getPath().indexOf('?') > 0)
-      destPath += baseFile.getPath().substring(baseFile.getPath().indexOf('?'));
-    if (!isMoveOperationValid(baseFile, new HybridFile(mode, path))) {
-      // TODO: 30/06/20 Replace runtime exception with generic exception
-      LOG.warn("Some files failed to be moved", new RuntimeException());
-      return new MoveFilesReturn(false, true, destinationSize, totalBytes);
-    }
-    switch (mode) {
-      case FILE:
-        File dest = new File(destPath);
-        File source = new File(baseFile.getPath());
-        if (!source.renameTo(dest)) {
+        for (ArrayList<HybridFileParcelable> filesCurrent : files) {
+            totalBytes += FileUtils.getTotalBytes(filesCurrent, context);
+        }
+        HybridFile destination = new HybridFile(mode, paths.get(0));
+        long destinationSize = destination.getUsableSpace();
 
-          // check if we have root
-          if (isRootExplorer) {
-            try {
-              if (!RenameFileCommand.INSTANCE.renameFile(baseFile.getPath(), destPath)) {
-                return new MoveFilesReturn(false, false, destinationSize, totalBytes);
-              }
-            } catch (ShellNotRunningException e) {
-              LOG.warn("failed to move file in local filesystem", e);
-              return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+        for (int i = 0; i < paths.size(); i++) {
+            for (HybridFileParcelable baseFile : files.get(i)) {
+                final MoveFilesReturn r = processFile(baseFile, paths.get(i), destinationSize);
+                if (r != null) {
+                    return r;
+                }
             }
-          } else {
-            return new MoveFilesReturn(false, false, destinationSize, totalBytes);
-          }
         }
-        break;
-      case DROPBOX:
-      case BOX:
-      case ONEDRIVE:
-      case GDRIVE:
-        DataUtils dataUtils = DataUtils.getInstance();
-
-        CloudStorage cloudStorage = dataUtils.getAccount(mode);
-        if (baseFile.getMode() == mode) {
-          // source and target both in same filesystem, use API method
-          try {
-            cloudStorage.move(
-                CloudUtil.stripPath(mode, baseFile.getPath()), CloudUtil.stripPath(mode, destPath));
-          } catch (RuntimeException e) {
-            LOG.warn("failed to move file in cloud filesystem", e);
-            return new MoveFilesReturn(false, false, destinationSize, totalBytes);
-          }
-        } else {
-          // not in same filesystem, execute service
-          return new MoveFilesReturn(false, false, destinationSize, totalBytes);
-        }
-      default:
-        return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+        return new MoveFilesReturn(true, false, destinationSize, totalBytes);
     }
 
-    return null;
-  }
+    @Nullable
+    private MoveFilesReturn processFile(
+            HybridFileParcelable baseFile, String path, long destinationSize) {
+        String destPath = path + "/" + baseFile.getName(context);
+        if (baseFile.getPath().indexOf('?') > 0)
+            destPath += baseFile.getPath().substring(baseFile.getPath().indexOf('?'));
+        if (!isMoveOperationValid(baseFile, new HybridFile(mode, path))) {
+            // TODO: 30/06/20 Replace runtime exception with generic exception
+            LOG.warn("Some files failed to be moved", new RuntimeException());
+            return new MoveFilesReturn(false, true, destinationSize, totalBytes);
+        }
+        switch (mode) {
+            case FILE:
+                File dest = new File(destPath);
+                File source = new File(baseFile.getPath());
+                if (!source.renameTo(dest)) {
 
-  private boolean isMoveOperationValid(HybridFileParcelable sourceFile, HybridFile targetFile) {
-    return !Operations.isCopyLoopPossible(sourceFile, targetFile) && sourceFile.exists(context);
-  }
+                    // check if we have root
+                    if (isRootExplorer) {
+                        try {
+                            if (!RenameFileCommand.INSTANCE.renameFile(baseFile.getPath(), destPath)) {
+                                return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+                            }
+                        } catch (ShellNotRunningException e) {
+                            LOG.warn("failed to move file in local filesystem", e);
+                            return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+                        }
+                    } else {
+                        return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+                    }
+                }
+                break;
+            case DROPBOX:
+            case BOX:
+            case ONEDRIVE:
+            case GDRIVE:
+                DataUtils dataUtils = DataUtils.getInstance();
 
-  /**
-   * Maintains a list of filesystems supporting the move/rename implementation. Please update to
-   * return your {@link OpenMode} type if it is supported here
-   *
-   * @return
-   */
-  public static HashSet<OpenMode> getOperationSupportedFileSystem() {
-    HashSet<OpenMode> hashSet = new HashSet<>();
-    hashSet.add(OpenMode.SMB);
-    hashSet.add(OpenMode.FILE);
-    hashSet.add(OpenMode.DROPBOX);
-    hashSet.add(OpenMode.BOX);
-    hashSet.add(OpenMode.GDRIVE);
-    hashSet.add(OpenMode.ONEDRIVE);
-    return hashSet;
-  }
+                CloudStorage cloudStorage = dataUtils.getAccount(mode);
+                if (baseFile.getMode() == mode) {
+                    // source and target both in same filesystem, use API method
+                    try {
+                        cloudStorage.move(
+                                CloudUtil.stripPath(mode, baseFile.getPath()), CloudUtil.stripPath(mode, destPath));
+                    } catch (RuntimeException e) {
+                        LOG.warn("failed to move file in cloud filesystem", e);
+                        return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+                    }
+                } else {
+                    // not in same filesystem, execute service
+                    return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+                }
+            default:
+                return new MoveFilesReturn(false, false, destinationSize, totalBytes);
+        }
+
+        return null;
+    }
+
+    private boolean isMoveOperationValid(HybridFileParcelable sourceFile, HybridFile targetFile) {
+        return !Operations.isCopyLoopPossible(sourceFile, targetFile) && sourceFile.exists(context);
+    }
 }

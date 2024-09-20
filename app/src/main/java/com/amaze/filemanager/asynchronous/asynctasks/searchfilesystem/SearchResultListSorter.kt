@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem
 
 import com.amaze.filemanager.filesystem.files.FileListSorter
@@ -48,16 +46,16 @@ class SearchResultListSorter(
                         if (timeDiff < relevantModificationPeriod) {
                             // if the file was modified within the last 30 days, the recency is normalized
                             (relevantModificationPeriod - timeDiff) /
-                                relevantModificationPeriod.toDouble()
+                                    relevantModificationPeriod.toDouble()
                         } else {
                             // for all older modification time, the recency doesn't change the relevancy
                             0.0
                         }
 
                     1.2 * matchPercentageScore +
-                        0.7 * startScore +
-                        0.7 * wordScore +
-                        0.6 * timeScore
+                            0.7 * startScore +
+                            0.7 * wordScore +
+                            0.6 * timeScore
                 }
             // Reverts the sorting to make most relevant first
             comparator.compare(o1, o2) * -1

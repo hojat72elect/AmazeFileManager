@@ -1,13 +1,11 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem
 
 import android.database.Cursor
 import android.provider.MediaStore
 import com.amaze.filemanager.filesystem.RootHelper
-import kotlinx.coroutines.isActive
 import java.io.File
 import kotlin.coroutines.coroutineContext
+import kotlinx.coroutines.isActive
 
 class IndexedSearch(
     query: String,

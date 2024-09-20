@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem
 
 import androidx.lifecycle.LiveData

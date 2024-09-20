@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.database
 
 import com.amaze.filemanager.application.AppConfig

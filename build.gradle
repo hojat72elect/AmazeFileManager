@@ -21,7 +21,6 @@ buildscript {
 }
 
 plugins {
-    id "com.diffplug.spotless" version "6.25.0"
     id "com.google.devtools.ksp" version "1.9.10-1.0.13" apply false
 }
 
@@ -39,25 +38,6 @@ allprojects {
             forkEvery = 4
             failFast = true
         }
-    }
-}
-
-spotless {
-    // update license header from first commit
-    // ratchetFrom='78b1a4cf3c0a9519be92ff8445f7dff2cd8722b1'
-    java {
-        licenseHeaderFile 'amaze.license.spotless.txt'
-        target '*/src/**/*.java'
-        googleJavaFormat('1.19.2')
-        removeUnusedImports() // removes any unused imports
-        importOrder 'java', 'javax', 'org', 'com', 'android', 'androidx', ''
-    }
-    kotlin {
-        licenseHeaderFile 'amaze.license.spotless.txt'
-        target '*/src/**/*.kt'
-        ktlint("1.1.1")
-                .setEditorConfigPath("$projectDir/.editorconfig")
-
     }
 }
 

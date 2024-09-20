@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.handlers
 
 import android.os.Handler
@@ -11,18 +9,18 @@ import com.amaze.filemanager.adapters.RecyclerAdapter
 import com.amaze.filemanager.filesystem.CustomFileObserver
 import com.amaze.filemanager.filesystem.HybridFile
 import com.amaze.filemanager.ui.fragments.MainFragment
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.lang.ref.WeakReference
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class FileHandler(
     mainFragment: MainFragment,
     private val listView: RecyclerView,
     private val useThumbs: Boolean,
 ) : Handler(
-        Looper.getMainLooper(),
-    ) {
+    Looper.getMainLooper(),
+) {
     private val mainFragment: WeakReference<MainFragment> = WeakReference(mainFragment)
     private val log: Logger = LoggerFactory.getLogger(FileHandler::class.java)
 
@@ -40,6 +38,7 @@ class FileHandler(
             CustomFileObserver.GOBACK -> {
                 main.goBack()
             }
+
             CustomFileObserver.NEW_ITEM -> {
                 if (path == null) {
                     log.error("Path is empty for file")
@@ -53,6 +52,7 @@ class FileHandler(
                 val newElement = fileCreated.generateLayoutElement(main.requireContext(), useThumbs)
                 main.elementsList?.add(newElement)
             }
+
             CustomFileObserver.DELETED_ITEM -> {
                 val index =
                     elementsList.withIndex().find {
@@ -63,6 +63,7 @@ class FileHandler(
                     main.elementsList?.removeAt(index)
                 }
             }
+
             else -> {
                 super.handleMessage(msg)
                 return

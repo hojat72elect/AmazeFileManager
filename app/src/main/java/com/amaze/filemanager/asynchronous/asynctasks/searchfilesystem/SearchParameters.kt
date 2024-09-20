@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem
 
 import java.util.EnumSet

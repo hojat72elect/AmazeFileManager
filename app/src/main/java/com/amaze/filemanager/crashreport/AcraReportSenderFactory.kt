@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.crashreport
 
 import android.content.Context

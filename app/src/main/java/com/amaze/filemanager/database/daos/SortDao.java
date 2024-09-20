@@ -1,18 +1,14 @@
-
-
 package com.amaze.filemanager.database.daos;
 
 import static com.amaze.filemanager.database.ExplorerDatabase.COLUMN_PATH;
 import static com.amaze.filemanager.database.ExplorerDatabase.TABLE_SORT;
-
-import com.amaze.filemanager.database.models.explorer.Sort;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
-
+import com.amaze.filemanager.database.models.explorer.Sort;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -27,16 +23,16 @@ import io.reactivex.Single;
 @Dao
 public interface SortDao {
 
-  @Insert
-  Completable insert(Sort entity);
+    @Insert
+    Completable insert(Sort entity);
 
-  @Query("SELECT * FROM " + TABLE_SORT + " WHERE " + COLUMN_PATH + " = :path")
-  Single<Sort> find(String path);
+    @Query("SELECT * FROM " + TABLE_SORT + " WHERE " + COLUMN_PATH + " = :path")
+    Single<Sort> find(String path);
 
-  @Transaction
-  @Query("DELETE FROM " + TABLE_SORT + " WHERE " + COLUMN_PATH + " = :path")
-  Completable clear(String path);
+    @Transaction
+    @Query("DELETE FROM " + TABLE_SORT + " WHERE " + COLUMN_PATH + " = :path")
+    Completable clear(String path);
 
-  @Update
-  Completable update(Sort entity);
+    @Update
+    Completable update(Sort entity);
 }

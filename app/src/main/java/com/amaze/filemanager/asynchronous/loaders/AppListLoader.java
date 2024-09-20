@@ -1,20 +1,4 @@
-
-
 package com.amaze.filemanager.asynchronous.loaders;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.amaze.filemanager.adapters.data.AppDataParcelable;
-import com.amaze.filemanager.adapters.data.AppDataSorter;
-import com.amaze.filemanager.asynchronous.broadcast_receivers.PackageReceiver;
-import com.amaze.filemanager.utils.InterestingConfigChange;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -22,8 +6,18 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.format.Formatter;
-
 import androidx.loader.content.AsyncTaskLoader;
+import com.amaze.filemanager.adapters.data.AppDataParcelable;
+import com.amaze.filemanager.adapters.data.AppDataSorter;
+import com.amaze.filemanager.asynchronous.broadcast_receivers.PackageReceiver;
+import com.amaze.filemanager.utils.InterestingConfigChange;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by vishal on 23/2/17.
@@ -32,178 +26,182 @@ import androidx.loader.content.AsyncTaskLoader;
  */
 public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
 
-  private final Logger LOG = LoggerFactory.getLogger(AppListLoader.class);
+    private final Logger LOG = LoggerFactory.getLogger(AppListLoader.class);
+    private final int sortBy;
+    private final boolean isAscending;
+    private final PackageManager packageManager;
+    private PackageReceiver packageReceiver;
+    private List<AppDataParcelable> mApps;
 
-  private PackageManager packageManager;
-  private PackageReceiver packageReceiver;
-  private List<AppDataParcelable> mApps;
-  private final int sortBy;
-  private final boolean isAscending;
+    public AppListLoader(Context context, int sortBy, boolean isAscending) {
+        super(context);
 
-  public AppListLoader(Context context, int sortBy, boolean isAscending) {
-    super(context);
+        this.sortBy = sortBy;
+        this.isAscending = isAscending;
 
-    this.sortBy = sortBy;
-    this.isAscending = isAscending;
+        /*
+         * using global context because of the fact that loaders are supposed to be used
+         * across fragments and activities
+         */
+        packageManager = getContext().getPackageManager();
+    }
 
-    /*
-     * using global context because of the fact that loaders are supposed to be used
-     * across fragments and activities
+    /**
+     * Check if an App is under /system or has been installed as an update to a built-in system
+     * application.
      */
-    packageManager = getContext().getPackageManager();
-  }
-
-  @Override
-  public List<AppDataParcelable> loadInBackground() {
-    List<ApplicationInfo> apps =
-        packageManager.getInstalledApplications(
-            PackageManager.MATCH_UNINSTALLED_PACKAGES
-                | PackageManager.MATCH_DISABLED_UNTIL_USED_COMPONENTS);
-
-    if (apps == null) return Collections.emptyList();
-    mApps = new ArrayList<>(apps.size());
-    PackageInfo androidInfo = null;
-    try {
-      androidInfo = packageManager.getPackageInfo("android", PackageManager.GET_SIGNATURES);
-    } catch (PackageManager.NameNotFoundException e) {
-      LOG.warn("failed to find android package name while loading apps list", e);
+    public static boolean isAppInSystemPartition(ApplicationInfo applicationInfo) {
+        return ((applicationInfo.flags
+                & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP))
+                != 0);
     }
 
-    for (ApplicationInfo object : apps) {
-      if (object.sourceDir == null) {
-        continue;
-      }
-      File sourceDir = new File(object.sourceDir);
+    @Override
+    public List<AppDataParcelable> loadInBackground() {
+        List<ApplicationInfo> apps =
+                packageManager.getInstalledApplications(
+                        PackageManager.MATCH_UNINSTALLED_PACKAGES
+                                | PackageManager.MATCH_DISABLED_UNTIL_USED_COMPONENTS);
 
-      String label = object.loadLabel(packageManager).toString();
-      PackageInfo info;
+        if (apps == null) return Collections.emptyList();
+        mApps = new ArrayList<>(apps.size());
+        PackageInfo androidInfo = null;
+        try {
+            androidInfo = packageManager.getPackageInfo("android", PackageManager.GET_SIGNATURES);
+        } catch (PackageManager.NameNotFoundException e) {
+            LOG.warn("failed to find android package name while loading apps list", e);
+        }
 
-      try {
-        info = packageManager.getPackageInfo(object.packageName, PackageManager.GET_SIGNATURES);
-      } catch (PackageManager.NameNotFoundException e) {
-        LOG.warn("failed to find package name {} while loading apps list", object.packageName, e);
-        info = null;
-      }
-      boolean isSystemApp = isAppInSystemPartition(object) || isSignedBySystem(info, androidInfo);
+        for (ApplicationInfo object : apps) {
+            if (object.sourceDir == null) {
+                continue;
+            }
+            File sourceDir = new File(object.sourceDir);
 
-      List<String> splitPathList = null;
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-          && object.splitPublicSourceDirs != null) {
-        splitPathList = Arrays.asList(object.splitPublicSourceDirs);
-      }
+            String label = object.loadLabel(packageManager).toString();
+            PackageInfo info;
 
-      AppDataParcelable elem =
-          new AppDataParcelable(
-              label == null ? object.packageName : label,
-              object.sourceDir,
-              splitPathList,
-              object.packageName,
-              object.flags + "_" + (info != null ? info.versionName : ""),
-              Formatter.formatFileSize(getContext(), sourceDir.length()),
-              sourceDir.length(),
-              sourceDir.lastModified(),
-              isSystemApp,
-              null);
+            try {
+                info = packageManager.getPackageInfo(object.packageName, PackageManager.GET_SIGNATURES);
+            } catch (PackageManager.NameNotFoundException e) {
+                LOG.warn("failed to find package name {} while loading apps list", object.packageName, e);
+                info = null;
+            }
+            boolean isSystemApp = isAppInSystemPartition(object) || isSignedBySystem(info, androidInfo);
 
-      mApps.add(elem);
+            List<String> splitPathList = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                    && object.splitPublicSourceDirs != null) {
+                splitPathList = Arrays.asList(object.splitPublicSourceDirs);
+            }
+
+            AppDataParcelable elem =
+                    new AppDataParcelable(
+                            label == null ? object.packageName : label,
+                            object.sourceDir,
+                            splitPathList,
+                            object.packageName,
+                            object.flags + "_" + (info != null ? info.versionName : ""),
+                            Formatter.formatFileSize(getContext(), sourceDir.length()),
+                            sourceDir.length(),
+                            sourceDir.lastModified(),
+                            isSystemApp,
+                            null);
+
+            mApps.add(elem);
+        }
+
+        Collections.sort(mApps, new AppDataSorter(sortBy, isAscending));
+        return mApps;
     }
 
-    Collections.sort(mApps, new AppDataSorter(sortBy, isAscending));
-    return mApps;
-  }
+    @Override
+    public void deliverResult(List<AppDataParcelable> data) {
+        if (isReset()) {
 
-  @Override
-  public void deliverResult(List<AppDataParcelable> data) {
-    if (isReset()) {
+            if (data != null) onReleaseResources(data); // TODO onReleaseResources() is empty
+        }
 
-      if (data != null) onReleaseResources(data); // TODO onReleaseResources() is empty
+        // preserving old data for it to be closed
+        List<AppDataParcelable> oldData = mApps;
+        mApps = data;
+        if (isStarted()) {
+            // loader has been started, if we have data, return immediately
+            super.deliverResult(mApps);
+        }
+
+        // releasing older resources as we don't need them now
+        if (oldData != null) {
+            onReleaseResources(oldData); // TODO onReleaseResources() is empty
+        }
     }
 
-    // preserving old data for it to be closed
-    List<AppDataParcelable> oldData = mApps;
-    mApps = data;
-    if (isStarted()) {
-      // loader has been started, if we have data, return immediately
-      super.deliverResult(mApps);
+    @Override
+    protected void onStartLoading() {
+
+        if (mApps != null) {
+            // we already have the results, load immediately
+            deliverResult(mApps);
+        }
+
+        if (packageReceiver != null) {
+            packageReceiver = new PackageReceiver(this);
+        }
+
+        boolean didConfigChange = InterestingConfigChange.isConfigChanged(getContext().getResources());
+
+        if (takeContentChanged() || mApps == null || didConfigChange) {
+            forceLoad();
+        }
     }
 
-    // releasing older resources as we don't need them now
-    if (oldData != null) {
-      onReleaseResources(oldData); // TODO onReleaseResources() is empty
-    }
-  }
-
-  @Override
-  protected void onStartLoading() {
-
-    if (mApps != null) {
-      // we already have the results, load immediately
-      deliverResult(mApps);
+    @Override
+    protected void onStopLoading() {
+        cancelLoad();
     }
 
-    if (packageReceiver != null) {
-      packageReceiver = new PackageReceiver(this);
+    @Override
+    public void onCanceled(List<AppDataParcelable> data) {
+        super.onCanceled(data);
+
+        onReleaseResources(data); // TODO onReleaseResources() is empty
     }
 
-    boolean didConfigChange = InterestingConfigChange.isConfigChanged(getContext().getResources());
+    @Override
+    protected void onReset() {
+        super.onReset();
 
-    if (takeContentChanged() || mApps == null || didConfigChange) {
-      forceLoad();
-    }
-  }
+        onStopLoading();
 
-  @Override
-  protected void onStopLoading() {
-    cancelLoad();
-  }
+        // we're free to clear resources
+        if (mApps != null) {
+            onReleaseResources(mApps); // TODO onReleaseResources() is empty
+            mApps = null;
+        }
 
-  @Override
-  public void onCanceled(List<AppDataParcelable> data) {
-    super.onCanceled(data);
+        if (packageReceiver != null) {
+            getContext().unregisterReceiver(packageReceiver);
 
-    onReleaseResources(data); // TODO onReleaseResources() is empty
-  }
+            packageReceiver = null;
+        }
 
-  @Override
-  protected void onReset() {
-    super.onReset();
-
-    onStopLoading();
-
-    // we're free to clear resources
-    if (mApps != null) {
-      onReleaseResources(mApps); // TODO onReleaseResources() is empty
-      mApps = null;
+        InterestingConfigChange.recycle();
     }
 
-    if (packageReceiver != null) {
-      getContext().unregisterReceiver(packageReceiver);
-
-      packageReceiver = null;
+    /**
+     * We would want to release resources here List is nothing we would want to close
+     */
+    // TODO do something
+    private void onReleaseResources(List<AppDataParcelable> layoutElementList) {
     }
 
-    InterestingConfigChange.recycle();
-  }
-
-  /** We would want to release resources here List is nothing we would want to close */
-  // TODO do something
-  private void onReleaseResources(List<AppDataParcelable> layoutElementList) {}
-
-  /**
-   * Check if an App is under /system or has been installed as an update to a built-in system
-   * application.
-   */
-  public static boolean isAppInSystemPartition(ApplicationInfo applicationInfo) {
-    return ((applicationInfo.flags
-            & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP))
-        != 0);
-  }
-
-  /** Check if an App is signed by system or not. */
-  public boolean isSignedBySystem(PackageInfo piApp, PackageInfo piSys) {
-    return (piApp != null
-        && piSys != null
-        && piApp.signatures != null
-        && piSys.signatures[0].equals(piApp.signatures[0]));
-  }
+    /**
+     * Check if an App is signed by system or not.
+     */
+    public boolean isSignedBySystem(PackageInfo piApp, PackageInfo piSys) {
+        return (piApp != null
+                && piSys != null
+                && piApp.signatures != null
+                && piSys.signatures[0].equals(piApp.signatures[0]));
+    }
 }

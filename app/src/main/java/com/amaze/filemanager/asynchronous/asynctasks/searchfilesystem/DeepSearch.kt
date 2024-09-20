@@ -1,13 +1,11 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem
 
 import android.content.Context
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode
 import com.amaze.filemanager.filesystem.HybridFile
+import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.isActive
 import org.slf4j.LoggerFactory
-import kotlin.coroutines.coroutineContext
 
 class DeepSearch(
     query: String,

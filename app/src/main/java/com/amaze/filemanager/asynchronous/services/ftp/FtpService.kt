@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2014-2021 Arpit Khurana <arpitkh96@gmail.com>, Vishal Nehra <vishalmeham2@gmail.com>,
- * Emmanuel Messulam<emmanuelbendavid@gmail.com>, Raymond Lai <airwave209gt at gmail.com> and Contributors.
- *
- * This file is part of Amaze File Manager.
- *
- * Amaze File Manager is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.amaze.filemanager.asynchronous.services.ftp
 
 import android.app.AlarmManager
@@ -50,6 +30,13 @@ import com.amaze.filemanager.ui.notifications.FtpNotification
 import com.amaze.filemanager.ui.notifications.NotificationConstants
 import com.amaze.filemanager.utils.ObtainableServiceBinder
 import com.amaze.filemanager.utils.PasswordUtil
+import java.io.IOException
+import java.security.GeneralSecurityException
+import java.security.KeyStore
+import java.util.LinkedList
+import javax.net.ssl.KeyManagerFactory
+import javax.net.ssl.TrustManagerFactory
+import kotlin.concurrent.thread
 import org.apache.ftpserver.ConnectionConfigFactory
 import org.apache.ftpserver.FtpServer
 import org.apache.ftpserver.FtpServerFactory
@@ -62,13 +49,6 @@ import org.apache.ftpserver.usermanager.impl.WritePermission
 import org.greenrobot.eventbus.EventBus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.IOException
-import java.security.GeneralSecurityException
-import java.security.KeyStore
-import java.util.LinkedList
-import javax.net.ssl.KeyManagerFactory
-import javax.net.ssl.TrustManagerFactory
-import kotlin.concurrent.thread
 
 /**
  * Created by yashwanthreddyg on 09-06-2016.
@@ -379,7 +359,7 @@ class FtpService : Service(), Runnable {
         }
 
         private fun getPort(preferences: SharedPreferences): Int {
-            return preferences.getInt(FtpService.PORT_PREFERENCE_KEY, FtpService.DEFAULT_PORT)
+            return preferences.getInt(PORT_PREFERENCE_KEY, DEFAULT_PORT)
         }
     }
 }

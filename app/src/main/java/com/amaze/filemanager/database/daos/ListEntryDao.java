@@ -1,18 +1,14 @@
-
-
 package com.amaze.filemanager.database.daos;
 
 import static com.amaze.filemanager.database.UtilitiesDatabase.COLUMN_PATH;
 import static com.amaze.filemanager.database.UtilitiesDatabase.TABLE_LIST;
-
-import com.amaze.filemanager.database.models.utilities.List;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
-
+import com.amaze.filemanager.database.models.utilities.List;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
@@ -27,15 +23,15 @@ import io.reactivex.Single;
 @Dao
 public interface ListEntryDao {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  Completable insert(List instance);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insert(List instance);
 
-  @Update
-  Completable update(List instance);
+    @Update
+    Completable update(List instance);
 
-  @Query("SELECT " + COLUMN_PATH + " FROM " + TABLE_LIST)
-  Single<java.util.List<String>> listPaths();
+    @Query("SELECT " + COLUMN_PATH + " FROM " + TABLE_LIST)
+    Single<java.util.List<String>> listPaths();
 
-  @Query("DELETE FROM " + TABLE_LIST + " WHERE " + COLUMN_PATH + " = :path")
-  Completable deleteByPath(String path);
+    @Query("DELETE FROM " + TABLE_LIST + " WHERE " + COLUMN_PATH + " = :path")
+    Completable deleteByPath(String path);
 }

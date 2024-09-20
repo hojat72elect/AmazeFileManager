@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem
 
 import com.amaze.filemanager.filesystem.HybridFileParcelable
