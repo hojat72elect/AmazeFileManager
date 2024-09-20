@@ -1,17 +1,15 @@
-
-
 package com.amaze.filemanager.filesystem
 
 import android.content.Context
 import android.os.Build
 import com.amaze.filemanager.ui.icons.MimeTypes
 import com.amaze.filemanager.utils.AppConstants
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStreamWriter
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 // This object is here to not polute the global namespace
 // All functions must be static
@@ -67,12 +65,12 @@ object MakeFileOperation {
             // getDocumentFile implicitly creates the directory.
             return try {
                 (
-                    document?.createFile(
-                        MimeTypes.getMimeType(file.path, file.isDirectory),
-                        file.name,
-                    )
-                        != null
-                )
+                        document?.createFile(
+                            MimeTypes.getMimeType(file.path, file.isDirectory),
+                            file.name,
+                        )
+                                != null
+                        )
             } catch (e: UnsupportedOperationException) {
                 log.warn("Failed to create file on sd card using document file", e)
                 false

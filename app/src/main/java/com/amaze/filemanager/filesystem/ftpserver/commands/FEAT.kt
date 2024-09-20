@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver.commands
 
 import com.amaze.filemanager.R

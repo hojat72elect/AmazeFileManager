@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.app.Dialog
@@ -17,6 +15,7 @@ import com.amaze.filemanager.filesystem.HybridFileParcelable
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
 import com.amaze.filemanager.utils.safeLet
+import java.util.Locale
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -67,7 +66,7 @@ class DragAndDropDialog : DialogFragment() {
             } else {
                 log.warn(
                     "Trying to drop for copy / move while setting " +
-                        "is drag select",
+                            "is drag select",
                 )
             }
         }
@@ -117,18 +116,17 @@ class DragAndDropDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         safeLet(
             context,
-            mainActivity?.appTheme?.getMaterialDialogTheme(),
+            mainActivity?.appTheme?.materialDialogTheme,
             mainActivity?.accent,
             pasteLocation,
             operationFiles,
-        ) {
-                context, dialogTheme, accent, pasteLocation, operationFiles ->
+        ) { context, dialogTheme, accent, pasteLocation, operationFiles ->
             val dialog: MaterialDialog =
                 MaterialDialog.Builder(context)
                     .title(getString(R.string.choose_operation))
                     .customView(R.layout.dialog_drag_drop, true)
                     .theme(dialogTheme)
-                    .negativeText(getString(R.string.cancel).toUpperCase())
+                    .negativeText(getString(R.string.cancel).uppercase(Locale.getDefault()))
                     .negativeColor(accent)
                     .cancelable(false)
                     .onNeutral { _: MaterialDialog?, _: DialogAction? ->

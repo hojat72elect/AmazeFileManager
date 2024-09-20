@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.files
 
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable
@@ -81,10 +79,12 @@ class FileListSorter(
                 // sort by name
                 return asc * compareName(file1, file2)
             }
+
             SortBy.LAST_MODIFIED -> {
                 // sort by last modified
                 return asc * Long.valueOf(file1.getDate()).compareTo(file2.getDate())
             }
+
             SortBy.SIZE -> {
                 // sort by size
                 return if (!isDirectory(file1) && !isDirectory(file2)) {
@@ -93,6 +93,7 @@ class FileListSorter(
                     compareName(file1, file2)
                 }
             }
+
             SortBy.TYPE -> {
                 // sort by type
                 return if (!isDirectory(file1) && !isDirectory(file2)) {
@@ -108,6 +109,7 @@ class FileListSorter(
                     compareName(file1, file2)
                 }
             }
+
             SortBy.RELEVANCE -> {
                 // This case should not be called because it is not defined
                 return 0

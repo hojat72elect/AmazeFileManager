@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
 import androidx.annotation.VisibleForTesting
@@ -29,15 +27,15 @@ import com.amaze.filemanager.utils.urlEncoded
 import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
-import net.schmizz.sshj.sftp.SFTPClient
-import org.apache.commons.net.ftp.FTPClient
-import org.apache.commons.net.ftp.FTPReply
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import net.schmizz.sshj.sftp.SFTPClient
+import org.apache.commons.net.ftp.FTPClient
+import org.apache.commons.net.ftp.FTPReply
+import org.slf4j.LoggerFactory
 
 object NetCopyClientUtils {
     @JvmStatic
@@ -231,11 +229,13 @@ object NetCopyClientUtils {
             if (password == "" || password == null) {
                 ""
             } else {
-                ":${if (edit) {
-                    password
-                } else {
-                    password.urlEncoded()
-                }}"
+                ":${
+                    if (edit) {
+                        password
+                    } else {
+                        password.urlEncoded()
+                    }
+                }"
             }
         return if (username == "") {
             "$prefix$hostname:$port$pathSuffix"

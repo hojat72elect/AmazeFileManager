@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException

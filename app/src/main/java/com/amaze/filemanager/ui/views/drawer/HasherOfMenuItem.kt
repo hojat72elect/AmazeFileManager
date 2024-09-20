@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.views.drawer
 
 import android.view.MenuItem

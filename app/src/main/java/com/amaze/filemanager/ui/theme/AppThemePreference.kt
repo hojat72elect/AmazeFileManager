@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.theme
 
 import android.content.Context
@@ -31,7 +29,7 @@ enum class AppThemePreference(val id: Int, val canBeLight: Boolean) {
      * Returns the correct [Theme] associated with this [AppThemePreference] based on [context].
      */
     fun getMaterialDialogTheme(context: Context): Theme {
-        return getSimpleTheme(context).getMaterialDialogTheme()
+        return getSimpleTheme(context).materialDialogTheme
     }
 
     /**
@@ -85,9 +83,9 @@ enum class AppThemePreference(val id: Int, val canBeLight: Boolean) {
      */
     private fun isNightMode(context: Context): Boolean {
         return (
-            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                == Configuration.UI_MODE_NIGHT_YES
-        )
+                context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                        == Configuration.UI_MODE_NIGHT_YES
+                )
     }
 
     /**

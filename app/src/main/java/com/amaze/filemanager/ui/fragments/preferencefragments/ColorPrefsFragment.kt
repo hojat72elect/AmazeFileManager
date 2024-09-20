@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.os.Bundle
@@ -139,13 +137,13 @@ class ColorPrefsFragment : BasePrefsFragment() {
 
         dialog =
             MaterialDialog.Builder(activity)
-                .positiveText(com.amaze.filemanager.R.string.cancel)
-                .title(com.amaze.filemanager.R.string.choose_color)
-                .theme(activity.appTheme.getMaterialDialogTheme())
+                .positiveText(R.string.cancel)
+                .title(R.string.choose_color)
+                .theme(activity.appTheme.materialDialogTheme)
                 .autoDismiss(true)
                 .positiveColor(fabSkin)
                 .neutralColor(fabSkin)
-                .neutralText(com.amaze.filemanager.R.string.default_string)
+                .neutralText(R.string.default_string)
                 .onNeutral { _, _ ->
                     activity
                         .colorPreference

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.compressed
 
 import android.os.Build.VERSION.SDK_INT

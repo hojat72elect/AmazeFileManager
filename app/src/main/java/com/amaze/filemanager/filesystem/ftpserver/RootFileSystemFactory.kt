@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver
 
 import org.apache.ftpserver.ftplet.FileSystemFactory
@@ -10,5 +8,6 @@ class RootFileSystemFactory(
     private val fileFactory: RootFileSystemView.SuFileFactory =
         RootFileSystemView.DefaultSuFileFactory(),
 ) : FileSystemFactory {
-    override fun createFileSystemView(user: User): FileSystemView = RootFileSystemView(user, fileFactory)
+    override fun createFileSystemView(user: User): FileSystemView =
+        RootFileSystemView(user, fileFactory)
 }

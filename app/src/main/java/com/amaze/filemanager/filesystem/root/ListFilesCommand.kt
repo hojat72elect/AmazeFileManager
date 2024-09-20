@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import androidx.preference.PreferenceManager
@@ -14,9 +12,9 @@ import com.amaze.filemanager.filesystem.RootHelper
 import com.amaze.filemanager.filesystem.files.FileUtils
 import com.amaze.filemanager.filesystem.root.base.IRootCommand
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
+import java.io.File
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.File
 
 object ListFilesCommand : IRootCommand() {
     private val log: Logger = LoggerFactory.getLogger(ListFilesCommand::class.java)
@@ -101,7 +99,7 @@ object ListFilesCommand : IRootCommand() {
 
             val command =
                 "stat -c '%A %h %G %U %B %Y %N' " +
-                    "$appendedPath*" + (if (showHidden) " $appendedPath.* " else "")
+                        "$appendedPath*" + (if (showHidden) " $appendedPath.* " else "")
             val enforceLegacyFileListing: Boolean =
                 PreferenceManager.getDefaultSharedPreferences(AppConfig.getInstance())
                     .getBoolean(
@@ -118,25 +116,25 @@ object ListFilesCommand : IRootCommand() {
                 log.info("Using stat for list parsing")
                 Pair(
                     first =
-                        runShellCommandToList(command).map {
-                            it.replace(appendedPath, "")
-                        },
+                    runShellCommandToList(command).map {
+                        it.replace(appendedPath, "")
+                    },
                     second = enforceLegacyFileListing,
                 )
             } else {
                 log.info("Using ls for list parsing")
                 Pair(
                     first =
-                        runShellCommandToList(
-                            "ls -l " + (if (showHidden) "-a " else "") +
+                    runShellCommandToList(
+                        "ls -l " + (if (showHidden) "-a " else "") +
                                 "\"$sanitizedPath\"",
-                        ),
+                    ),
                     second =
-                        if (retryWithLs) {
-                            true
-                        } else {
-                            enforceLegacyFileListing
-                        },
+                    if (retryWithLs) {
+                        true
+                    } else {
+                        enforceLegacyFileListing
+                    },
                 )
             }
         } catch (invalidCommand: ShellCommandInvalidException) {

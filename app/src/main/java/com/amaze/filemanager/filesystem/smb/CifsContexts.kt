@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.smb
 
 import android.net.Uri
@@ -7,12 +5,12 @@ import android.text.TextUtils
 import android.util.Log
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.util.Properties
+import java.util.concurrent.ConcurrentHashMap
 import jcifs.CIFSException
 import jcifs.config.PropertyConfiguration
 import jcifs.context.BaseContext
 import jcifs.context.SingletonContext
-import java.util.Properties
-import java.util.concurrent.ConcurrentHashMap
 
 object CifsContexts {
     const val SMB_URI_PREFIX = "smb://"

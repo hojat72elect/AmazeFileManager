@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager;
 
 import com.amaze.filemanager.adapters.glide.apkimage.ApkImageModelLoaderFactory;
@@ -13,12 +11,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-/** Ensures that Glide's generated API is created for the Gallery sample. */
+/**
+ * Ensures that Glide's generated API is created for the Gallery sample.
+ */
 @GlideModule
 public class AmazeFileManagerModule extends AppGlideModule {
-  @Override
-  public void registerComponents(Context context, Glide glide, Registry registry) {
-    registry.prepend(String.class, Drawable.class, new ApkImageModelLoaderFactory(context));
-    registry.prepend(String.class, Bitmap.class, new CloudIconModelFactory(context));
-  }
+    @Override
+    public void registerComponents(Context context, Glide glide, Registry registry) {
+        registry.prepend(String.class, Drawable.class, new ApkImageModelLoaderFactory(context));
+        registry.prepend(String.class, Bitmap.class, new CloudIconModelFactory(context));
+    }
 }

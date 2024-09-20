@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException
@@ -23,7 +21,7 @@ object CopyFilesCommand : IRootCommand() {
 
         runShellCommand(
             "cp -r \"${RootHelper.getCommandLineString(source)}\" " +
-                "\"${RootHelper.getCommandLineString(destination)}\"",
+                    "\"${RootHelper.getCommandLineString(destination)}\"",
         )
 
         // we mounted the filesystem as rw, let's mount it back to ro

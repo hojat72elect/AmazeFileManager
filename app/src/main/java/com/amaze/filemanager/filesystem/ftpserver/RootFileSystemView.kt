@@ -1,15 +1,13 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver
 
 import android.util.Log
 import com.topjohnwu.superuser.io.SuFile
-import org.apache.ftpserver.ftplet.FileSystemView
-import org.apache.ftpserver.ftplet.FtpFile
-import org.apache.ftpserver.ftplet.User
 import java.io.File
 import java.net.URI
 import java.util.StringTokenizer
+import org.apache.ftpserver.ftplet.FileSystemView
+import org.apache.ftpserver.ftplet.FtpFile
+import org.apache.ftpserver.ftplet.User
 
 class RootFileSystemView(
     private val user: User,

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.base
 
 import android.app.Dialog
@@ -28,6 +26,7 @@ open class BaseBottomSheetFragment : BottomSheetDialogFragment() {
                     ),
                 )
             }
+
             AppTheme.BLACK -> {
                 rootView.setBackgroundDrawable(
                     context?.resources?.getDrawable(
@@ -35,6 +34,7 @@ open class BaseBottomSheetFragment : BottomSheetDialogFragment() {
                     ),
                 )
             }
+
             AppTheme.LIGHT -> {
                 rootView
                     .setBackgroundDrawable(

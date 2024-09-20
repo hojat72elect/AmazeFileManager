@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils.smb
 
 import androidx.annotation.VisibleForTesting
@@ -38,7 +36,6 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
             SameSubnetDiscoverDeviceStrategy(),
         )
         @VisibleForTesting set
-
         @VisibleForTesting get
 
     private lateinit var observer: Observer<in ComputerParcelable>

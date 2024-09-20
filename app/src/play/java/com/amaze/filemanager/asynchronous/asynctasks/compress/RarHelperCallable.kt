@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.asynchronous.asynctasks.compress
 
 import com.amaze.filemanager.adapters.data.CompressedObjectParcelable
@@ -8,10 +6,10 @@ import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.RarDecom
 import com.github.junrar.Archive
 import com.github.junrar.exception.RarException
 import com.github.junrar.exception.UnsupportedRarV5Exception
-import org.apache.commons.compress.archivers.ArchiveException
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
+import org.apache.commons.compress.archivers.ArchiveException
 
 /**
  * AsyncTask to load RAR file items.
@@ -40,14 +38,14 @@ class RarHelperCallable(
                     continue
                 }
                 val isInBaseDir = (
-                    (relativeDirDiffSeparator == null || relativeDirDiffSeparator == "") &&
-                        !name.contains("\\")
-                )
+                        (relativeDirDiffSeparator == null || relativeDirDiffSeparator == "") &&
+                                !name.contains("\\")
+                        )
                 val isInRelativeDir = (
-                    relativeDirDiffSeparator != null && name.contains("\\") &&
-                        name.substring(0, name.lastIndexOf("\\"))
-                        == relativeDirDiffSeparator
-                )
+                        relativeDirDiffSeparator != null && name.contains("\\") &&
+                                name.substring(0, name.lastIndexOf("\\"))
+                                == relativeDirDiffSeparator
+                        )
                 if (isInBaseDir || isInRelativeDir) {
                     elements.add(
                         CompressedObjectParcelable(

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.compressed.showcontents.helpers
 
 import android.content.Context

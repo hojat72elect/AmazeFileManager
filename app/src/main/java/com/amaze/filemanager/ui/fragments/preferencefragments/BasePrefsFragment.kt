@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import androidx.preference.PreferenceFragmentCompat

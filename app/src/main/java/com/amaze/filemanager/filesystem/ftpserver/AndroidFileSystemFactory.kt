@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver
 
 import android.content.Context

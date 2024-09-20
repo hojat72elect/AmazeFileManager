@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem
 
 import com.amaze.filemanager.application.AppConfig
@@ -59,7 +57,8 @@ object FilenameHelper {
     // Don't split complex regexs into multiple lines.
 
     private const val REGEX_RAW_NUMBERS = "| [0-9]+"
-    private const val REGEX_SOURCE = " \\((?:(another|[0-9]+(th|st|nd|rd)) )?copy\\)|copy( [0-9]+)?|\\.\\(incomplete\\)| \\([0-9]+\\)|[- ]+"
+    private const val REGEX_SOURCE =
+        " \\((?:(another|[0-9]+(th|st|nd|rd)) )?copy\\)|copy( [0-9]+)?|\\.\\(incomplete\\)| \\([0-9]+\\)|[- ]+"
 
     private val ordinals = arrayOf("th", "st", "nd", "rd")
 
@@ -213,17 +212,21 @@ object FilenameHelper {
                     stem
                 }
             }
+
             FilenameFormatFlag.LINUX -> {
                 when (n) {
                     0 -> {
                         stem
                     }
+
                     1 -> {
                         "$stem (copy)"
                     }
+
                     2 -> {
                         "$stem (another copy)"
                     }
+
                     else -> {
                         "$stem (${toOrdinal(n)} copy)"
                     }

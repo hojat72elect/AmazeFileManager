@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.selection
 
 import android.content.Context
@@ -47,8 +45,7 @@ class SelectionPopupMenu(
                         currentContext,
                     )
                 popupMenu.inflate(R.menu.selection_criteria)
-                recyclerAdapter.itemsDigested?.let {
-                        itemsDigested ->
+                recyclerAdapter.itemsDigested?.let { itemsDigested ->
                     if (itemsDigested.size > SIMILARITY_THRESHOLD) {
                         popupMenu.menu.findItem(R.id.select_similar).isVisible = false
                     }
@@ -72,18 +69,23 @@ class SelectionPopupMenu(
                     currentPath,
                 )
             }
+
             R.id.select_inverse -> {
                 recyclerAdapter.toggleInverse(currentPath)
             }
+
             R.id.select_by_type -> {
                 recyclerAdapter.toggleSameTypes()
             }
+
             R.id.select_by_date -> {
                 recyclerAdapter.toggleSameDates()
             }
+
             R.id.select_similar -> {
                 recyclerAdapter.toggleSimilarNames()
             }
+
             R.id.select_fill -> {
                 recyclerAdapter.toggleFill()
             }

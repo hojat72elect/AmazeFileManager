@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException
@@ -21,7 +19,7 @@ object MoveFileCommand : IRootCommand() {
         val mountPoint = MountPathCommand.mountPath(destination, MountPathCommand.READ_WRITE)
         val command =
             "mv \"${RootHelper.getCommandLineString(path)}\"" +
-                " \"${RootHelper.getCommandLineString(destination)}\""
+                    " \"${RootHelper.getCommandLineString(destination)}\""
         runShellCommand(command)
         mountPoint?.let { MountPathCommand.mountPath(it, MountPathCommand.READ_ONLY) }
     }

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils.smb
 
 import com.amaze.filemanager.application.AppConfig
@@ -49,7 +47,8 @@ class SameSubnetDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDevi
                     if (addr.isReachable(HOST_UP_TIMEOUT)) {
                         val portsReachable =
                             listOf(
-                                PortScan.onAddress(addr).setPorts(TCP_PORTS).setMethodTCP().doScan(),
+                                PortScan.onAddress(addr).setPorts(TCP_PORTS).setMethodTCP()
+                                    .doScan(),
                             ).flatten()
                         if (portsReachable.isNotEmpty()) {
                             addr

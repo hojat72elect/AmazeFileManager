@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.activities
 
 import android.content.Intent
@@ -122,7 +120,7 @@ class PreferencesActivity : ThemedActivity(), FolderChooserDialog.FolderCallback
             tintManager.setStatusBarTintColor(primaryColor)
             val layoutParams =
                 findViewById<View>(R.id.activity_preferences).layoutParams
-                    as ViewGroup.MarginLayoutParams
+                        as ViewGroup.MarginLayoutParams
             val config = tintManager.config
             layoutParams.setMargins(0, config.statusBarHeight, 0, 0)
         } else if (Build.VERSION.SDK_INT >= 21) {
@@ -135,12 +133,15 @@ class PreferencesActivity : ThemedActivity(), FolderChooserDialog.FolderCallback
                 colouredNavigation -> {
                     window.navigationBarColor = tabStatusColor
                 }
+
                 appTheme == AppTheme.BLACK -> {
                     window.navigationBarColor = Color.BLACK
                 }
+
                 appTheme == AppTheme.DARK -> {
                     window.navigationBarColor = Utils.getColor(this, R.color.holo_dark_background)
                 }
+
                 appTheme == AppTheme.LIGHT -> {
                     window.navigationBarColor = Color.WHITE
                 }

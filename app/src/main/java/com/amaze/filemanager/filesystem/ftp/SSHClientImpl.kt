@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
 import net.schmizz.sshj.SSHClient

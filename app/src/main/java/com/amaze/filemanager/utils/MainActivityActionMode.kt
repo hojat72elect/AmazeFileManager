@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import android.content.Intent
@@ -53,8 +51,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
     ): Boolean {
         // Inflate a menu resource providing context menu items
         val inflater = mode.menuInflater
-        mainActivityReference.get()?.let {
-                mainActivity ->
+        mainActivityReference.get()?.let { mainActivity ->
             actionModeView = mainActivity.layoutInflater.inflate(R.layout.actionmode, null)
             mode.customView = actionModeView
             mainActivity.setPagingEnabled(false)
@@ -103,8 +100,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
             mainActivityReference.get(),
             mainActivityReference.get()?.currentMainFragment?.mainFragmentViewModel,
             mainActivityReference.get()?.currentMainFragment?.adapter,
-        ) {
-                mainActivity, mainFragmentViewModel, adapter ->
+        ) { mainActivity, mainFragmentViewModel, adapter ->
             val checkedItems: ArrayList<LayoutElementParcelable> =
                 mainFragmentViewModel.getCheckedItems()
             actionModeView?.setOnClickListener {
@@ -200,8 +196,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
             mainActivityReference.get(),
             mainActivityReference
                 .get()?.currentMainFragment?.mainFragmentViewModel?.getCheckedItems(),
-        ) {
-                mainActivity, checkedItems ->
+        ) { mainActivity, checkedItems ->
             return when (item.itemId) {
                 R.id.about -> {
                     val x = checkedItems[0]
@@ -218,6 +213,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     mode.finish()
                     true
                 }
+
                 R.id.delete -> {
                     GeneralDialogCreation.deleteFilesDialog(
                         mainActivity,
@@ -227,6 +223,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     )
                     true
                 }
+
                 R.id.restore -> {
                     GeneralDialogCreation.restoreFilesDialog(
                         mainActivity,
@@ -236,6 +233,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     )
                     true
                 }
+
                 R.id.share -> {
                     if (checkedItems.size > 100) {
                         Toast.makeText(
@@ -245,8 +243,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                         )
                             .show()
                     } else {
-                        mainActivity.currentMainFragment?.mainFragmentViewModel?.also {
-                                mainFragmentViewModel ->
+                        mainActivity.currentMainFragment?.mainFragmentViewModel?.also { mainFragmentViewModel ->
                             when (checkedItems[0].mode) {
                                 OpenMode.DROPBOX, OpenMode.BOX, OpenMode.GDRIVE,
                                 OpenMode.ONEDRIVE,
@@ -256,6 +253,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                                         checkedItems[0].mode,
                                         mainActivity,
                                     )
+
                                 else -> {
                                     val arrayList = ArrayList<File>()
                                     for (e in checkedItems) {
@@ -273,6 +271,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     }
                     true
                 }
+
                 R.id.openparent -> {
                     mainActivity.currentMainFragment?.loadlist(
                         File(checkedItems[0].desc).parent,
@@ -283,12 +282,12 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
 
                     true
                 }
+
                 R.id.all -> {
                     safeLet(
                         mainActivity.currentMainFragment?.mainFragmentViewModel,
                         mainActivity.currentMainFragment?.adapter,
-                    ) {
-                            mainFragmentViewModel, adapter ->
+                    ) { mainFragmentViewModel, adapter ->
                         if (adapter.areAllChecked(mainFragmentViewModel.currentPath)) {
                             adapter.toggleChecked(
                                 false,
@@ -306,12 +305,14 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     mode.invalidate()
                     true
                 }
+
                 R.id.rename -> {
                     val f: HybridFileParcelable = checkedItems[0].generateBaseFile()
                     mainActivity.currentMainFragment?.rename(f)
                     mode.finish()
                     true
                 }
+
                 R.id.hide -> {
                     var i1 = 0
                     while (i1 < checkedItems.size) {
@@ -322,11 +323,13 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     mode.finish()
                     true
                 }
+
                 R.id.ex -> {
                     mainActivity.mainActivityHelper.extractFile(File(checkedItems[0].desc))
                     mode.finish()
                     true
                 }
+
                 R.id.cpy, R.id.cut -> {
                     val copies = arrayOfNulls<HybridFileParcelable>(checkedItems.size)
                     var i = 0
@@ -349,6 +352,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     mode.finish()
                     true
                 }
+
                 R.id.compress -> {
                     val copies1 = ArrayList<HybridFileParcelable>()
                     var i4 = 0
@@ -364,6 +368,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     mode.finish()
                     true
                 }
+
                 R.id.openwith -> {
                     FileUtils.openFile(
                         File(checkedItems[0].desc),
@@ -372,6 +377,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     )
                     true
                 }
+
                 R.id.addshortcut -> {
                     Utils.addShortcut(
                         mainActivity,
@@ -381,6 +387,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     mode.finish()
                     true
                 }
+
                 else -> false
             }
         }
@@ -390,8 +397,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
     // called when the user exits the action mode
     override fun onDestroyActionMode(mode: ActionMode) {
         actionMode = null
-        mainActivityReference.get()?.let {
-                mainActivity ->
+        mainActivityReference.get()?.let { mainActivity ->
             mainActivity.listItemSelected = false
 
             // translates the drawer content up
@@ -403,8 +409,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
             safeLet(
                 mainActivity.currentMainFragment?.mainFragmentViewModel,
                 mainActivity.currentMainFragment?.adapter,
-            ) {
-                    mainFragmentViewModel, adapter ->
+            ) { mainFragmentViewModel, adapter ->
                 adapter.toggleChecked(false, mainFragmentViewModel.currentPath)
                 mainActivity
                     .updateViews(

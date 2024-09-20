@@ -1,11 +1,9 @@
-
-
 package com.amaze.filemanager.utils
 
-import net.schmizz.sshj.common.ByteArrayUtils
-import org.json.JSONObject
 import java.security.MessageDigest
 import java.util.WeakHashMap
+import net.schmizz.sshj.common.ByteArrayUtils
+import org.json.JSONObject
 
 object X509CertificateUtil {
     const val SUBJECT = "subject"
@@ -13,7 +11,8 @@ object X509CertificateUtil {
     const val SERIAL = "serial"
     const val FINGERPRINT = "sha256Fingerprint"
 
-    private fun colonSeparatedHex(array: ByteArray) = ByteArrayUtils.toHex(array).chunked(2).joinToString(":")
+    private fun colonSeparatedHex(array: ByteArray) =
+        ByteArrayUtils.toHex(array).chunked(2).joinToString(":")
 
     /**
      * Parse a [javax.security.cert.X509Certificate] and return part of its information in a JSON object.

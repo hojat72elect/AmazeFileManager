@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.drag
 
 import android.util.Log
@@ -35,7 +33,7 @@ class RecyclerAdapterDragListener(
                 mainFragment.requireMainActivity().initCornersDragListener(
                     true,
                     dragAndDropPref
-                        != PreferencesConstants.PREFERENCE_DRAG_TO_SELECT,
+                            != PreferencesConstants.PREFERENCE_DRAG_TO_SELECT,
                 )
                 if (dragAndDropPref
                     != PreferencesConstants.PREFERENCE_DRAG_TO_SELECT
@@ -47,9 +45,9 @@ class RecyclerAdapterDragListener(
                 }
                 true
             }
+
             DragEvent.ACTION_DRAG_ENTERED -> {
-                safeLet(holder, adapter.itemsDigested) {
-                        holder, itemsDigested ->
+                safeLet(holder, adapter.itemsDigested) { holder, itemsDigested ->
                     if (itemsDigested.size != 0 &&
                         holder.adapterPosition < itemsDigested.size
                     ) {
@@ -81,9 +79,9 @@ class RecyclerAdapterDragListener(
                 }
                 true
             }
+
             DragEvent.ACTION_DRAG_EXITED -> {
-                safeLet(holder, adapter.itemsDigested) {
-                        holder, itemsDigested ->
+                safeLet(holder, adapter.itemsDigested) { holder, itemsDigested ->
                     if (itemsDigested.size != 0 &&
                         holder.adapterPosition < itemsDigested.size
                     ) {
@@ -110,9 +108,11 @@ class RecyclerAdapterDragListener(
                 }
                 true
             }
+
             DragEvent.ACTION_DRAG_STARTED -> {
                 return true
             }
+
             DragEvent.ACTION_DRAG_LOCATION -> {
                 holder?.run {
                     if (dragAndDropPref != PreferencesConstants.PREFERENCE_DRAG_TO_SELECT) {
@@ -125,6 +125,7 @@ class RecyclerAdapterDragListener(
                 }
                 true
             }
+
             DragEvent.ACTION_DROP -> {
                 if (dragAndDropPref != PreferencesConstants.PREFERENCE_DRAG_TO_SELECT) {
                     var checkedItems: ArrayList<LayoutElementParcelable>? = adapter.checkedItems
@@ -140,8 +141,7 @@ class RecyclerAdapterDragListener(
                                 isEmptyArea = true
                                 mainFragment.currentPath
                             } else {
-                                adapter.itemsDigested?.let {
-                                        itemsDigested ->
+                                adapter.itemsDigested?.let { itemsDigested ->
                                     if (itemsDigested[holder.adapterPosition].specialType
                                         == RecyclerAdapter.TYPE_BACK
                                     ) {
@@ -174,8 +174,9 @@ class RecyclerAdapterDragListener(
                         Log.d(
                             TAG,
                             "Didn't find checked items in adapter, " +
-                                "checking dataUtils size ${
-                                    dataUtils.checkedItemsList?.size ?: "null"}",
+                                    "checking dataUtils size ${
+                                        dataUtils.checkedItemsList?.size ?: "null"
+                                    }",
                         )
                         checkedItems = dataUtils.checkedItemsList
                     }
@@ -184,24 +185,24 @@ class RecyclerAdapterDragListener(
                         val file = it.generateBaseFile()
                         if (it.desc.equals(pasteLocation) ||
                             (
-                                (
-                                    isCurrentElementDirectory == false &&
-                                        currentFileParcelable?.getParent(mainFragment.context)
-                                            .equals(file.getParent(mainFragment.context))
-                                ) ||
                                     (
-                                        isEmptyArea == true &&
-                                            mainFragment.currentPath
-                                                .equals(file.getParent(mainFragment.context))
+                                            isCurrentElementDirectory == false &&
+                                                    currentFileParcelable?.getParent(mainFragment.context)
+                                                        .equals(file.getParent(mainFragment.context))
+                                            ) ||
+                                            (
+                                                    isEmptyArea == true &&
+                                                            mainFragment.currentPath
+                                                                .equals(file.getParent(mainFragment.context))
+                                                    )
                                     )
-                            )
                         ) {
                             Log.d(
                                 TAG,
                                 (
-                                    "Trying to drop into one of checked items or current " +
-                                        "location, not allowed ${it.desc}"
-                                ),
+                                        "Trying to drop into one of checked items or current " +
+                                                "location, not allowed ${it.desc}"
+                                        ),
                             )
                             holder?.baseItemView?.run {
                                 isFocusable = false
@@ -218,9 +219,9 @@ class RecyclerAdapterDragListener(
                     Log.d(
                         TAG,
                         (
-                            "Trying to drop into one of checked items " +
-                                "%s"
-                        ).format(pasteLocation),
+                                "Trying to drop into one of checked items " +
+                                        "%s"
+                                ).format(pasteLocation),
                     )
                     DragAndDropDialog.showDialogOrPerformOperation(
                         pasteLocation!!,
@@ -237,6 +238,7 @@ class RecyclerAdapterDragListener(
                 }
                 true
             }
+
             else -> false
         }
     }

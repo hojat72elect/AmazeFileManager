@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ssh
 
 import android.content.ActivityNotFoundException
@@ -13,15 +11,15 @@ import com.amaze.filemanager.filesystem.ftp.NetCopyClientUtils
 import com.amaze.filemanager.filesystem.ftp.NetCopyClientUtils.extractRemotePathFrom
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.amaze.filemanager.ui.icons.MimeTypes
+import java.io.File
+import java.io.IOException
+import kotlin.concurrent.thread
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.connection.channel.direct.Session
 import net.schmizz.sshj.sftp.FileMode
 import net.schmizz.sshj.sftp.RemoteResourceInfo
 import net.schmizz.sshj.sftp.SFTPClient
 import org.slf4j.LoggerFactory
-import java.io.File
-import java.io.IOException
-import kotlin.concurrent.thread
 
 object SshClientUtils {
     @JvmStatic

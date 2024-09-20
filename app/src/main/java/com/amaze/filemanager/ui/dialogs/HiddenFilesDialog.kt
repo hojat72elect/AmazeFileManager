@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.graphics.Color
@@ -39,7 +37,7 @@ object HiddenFilesDialog {
                 builder.positiveText(R.string.close)
                 builder.positiveColor(mainActivity.accent)
                 builder.title(R.string.hiddenfiles)
-                builder.theme(appTheme.getMaterialDialogTheme())
+                builder.theme(appTheme.materialDialogTheme)
                 builder.autoDismiss(true)
                 builder.adapter(adapter, null)
                 builder.dividerColor(Color.GRAY)

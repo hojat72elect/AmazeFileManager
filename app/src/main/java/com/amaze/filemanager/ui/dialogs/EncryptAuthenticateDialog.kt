@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.annotation.SuppressLint
@@ -109,7 +107,7 @@ object EncryptAuthenticateDialog {
                 .customView(rootView, true)
                 .positiveText(c.getString(R.string.ok))
                 .negativeText(c.getString(R.string.cancel))
-                .theme(appTheme.getMaterialDialogTheme())
+                .theme(appTheme.materialDialogTheme)
                 .positiveColor(accentColor)
                 .negativeColor(accentColor)
                 .autoDismiss(false)
@@ -163,7 +161,7 @@ object EncryptAuthenticateDialog {
                 btnOK,
                 createFilenameValidator(useAzeEncrypt, extraCondition = {
                     true == passwordEditText.text?.isNotBlank() &&
-                        passwordEditText.text.toString() == passwordConfirmEditText.text.toString()
+                            passwordEditText.text.toString() == passwordConfirmEditText.text.toString()
                 }),
             )
         } ?: throw IllegalArgumentException("No TAG_SOURCE parameter specified")
@@ -218,11 +216,13 @@ object EncryptAuthenticateDialog {
             EncryptWarningDialog.show(main, main.appTheme)
         }
         encryptSaveAsEditText.setText(
-            "${file.getName(c)}${if (isChecked) {
-                CRYPT_EXTENSION
-            } else {
-                AESCRYPT_EXTENSION
-            }}",
+            "${file.getName(c)}${
+                if (isChecked) {
+                    CRYPT_EXTENSION
+                } else {
+                    AESCRYPT_EXTENSION
+                }
+            }",
         )
         usageTextInfo.text =
             HtmlCompat.fromHtml(
@@ -271,11 +271,11 @@ object EncryptAuthenticateDialog {
         useAzeEncrypt: AppCompatCheckBox,
     ): Boolean {
         return (
-            true == filename?.isNotBlank() && filename.endsWith(CRYPT_EXTENSION) &&
-                (useAzeEncrypt.visibility == INVISIBLE || useAzeEncrypt.isChecked)
-        ) || (
-            true == filename?.isNotBlank() && filename.endsWith(AESCRYPT_EXTENSION) &&
-                (useAzeEncrypt.visibility == VISIBLE && !useAzeEncrypt.isChecked)
-        )
+                true == filename?.isNotBlank() && filename.endsWith(CRYPT_EXTENSION) &&
+                        (useAzeEncrypt.visibility == INVISIBLE || useAzeEncrypt.isChecked)
+                ) || (
+                true == filename?.isNotBlank() && filename.endsWith(AESCRYPT_EXTENSION) &&
+                        (useAzeEncrypt.visibility == VISIBLE && !useAzeEncrypt.isChecked)
+                )
     }
 }

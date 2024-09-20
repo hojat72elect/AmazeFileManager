@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.files
 
 import android.content.Context

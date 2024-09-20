@@ -1,4 +1,3 @@
-
 package com.stealthcopter.networktools.portscanning
 
 import java.net.DatagramPacket

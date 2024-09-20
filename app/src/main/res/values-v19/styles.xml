@@ -1,5 +1,3 @@
-
-
 <resources>
 
     <!-- appCompat -->
@@ -12,6 +10,7 @@
         <item name="popup">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="toolbar_theme">@style/overflow_light</item>
     </style>
+
     <style name="overflow_light" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <item name="android:textColorSecondary">#ffffff</item>
@@ -20,6 +19,7 @@
         <item name="actionModeStyle">@style/custom_action_mode_light</item>
         <item name="android:actionModeStyle">@style/custom_action_mode_light</item>
     </style>
+
     <style name="custom_action_mode_light" parent="Widget.AppCompat.ActionMode">
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="background">@color/holo_dark_action_mode</item>
@@ -44,6 +44,7 @@
         <item name="actionModeStyle">@style/custom_action_mode_dark</item>
         <item name="android:actionModeStyle">@style/custom_action_mode_dark</item>
     </style>
+
     <style name="custom_action_mode_dark" parent="Widget.AppCompat.ActionMode">
         <item name="background">@color/holo_dark_action_mode</item>
         <item name="android:background">@color/holo_dark_action_mode</item>

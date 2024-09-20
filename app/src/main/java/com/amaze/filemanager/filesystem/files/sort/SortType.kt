@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.files.sort
 
 /** Describes how to sort with [sortBy] and which direction to use for the sort with [sortOrder] */

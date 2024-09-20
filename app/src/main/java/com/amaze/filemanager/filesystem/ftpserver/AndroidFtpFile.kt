@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver
 
 import android.content.ContentResolver
@@ -10,12 +8,12 @@ import android.os.Build.VERSION_CODES.KITKAT
 import android.provider.DocumentsContract
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
-import org.apache.ftpserver.ftplet.FtpFile
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.ref.WeakReference
+import org.apache.ftpserver.ftplet.FtpFile
 
 @RequiresApi(KITKAT)
 @Suppress("TooManyFunctions") // Don't ask me. Ask Apache why.
@@ -153,7 +151,8 @@ class AndroidFtpFile(
      * @see FtpFile.move
      * @see DocumentFile.renameTo
      */
-    override fun move(destination: FtpFile): Boolean = backingDocument?.renameTo(destination.name) ?: false
+    override fun move(destination: FtpFile): Boolean =
+        backingDocument?.renameTo(destination.name) ?: false
 
     /**
      * @see FtpFile.listFiles

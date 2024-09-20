@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
 import org.apache.commons.net.ProtocolCommandEvent

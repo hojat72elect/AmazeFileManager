@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui
 
 import android.content.ComponentName

@@ -1,17 +1,15 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver
 
 import com.topjohnwu.superuser.io.SuFile
 import com.topjohnwu.superuser.io.SuFileInputStream
 import com.topjohnwu.superuser.io.SuFileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import org.apache.ftpserver.ftplet.FtpFile
 import org.apache.ftpserver.ftplet.User
 import org.apache.ftpserver.usermanager.impl.WriteRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.InputStream
-import java.io.OutputStream
 
 class RootFtpFile(
     private val fileName: String,
@@ -102,14 +100,17 @@ class RootFtpFile(
 
     override fun delete(): Boolean = backingFile.delete()
 
-    override fun move(destination: FtpFile): Boolean = backingFile.renameTo(destination.physicalFile as SuFile)
+    override fun move(destination: FtpFile): Boolean =
+        backingFile.renameTo(destination.physicalFile as SuFile)
 
     override fun listFiles(): MutableList<out FtpFile> =
         backingFile.listFiles()?.map {
             RootFtpFile(it.name, it, user)
         }?.toMutableList() ?: emptyList<FtpFile>().toMutableList()
 
-    override fun createOutputStream(offset: Long): OutputStream = SuFileOutputStream.open(backingFile.absolutePath)
+    override fun createOutputStream(offset: Long): OutputStream =
+        SuFileOutputStream.open(backingFile.absolutePath)
 
-    override fun createInputStream(offset: Long): InputStream = SuFileInputStream.open(backingFile.absolutePath)
+    override fun createInputStream(offset: Long): InputStream =
+        SuFileInputStream.open(backingFile.absolutePath)
 }

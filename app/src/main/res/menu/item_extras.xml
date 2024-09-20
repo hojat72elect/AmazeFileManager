@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/return_select"
         android:title="@string/select_intent"
-        android:visible="false"
-        />
+        android:visible="false" />
     <item
         android:id="@+id/open_with"
-        android:title="@string/open_with"
-        />
+        android:title="@string/open_with" />
     <item
         android:id="@+id/cut"
-        android:title="@string/cut"
         android:icon="@drawable/ic_content_cut_white_36dp"
-        />
+        android:title="@string/cut" />
     <item
         android:id="@+id/cpy"
-        android:title="@string/copy"
         android:icon="@drawable/ic_content_copy_white_36dp"
-    />
+        android:title="@string/copy" />
     <item
         android:id="@+id/delete"
-        android:title="@string/delete"
-        />
+        android:title="@string/delete" />
     <item
         android:id="@+id/restore"
         android:title="@string/restore"
-        android:visible="false"
-        />
+        android:visible="false" />
     <item
         android:id="@+id/rename"
         android:title="@string/rename" />
@@ -43,7 +36,7 @@
         android:visible="false" />
     <item
         android:id="@+id/about"
-        android:title="@string/properties"/>
+        android:title="@string/properties" />
     <item
         android:id="@+id/compress"
         android:title="@string/compress" />
@@ -53,7 +46,7 @@
     <item
         android:id="@+id/ex"
         android:title="@string/extract"
-        android:visible="false"/>
+        android:visible="false" />
     <item
         android:id="@+id/book"
         android:title="@string/add_to_bookmarks" />

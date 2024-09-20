@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.content.Intent
@@ -59,7 +57,8 @@ class PrefsFragment : BasePrefsFragment() {
         findPreference<Preference>("feedback")
             ?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val emailIntent = Utils.buildEmailIntent(requireContext(), null, Utils.EMAIL_SUPPORT)
+                val emailIntent =
+                    Utils.buildEmailIntent(requireContext(), null, Utils.EMAIL_SUPPORT)
 
                 val activities =
                     activity.packageManager.queryIntentActivities(

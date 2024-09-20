@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.views;
 
 import com.amaze.filemanager.utils.Utils;
@@ -7,14 +5,16 @@ import com.amaze.filemanager.utils.Utils;
 import android.graphics.PointF;
 import android.view.View;
 
-/** Use this with any widget that should be zoomed when it gains focus */
+/**
+ * Use this with any widget that should be zoomed when it gains focus
+ */
 public class CustomZoomFocusChange implements View.OnFocusChangeListener {
-  @Override
-  public void onFocusChange(View v, boolean hasFocus) {
-    if (!hasFocus) {
-      Utils.zoom(1f, 1f, new PointF(v.getWidth() / 2, v.getHeight() / 2), v);
-    } else {
-      Utils.zoom(1.2f, 1.2f, new PointF(v.getWidth() / 2, v.getHeight() / 2), v);
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            Utils.zoom(1f, 1f, new PointF(v.getWidth() / 2, v.getHeight() / 2), v);
+        } else {
+            Utils.zoom(1.2f, 1.2f, new PointF(v.getWidth() / 2, v.getHeight() / 2), v);
+        }
     }
-  }
 }

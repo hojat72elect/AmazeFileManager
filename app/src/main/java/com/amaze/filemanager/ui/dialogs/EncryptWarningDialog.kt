@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import androidx.preference.PreferenceManager
@@ -28,7 +26,7 @@ object EncryptWarningDialog {
         MaterialDialog.Builder(main).run {
             title(main.getString(R.string.warning))
             content(main.getString(R.string.crypt_warning_key))
-            theme(appTheme.getMaterialDialogTheme())
+            theme(appTheme.materialDialogTheme)
             negativeText(main.getString(R.string.warning_never_show))
             positiveText(main.getString(R.string.warning_confirm))
             positiveColor(accentColor)

@@ -1,7 +1,7 @@
-
-
 package com.amaze.filemanager.fileoperations.filesystem.cloud;
 
+import android.net.Uri;
+import com.amaze.filemanager.fileoperations.filesystem.smbstreamer.Streamer;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +15,6 @@ import java.io.PrintWriter;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -23,13 +22,8 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.Vector;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.amaze.filemanager.fileoperations.filesystem.smbstreamer.Streamer;
-
-import android.net.Uri;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
@@ -74,74 +68,6 @@ import android.net.Uri;
  * See the end of the source file for distribution license (Modified BSD licence)
  */
 public abstract class CloudStreamServer {
-    private static final Logger LOG = LoggerFactory.getLogger(CloudStreamServer.class);
-
-    // ==================================================
-    // API parts
-    // ==================================================
-
-    /**
-     * Override this to customize the server.
-     *
-     * <p>(By default, this delegates to serveFile() and allows directory listing.)
-     *
-     * @param uri    Percent-decoded URI without parameters, for example "/index.cgi"
-     * @param method "GET", "POST" etc.
-     * @param parms  Parsed, percent decoded parameters from URI and, in case of POST, data.
-     * @param header Header entries, percent decoded
-     * @return HTTP response, see class Response for details
-     */
-    public abstract Response serve(
-            String uri, String method, Properties header, Properties parms, Properties files);
-
-    /**
-     * HTTP response. Return one of these from serve().
-     */
-    public class Response {
-        /**
-         * Default constructor: response = HTTP_OK, data = mime = 'null'
-         */
-        public Response() {
-            this.status = HTTP_OK;
-        }
-
-        /**
-         * Basic constructor.
-         */
-        public Response(String status, String mimeType, CloudStreamSource data) {
-            this.status = status;
-            this.mimeType = mimeType;
-            this.data = data;
-        }
-
-        /**
-         * Adds given line to the header.
-         */
-        public void addHeader(String name, String value) {
-            header.put(name, value);
-        }
-
-        /**
-         * HTTP status code after processing, e.g. "200 OK", HTTP_OK
-         */
-        public String status;
-
-        /**
-         * MIME type of content, e.g. "text/html"
-         */
-        public String mimeType;
-
-        /**
-         * Data of the response, may be null.
-         */
-        public CloudStreamSource data;
-
-        /**
-         * Headers for the HTTP response. Use addHeader() to add lines.
-         */
-        public Properties header = new Properties();
-    }
-
     /**
      * Some HTTP response status codes
      */
@@ -155,6 +81,9 @@ public abstract class CloudStreamServer {
             HTTP_INTERNALERROR = "500 Internal Server Error",
             HTTP_NOTIMPLEMENTED = "501 Not Implemented";
 
+    // ==================================================
+    // API parts
+    // ==================================================
     /**
      * Common mime types for dynamic content
      */
@@ -162,10 +91,24 @@ public abstract class CloudStreamServer {
             MIME_HTML = "text/html",
             MIME_DEFAULT_BINARY = "application/octet-stream",
             MIME_XML = "text/xml";
+    private static final Logger LOG = LoggerFactory.getLogger(CloudStreamServer.class);
+    /**
+     * GMT date formatter
+     */
+    private static final java.text.SimpleDateFormat gmtFrmt;
+
+    static {
+        gmtFrmt = new java.text.SimpleDateFormat("E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
+        gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
 
     // ==================================================
     // Socket & server code
     // ==================================================
+
+    private final ServerSocket myServerSocket;
+    private int myTcpPort;
+    private final Thread myThread;
 
     /**
      * Starts a HTTP server to given port.
@@ -201,63 +144,6 @@ public abstract class CloudStreamServer {
                         });
         myThread.setDaemon(true);
         myThread.start();
-    }
-
-    public CloudStreamServer(File wwwroot) throws IOException {
-        myServerSocket = tryBind(myTcpPort);
-        myThread =
-                new Thread(
-                        () -> {
-                            try {
-                                while (true) {
-                  /*
-                    if(session!=null){
-                            session.interrupt();
-                            try {
-                                    session.join();
-                            } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                            }
-                    }
-                  */
-                                    Socket accept = myServerSocket.accept();
-                                    new HTTPSession(accept);
-                                }
-                            } catch (IOException ioe) {
-                                LOG.warn("failure while creating cloud stream server", ioe);
-                            }
-                        });
-        myThread.setDaemon(true);
-        myThread.start();
-    }
-
-    /**
-     * Stops the server.
-     */
-    public void stop() {
-        try {
-            myServerSocket.close();
-            myThread.join();
-        } catch (IOException ioe) {
-        } catch (InterruptedException e) {
-        }
-    }
-
-    /**
-     * Since CloudStreamServer and Streamer both uses the same port, shutdown the Streamer before
-     * acquiring the port.
-     *
-     * @return ServerSocket
-     */
-    private ServerSocket tryBind(int port) throws IOException {
-        ServerSocket socket;
-        try {
-            socket = new ServerSocket(port);
-        } catch (BindException ifPortIsOccupiedByStreamer) {
-            Streamer.getInstance().stop();
-            socket = new ServerSocket(port);
-        }
-        return socket;
     }
 
     //
@@ -304,12 +190,128 @@ public abstract class CloudStreamServer {
     //              try { System.in.read(); } catch( Throwable t ) {}
     //      }
 
+    public CloudStreamServer(File wwwroot) throws IOException {
+        myServerSocket = tryBind(myTcpPort);
+        myThread =
+                new Thread(
+                        () -> {
+                            try {
+                                while (true) {
+                  /*
+                    if(session!=null){
+                            session.interrupt();
+                            try {
+                                    session.join();
+                            } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                            }
+                    }
+                  */
+                                    Socket accept = myServerSocket.accept();
+                                    new HTTPSession(accept);
+                                }
+                            } catch (IOException ioe) {
+                                LOG.warn("failure while creating cloud stream server", ioe);
+                            }
+                        });
+        myThread.setDaemon(true);
+        myThread.start();
+    }
+
+    /**
+     * Override this to customize the server.
+     *
+     * <p>(By default, this delegates to serveFile() and allows directory listing.)
+     *
+     * @param uri    Percent-decoded URI without parameters, for example "/index.cgi"
+     * @param method "GET", "POST" etc.
+     * @param parms  Parsed, percent decoded parameters from URI and, in case of POST, data.
+     * @param header Header entries, percent decoded
+     * @return HTTP response, see class Response for details
+     */
+    public abstract Response serve(
+            String uri, String method, Properties header, Properties parms, Properties files);
+
+    /**
+     * Stops the server.
+     */
+    public void stop() {
+        try {
+            myServerSocket.close();
+            myThread.join();
+        } catch (IOException ioe) {
+        } catch (InterruptedException e) {
+        }
+    }
+
+    /**
+     * Since CloudStreamServer and Streamer both uses the same port, shutdown the Streamer before
+     * acquiring the port.
+     *
+     * @return ServerSocket
+     */
+    private ServerSocket tryBind(int port) throws IOException {
+        ServerSocket socket;
+        try {
+            socket = new ServerSocket(port);
+        } catch (BindException ifPortIsOccupiedByStreamer) {
+            Streamer.getInstance().stop();
+            socket = new ServerSocket(port);
+        }
+        return socket;
+    }
+
+    /**
+     * HTTP response. Return one of these from serve().
+     */
+    public class Response {
+        /**
+         * HTTP status code after processing, e.g. "200 OK", HTTP_OK
+         */
+        public String status;
+        /**
+         * MIME type of content, e.g. "text/html"
+         */
+        public String mimeType;
+        /**
+         * Data of the response, may be null.
+         */
+        public CloudStreamSource data;
+        /**
+         * Headers for the HTTP response. Use addHeader() to add lines.
+         */
+        public Properties header = new Properties();
+
+        /**
+         * Default constructor: response = HTTP_OK, data = mime = 'null'
+         */
+        public Response() {
+            this.status = HTTP_OK;
+        }
+
+        /**
+         * Basic constructor.
+         */
+        public Response(String status, String mimeType, CloudStreamSource data) {
+            this.status = status;
+            this.mimeType = mimeType;
+            this.data = data;
+        }
+
+        /**
+         * Adds given line to the header.
+         */
+        public void addHeader(String name, String value) {
+            header.put(name, value);
+        }
+    }
+
     /**
      * Handles one session, i.e. parses the HTTP request and returns the response.
      */
     private class HTTPSession implements Runnable {
-        private InputStream is;
         private final Socket socket;
+        private InputStream is;
 
         public HTTPSession(Socket s) {
             socket = s;
@@ -354,7 +356,7 @@ public abstract class CloudStreamServer {
 
                 // Create a BufferedReader for parsing the header.
                 ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
-                BufferedReader hin = new BufferedReader(new InputStreamReader(hbis, "utf-8"));
+                BufferedReader hin = new BufferedReader(new InputStreamReader(hbis, java.nio.charset.StandardCharsets.UTF_8));
                 Properties pre = new Properties();
                 Properties parms = new Properties();
                 Properties header = new Properties();
@@ -363,8 +365,8 @@ public abstract class CloudStreamServer {
                 // Decode the header into parms and header java properties
                 decodeHeader(hin, pre, parms, header);
                 LOG.debug(pre.toString());
-                LOG.debug("Params: " + parms.toString());
-                LOG.debug("Header: " + header.toString());
+                LOG.debug("Params: " + parms);
+                LOG.debug("Header: " + header);
                 String method = pre.getProperty("method");
                 String uri = pre.getProperty("uri");
 
@@ -452,7 +454,7 @@ public abstract class CloudStreamServer {
                     } else {
                         // Handle application/x-www-form-urlencoded
                         String postLine = "";
-                        char pbuf[] = new char[512];
+                        char[] pbuf = new char[512];
                         int read = in.read(pbuf);
                         while (read >= 0 && !postLine.endsWith("\r\n")) {
                             postLine += String.valueOf(pbuf, 0, read);
@@ -785,20 +787,6 @@ public abstract class CloudStreamServer {
             }
         }
 
-    }
-
-    private int myTcpPort;
-    private final ServerSocket myServerSocket;
-    private Thread myThread;
-
-    /**
-     * GMT date formatter
-     */
-    private static java.text.SimpleDateFormat gmtFrmt;
-
-    static {
-        gmtFrmt = new java.text.SimpleDateFormat("E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
-        gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
 }

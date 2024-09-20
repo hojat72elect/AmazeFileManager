@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- Non-translatable strings, must not be defined in any other language -->
     <string name="german_translation_summary" translatable="false">Patrick Mertens, Unpublished, Dennis Rüdiger</string>
@@ -22,7 +20,7 @@
     <string name="greek_translation_summary" translable="false" translatable="false">Vasilis K.</string>
     <string name="dutch_translation_summary" translable="false" translatable="false">Robin van der Vliet</string>
     <string name="romanian_translation_summary" translable="false" translatable="false">Igor S.</string>
-	<string name="vietnamese_translation_summary" translable="false" translatable="false">ngoisaosang</string>
+    <string name="vietnamese_translation_summary" translable="false" translatable="false">ngoisaosang</string>
     <string name="japanese_translation_summary" translatable="false">Naofumi Fukue</string>
     <string name="tamil_translation_summary" translatable="false">Kuralarasi for StarsSoft</string>
     <string name="app_version" translatable="false">v3.10</string>

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import android.app.Service
@@ -8,19 +6,19 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.os.Build
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.UnknownHostException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object NetworkUtil {
     private val log: Logger = LoggerFactory.getLogger(NetworkUtil::class.java)
 
     private fun getConnectivityManager(context: Context) =
         context.applicationContext.getSystemService(Service.CONNECTIVITY_SERVICE)
-            as ConnectivityManager
+                as ConnectivityManager
 
     /**
      * Is the device connected to local network, either Ethernet or Wifi?
@@ -33,17 +31,17 @@ object NetworkUtil {
             connected = cm.activeNetwork?.let { activeNetwork ->
                 cm.getNetworkCapabilities(activeNetwork)?.let { ni ->
                     ni.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) or
-                        ni.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                            ni.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
                 } ?: false
             } ?: false
         } else {
             connected = cm.activeNetworkInfo?.let { ni ->
                 ni.isConnected && (
-                    ni.type and (
-                        ConnectivityManager.TYPE_WIFI
-                            or ConnectivityManager.TYPE_ETHERNET
-                    ) != 0
-                )
+                        ni.type and (
+                                ConnectivityManager.TYPE_WIFI
+                                        or ConnectivityManager.TYPE_ETHERNET
+                                ) != 0
+                        )
             } ?: false
         }
 
@@ -51,7 +49,7 @@ object NetworkUtil {
             connected = runCatching {
                 NetworkInterface.getNetworkInterfaces().toList().find { netInterface ->
                     netInterface.displayName.startsWith("rndis") or
-                        netInterface.displayName.startsWith("wlan")
+                            netInterface.displayName.startsWith("wlan")
                 }
             }.getOrElse { null } != null
         }
@@ -89,7 +87,7 @@ object NetworkUtil {
         if (isConnectedToWifi(context)) {
             val wm =
                 context.applicationContext.getSystemService(Service.WIFI_SERVICE)
-                    as WifiManager
+                        as WifiManager
             val ipAddress = wm.connectionInfo.ipAddress
             return if (ipAddress == 0) null else intToInet(ipAddress)
         }

@@ -1,15 +1,13 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
-import org.apache.commons.net.ftp.FTPClient
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.random.Random
+import org.apache.commons.net.ftp.FTPClient
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class FTPClientImpl(private val ftpClient: FTPClient) : NetCopyClient<FTPClient> {
     companion object {

@@ -1,10 +1,8 @@
-
-
 package com.amaze.filemanager.filesystem.ssh
 
+import java.security.Security
 import net.schmizz.sshj.DefaultConfig
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import java.security.Security
 
 /**
  * sshj [net.schmizz.sshj.Config] for our own use.

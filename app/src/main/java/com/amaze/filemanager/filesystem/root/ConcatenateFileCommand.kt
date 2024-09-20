@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException
@@ -18,7 +16,7 @@ object ConcatenateFileCommand : IRootCommand() {
         val mountPoint = MountPathCommand.mountPath(destinationPath, MountPathCommand.READ_WRITE)
         runShellCommand(
             "cat \"${RootHelper.getCommandLineString(sourcePath)}\"" +
-                " > \"${RootHelper.getCommandLineString(destinationPath)}\"",
+                    " > \"${RootHelper.getCommandLineString(destinationPath)}\"",
         )
         mountPoint?.let { MountPathCommand.mountPath(it, MountPathCommand.READ_ONLY) }
     }

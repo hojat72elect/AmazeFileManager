@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.compressed.extractcontents.helpers
 
 import android.content.Context
@@ -19,13 +17,13 @@ import com.github.junrar.exception.MainHeaderNullException
 import com.github.junrar.exception.RarException
 import com.github.junrar.exception.UnsupportedRarV5Exception
 import com.github.junrar.rarfile.FileHeader
-import org.apache.commons.compress.PasswordRequiredException
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.IOException
 import java.util.zip.CRC32
 import java.util.zip.CheckedOutputStream
+import org.apache.commons.compress.PasswordRequiredException
 
 class RarExtractor(
     context: Context,
@@ -53,15 +51,17 @@ class RarExtractor(
                         // password-protected RAR with wrong password, hence have to distinguish two
                         // situations
                         (
-                            !ArchivePasswordCache.getInstance().containsKey(filePath) &&
-                                CorruptHeaderException::class.java.isAssignableFrom(it::class.java)
-                        ) or
-                            MainHeaderNullException::class.java.isAssignableFrom(it::class.java) -> {
+                                !ArchivePasswordCache.getInstance().containsKey(filePath) &&
+                                        CorruptHeaderException::class.java.isAssignableFrom(it::class.java)
+                                ) or
+                                MainHeaderNullException::class.java.isAssignableFrom(it::class.java) -> {
                             throw BadArchiveNotice(it)
                         }
+
                         UnsupportedRarV5Exception::class.java.isAssignableFrom(it::class.java) -> {
                             throw it
                         }
+
                         else -> {
                             throw PasswordRequiredException(filePath)
                         }
@@ -205,18 +205,23 @@ class RarExtractor(
                     .minByOrNull {
                         it.value
                     }!!.run {
-                    val header =
-                        archive.fileHeaders.find {
-                            it.fileName.equals(this.key)
-                        }!!
-                    val filename =
-                        fixEntryName(header.fileName).replace(
-                            "\\\\".toRegex(),
-                            CompressedHelper.SEPARATOR,
+                        val header =
+                            archive.fileHeaders.find {
+                                it.fileName.equals(this.key)
+                            }!!
+                        val filename =
+                            fixEntryName(header.fileName).replace(
+                                "\\\\".toRegex(),
+                                CompressedHelper.SEPARATOR,
+                            )
+                        extractEntry(
+                            context,
+                            archive,
+                            header,
+                            context.externalCacheDir!!.absolutePath
                         )
-                    extractEntry(context, archive, header, context.externalCacheDir!!.absolutePath)
-                    return "${context.externalCacheDir!!.absolutePath}/$filename"
-                }
+                        return "${context.externalCacheDir!!.absolutePath}/$filename"
+                    }
             }
         }
     }

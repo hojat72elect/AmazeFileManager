@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import android.view.LayoutInflater
@@ -25,8 +23,8 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryProductDetailsParams.Product
-import org.slf4j.LoggerFactory
 import java.util.concurrent.Callable
+import org.slf4j.LoggerFactory
 
 class Billing(private val activity: BasicActivity) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
@@ -252,7 +250,7 @@ class Billing(private val activity: BasicActivity) :
                     val builder: MaterialDialog.Builder = MaterialDialog.Builder(context)
                     builder.title(R.string.donate)
                     builder.adapter(this, null)
-                    builder.theme(context.appTheme.getMaterialDialogTheme())
+                    builder.theme(context.appTheme.materialDialogTheme)
                     builder.cancelListener { purchaseProduct.purchaseCancel() }
                     donationDialog = builder.show()
                     null

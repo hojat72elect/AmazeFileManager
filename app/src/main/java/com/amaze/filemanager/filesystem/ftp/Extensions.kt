@@ -1,7 +1,6 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
+import java.io.IOException
 import net.schmizz.sshj.xfer.FilePermission
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPFile
@@ -12,7 +11,6 @@ import org.apache.commons.net.ftp.FTPFile.USER_ACCESS
 import org.apache.commons.net.ftp.FTPFile.WORLD_ACCESS
 import org.apache.commons.net.ftp.FTPFile.WRITE_PERMISSION
 import org.apache.commons.net.ftp.FTPReply
-import java.io.IOException
 
 /**
  * @see https://stackoverflow.com/a/7606723
@@ -42,7 +40,7 @@ fun FTPClient.makeDirectoryTree(dirTree: String) {
                 if (!changeWorkingDirectory(dir)) {
                     throw IOException(
                         "Unable to change into newly created remote directory '$dir'. " +
-                            "Error='$replyString'",
+                                "Error='$replyString'",
                     )
                 }
             }

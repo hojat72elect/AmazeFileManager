@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root.base
 
 import com.amaze.filemanager.exceptions.ShellCommandInvalidException

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.app.Activity
@@ -347,15 +345,15 @@ class SftpConnectDialog : DialogFragment() {
                         true == binding.passwordET.text?.isNotEmpty() || selectedParsedKeyPair != null
                     }
                 okBTN.isEnabled = (
-                    true == binding.connectionET.text?.isNotEmpty() &&
-                        true == binding.ipET.text?.isNotEmpty() &&
-                        port in VALID_PORT_RANGE &&
-                        true == binding.usernameET.text?.isNotEmpty() &&
-                        hasCredential
-                ) || (
-                    binding.chkFtpAnonymous.isChecked &&
-                        binding.protocolDropDown.selectedItemPosition > 0
-                )
+                        true == binding.connectionET.text?.isNotEmpty() &&
+                                true == binding.ipET.text?.isNotEmpty() &&
+                                port in VALID_PORT_RANGE &&
+                                true == binding.usernameET.text?.isNotEmpty() &&
+                                hasCredential
+                        ) || (
+                        binding.chkFtpAnonymous.isChecked &&
+                                binding.protocolDropDown.selectedItemPosition > 0
+                        )
             }
         }
     }
@@ -426,43 +424,41 @@ class SftpConnectDialog : DialogFragment() {
      * Used by firstConnectToFtpsServer() and firstConnectToSftpServer().
      */
     private val createFirstConnectCallback:
-        (Boolean, ConnectionSettings, String, String, String, JSONObject?) -> Unit = {
-                edit,
-                connectionSettings,
-                hostAndPort,
-                hostKeyAlgorithm,
-                hostKeyFingerprint,
-                hostInfo,
-            ->
-            AlertDialog.Builder(ctx.get())
-                .setTitle(R.string.ssh_host_key_verification_prompt_title)
-                .setMessage(
-                    getString(
-                        R.string.ssh_host_key_verification_prompt,
-                        hostAndPort,
-                        hostKeyAlgorithm,
-                        hostKeyFingerprint,
-                    ),
-                ).setCancelable(true)
-                .setPositiveButton(R.string.yes) {
-                        dialog1: DialogInterface, _: Int ->
-                    // This closes the host fingerprint verification dialog
+                (Boolean, ConnectionSettings, String, String, String, JSONObject?) -> Unit = {
+            edit,
+            connectionSettings,
+            hostAndPort,
+            hostKeyAlgorithm,
+            hostKeyFingerprint,
+            hostInfo,
+        ->
+        AlertDialog.Builder(ctx.get())
+            .setTitle(R.string.ssh_host_key_verification_prompt_title)
+            .setMessage(
+                getString(
+                    R.string.ssh_host_key_verification_prompt,
+                    hostAndPort,
+                    hostKeyAlgorithm,
+                    hostKeyFingerprint,
+                ),
+            ).setCancelable(true)
+            .setPositiveButton(R.string.yes) { dialog1: DialogInterface, _: Int ->
+                // This closes the host fingerprint verification dialog
+                dialog1.dismiss()
+                if (authenticateAndSaveSetup(
+                        connectionSettings,
+                        hostInfo?.toString() ?: hostKeyFingerprint,
+                        edit,
+                    )
+                ) {
                     dialog1.dismiss()
-                    if (authenticateAndSaveSetup(
-                            connectionSettings,
-                            hostInfo?.toString() ?: hostKeyFingerprint,
-                            edit,
-                        )
-                    ) {
-                        dialog1.dismiss()
-                        log.debug("Saved setup")
-                        dismiss()
-                    }
-                }.setNegativeButton(R.string.no) {
-                        dialog1: DialogInterface, _: Int ->
-                    dialog1.dismiss()
-                }.show()
-        }
+                    log.debug("Saved setup")
+                    dismiss()
+                }
+            }.setNegativeButton(R.string.no) { dialog1: DialogInterface, _: Int ->
+                dialog1.dismiss()
+            }.show()
+    }
 
     private fun firstConnectToFtpsServer(
         connectionSettings: ConnectionSettings,
@@ -505,7 +501,7 @@ class SftpConnectDialog : DialogFragment() {
                     edit,
                     this,
                     StringBuilder(hostname).also {
-                        if (port != NetCopyClientConnectionPool.SSH_DEFAULT_PORT && port > 0) {
+                        if (port != SSH_DEFAULT_PORT && port > 0) {
                             it.append(COLON).append(port)
                         }
                     }.toString(),
@@ -518,8 +514,8 @@ class SftpConnectDialog : DialogFragment() {
     }
 
     private val createReconnectSecureServerCallback:
-        (ConnectionSettings, String, String, () -> Boolean, Boolean) -> Unit = {
-                connectionSettings, oldHostIdentity, newHostIdentity, hostIdentityIsValid, edit ->
+                (ConnectionSettings, String, String, () -> Boolean, Boolean) -> Unit =
+        { connectionSettings, oldHostIdentity, newHostIdentity, hostIdentityIsValid, edit ->
             if (hostIdentityIsValid.invoke()) {
                 authenticateAndSaveSetup(
                     connectionSettings,
@@ -540,8 +536,8 @@ class SftpConnectDialog : DialogFragment() {
                             newHostIdentity,
                             edit,
                         )
-                    }.setNegativeButton(R.string.cancel_recommended) {
-                            dialog1: DialogInterface, _: Int ->
+                    }
+                    .setNegativeButton(R.string.cancel_recommended) { dialog1: DialogInterface, _: Int ->
                         dialog1.dismiss()
                     }.show()
             }
@@ -554,10 +550,8 @@ class SftpConnectDialog : DialogFragment() {
     ) {
         connectionSettings.run {
             connectToSecureServerInternal(
-                GetSshHostFingerprintTask(hostname, port, false) {
-                        currentHostKey: PublicKey ->
-                    SecurityUtils.getFingerprint(currentHostKey).let {
-                            currentHostKeyFingerprint ->
+                GetSshHostFingerprintTask(hostname, port, false) { currentHostKey: PublicKey ->
+                    SecurityUtils.getFingerprint(currentHostKey).let { currentHostKeyFingerprint ->
                         createReconnectSecureServerCallback(
                             connectionSettings,
                             sshHostKey,
@@ -613,38 +607,38 @@ class SftpConnectDialog : DialogFragment() {
                 it.data?.data?.run {
                     selectedPem = this
                     runCatching {
-                        requireContext().contentResolver.openInputStream(this)?.let {
-                                selectedKeyContent ->
-                            val observable = PemToKeyPairObservable(selectedKeyContent)
-                            create(observable).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .retryWhen { exceptions ->
-                                    exceptions.flatMap { exception ->
-                                        create<Any> { subscriber ->
-                                            observable.displayPassphraseDialog(exception, {
-                                                subscriber.onNext(Unit)
-                                            }, {
-                                                subscriber.onError(exception)
-                                            })
+                        requireContext().contentResolver.openInputStream(this)
+                            ?.let { selectedKeyContent ->
+                                val observable = PemToKeyPairObservable(selectedKeyContent)
+                                create(observable).subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .retryWhen { exceptions ->
+                                        exceptions.flatMap { exception ->
+                                            create<Any> { subscriber ->
+                                                observable.displayPassphraseDialog(exception, {
+                                                    subscriber.onNext(Unit)
+                                                }, {
+                                                    subscriber.onError(exception)
+                                                })
+                                            }
                                         }
                                     }
-                                }
-                                .subscribe({ result ->
-                                    selectedParsedKeyPair = result
-                                    selectedParsedKeyPairName =
-                                        this
-                                            .lastPathSegment!!
-                                            .substring(
-                                                this.lastPathSegment!!
-                                                    .indexOf('/') + 1,
-                                            )
-                                    val okBTN =
-                                        (dialog as MaterialDialog)
-                                            .getActionButton(DialogAction.POSITIVE)
-                                    okBTN.isEnabled = okBTN.isEnabled || true
-                                    binding.selectPemBTN.text = selectedParsedKeyPairName
-                                }, {})
-                        }
+                                    .subscribe({ result ->
+                                        selectedParsedKeyPair = result
+                                        selectedParsedKeyPairName =
+                                            this
+                                                .lastPathSegment!!
+                                                .substring(
+                                                    this.lastPathSegment!!
+                                                        .indexOf('/') + 1,
+                                                )
+                                        val okBTN =
+                                            (dialog as MaterialDialog)
+                                                .getActionButton(DialogAction.POSITIVE)
+                                        okBTN.isEnabled = okBTN.isEnabled || true
+                                        binding.selectPemBTN.text = selectedParsedKeyPairName
+                                    }, {})
+                            }
                     }.onFailure {
                         log.error("Error reading PEM key", it)
                     }
@@ -820,31 +814,31 @@ class SftpConnectDialog : DialogFragment() {
             connectionName = binding.connectionET.text.toString(),
             hostname = binding.ipET.text.toString(),
             port =
-                binding.portET.text.toString().let {
-                    if (it.isEmpty() || it.isBlank()) {
-                        SSH_DEFAULT_PORT
-                    } else {
-                        it.toInt()
-                    }
-                },
+            binding.portET.text.toString().let {
+                if (it.isEmpty() || it.isBlank()) {
+                    SSH_DEFAULT_PORT
+                } else {
+                    it.toInt()
+                }
+            },
             defaultPath = binding.defaultPathET.text.toString(),
             username = binding.usernameET.text.toString().urlEncoded(),
             password =
-                if (true == binding.passwordET.text?.isEmpty()) {
-                    if (edit) {
-                        requireArguments().getString(ARG_PASSWORD, null)?.run {
-                            PasswordUtil.decryptPassword(AppConfig.getInstance(), this)
-                        }
-                    } else {
-                        requireArguments().getString(ARG_PASSWORD, null)
+            if (true == binding.passwordET.text?.isEmpty()) {
+                if (edit) {
+                    requireArguments().getString(ARG_PASSWORD, null)?.run {
+                        PasswordUtil.decryptPassword(AppConfig.getInstance(), this)
                     }
                 } else {
-                    binding.passwordET.text.toString().urlEncoded()
-                },
+                    requireArguments().getString(ARG_PASSWORD, null)
+                }
+            } else {
+                binding.passwordET.text.toString().urlEncoded()
+            },
             selectedParsedKeyPairName = this.selectedParsedKeyPairName,
             selectedParsedKeyPair = selectedParsedKeyPair,
             explicitTls =
-                binding.chkFtpExplicitTls.isVisible &&
+            binding.chkFtpExplicitTls.isVisible &&
                     binding.chkFtpExplicitTls.isChecked,
         )
 }

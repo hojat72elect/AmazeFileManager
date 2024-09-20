@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.fileoperations.filesystem
 
 import androidx.annotation.IntDef

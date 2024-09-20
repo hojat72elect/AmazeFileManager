@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import java.net.URLDecoder.decode
@@ -77,8 +75,7 @@ inline fun <T1 : Any, T2 : Any, R : Any> safeLet(
  * Optionally takes a separator parameter.
  */
 fun ByteArray.toHex(separatorStr: String = ""): String =
-    joinToString(separator = separatorStr) {
-            eachByte ->
+    joinToString(separator = separatorStr) { eachByte ->
         "%02x".format(eachByte)
     }
 
@@ -88,7 +85,7 @@ fun ByteArray.toHex(separatorStr: String = ""): String =
  */
 fun List<*>.containsPath(path: String): Boolean {
     return this.contains(path) ||
-        (path.endsWith('/') && this.contains(path.substringBeforeLast('/')))
+            (path.endsWith('/') && this.contains(path.substringBeforeLast('/')))
 }
 
 /**

@@ -1,18 +1,14 @@
-
-
 package com.amaze.filemanager.ui.views.appbar;
 
 import static android.os.Build.VERSION.SDK_INT;
 
+import android.content.SharedPreferences;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 import com.google.android.material.appbar.AppBarLayout;
-
-import android.content.SharedPreferences;
-
-import androidx.annotation.StringRes;
-import androidx.appcompat.widget.Toolbar;
 
 /**
  * layout_appbar.xml contains the layout for AppBar and BottomBar
@@ -24,53 +20,53 @@ import androidx.appcompat.widget.Toolbar;
  */
 public class AppBar {
 
-  private int TOOLBAR_START_INSET;
+    private final int TOOLBAR_START_INSET;
 
-  private Toolbar toolbar;
-  private SearchView searchView;
-  private BottomBar bottomBar;
+    private final Toolbar toolbar;
+    private final SearchView searchView;
+    private final BottomBar bottomBar;
 
-  private AppBarLayout appbarLayout;
+    private final AppBarLayout appbarLayout;
 
-  public AppBar(MainActivity a, SharedPreferences sharedPref) {
-    toolbar = a.findViewById(R.id.action_bar);
-    searchView = new SearchView(this, a);
-    bottomBar = new BottomBar(this, a);
+    public AppBar(MainActivity a, SharedPreferences sharedPref) {
+        toolbar = a.findViewById(R.id.action_bar);
+        searchView = new SearchView(this, a);
+        bottomBar = new BottomBar(this, a);
 
-    appbarLayout = a.findViewById(R.id.lin);
+        appbarLayout = a.findViewById(R.id.lin);
 
-    if (SDK_INT >= 21) toolbar.setElevation(0);
-    /* For SearchView, see onCreateOptionsMenu(Menu menu)*/
-    TOOLBAR_START_INSET = toolbar.getContentInsetStart();
+        if (SDK_INT >= 21) toolbar.setElevation(0);
+        /* For SearchView, see onCreateOptionsMenu(Menu menu)*/
+        TOOLBAR_START_INSET = toolbar.getContentInsetStart();
 
-    if (!sharedPref.getBoolean(PreferencesConstants.PREFERENCE_INTELLI_HIDE_TOOLBAR, true)) {
-      AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-      params.setScrollFlags(0);
-      appbarLayout.setExpanded(true, true);
+        if (!sharedPref.getBoolean(PreferencesConstants.PREFERENCE_INTELLI_HIDE_TOOLBAR, true)) {
+            AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+            params.setScrollFlags(0);
+            appbarLayout.setExpanded(true, true);
+        }
     }
-  }
 
-  public Toolbar getToolbar() {
-    return toolbar;
-  }
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 
-  public SearchView getSearchView() {
-    return searchView;
-  }
+    public SearchView getSearchView() {
+        return searchView;
+    }
 
-  public BottomBar getBottomBar() {
-    return bottomBar;
-  }
+    public BottomBar getBottomBar() {
+        return bottomBar;
+    }
 
-  public AppBarLayout getAppbarLayout() {
-    return appbarLayout;
-  }
+    public AppBarLayout getAppbarLayout() {
+        return appbarLayout;
+    }
 
-  public void setTitle(String title) {
-    if (toolbar != null) toolbar.setTitle(title);
-  }
+    public void setTitle(String title) {
+        if (toolbar != null) toolbar.setTitle(title);
+    }
 
-  public void setTitle(@StringRes int title) {
-    if (toolbar != null) toolbar.setTitle(title);
-  }
+    public void setTitle(@StringRes int title) {
+        if (toolbar != null) toolbar.setTitle(title);
+    }
 }

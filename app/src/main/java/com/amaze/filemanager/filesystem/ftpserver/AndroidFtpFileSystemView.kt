@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver
 
 import android.content.Context
@@ -9,10 +7,10 @@ import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Build.VERSION_CODES.M
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
-import org.apache.ftpserver.ftplet.FileSystemView
-import org.apache.ftpserver.ftplet.FtpFile
 import java.io.File
 import java.net.URI
+import org.apache.ftpserver.ftplet.FileSystemView
+import org.apache.ftpserver.ftplet.FtpFile
 
 @RequiresApi(KITKAT)
 class AndroidFtpFileSystemView(private var context: Context, root: String) : FileSystemView {
@@ -20,7 +18,8 @@ class AndroidFtpFileSystemView(private var context: Context, root: String) : Fil
     private val rootDocumentFile = createDocumentFileFrom(rootPath)
     private var currentPath: String? = "/"
 
-    override fun getHomeDirectory(): FtpFile = AndroidFtpFile(context, rootDocumentFile, resolveDocumentFileFromRoot("/"), "/")
+    override fun getHomeDirectory(): FtpFile =
+        AndroidFtpFile(context, rootDocumentFile, resolveDocumentFileFromRoot("/"), "/")
 
     override fun getWorkingDirectory(): FtpFile {
         return AndroidFtpFile(
@@ -38,6 +37,7 @@ class AndroidFtpFileSystemView(private var context: Context, root: String) : Fil
                 currentPath = "/"
                 true
             }
+
             dir.startsWith("..") -> {
                 if (currentPath.isNullOrEmpty() || currentPath == "/") {
                     false
@@ -46,6 +46,7 @@ class AndroidFtpFileSystemView(private var context: Context, root: String) : Fil
                     resolveDocumentFileFromRoot(currentPath) != null
                 }
             }
+
             else -> {
                 currentPath =
                     when {
@@ -88,9 +89,11 @@ class AndroidFtpFileSystemView(private var context: Context, root: String) : Fil
             path == "\\" || path == "/" -> {
                 "/"
             }
+
             path.length <= 1 -> {
                 path
             }
+
             else -> {
                 Uri.decode(
                     URI(Uri.encode(path, "/"))

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.content.ActivityNotFoundException
@@ -140,16 +138,16 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
             chooserIntent.setDataAndType(uri, mimeType)
 
             for (
-                resolveInfo in context.packageManager
-                    .queryIntentActivities(
-                        chooserIntent,
-                        PackageManager.MATCH_DEFAULT_ONLY,
-                    )
-                ) context.grantUriPermission(
-                    resolveInfo.activityInfo.packageName,
-                    uri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION,
+            resolveInfo in context.packageManager
+                .queryIntentActivities(
+                    chooserIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY,
                 )
+            ) context.grantUriPermission(
+                resolveInfo.activityInfo.packageName,
+                uri,
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION,
+            )
 
             if (useNewStack) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -157,7 +155,7 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
                 } else {
                     chooserIntent.addFlags(
                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            or Intent.FLAG_ACTIVITY_TASK_ON_HOME,
+                                or Intent.FLAG_ACTIVITY_TASK_ON_HOME,
                     )
                 }
             }
@@ -282,7 +280,7 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         fragmentOpenFileDialogBinding = FragmentOpenFileDialogBinding.inflate(inflater)
         initDialogResources(viewBinding.parent)
         return viewBinding.root

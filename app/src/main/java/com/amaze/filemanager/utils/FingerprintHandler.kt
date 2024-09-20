@@ -1,4 +1,3 @@
-
 package com.amaze.filemanager.utils
 
 import android.Manifest

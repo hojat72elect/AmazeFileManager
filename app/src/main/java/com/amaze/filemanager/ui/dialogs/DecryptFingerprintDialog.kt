@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.content.Context
@@ -48,7 +46,8 @@ object DecryptFingerprintDialog {
                     .setNegativeButtonText(c.getString(android.R.string.cancel))
                     .build()
 
-            val handler = FingerprintHandler(main, intent, promptInfo, decryptButtonCallbackInterface)
+            val handler =
+                FingerprintHandler(main, intent, promptInfo, decryptButtonCallbackInterface)
             val `object` = BiometricPrompt.CryptoObject(CryptUtil.initCipher())
             handler.authenticate(`object`)
         }

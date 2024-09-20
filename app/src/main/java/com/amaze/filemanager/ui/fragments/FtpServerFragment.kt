@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments
 
 import android.app.Activity.RESULT_OK
@@ -67,13 +65,13 @@ import com.amaze.filemanager.utils.PasswordUtil
 import com.amaze.filemanager.utils.Utils
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import java.io.IOException
+import java.security.GeneralSecurityException
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.IOException
-import java.security.GeneralSecurityException
 
 /**
  * Created by yashwanthreddyg on 10-06-2016. Edited by Luca D'Amico (Luca91) on 25 Jul 2017 (Fixed
@@ -105,15 +103,13 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
     private val mainActivity: MainActivity get() = requireActivity() as MainActivity
 
     private val activityResultHandlerOnFtpServerPathUpdate =
-        createOpenDocumentTreeIntentCallback {
-                directoryUri ->
+        createOpenDocumentTreeIntentCallback { directoryUri ->
             changeFTPServerPath(directoryUri.toString())
             updatePathText()
         }
 
     private val activityResultHandlerOnFtpServerPathGrantedSafAccess =
-        createOpenDocumentTreeIntentCallback {
-                directoryUri ->
+        createOpenDocumentTreeIntentCallback { directoryUri ->
             changeFTPServerPath(directoryUri.toString())
             updatePathText()
             doStartServer()
@@ -205,6 +201,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     .show()
                 return true
             }
+
             R.id.ftp_path -> {
                 if (shouldUseSafFileSystem()) {
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
@@ -228,6 +225,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
 
                 return true
             }
+
             R.id.ftp_login -> {
                 val loginDialogBuilder = MaterialDialog.Builder(requireContext())
                 val loginDialogView =
@@ -259,6 +257,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                 dialog.show()
                 return true
             }
+
             R.id.checkbox_ftp_readonly -> {
                 val shouldReadonly = !item.isChecked
                 item.isChecked = shouldReadonly
@@ -267,6 +266,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                 promptUserToRestartServer()
                 return true
             }
+
             R.id.checkbox_ftp_secure -> {
                 val shouldSecure = !item.isChecked
                 item.isChecked = shouldSecure
@@ -274,6 +274,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                 promptUserToRestartServer()
                 return true
             }
+
             R.id.checkbox_ftp_legacy_filesystem -> {
                 val shouldUseSafFileSystem = !item.isChecked
                 item.isChecked = shouldUseSafFileSystem
@@ -281,20 +282,21 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                 promptUserToRestartServer()
                 return true
             }
+
             R.id.ftp_timeout -> {
                 val timeoutBuilder = MaterialDialog.Builder(requireActivity())
                 timeoutBuilder.title(
                     getString(R.string.ftp_timeout) +
-                        " (" +
-                        resources.getString(R.string.ftp_seconds) +
-                        ")",
+                            " (" +
+                            resources.getString(R.string.ftp_seconds) +
+                            ")",
                 )
                 timeoutBuilder.input(
                     (
-                        FtpService.DEFAULT_TIMEOUT.toString() +
-                            " " +
-                            resources.getString(R.string.ftp_seconds)
-                    ),
+                            FtpService.DEFAULT_TIMEOUT.toString() +
+                                    " " +
+                                    resources.getString(R.string.ftp_seconds)
+                            ),
                     ftpTimeout.toString(),
                     true,
                 ) { _: MaterialDialog?, input: CharSequence ->
@@ -320,6 +322,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     .show()
                 return true
             }
+
             R.id.exit -> {
                 requireActivity().finish()
                 return true
@@ -344,7 +347,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
             FtpService.KEY_PREFERENCE_SAF_FILESYSTEM,
             false,
         ) &&
-            SDK_INT >= M
+                SDK_INT >= M
     }
 
     private val mWifiReceiver: BroadcastReceiver =
@@ -393,12 +396,14 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     FtpReceiverActions.STARTED_FROM_TILE == signal,
                 )
             }
+
             FtpReceiverActions.FAILED_TO_START -> {
                 statusText.text = spannedStatusNotRunning
                 Toast.makeText(context, R.string.unknown_error, Toast.LENGTH_LONG).show()
                 ftpBtn.text = resources.getString(R.string.start_ftp).uppercase()
                 url.text = "URL: "
             }
+
             FtpReceiverActions.STOPPED -> {
                 statusText.text = spannedStatusNotRunning
                 url.text = "URL: "
@@ -444,7 +449,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                         MaterialDialog.Builder(mainActivity)
                             .content(R.string.ftp_prompt_accept_first_start_saf_access)
                             .widgetColor(accentColor)
-                            .theme(mainActivity.appTheme.getMaterialDialogTheme())
+                            .theme(mainActivity.appTheme.materialDialogTheme)
                             .title(R.string.ftp_prompt_accept_first_start_saf_access_title)
                             .positiveText(R.string.ok)
                             .positiveColor(accentColor)
@@ -461,17 +466,19 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                                         activityResultHandlerOnFtpServerPathGrantedSafAccess.launch(
                                             intent.also {
                                                 if (SDK_INT >= O &&
-                                                    directoryUri.startsWith(defaultPathFromPreferences)
+                                                    directoryUri.startsWith(
+                                                        defaultPathFromPreferences
+                                                    )
                                                 ) {
                                                     it.putExtra(
                                                         EXTRA_INITIAL_URI,
                                                         DocumentsContract.buildDocumentUri(
                                                             "com.android.externalstorage.documents",
                                                             "primary:" +
-                                                                directoryUri
-                                                                    .substringAfter(
-                                                                        defaultPathFromPreferences,
-                                                                    ),
+                                                                    directoryUri
+                                                                        .substringAfter(
+                                                                            defaultPathFromPreferences,
+                                                                        ),
                                                         ),
                                                     )
                                                 }
@@ -651,7 +658,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         spannedStatusConnected =
             HtmlCompat.fromHtml(
                 "$statusHead<b>&nbsp;&nbsp;<font color='$accentColor'>" +
-                    "${resources.getString(R.string.ftp_status_running)}</font></b>",
+                        "${resources.getString(R.string.ftp_status_running)}</font></b>",
                 FROM_HTML_MODE_COMPACT,
             )
         spannedStatusUrl =
@@ -662,23 +669,30 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         spannedStatusNoConnection =
             HtmlCompat.fromHtml(
                 "$statusHead<b>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                    "<font color='${Utils.getColor(context, android.R.color.holo_red_light)}'>" +
-                    "${resources.getString(R.string.ftp_status_no_connection)}</font></b>",
+                        "<font color='${
+                            Utils.getColor(
+                                context,
+                                android.R.color.holo_red_light
+                            )
+                        }'>" +
+                        "${resources.getString(R.string.ftp_status_no_connection)}</font></b>",
                 FROM_HTML_MODE_COMPACT,
             )
         spannedStatusNotRunning =
             HtmlCompat.fromHtml(
                 "$statusHead<b>&nbsp;&nbsp;&nbsp;&nbsp;" +
-                    "${resources.getString(R.string.ftp_status_not_running)}</b>",
+                        "${resources.getString(R.string.ftp_status_not_running)}</b>",
                 FROM_HTML_MODE_COMPACT,
             )
         spannedStatusSecure =
             HtmlCompat.fromHtml(
-                "$statusHead<b>&nbsp;&nbsp;&nbsp;&nbsp;<font color='${Utils.getColor(
-                    context,
-                    android.R.color.holo_green_light,
-                )}'>" +
-                    "${resources.getString(R.string.ftp_status_secure_connection)}</font></b>",
+                "$statusHead<b>&nbsp;&nbsp;&nbsp;&nbsp;<font color='${
+                    Utils.getColor(
+                        context,
+                        android.R.color.holo_green_light,
+                    )
+                }'>" +
+                        "${resources.getString(R.string.ftp_status_secure_connection)}</font></b>",
                 FROM_HTML_MODE_COMPACT,
             )
         spannedStatusUrl =
@@ -723,6 +737,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                 startDividerView.setBackgroundColor(Utils.getColor(context, R.color.divider))
                 statusDividerView.setBackgroundColor(Utils.getColor(context, R.color.divider))
             }
+
             AppTheme.DARK, AppTheme.BLACK -> {
                 startDividerView.setBackgroundColor(
                     Utils.getColor(context, R.color.divider_dark_card),
@@ -731,6 +746,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     Utils.getColor(context, R.color.divider_dark_card),
                 )
             }
+
             else -> {
             }
         }
@@ -748,12 +764,15 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                             mainActivity.appbar.appbarLayout.requestFocus()
                             mainActivity.appbar.toolbar.requestFocus()
                         }
+
                         KeyEvent.KEYCODE_DPAD_CENTER -> {
                             ftpBtnOnClick()
                         }
+
                         KeyEvent.KEYCODE_BACK -> {
                             mainActivity.onBackPressed()
                         }
+
                         else -> {
                             return@OnKeyListener false
                         }
@@ -769,17 +788,17 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         get() {
             val ia = getLocalInetAddress(requireContext()) ?: return null
             return (
-                (
-                    if (securePreference) {
-                        FtpService.INITIALS_HOST_SFTP
-                    } else {
-                        FtpService.INITIALS_HOST_FTP
-                    }
-                ) +
-                    ia.hostAddress +
-                    ":" +
-                    defaultPortFromPreferences
-            )
+                    (
+                            if (securePreference) {
+                                FtpService.INITIALS_HOST_SFTP
+                            } else {
+                                FtpService.INITIALS_HOST_FTP
+                            }
+                            ) +
+                            ia.hostAddress +
+                            ":" +
+                            defaultPortFromPreferences
+                    )
         }
 
     private val defaultPortFromPreferences: Int
@@ -822,11 +841,13 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
             path.startsWith("file:///") -> {
                 path.substringAfter("file://")
             }
+
             path.startsWith("content://") -> {
                 return Uri.parse(path).let {
                     "/storage${it.path?.substringAfter("/tree")?.replace(':', '/')}"
                 }
             }
+
             else -> {
                 path
             }

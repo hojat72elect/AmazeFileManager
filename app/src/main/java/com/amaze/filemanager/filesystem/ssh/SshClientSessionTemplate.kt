@@ -1,11 +1,10 @@
-
-
 package com.amaze.filemanager.filesystem.ssh
 
-import net.schmizz.sshj.connection.channel.direct.Session
 import java.io.IOException
+import net.schmizz.sshj.connection.channel.direct.Session
 
-abstract class SshClientSessionTemplate<T>/**
+abstract class SshClientSessionTemplate<T>
+/**
  * Constructor.
  *
  * @param url SSH connection URL, in the form of `

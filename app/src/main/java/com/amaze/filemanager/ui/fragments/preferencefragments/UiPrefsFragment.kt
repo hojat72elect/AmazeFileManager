@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.os.Bundle
@@ -65,8 +63,7 @@ class UiPrefsFragment : BasePrefsFragment() {
                                 .plus(availableLocales.keys.toTypedArray())
                                 .toSet(),
                         )
-                        itemsCallbackSingleChoice(currentLanguagePreference) {
-                                dialog, _, _, textLabel ->
+                        itemsCallbackSingleChoice(currentLanguagePreference) { dialog, _, _, textLabel ->
                             if (textLabel == getString(R.string.preference_language_system_default)) {
                                 AppCompatDelegate.setApplicationLocales(
                                     LocaleListCompat.getEmptyLocaleList(),
@@ -91,7 +88,7 @@ class UiPrefsFragment : BasePrefsFragment() {
             Preference.OnPreferenceClickListener {
                 val dragDialogBuilder = MaterialDialog.Builder(activity)
                 dragDialogBuilder.theme(
-                    activity.utilsProvider.appTheme.getMaterialDialogTheme(),
+                    activity.utilsProvider.appTheme.materialDialogTheme,
                 )
                 dragDialogBuilder.title(R.string.drag_and_drop_preference)
                 val currentDragPreference: Int =

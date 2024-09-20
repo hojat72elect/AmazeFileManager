@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.views.preference
 
 import android.content.Context

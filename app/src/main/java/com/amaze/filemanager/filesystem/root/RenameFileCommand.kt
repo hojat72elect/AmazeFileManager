@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import com.amaze.filemanager.exceptions.ShellCommandInvalidException
@@ -27,7 +25,7 @@ object RenameFileCommand : IRootCommand() {
         val mountPoint = MountPathCommand.mountPath(oldPath, MountPathCommand.READ_WRITE)
         val command =
             "mv \"${RootHelper.getCommandLineString(oldPath)}\"" +
-                " \"${RootHelper.getCommandLineString(newPath)}\""
+                    " \"${RootHelper.getCommandLineString(newPath)}\""
         return try {
             val output = runShellCommandToList(command)
             mountPoint?.let { MountPathCommand.mountPath(it, MountPathCommand.READ_ONLY) }

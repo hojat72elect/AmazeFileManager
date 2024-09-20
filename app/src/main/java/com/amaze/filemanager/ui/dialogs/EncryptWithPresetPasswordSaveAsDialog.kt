@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.annotation.SuppressLint
@@ -56,13 +54,15 @@ object EncryptWithPresetPasswordSaveAsDialog {
                             // Fingerprint not supported for AESCrypt
                             it.setText(this.getName(c) + CryptUtil.CRYPT_EXTENSION)
                         }
+
                         ENCRYPT_PASSWORD_MASTER -> {
                             it.setText(this.getName(c) + CryptUtil.AESCRYPT_EXTENSION)
                         }
+
                         else -> {
                             throw IllegalArgumentException(
                                 "Must be either " +
-                                    "ENCRYPT_PASSWORD_FINGERPRINT or ENCRYPT_PASSWORD_MASTER",
+                                        "ENCRYPT_PASSWORD_FINGERPRINT or ENCRYPT_PASSWORD_MASTER",
                             )
                         }
                     }

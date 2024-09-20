@@ -1,9 +1,7 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
-import org.apache.commons.net.ftp.FTPClient
 import java.io.IOException
+import org.apache.commons.net.ftp.FTPClient
 
 /**
  * Template class for executing actions with [NetCopyClient] while leave the complexities of

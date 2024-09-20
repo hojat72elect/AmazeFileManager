@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.os.Bundle
@@ -85,7 +83,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
         val dialog =
             MaterialDialog.Builder(requireActivity())
                 .title(R.string.create_bookmark)
-                .theme(activity.appTheme.getMaterialDialogTheme())
+                .theme(activity.appTheme.materialDialogTheme)
                 .positiveColor(fabSkin)
                 .positiveText(R.string.create)
                 .negativeColor(fabSkin)
@@ -97,7 +95,10 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
         disableButtonIfNotPath(txtShortcutPath, dialog)
         dialog.getActionButton(DialogAction.POSITIVE)
             .setOnClickListener {
-                val result = isValidBookmark(txtShortcutName.text.toString(), txtShortcutPath.text.toString())
+                val result = isValidBookmark(
+                    txtShortcutName.text.toString(),
+                    txtShortcutPath.text.toString()
+                )
                 if (!result.first) {
                     Toast.makeText(
                         requireContext(),
@@ -135,8 +136,16 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
     ): Pair<Boolean, Int> {
         return when {
             name.isEmpty() -> Pair(false, R.string.invalid_name)
-            dataUtils.containsBooks(arrayOf(name, path)) != -1 -> Pair(false, R.string.bookmark_exists)
-            !FileUtils.isPathAccessible(path, activity.prefs) -> Pair(false, R.string.ftp_path_change_error_invalid)
+            dataUtils.containsBooks(arrayOf(name, path)) != -1 -> Pair(
+                false,
+                R.string.bookmark_exists
+            )
+
+            !FileUtils.isPathAccessible(path, activity.prefs) -> Pair(
+                false,
+                R.string.ftp_path_change_error_invalid
+            )
+
             else -> Pair(true, 0)
         }
     }
@@ -157,7 +166,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
         val dialog =
             MaterialDialog.Builder(activity)
                 .title(R.string.edit_bookmark)
-                .theme(activity.appTheme.getMaterialDialogTheme())
+                .theme(activity.appTheme.materialDialogTheme)
                 .positiveColor(fabSkin)
                 .positiveText(getString(R.string.edit).uppercase()) // TODO: 29/4/2017 don't use toUpperCase()
                 .negativeColor(fabSkin)
@@ -202,7 +211,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
         val dialog =
             MaterialDialog.Builder(activity)
                 .title(R.string.question_delete_bookmark)
-                .theme(activity.appTheme.getMaterialDialogTheme())
+                .theme(activity.appTheme.materialDialogTheme)
                 .positiveColor(fabSkin)
                 .positiveText(getString(R.string.delete).uppercase()) // TODO: 29/4/2017 don't use toUpperCase(), 20/9,2017 why not?
                 .negativeColor(fabSkin)

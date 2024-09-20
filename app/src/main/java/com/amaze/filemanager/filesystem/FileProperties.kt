@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem
 
 import android.app.usage.StorageStatsManager
@@ -19,13 +17,13 @@ import com.amaze.filemanager.filesystem.ftp.NetCopyClientConnectionPool
 import com.amaze.filemanager.filesystem.smb.CifsContexts
 import com.amaze.filemanager.utils.OTGUtil
 import com.amaze.filemanager.utils.containsPath
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.regex.Pattern
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 // TODO check if these can be done with just File methods
 // TODO make all of these methods File extensions

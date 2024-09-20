@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.drag
 
 import android.view.DragEvent
@@ -14,22 +12,28 @@ class TabFragmentSideDragListener(private val dragEventCallback: () -> Unit) : V
             DragEvent.ACTION_DRAG_ENDED -> {
                 true
             }
+
             DragEvent.ACTION_DRAG_ENTERED -> {
                 dragEventCallback()
                 true
             }
+
             DragEvent.ACTION_DRAG_EXITED -> {
                 true
             }
+
             DragEvent.ACTION_DRAG_STARTED -> {
                 true
             }
+
             DragEvent.ACTION_DRAG_LOCATION -> {
                 true
             }
+
             DragEvent.ACTION_DROP -> {
                 true
             }
+
             else -> false
         }
     }

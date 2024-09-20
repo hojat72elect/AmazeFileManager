@@ -1,16 +1,14 @@
-
-
 package com.amaze.filemanager.filesystem.ssh
 
+import java.io.IOException
+import java.util.EnumSet
+import java.util.concurrent.TimeUnit
 import net.schmizz.sshj.sftp.FileAttributes
 import net.schmizz.sshj.sftp.OpenMode
 import net.schmizz.sshj.sftp.PacketType
 import net.schmizz.sshj.sftp.RemoteFile
 import net.schmizz.sshj.sftp.SFTPClient
 import net.schmizz.sshj.sftp.SFTPEngine
-import java.io.IOException
-import java.util.EnumSet
-import java.util.concurrent.TimeUnit
 
 const val READ_AHEAD_MAX_UNCONFIRMED_READS: Int = 16
 

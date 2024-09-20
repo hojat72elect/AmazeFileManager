@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import com.amaze.filemanager.filesystem.HybridFileParcelable

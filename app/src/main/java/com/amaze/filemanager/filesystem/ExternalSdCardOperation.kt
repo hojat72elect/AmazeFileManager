@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem
 
 import android.annotation.TargetApi
@@ -10,10 +8,10 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.database.UtilsHandler
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object ExternalSdCardOperation {
     private val log: Logger = LoggerFactory.getLogger(UtilsHandler::class.java)
@@ -150,7 +148,7 @@ object ExternalSdCardOperation {
      */
     @JvmStatic
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public fun getExtSdCardFolder(
+    fun getExtSdCardFolder(
         file: File,
         context: Context,
     ): String? {

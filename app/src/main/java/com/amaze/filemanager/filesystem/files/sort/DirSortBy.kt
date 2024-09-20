@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.files.sort
 
 /** Represents the way in which directories and files should be sorted */

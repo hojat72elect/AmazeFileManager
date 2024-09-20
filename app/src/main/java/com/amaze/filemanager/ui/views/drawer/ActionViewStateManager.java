@@ -1,9 +1,6 @@
-
-
 package com.amaze.filemanager.ui.views.drawer;
 
 import android.view.MenuItem;
-
 import androidx.annotation.ColorInt;
 import androidx.appcompat.widget.AppCompatImageButton;
 
@@ -13,29 +10,29 @@ import androidx.appcompat.widget.AppCompatImageButton;
  */
 public class ActionViewStateManager {
 
-  private AppCompatImageButton lastItemSelected = null;
-  private @ColorInt int idleIconColor;
-  private @ColorInt int selectedIconColor;
+    private AppCompatImageButton lastItemSelected = null;
+    private final @ColorInt int idleIconColor;
+    private final @ColorInt int selectedIconColor;
 
-  public ActionViewStateManager(@ColorInt int idleColor, @ColorInt int accentColor) {
-    idleIconColor = idleColor;
-    selectedIconColor = accentColor;
-  }
+    public ActionViewStateManager(@ColorInt int idleColor, @ColorInt int accentColor) {
+        idleIconColor = idleColor;
+        selectedIconColor = accentColor;
+    }
 
-  public void deselectCurrentActionView() {
-    if (lastItemSelected != null) {
-      lastItemSelected.setColorFilter(idleIconColor);
-      lastItemSelected = null;
+    public void deselectCurrentActionView() {
+        if (lastItemSelected != null) {
+            lastItemSelected.setColorFilter(idleIconColor);
+            lastItemSelected = null;
+        }
     }
-  }
 
-  public void selectActionView(MenuItem item) {
-    if (lastItemSelected != null) {
-      lastItemSelected.setColorFilter(idleIconColor);
+    public void selectActionView(MenuItem item) {
+        if (lastItemSelected != null) {
+            lastItemSelected.setColorFilter(idleIconColor);
+        }
+        if (item.getActionView() != null) {
+            lastItemSelected = (AppCompatImageButton) item.getActionView();
+            lastItemSelected.setColorFilter(selectedIconColor);
+        }
     }
-    if (item.getActionView() != null) {
-      lastItemSelected = (AppCompatImageButton) item.getActionView();
-      lastItemSelected.setColorFilter(selectedIconColor);
-    }
-  }
 }

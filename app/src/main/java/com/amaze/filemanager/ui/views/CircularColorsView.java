@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.views;
 
 import android.content.Context;
@@ -17,82 +15,82 @@ import androidx.annotation.Nullable;
  */
 public class CircularColorsView extends View {
 
-  private static final float DISTANCE_PERCENTUAL = 0.08f;
-  private static final float DIAMETER_PERCENTUAL = 0.65f;
-  private static final int SEMICIRCLE_LINE_WIDTH = 0;
+    private static final float DISTANCE_PERCENTUAL = 0.08f;
+    private static final float DIAMETER_PERCENTUAL = 0.65f;
+    private static final int SEMICIRCLE_LINE_WIDTH = 0;
 
-  private boolean paintInitialized = false;
-  private Paint dividerPaint = new Paint();
-  private Paint[] colors = {new Paint(), new Paint(), new Paint(), new Paint()};
-  private RectF semicicleRect = new RectF();
+    private boolean paintInitialized = false;
+    private final Paint dividerPaint = new Paint();
+    private final Paint[] colors = {new Paint(), new Paint(), new Paint(), new Paint()};
+    private final RectF semicicleRect = new RectF();
 
-  public CircularColorsView(Context context) {
-    super(context);
-    init();
-  }
+    public CircularColorsView(Context context) {
+        super(context);
+        init();
+    }
 
-  public CircularColorsView(Context context, @Nullable AttributeSet attrs) {
-    super(context, attrs);
-    init();
-  }
+    public CircularColorsView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-  private void init() {
-    dividerPaint.setColor(Color.BLACK);
-    dividerPaint.setStyle(Paint.Style.STROKE);
-    dividerPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-    dividerPaint.setStrokeWidth(SEMICIRCLE_LINE_WIDTH);
-  }
+    private void init() {
+        dividerPaint.setColor(Color.BLACK);
+        dividerPaint.setStyle(Paint.Style.STROKE);
+        dividerPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        dividerPaint.setStrokeWidth(SEMICIRCLE_LINE_WIDTH);
+    }
 
-  public void setDividerColor(int color) {
-    dividerPaint.setColor(color);
-  }
+    public void setDividerColor(int color) {
+        dividerPaint.setColor(color);
+    }
 
-  public void setColors(int color, int color1, int color2, int color3) {
-    colors[0].setColor(color);
-    colors[1].setColor(color1);
-    colors[2].setColor(color2);
-    colors[3].setColor(color3);
+    public void setColors(int color, int color1, int color2, int color3) {
+        colors[0].setColor(color);
+        colors[1].setColor(color1);
+        colors[2].setColor(color2);
+        colors[3].setColor(color3);
 
-    for (Paint p : colors) p.setFlags(Paint.ANTI_ALIAS_FLAG);
+        for (Paint p : colors) p.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-    paintInitialized = true;
-  }
+        paintInitialized = true;
+    }
 
-  @Override
-  protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-    if (isInEditMode()) setColors(Color.CYAN, Color.RED, Color.GREEN, Color.BLUE);
-    if (!paintInitialized) throw new IllegalStateException("Paint has not actual color!");
+        if (isInEditMode()) setColors(Color.CYAN, Color.RED, Color.GREEN, Color.BLUE);
+        if (!paintInitialized) throw new IllegalStateException("Paint has not actual color!");
 
-    float distance = getWidth() * DISTANCE_PERCENTUAL;
+        float distance = getWidth() * DISTANCE_PERCENTUAL;
 
-    float diameterByHeight = getHeight() * DIAMETER_PERCENTUAL;
-    float diameterByWidth = (getWidth() - distance * 2) / 3f * DIAMETER_PERCENTUAL;
-    float diameter = Math.min(diameterByHeight, diameterByWidth);
+        float diameterByHeight = getHeight() * DIAMETER_PERCENTUAL;
+        float diameterByWidth = (getWidth() - distance * 2) / 3f * DIAMETER_PERCENTUAL;
+        float diameter = Math.min(diameterByHeight, diameterByWidth);
 
-    float radius = diameter / 2f;
+        float radius = diameter / 2f;
 
-    int centerY = getHeight() / 2;
-    float[] positionX = {
-      getWidth() - diameter - distance - diameter - distance - radius,
-      getWidth() - diameter - distance - radius,
-      getWidth() - radius
-    };
-    semicicleRect.set(
-        positionX[0] - radius, centerY - radius, positionX[0] + radius, centerY + radius);
+        int centerY = getHeight() / 2;
+        float[] positionX = {
+                getWidth() - diameter - distance - diameter - distance - radius,
+                getWidth() - diameter - distance - radius,
+                getWidth() - radius
+        };
+        semicicleRect.set(
+                positionX[0] - radius, centerY - radius, positionX[0] + radius, centerY + radius);
 
-    canvas.drawArc(semicicleRect, 90, 180, true, colors[0]);
-    canvas.drawArc(semicicleRect, 270, 180, true, colors[1]);
+        canvas.drawArc(semicicleRect, 90, 180, true, colors[0]);
+        canvas.drawArc(semicicleRect, 270, 180, true, colors[1]);
 
-    canvas.drawLine(
-        semicicleRect.centerX(),
-        semicicleRect.top,
-        semicicleRect.centerX(),
-        semicicleRect.bottom,
-        dividerPaint);
+        canvas.drawLine(
+                semicicleRect.centerX(),
+                semicicleRect.top,
+                semicicleRect.centerX(),
+                semicicleRect.bottom,
+                dividerPaint);
 
-    canvas.drawCircle(positionX[1], centerY, radius, colors[2]);
-    canvas.drawCircle(positionX[2], centerY, radius, colors[3]);
-  }
+        canvas.drawCircle(positionX[1], centerY, radius, colors[2]);
+        canvas.drawCircle(positionX[2], centerY, radius, colors[3]);
+    }
 }

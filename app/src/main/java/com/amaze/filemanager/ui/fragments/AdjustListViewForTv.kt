@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments
 
 import androidx.recyclerview.widget.RecyclerView

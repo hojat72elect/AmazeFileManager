@@ -18,7 +18,7 @@
                 <color android:color="#FFFFFF" />
             </item>-->
             <item android:state_pressed="true">
-                <color android:color="@color/grey_translucent"/>
+                <color android:color="@color/grey_translucent" />
             </item>
             <item android:state_focused="true">
                 <color android:color="@color/grey_translucent" />

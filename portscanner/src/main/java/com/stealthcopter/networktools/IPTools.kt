@@ -1,4 +1,3 @@
-
 package com.stealthcopter.networktools
 
 import java.net.Inet4Address
@@ -117,5 +116,6 @@ object IPTools {
      * @return - true if ip address is self
      */
     @JvmStatic
-    fun isIpAddressLocalNetwork(addr: InetAddress?): Boolean = addr != null && addr.isSiteLocalAddress
+    fun isIpAddressLocalNetwork(addr: InetAddress?): Boolean =
+        addr != null && addr.isSiteLocalAddress
 }

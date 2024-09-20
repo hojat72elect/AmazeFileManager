@@ -1,12 +1,10 @@
-
-
 package com.amaze.filemanager.filesystem.ssh
 
+import java.io.IOException
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.sftp.SFTPClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.IOException
 
 /**
  * Template class for executing actions with [SFTPClient] while leave the complexities of

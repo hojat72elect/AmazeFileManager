@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.data
 
 import android.content.SharedPreferences
@@ -21,9 +19,9 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstan
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_GRID_COLUMNS
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_GRID_COLUMNS_DEFAULT
 import com.amaze.filemanager.utils.DataUtils
+import java.util.Objects
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Objects
 
 class MainFragmentViewModel : ViewModel() {
     var currentPath: String? = null
@@ -176,9 +174,9 @@ class MainFragmentViewModel : ViewModel() {
      */
     fun getIsOnCloudRoot(): Boolean {
         return CloudHandler.CLOUD_PREFIX_GOOGLE_DRIVE + "/" == currentPath ||
-            CloudHandler.CLOUD_PREFIX_ONE_DRIVE + "/" == currentPath ||
-            CloudHandler.CLOUD_PREFIX_BOX + "/" == currentPath ||
-            CloudHandler.CLOUD_PREFIX_DROPBOX + "/" == currentPath
+                CloudHandler.CLOUD_PREFIX_ONE_DRIVE + "/" == currentPath ||
+                CloudHandler.CLOUD_PREFIX_BOX + "/" == currentPath ||
+                CloudHandler.CLOUD_PREFIX_DROPBOX + "/" == currentPath
     }
 
     /**
@@ -186,9 +184,9 @@ class MainFragmentViewModel : ViewModel() {
      */
     fun getIsCloudOpenMode(): Boolean {
         return openMode == OpenMode.GDRIVE ||
-            openMode == OpenMode.DROPBOX ||
-            openMode == OpenMode.BOX ||
-            openMode == OpenMode.ONEDRIVE
+                openMode == OpenMode.DROPBOX ||
+                openMode == OpenMode.BOX ||
+                openMode == OpenMode.ONEDRIVE
     }
 
     /**

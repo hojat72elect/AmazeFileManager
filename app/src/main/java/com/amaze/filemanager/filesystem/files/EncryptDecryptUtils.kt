@@ -1,4 +1,3 @@
-
 package com.amaze.filemanager.filesystem.files
 
 import android.content.Context
@@ -27,10 +26,10 @@ import com.amaze.filemanager.ui.fragments.MainFragment
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
 import com.amaze.filemanager.ui.provider.UtilitiesProvider
 import com.amaze.filemanager.utils.PasswordUtil.decryptPassword
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.security.GeneralSecurityException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * Provides useful interfaces and methods for encryption/decryption
@@ -111,7 +110,8 @@ object EncryptDecryptUtils {
                 return
             }
 
-            val decryptButtonCallbackInterface: DecryptButtonCallbackInterface = createCallback(main)
+            val decryptButtonCallbackInterface: DecryptButtonCallbackInterface =
+                createCallback(main)
 
             if (encryptedEntry == null && !sourceFile.path.endsWith(CryptUtil.AESCRYPT_EXTENSION)) {
                 // couldn't find the matching path in database, we lost the password

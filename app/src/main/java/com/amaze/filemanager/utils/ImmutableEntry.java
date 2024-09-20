@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils;
 
 import java.util.Map;
@@ -12,28 +10,28 @@ import androidx.annotation.Nullable;
  * Author: Guava
  */
 public class ImmutableEntry<K, V> implements Map.Entry<K, V> {
-  private final K key;
-  private final V value;
+    private final K key;
+    private final V value;
 
-  public ImmutableEntry(@Nullable K key, @Nullable V value) {
-    this.key = key;
-    this.value = value;
-  }
+    public ImmutableEntry(@Nullable K key, @Nullable V value) {
+        this.key = key;
+        this.value = value;
+    }
 
-  @Nullable
-  @Override
-  public final K getKey() {
-    return key;
-  }
+    @Nullable
+    @Override
+    public final K getKey() {
+        return key;
+    }
 
-  @Nullable
-  @Override
-  public final V getValue() {
-    return value;
-  }
+    @Nullable
+    @Override
+    public final V getValue() {
+        return value;
+    }
 
-  @Override
-  public final V setValue(V value) {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public final V setValue(V value) {
+        throw new UnsupportedOperationException();
+    }
 }

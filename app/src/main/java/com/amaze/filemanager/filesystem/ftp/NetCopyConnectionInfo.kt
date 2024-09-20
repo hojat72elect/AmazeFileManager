@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
 import com.amaze.filemanager.filesystem.ftp.NetCopyClientConnectionPool.FTPS_URI_PREFIX
@@ -44,7 +42,8 @@ class NetCopyConnectionInfo(url: String) {
         // (No, don't break it down to lines)
 
         @Suppress("ktlint:standard:max-line-length")
-        private const val URI_REGEX = "^(?:(?![^:@]+:[^:@/]*@)([^:/?#.]+):)?(?://)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:/?#]*)(?::(\\d*))?)(((/(?:[^?#](?![^?#/]*\\.[^?#/.]+(?:[?#]|$)))*/?)?([^?#/]*))(?:\\?([^#]*))?(?:#(.*))?)"
+        private const val URI_REGEX =
+            "^(?:(?![^:@]+:[^:@/]*@)([^:/?#.]+):)?(?://)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:/?#]*)(?::(\\d*))?)(((/(?:[^?#](?![^?#/]*\\.[^?#/.]+(?:[?#]|$)))*/?)?([^?#/]*))(?:\\?([^#]*))?(?:#(.*))?)"
 
         const val MULTI_SLASH = "(?<=[^:])(//+)"
 
@@ -58,9 +57,9 @@ class NetCopyConnectionInfo(url: String) {
     init {
         require(
             url.startsWith(SSH_URI_PREFIX) or
-                url.startsWith(FTP_URI_PREFIX) or
-                url.startsWith(FTPS_URI_PREFIX) or
-                url.startsWith(SMB_URI_PREFIX),
+                    url.startsWith(FTP_URI_PREFIX) or
+                    url.startsWith(FTPS_URI_PREFIX) or
+                    url.startsWith(SMB_URI_PREFIX),
         ) {
             "Argument is not a supported remote URI: $url"
         }
@@ -82,10 +81,10 @@ class NetCopyConnectionInfo(url: String) {
                 }
                 port =
                     if (it[7].isNotEmpty()) {
-                    /*
-                     * Invalid string would have been trapped to other branches. Strings fell into
-                     * this branch must be integer
-                     */
+                        /*
+                         * Invalid string would have been trapped to other branches. Strings fell into
+                         * this branch must be integer
+                         */
                         it[7].toInt()
                     } else {
                         0
@@ -107,20 +106,20 @@ class NetCopyConnectionInfo(url: String) {
                     }
                 defaultPath =
                     (
-                        if (it[9].isEmpty()) {
-                            null
-                        } else if (it[9] == SLASH.toString()) {
-                            SLASH.toString()
-                        } else if (!it[9].endsWith(SLASH)) {
-                            if (it[11].isEmpty()) {
-                                it[10]
+                            if (it[9].isEmpty()) {
+                                null
+                            } else if (it[9] == SLASH.toString()) {
+                                SLASH.toString()
+                            } else if (!it[9].endsWith(SLASH)) {
+                                if (it[11].isEmpty()) {
+                                    it[10]
+                                } else {
+                                    it[10].substringBeforeLast(SLASH)
+                                }
                             } else {
-                                it[10].substringBeforeLast(SLASH)
+                                it[9]
                             }
-                        } else {
-                            it[9]
-                        }
-                    )?.replace(Regex(MULTI_SLASH), SLASH.toString())
+                            )?.replace(Regex(MULTI_SLASH), SLASH.toString())
                 filename = it[11].ifEmpty { null }
             }
         }

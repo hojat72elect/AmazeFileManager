@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.drag
 
 import android.view.DragEvent
@@ -17,23 +15,29 @@ class TabFragmentBottomDragListener(
             DragEvent.ACTION_DRAG_ENDED -> {
                 true
             }
+
             DragEvent.ACTION_DRAG_ENTERED -> {
                 dragEnterCallBack()
                 true
             }
+
             DragEvent.ACTION_DRAG_EXITED -> {
                 dragExitCallBack()
                 true
             }
+
             DragEvent.ACTION_DRAG_STARTED -> {
                 true
             }
+
             DragEvent.ACTION_DRAG_LOCATION -> {
                 true
             }
+
             DragEvent.ACTION_DROP -> {
                 true
             }
+
             else -> false
         }
     }

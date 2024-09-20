@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.activities
 
 import android.app.Application
@@ -28,11 +26,11 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstan
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_HIDDENFILES
 import com.amaze.trashbin.MoveFilesCallback
 import com.amaze.trashbin.TrashBinFile
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
-import java.io.File
 
 class MainActivityViewModel(val applicationContext: Application) :
     AndroidViewModel(applicationContext) {

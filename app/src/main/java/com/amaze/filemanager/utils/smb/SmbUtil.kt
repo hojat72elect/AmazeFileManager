@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils.smb
 
 import android.content.Context
@@ -17,11 +15,11 @@ import com.amaze.filemanager.utils.PasswordUtil
 import com.amaze.filemanager.utils.urlDecoded
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import java.net.MalformedURLException
 import jcifs.smb.NtlmPasswordAuthenticator
 import jcifs.smb.SmbException
 import jcifs.smb.SmbFile
 import org.slf4j.LoggerFactory
-import java.net.MalformedURLException
 
 /**
  * Created by Vishal on 30-05-2017.

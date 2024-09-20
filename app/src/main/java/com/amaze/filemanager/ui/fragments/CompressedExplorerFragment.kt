@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments
 
 import android.content.ComponentName
@@ -208,8 +206,10 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
             AppTheme.DARK ->
                 requireView()
                     .setBackgroundColor(Utils.getColor(context, R.color.holo_dark_background))
+
             AppTheme.BLACK ->
                 listView?.setBackgroundColor(Utils.getColor(context, android.R.color.black))
+
             else ->
                 listView?.setBackgroundColor(
                     Utils.getColor(
@@ -276,11 +276,11 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                         if (moveToFirst()) {
                             fileName =
                                 getString(0).let {
-                                /*
-                                 * Strip any slashes to prevent possibility to access files outside
-                                 * cache dir if malicious ContentProvider gives malicious value
-                                 * of MediaStore.MediaColumns.DISPLAY_NAME when querying
-                                 */
+                                    /*
+                                     * Strip any slashes to prevent possibility to access files outside
+                                     * cache dir if malicious ContentProvider gives malicious value
+                                     * of MediaStore.MediaColumns.DISPLAY_NAME when querying
+                                     */
                                     if (it.contains(File.pathSeparator)) {
                                         it.substringAfterLast(File.pathSeparatorChar)
                                     } else {
@@ -479,8 +479,13 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                             }
                             return true
                         }
+
                         R.id.ex -> {
-                            Toast.makeText(activity, getString(R.string.extracting), Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.extracting),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                             val dirs =
                                 arrayOfNulls<String>(
@@ -498,6 +503,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                             mode.finish()
                             return true
                         }
+
                         else -> false
                     }
                 } ?: false
@@ -675,7 +681,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                     it.name
                 }
             requireMainActivity()
-                .getAppbar()
+                .appbar
                 .bottomBar
                 .updatePath(path, OpenMode.FILE, folder, file, this)
         }

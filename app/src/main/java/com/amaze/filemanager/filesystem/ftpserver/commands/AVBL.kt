@@ -1,9 +1,8 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver.commands
 
 import com.amaze.filemanager.application.AppConfig
 import com.amaze.filemanager.filesystem.ftpserver.AndroidFileSystemFactory
+import java.io.File
 import org.apache.ftpserver.command.AbstractCommand
 import org.apache.ftpserver.ftplet.DefaultFtpReply
 import org.apache.ftpserver.ftplet.FtpFile
@@ -16,7 +15,6 @@ import org.apache.ftpserver.impl.FtpServerContext
 import org.apache.ftpserver.usermanager.impl.WriteRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.File
 
 /**
  * Implements FTP extension AVBL command, to answer device remaining space in FTP command.

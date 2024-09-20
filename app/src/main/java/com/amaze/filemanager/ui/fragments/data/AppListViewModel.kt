@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.data
 
 import android.os.Parcelable

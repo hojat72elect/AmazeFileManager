@@ -1,18 +1,13 @@
-
-
 package com.amaze.filemanager.ui.views;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.amaze.filemanager.ui.activities.MainActivity;
-import com.amaze.filemanager.ui.theme.AppTheme;
-import com.amaze.filemanager.utils.Utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
+import com.amaze.filemanager.ui.activities.MainActivity;
+import com.amaze.filemanager.ui.theme.AppTheme;
+import com.amaze.filemanager.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by vishal on 18/1/17.
@@ -22,18 +17,18 @@ import androidx.appcompat.widget.AppCompatTextView;
  */
 public class ThemedTextView extends AppCompatTextView {
 
-  public ThemedTextView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    setTextViewColor(this, context);
-  }
-
-  public static void setTextViewColor(
-      @NotNull AppCompatTextView textView, @NonNull Context context) {
-    if (((MainActivity) context).getAppTheme().equals(AppTheme.LIGHT)) {
-      textView.setTextColor(Utils.getColor(context, android.R.color.black));
-    } else if (((MainActivity) context).getAppTheme().equals(AppTheme.DARK)
-        || ((MainActivity) context).getAppTheme().equals(AppTheme.BLACK)) {
-      textView.setTextColor(Utils.getColor(context, android.R.color.white));
+    public ThemedTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setTextViewColor(this, context);
     }
-  }
+
+    public static void setTextViewColor(
+            @NotNull AppCompatTextView textView, @NonNull Context context) {
+        if (((MainActivity) context).getAppTheme().equals(AppTheme.LIGHT)) {
+            textView.setTextColor(Utils.getColor(context, android.R.color.black));
+        } else if (((MainActivity) context).getAppTheme().equals(AppTheme.DARK)
+                || ((MainActivity) context).getAppTheme().equals(AppTheme.BLACK)) {
+            textView.setTextColor(Utils.getColor(context, android.R.color.white));
+        }
+    }
 }

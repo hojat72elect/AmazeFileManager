@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.os.Bundle
@@ -57,7 +55,7 @@ class AppearancePrefsFragment : BasePrefsFragment() {
         Preference.OnPreferenceClickListener {
             val dialog =
                 MaterialDialog.Builder(activity).also { builder ->
-                    builder.theme(activity.utilsProvider.appTheme.getMaterialDialogTheme())
+                    builder.theme(activity.utilsProvider.appTheme.materialDialogTheme)
                     builder.title(R.string.gridcolumnno)
                     val columnsPreference =
                         activity
@@ -70,6 +68,7 @@ class AppearancePrefsFragment : BasePrefsFragment() {
                             null -> {
                                 PREFERENCE_GRID_COLUMNS_DEFAULT.toInt()
                             }
+
                             else -> {
                                 columnsPreference.toInt() - 1
                             }

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 /** Created by Arpit on 20-11-2015.  */

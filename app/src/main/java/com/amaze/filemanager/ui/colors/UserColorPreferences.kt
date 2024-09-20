@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.colors
 
 import android.os.Parcelable

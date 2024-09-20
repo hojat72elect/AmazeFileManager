@@ -5,17 +5,18 @@
 #include <errno.h>
 #include <stdbool.h>
 
-JNIEXPORT jboolean JNICALL Java_com_amaze_filemanager_fileoperations_filesystem_root_NativeOperations_isDirectory(
-        JNIEnv * env,
+JNIEXPORT jboolean JNICALL
+Java_com_amaze_filemanager_fileoperations_filesystem_root_NativeOperations_isDirectory(
+        JNIEnv *env,
         jobject thiz,
         jstring path
-        ) {
+) {
     struct stat path_stat;
-    const char * cPath = (*env)->GetStringUTFChars(env, path, NULL);
+    const char *cPath = (*env)->GetStringUTFChars(env, path, NULL);
     int returnCode = stat(cPath, &path_stat);
     (*env)->ReleaseStringUTFChars(env, path, cPath);
 
-    if(returnCode == -1) {
+    if (returnCode == -1) {
         switch (errno) {
             case ELOOP:
                 return true;

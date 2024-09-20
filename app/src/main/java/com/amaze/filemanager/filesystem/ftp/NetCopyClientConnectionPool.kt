@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.ftp
 
 import android.annotation.SuppressLint
@@ -17,6 +15,11 @@ import io.reactivex.Observable.create
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.security.KeyPair
+import java.util.concurrent.Callable
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.atomic.AtomicReference
 import net.schmizz.sshj.Config
 import net.schmizz.sshj.SSHClient
 import org.apache.commons.net.ftp.FTPClient
@@ -24,11 +27,6 @@ import org.apache.commons.net.ftp.FTPSClient
 import org.json.JSONObject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.security.KeyPair
-import java.util.concurrent.Callable
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.atomic.AtomicReference
 
 object NetCopyClientConnectionPool {
     const val FTP_DEFAULT_PORT = 21
@@ -171,21 +169,22 @@ object NetCopyClientConnectionPool {
         String?,
         KeyPair?,
         Boolean,
-    ) -> NetCopyClient<*>? = { protocol, host, port, hostFingerprint, username, password, keyPair, explicitTls ->
-        if (protocol == SSH_URI_PREFIX) {
-            createSshClient(host, port, hostFingerprint!!, username, password, keyPair)
-        } else {
-            createFtpClient(
-                protocol,
-                host,
-                port,
-                hostFingerprint?.let { JSONObject(it) },
-                username,
-                password,
-                explicitTls,
-            )
+    ) -> NetCopyClient<*>? =
+        { protocol, host, port, hostFingerprint, username, password, keyPair, explicitTls ->
+            if (protocol == SSH_URI_PREFIX) {
+                createSshClient(host, port, hostFingerprint!!, username, password, keyPair)
+            } else {
+                createFtpClient(
+                    protocol,
+                    host,
+                    port,
+                    hostFingerprint?.let { JSONObject(it) },
+                    username,
+                    password,
+                    explicitTls,
+                )
+            }
         }
-    }
 
     /**
      * Remove specified connection from connection pool. Disconnects from server before removing.
@@ -345,7 +344,7 @@ object NetCopyClientConnectionPool {
                 username,
                 password,
                 true == arguments?.containsKey(ARG_TLS) &&
-                    TLS_EXPLICIT == arguments?.get(ARG_TLS),
+                        TLS_EXPLICIT == arguments?.get(ARG_TLS),
             )
         }
     }
@@ -438,20 +437,21 @@ object NetCopyClientConnectionPool {
     internal class DefaultFTPClientFactory : FTPClientFactory {
         override fun create(uri: String): FTPClient {
             return (
-                if (uri.startsWith(FTPS_URI_PREFIX)) {
-                    FTPSClient(
-                        "TLS",
-                        !uri.contains(QUESTION_MARK) ||
-                            !uri.substringAfter(QUESTION_MARK).contains("$ARG_TLS=$TLS_EXPLICIT"),
-                    )
-                } else {
-                    FTPClient()
+                    if (uri.startsWith(FTPS_URI_PREFIX)) {
+                        FTPSClient(
+                            "TLS",
+                            !uri.contains(QUESTION_MARK) ||
+                                    !uri.substringAfter(QUESTION_MARK)
+                                        .contains("$ARG_TLS=$TLS_EXPLICIT"),
+                        )
+                    } else {
+                        FTPClient()
+                    }
+                    ).also {
+                    it.addProtocolCommandListener(Slf4jPrintCommandListener())
+                    it.connectTimeout = CONNECT_TIMEOUT
+                    it.controlEncoding = Charsets.UTF_8.name()
                 }
-            ).also {
-                it.addProtocolCommandListener(Slf4jPrintCommandListener())
-                it.connectTimeout = CONNECT_TIMEOUT
-                it.controlEncoding = Charsets.UTF_8.name()
-            }
         }
     }
 }

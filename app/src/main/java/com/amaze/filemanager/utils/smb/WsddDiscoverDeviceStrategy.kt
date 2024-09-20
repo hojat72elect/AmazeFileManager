@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils.smb
 
 import androidx.annotation.VisibleForTesting
@@ -69,7 +67,6 @@ class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStra
     var multicastSocketFactory: () -> MulticastSocket = DEFAULT_MULTICAST_SOCKET_FACTORY
         @VisibleForTesting
         get
-
         @VisibleForTesting
         set
 

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import android.app.Activity
@@ -179,6 +177,7 @@ class SmbSearchDialog : DialogFragment() {
                     view = mInflater.inflate(R.layout.smb_progress_row, parent, false)
                     ViewHolder(view)
                 }
+
                 else -> {
                     view =
                         mInflater.inflate(R.layout.smb_computers_row, parent, false)

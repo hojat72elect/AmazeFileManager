@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import android.content.Context
@@ -217,7 +215,7 @@ object OTGUtil {
                             Log.w(
                                 TAG,
                                 "Permission denied reading serial number of device " +
-                                    "${device.vendorId}:${device.productId}",
+                                        "${device.vendorId}:${device.productId}",
                                 ifPermissionDenied,
                             )
                         }

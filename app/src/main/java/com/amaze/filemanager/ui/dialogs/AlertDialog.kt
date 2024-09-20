@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import androidx.annotation.Nullable
@@ -34,7 +32,7 @@ object AlertDialog {
                 .theme(
                     activity
                         .appTheme
-                        .getMaterialDialogTheme(),
+                        .materialDialogTheme,
                 )
                 .title(title)
                 .positiveText(positiveButtonText)

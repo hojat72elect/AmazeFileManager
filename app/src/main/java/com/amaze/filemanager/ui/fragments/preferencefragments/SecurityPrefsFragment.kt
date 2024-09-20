@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.Manifest
@@ -107,7 +105,7 @@ class SecurityPrefsFragment : BasePrefsFragment() {
                 true,
             ) { _, _ -> }
             masterPasswordDialogBuilder.theme(
-                activity.utilsProvider.appTheme.getMaterialDialogTheme(),
+                activity.utilsProvider.appTheme.materialDialogTheme,
             )
             masterPasswordDialogBuilder.positiveText(resources.getString(R.string.ok))
             masterPasswordDialogBuilder.negativeText(resources.getString(R.string.cancel))
@@ -189,11 +187,11 @@ class SecurityPrefsFragment : BasePrefsFragment() {
             // finger print sensor
             keyguardManager =
                 activity.getSystemService(Context.KEYGUARD_SERVICE)
-                    as KeyguardManager?
+                        as KeyguardManager?
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 fingerprintManager =
                     activity.getSystemService(Context.FINGERPRINT_SERVICE)
-                        as FingerprintManager?
+                            as FingerprintManager?
                 if (fingerprintManager?.isHardwareDetected == true) {
                     checkBoxFingerprint?.isEnabled = true
                 }

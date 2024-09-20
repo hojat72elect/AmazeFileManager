@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.fragments.preferencefragments
 
 import android.app.Activity
@@ -18,13 +16,13 @@ import com.amaze.filemanager.TagsHelper
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 import java.io.InputStreamReader
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class BackupPrefsFragment : BasePrefsFragment() {
     private val TAG: String = TagsHelper.getTag(BasePrefsFragment::class.java)

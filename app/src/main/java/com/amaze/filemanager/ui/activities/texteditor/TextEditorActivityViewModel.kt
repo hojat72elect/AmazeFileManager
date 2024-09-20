@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.activities.texteditor
 
 import androidx.lifecycle.ViewModel

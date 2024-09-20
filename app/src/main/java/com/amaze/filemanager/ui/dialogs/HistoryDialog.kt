@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.dialogs
 
 import com.afollestad.materialdialogs.DialogAction
@@ -43,7 +41,7 @@ object HistoryDialog {
                 builder.onNegative { _: MaterialDialog?, _: DialogAction? ->
                     DataUtils.getInstance().clearHistory()
                 }
-                builder.theme(appTheme.getMaterialDialogTheme())
+                builder.theme(appTheme.materialDialogTheme)
                 builder.adapter(adapter, null)
             }.build()
         adapter.materialDialog = materialDialog

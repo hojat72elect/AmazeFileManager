@@ -1,7 +1,6 @@
-
-
 package com.amaze.filemanager.filesystem.ftpserver.commands
 
+import java.io.IOException
 import org.apache.ftpserver.command.AbstractCommand
 import org.apache.ftpserver.ftplet.FtpException
 import org.apache.ftpserver.ftplet.FtpReply
@@ -9,7 +8,6 @@ import org.apache.ftpserver.ftplet.FtpRequest
 import org.apache.ftpserver.impl.FtpIoSession
 import org.apache.ftpserver.impl.FtpServerContext
 import org.apache.ftpserver.impl.LocalizedFtpReply
-import java.io.IOException
 
 /**
  * Monkey-patch [org.apache.ftpserver.command.impl.PWD] to prevent true path exposed to end user.

@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.utils
 
 import android.content.Context
@@ -8,10 +6,10 @@ import android.os.Build.VERSION_CODES.N
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.amaze.filemanager.R
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.util.Locale
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
 
 /**
  * [Context] extension to return app's available locales, from locales_config.xml.
@@ -52,20 +50,20 @@ fun Context.getLangPreferenceDropdownEntries(): Map<String, Locale> {
     val localeList = getLocaleListFromXml()
     val currentLocaleList: List<Locale> =
         (
-            if (!AppCompatDelegate.getApplicationLocales().isEmpty) {
-                AppCompatDelegate.getApplicationLocales()
-            } else {
-                LocaleListCompat.getDefault()
-            }
-        ).let { appLocales ->
-            ArrayList<Locale>().apply {
-                for (x in 0 until appLocales.size()) {
-                    appLocales.get(x)?.let {
-                        this.add(it)
+                if (!AppCompatDelegate.getApplicationLocales().isEmpty) {
+                    AppCompatDelegate.getApplicationLocales()
+                } else {
+                    LocaleListCompat.getDefault()
+                }
+                ).let { appLocales ->
+                ArrayList<Locale>().apply {
+                    for (x in 0 until appLocales.size()) {
+                        appLocales.get(x)?.let {
+                            this.add(it)
+                        }
                     }
                 }
             }
-        }
     val map = mutableMapOf<String, Locale>()
 
     for (a in 0 until localeList.size()) {

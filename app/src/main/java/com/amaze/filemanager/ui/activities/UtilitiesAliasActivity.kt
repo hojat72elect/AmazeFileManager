@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.ui.activities
 
 import android.content.ActivityNotFoundException

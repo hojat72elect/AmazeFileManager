@@ -1,5 +1,3 @@
-
-
 package com.amaze.filemanager.filesystem.root
 
 import android.os.Build
@@ -32,6 +30,7 @@ object MountPathCommand : IRootCommand() {
                 runShellCommand(command)
                 null
             }
+
             else -> null
         }
     }
