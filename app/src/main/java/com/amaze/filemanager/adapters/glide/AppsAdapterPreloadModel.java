@@ -52,7 +52,7 @@ public class AppsAdapterPreloadModel implements ListPreloader.PreloadModelProvid
 
     @Nullable
     @Override
-    public RequestBuilder getPreloadRequestBuilder(String item) {
+    public RequestBuilder getPreloadRequestBuilder(@NonNull String item) {
         if (isBottomSheet) {
             return request.clone().load(getApplicationIconFromPackageName(item));
         } else {

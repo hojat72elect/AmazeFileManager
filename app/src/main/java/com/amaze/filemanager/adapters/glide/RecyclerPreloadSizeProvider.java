@@ -3,6 +3,7 @@ package com.amaze.filemanager.adapters.glide;
 import android.util.SparseArray;
 import android.view.View;
 import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import com.amaze.filemanager.adapters.data.IconDataParcelable;
 import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.request.target.SizeReadyCallback;
@@ -12,8 +13,6 @@ import com.bumptech.glide.request.transition.Transition;
 /**
  * This uses a callback to know for each position what View is the one in which you're going to
  * insert the image.
- *
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 10/12/2017, at 12:27.
  */
 public class RecyclerPreloadSizeProvider
         implements ListPreloader.PreloadSizeProvider<IconDataParcelable> {
@@ -51,7 +50,7 @@ public class RecyclerPreloadSizeProvider
 
     @Nullable
     @Override
-    public int[] getPreloadSize(IconDataParcelable item, int adapterPosition, int perItemPosition) {
+    public int[] getPreloadSize(@NonNull IconDataParcelable item, int adapterPosition, int perItemPosition) {
         return viewSizes.get(callback.getCorrectView(item, adapterPosition), null);
     }
 
@@ -72,7 +71,7 @@ public class RecyclerPreloadSizeProvider
         }
 
         @Override
-        public void onResourceReady(Object resource, Transition<? super Object> transition) {
+        public void onResourceReady(@NonNull Object resource, Transition<? super Object> transition) {
             // Do nothing
         }
     }

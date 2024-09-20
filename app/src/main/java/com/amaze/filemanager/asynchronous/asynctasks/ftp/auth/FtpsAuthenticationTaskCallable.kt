@@ -62,7 +62,7 @@ class FtpsAuthenticationTaskCallable(
                 }
             }
         return (
-                NetCopyClientConnectionPool.ftpClientFactory.create(uri.toString())
+                NetCopyClientConnectionPool.ftpClientFactory.create(uri)
                         as FTPSClient
                 ).apply {
                 this.hostnameVerifier =

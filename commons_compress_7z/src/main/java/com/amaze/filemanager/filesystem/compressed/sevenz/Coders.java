@@ -27,7 +27,7 @@ import org.tukaani.xz.X86Options;
 
 class Coders {
     private static final Map<SevenZMethod, CoderBase> CODER_MAP =
-            new HashMap<SevenZMethod, CoderBase>() {
+            new HashMap<>() {
 
                 private static final long serialVersionUID = 1664829131806520867L;
 
@@ -72,15 +72,6 @@ class Coders {
         return cb.decode(archiveName, is, uncompressedLength, coder, password, maxMemoryLimitInKb);
     }
 
-    static OutputStream addEncoder(
-            final OutputStream out, final SevenZMethod method, final Object options) throws IOException {
-        final CoderBase cb = findByMethod(method);
-        if (cb == null) {
-            throw new IOException("Unsupported compression method " + method);
-        }
-        return cb.encode(out, options);
-    }
-
     static class CopyDecoder extends CoderBase {
         @Override
         InputStream decode(
@@ -89,8 +80,7 @@ class Coders {
                 final long uncompressedLength,
                 final Coder coder,
                 final byte[] password,
-                final int maxMemoryLimitInKb)
-                throws IOException {
+                final int maxMemoryLimitInKb) {
             return in;
         }
 
@@ -128,7 +118,6 @@ class Coders {
             }
         }
 
-        @SuppressWarnings("resource")
         @Override
         OutputStream encode(final OutputStream out, final Object options) {
             return new FlushShieldFilterOutputStream(
@@ -143,7 +132,6 @@ class Coders {
             super(Number.class);
         }
 
-        @SuppressWarnings("resource") // caller must close the InputStream
         @Override
         InputStream decode(
                 final String archiveName,
@@ -151,8 +139,7 @@ class Coders {
                 final long uncompressedLength,
                 final Coder coder,
                 final byte[] password,
-                final int maxMemoryLimitInKb)
-                throws IOException {
+                final int maxMemoryLimitInKb) {
             final Inflater inflater = new Inflater(true);
             // Inflater with nowrap=true has this odd contract for a zero padding
             // byte following the data stream; this used to be zlib's requirement
@@ -251,7 +238,6 @@ class Coders {
             super(Number.class);
         }
 
-        @SuppressWarnings("resource") // caller must close the InputStream
         @Override
         InputStream decode(
                 final String archiveName,
@@ -259,8 +245,7 @@ class Coders {
                 final long uncompressedLength,
                 final Coder coder,
                 final byte[] password,
-                final int maxMemoryLimitInKb)
-                throws IOException {
+                final int maxMemoryLimitInKb) {
             return new Deflate64CompressorInputStream(in);
         }
     }

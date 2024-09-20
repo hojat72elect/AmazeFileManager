@@ -12,9 +12,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 6/12/2017, at 15:15.
- */
 public class RecyclerPreloadModelProvider
         implements ListPreloader.PreloadModelProvider<IconDataParcelable> {
 

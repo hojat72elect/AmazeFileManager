@@ -920,7 +920,6 @@ public class MainFragment extends Fragment
             mainFragmentViewModel.setBack(
                     new LayoutElementParcelable(
                             requireContext(),
-                            true,
                             getString(R.string.goback),
                             getBoolean(PREFERENCE_SHOW_THUMB)));
         }

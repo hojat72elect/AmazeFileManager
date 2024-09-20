@@ -1,5 +1,6 @@
 package com.amaze.filemanager.asynchronous.asynctasks.hashcalculator;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import com.amaze.filemanager.filesystem.HybridFileParcelable;
 import com.amaze.filemanager.filesystem.ftp.NetCopyClientUtils;
@@ -38,13 +39,13 @@ public class CalculateHashSftpCallback implements Callable<Hash> {
     }
 
     private SshClientSessionTemplate<String> getHash(String command) {
-        return new SshClientSessionTemplate<String>(file.getPath()) {
+        return new SshClientSessionTemplate<>(file.getPath()) {
             @Override
-            public String execute(Session session) throws IOException {
-                String path = com.amaze.filemanager.filesystem.ftp.NetCopyClientUtils.extractRemotePathFrom(file.getPath());
+            public String execute(@NonNull Session session) throws IOException {
+                String path = NetCopyClientUtils.extractRemotePathFrom(file.getPath());
                 String fullCommand = String.format(command, path);
                 Session.Command cmd = session.exec(fullCommand);
-                String result = net.schmizz.sshj.common.IOUtils.readFully(cmd.getInputStream()).toString();
+                String result = IOUtils.readFully(cmd.getInputStream()).toString();
                 cmd.close();
                 if (cmd.getExitStatus() == 0) {
                     return result;

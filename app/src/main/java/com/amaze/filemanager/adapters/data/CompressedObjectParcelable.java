@@ -5,9 +5,6 @@ import android.os.Parcelable;
 import com.amaze.filemanager.ui.icons.Icons;
 import java.util.Comparator;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 20/11/2017, at 15:26.
- */
 public class CompressedObjectParcelable implements Parcelable {
     public static final int TYPE_GOBACK = -1, TYPE_NORMAL = 0;
     public static final Parcelable.Creator<CompressedObjectParcelable> CREATOR =

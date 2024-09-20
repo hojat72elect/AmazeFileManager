@@ -33,8 +33,6 @@ public enum SevenZMethod {
     DEFLATE(new byte[]{(byte) 0x04, (byte) 0x01, (byte) 0x08}),
     /**
      * Deflate64
-     *
-     * @since 1.16
      */
     DEFLATE64(new byte[]{(byte) 0x04, (byte) 0x01, (byte) 0x09}),
     /**
@@ -48,44 +46,30 @@ public enum SevenZMethod {
     AES256SHA256(new byte[]{(byte) 0x06, (byte) 0xf1, (byte) 0x07, (byte) 0x01}),
     /**
      * BCJ x86 platform version 1.
-     *
-     * @since 1.8
      */
     BCJ_X86_FILTER(new byte[]{0x03, 0x03, 0x01, 0x03}),
     /**
      * BCJ PowerPC platform.
-     *
-     * @since 1.8
      */
     BCJ_PPC_FILTER(new byte[]{0x03, 0x03, 0x02, 0x05}),
     /**
      * BCJ I64 platform.
-     *
-     * @since 1.8
      */
     BCJ_IA64_FILTER(new byte[]{0x03, 0x03, 0x04, 0x01}),
     /**
      * BCJ ARM platform.
-     *
-     * @since 1.8
      */
     BCJ_ARM_FILTER(new byte[]{0x03, 0x03, 0x05, 0x01}),
     /**
      * BCJ ARM Thumb platform.
-     *
-     * @since 1.8
      */
     BCJ_ARM_THUMB_FILTER(new byte[]{0x03, 0x03, 0x07, 0x01}),
     /**
      * BCJ Sparc platform.
-     *
-     * @since 1.8
      */
     BCJ_SPARC_FILTER(new byte[]{0x03, 0x03, 0x08, 0x05}),
     /**
      * Delta filter.
-     *
-     * @since 1.8
      */
     DELTA_FILTER(new byte[]{0x03});
 
@@ -104,10 +88,4 @@ public enum SevenZMethod {
         return null;
     }
 
-    byte[] getId() {
-        final int idLength = id.length;
-        final byte[] copy = new byte[idLength];
-        System.arraycopy(id, 0, copy, 0, idLength);
-        return copy;
-    }
 }

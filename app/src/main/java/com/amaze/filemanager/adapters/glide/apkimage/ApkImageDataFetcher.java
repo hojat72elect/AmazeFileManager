@@ -10,9 +10,6 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 10/12/2017, at 16:12.
- */
 public class ApkImageDataFetcher implements DataFetcher<Drawable> {
 
     private final Context context;
@@ -24,7 +21,7 @@ public class ApkImageDataFetcher implements DataFetcher<Drawable> {
     }
 
     @Override
-    public void loadData(Priority priority, DataCallback<? super Drawable> callback) {
+    public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super Drawable> callback) {
         PackageInfo pi = context.getPackageManager().getPackageArchiveInfo(model, 0);
         Drawable apkIcon;
         if (pi != null) {

@@ -86,7 +86,7 @@ class SevenZipHelperCallable(
         }
     }
 
-    internal fun consolidate(
+    private fun consolidate(
         paths: Collection<String>,
         level: Int = 0,
     ): Set<String> {

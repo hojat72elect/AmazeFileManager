@@ -2,8 +2,6 @@ package com.amaze.filemanager.filesystem.compressed.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import org.apache.commons.compress.utils.ByteUtils;
 
 /**
  * Base Codec class.
@@ -39,13 +37,6 @@ abstract class CoderBase {
     }
 
     /**
-     * @return property-bytes to write in a Folder block
-     */
-    byte[] getOptionsAsProperties(final Object options) throws IOException {
-        return ByteUtils.EMPTY_BYTE_ARRAY;
-    }
-
-    /**
      * @return configuration options that have been used to create the given InputStream from the
      * given Coder
      */
@@ -65,10 +56,4 @@ abstract class CoderBase {
             int maxMemoryLimitInKb)
             throws IOException;
 
-    /**
-     * @return a stream that writes to out using the given configuration.
-     */
-    OutputStream encode(final OutputStream out, final Object options) throws IOException {
-        throw new UnsupportedOperationException("Method doesn't support writing");
-    }
 }

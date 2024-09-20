@@ -158,7 +158,7 @@ class AppsRecyclerAdapter(
                 } else {
                     modelProvider.loadApkImage(rowItem.path, holder.apkIcon)
                 }
-                if (holder.about != null && !isBottomSheet) {
+                if (isBottomSheet.not()) {
                     if ((fragment.requireActivity() as MainActivity).appTheme == AppTheme.LIGHT) {
                         holder.about.setColorFilter(
                             Color.parseColor("#ff666666"),
@@ -179,12 +179,8 @@ class AppsRecyclerAdapter(
                     (fragment.requireActivity() as MainActivity)
                         .getBoolean(PreferencesConstants.PREFERENCE_ENABLE_MARQUEE_FILENAME)
                 if (enableMarqueeFilename) {
-                    holder.txtTitle.ellipsize =
-                        if (enableMarqueeFilename) {
-                            TextUtils.TruncateAt.MARQUEE
-                        } else {
-                            TextUtils.TruncateAt.MIDDLE
-                        }
+                    holder.txtTitle.ellipsize = TextUtils.TruncateAt.MARQUEE
+
                     marqueeAfterDelay(2000, holder.txtTitle)
                 }
                 if (!isBottomSheet) {

@@ -23,9 +23,7 @@ class DeepSearch(
     }
 
     /**
-     * Search for occurrences of a given text in file names and publish the result
-     *
-     * @param directory the current path
+     * Search for occurrences of a given text in file names and publish the result.
      */
     override suspend fun search(filter: SearchFilter) {
         val directory = HybridFile(openMode, path)

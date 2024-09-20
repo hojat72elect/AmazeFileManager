@@ -11,12 +11,11 @@ import com.amaze.filemanager.filesystem.files.sort.ComparableParcelable;
 import com.amaze.filemanager.ui.icons.Icons;
 import com.amaze.filemanager.utils.Utils;
 import java.io.File;
-import java.util.Calendar;
 
 public class LayoutElementParcelable implements Parcelable, ComparableParcelable {
 
     public static final Parcelable.Creator<LayoutElementParcelable> CREATOR =
-            new Parcelable.Creator<LayoutElementParcelable>() {
+            new Parcelable.Creator<>() {
                 public LayoutElementParcelable createFromParcel(Parcel in) {
                     return new LayoutElementParcelable(in);
                 }
@@ -25,8 +24,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
                     return new LayoutElementParcelable[size];
                 }
             };
-    private static final String CURRENT_YEAR =
-            String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+
+
     public final boolean isBack;
     public final int filetype;
     public final IconDataParcelable iconData;
@@ -43,7 +42,7 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
     private OpenMode mode = OpenMode.FILE;
 
     public LayoutElementParcelable(
-            @NonNull Context c, boolean isBack, String goback, boolean showThumbs) {
+            @NonNull Context c, String goback, boolean showThumbs) {
         this(
                 c,
                 true,
@@ -174,7 +173,7 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
         this.header = header;
         this.longSize = longSize;
         this.isDirectory = isDirectory;
-        if (!date.trim().equals("")) {
+        if (!date.trim().isEmpty()) {
             this.date = Long.parseLong(date);
             this.dateModification = Utils.getDate(c, this.date);
         } else {
@@ -220,9 +219,10 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
     }
 
     public boolean hasSymlink() {
-        return symlink != null && symlink.length() != 0;
+        return symlink != null && !symlink.isEmpty();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return title + "\n" + desc;

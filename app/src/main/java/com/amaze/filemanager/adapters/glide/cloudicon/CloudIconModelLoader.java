@@ -5,15 +5,13 @@ import static com.amaze.filemanager.filesystem.smb.CifsContexts.SMB_URI_PREFIX;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.amaze.filemanager.database.CloudHandler;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.signature.ObjectKey;
 
-/**
- * Created by Vishal Nehra on 3/27/2018.
- */
 public class CloudIconModelLoader implements ModelLoader<String, Bitmap> {
 
     private final Context context;
@@ -24,7 +22,7 @@ public class CloudIconModelLoader implements ModelLoader<String, Bitmap> {
 
     @Nullable
     @Override
-    public LoadData<Bitmap> buildLoadData(String s, int width, int height, Options options) {
+    public LoadData<Bitmap> buildLoadData(@NonNull String s, int width, int height, @NonNull Options options) {
         // we put key as current time since we're not disk caching the images for cloud,
         // as there is no way to differentiate input streams returned by different cloud services
         // for future instances and they don't expose concrete paths either

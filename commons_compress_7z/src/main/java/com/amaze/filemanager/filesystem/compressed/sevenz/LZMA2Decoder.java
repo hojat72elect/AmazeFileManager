@@ -30,7 +30,7 @@ class LZMA2Decoder extends CoderBase {
                 throw new MemoryLimitException(memoryUsageInKb, maxMemoryLimitInKb);
             }
             return new LZMA2InputStream(in, dictionarySize);
-        } catch (final IllegalArgumentException ex) { // NOSONAR
+        } catch (final IllegalArgumentException ex) {
             throw new IOException(ex.getMessage());
         }
     }

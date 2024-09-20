@@ -52,8 +52,6 @@ public class MoveFiles implements Callable<MoveFilesReturn> {
     /**
      * Maintains a list of filesystems supporting the move/rename implementation. Please update to
      * return your {@link OpenMode} type if it is supported here
-     *
-     * @return
      */
     public static HashSet<OpenMode> getOperationSupportedFileSystem() {
         HashSet<OpenMode> hashSet = new HashSet<>();
@@ -69,7 +67,7 @@ public class MoveFiles implements Callable<MoveFilesReturn> {
     @WorkerThread
     @Override
     public MoveFilesReturn call() {
-        if (files.size() == 0) {
+        if (files.isEmpty()) {
             return new MoveFilesReturn(true, false, 0, 0);
         }
 

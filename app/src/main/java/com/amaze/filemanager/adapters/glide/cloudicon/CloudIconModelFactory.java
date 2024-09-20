@@ -5,10 +5,8 @@ import android.graphics.Bitmap;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
+import androidx.annotation.NonNull;
 
-/**
- * Created by Vishal Nehra on 3/27/2018.
- */
 public class CloudIconModelFactory implements ModelLoaderFactory<String, Bitmap> {
 
     private final Context context;
@@ -17,8 +15,9 @@ public class CloudIconModelFactory implements ModelLoaderFactory<String, Bitmap>
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public ModelLoader<String, Bitmap> build(MultiModelLoaderFactory multiFactory) {
+    public ModelLoader<String, Bitmap> build(@NonNull MultiModelLoaderFactory multiFactory) {
         return new CloudIconModelLoader(context);
     }
 

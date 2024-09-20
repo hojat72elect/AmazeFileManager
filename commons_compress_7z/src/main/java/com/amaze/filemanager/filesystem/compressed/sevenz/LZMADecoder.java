@@ -44,7 +44,6 @@ class LZMADecoder extends CoderBase {
         return lzmaIn;
     }
 
-    @SuppressWarnings("resource")
     @Override
     OutputStream encode(final OutputStream out, final Object opts) throws IOException {
         // NOOP as LZMAOutputStream throws an exception in flush

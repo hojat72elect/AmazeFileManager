@@ -24,13 +24,12 @@ class DeltaDecoder extends CoderBase {
         return new DeltaOptions(getOptionsFromCoder(coder)).getInputStream(in);
     }
 
-    @SuppressWarnings("resource")
     @Override
     OutputStream encode(final OutputStream out, final Object options) throws IOException {
         final int distance = numberOptionOrDefault(options, 1);
         try {
             return new DeltaOptions(distance).getOutputStream(new FinishableWrapperOutputStream(out));
-        } catch (final UnsupportedOptionsException ex) { // NOSONAR
+        } catch (final UnsupportedOptionsException ex) {
             throw new IOException(ex.getMessage());
         }
     }

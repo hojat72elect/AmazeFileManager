@@ -202,10 +202,6 @@ public class AppConfig extends GlideApplication {
         return explorerDatabase;
     }
 
-    public UtilitiesDatabase getUtilitiesDatabase() {
-        return utilitiesDatabase;
-    }
-
     /**
      * Called in {@link #attachBaseContext(Context)} after calling the {@code super} method. Should be
      * overridden if MultiDex is enabled, since it has to be initialized before ACRA.

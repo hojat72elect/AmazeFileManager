@@ -8,14 +8,14 @@ import com.amaze.filemanager.R
 
 class DonationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     @JvmField
-    val ROOT_VIEW: LinearLayout = itemView.findViewById(R.id.adapter_donation_root)
+    val rootView: LinearLayout = itemView.findViewById(R.id.adapter_donation_root)
 
     @JvmField
-    val TITLE: AppCompatTextView = itemView.findViewById(R.id.adapter_donation_title)
+    val title: AppCompatTextView = itemView.findViewById(R.id.adapter_donation_title)
 
     @JvmField
-    val SUMMARY: AppCompatTextView = itemView.findViewById(R.id.adapter_donation_summary)
+    val summary: AppCompatTextView = itemView.findViewById(R.id.adapter_donation_summary)
 
     @JvmField
-    val PRICE: AppCompatTextView = itemView.findViewById(R.id.adapter_donation_price)
+    val price: AppCompatTextView = itemView.findViewById(R.id.adapter_donation_price)
 }

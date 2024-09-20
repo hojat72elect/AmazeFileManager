@@ -97,12 +97,9 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is the information that serves to load the files into a "list" (a RecyclerView). There
  * are 3 types of item TYPE_ITEM, TYPE_HEADER_FOLDERS and TYPE_HEADER_FILES, EMPTY_LAST_ITEM and
- * TYPE_BACK represeted by ItemViewHolder, SpecialViewHolder and EmptyViewHolder respectively. The
+ * TYPE_BACK represented by ItemViewHolder, SpecialViewHolder and EmptyViewHolder respectively. The
  * showPopup shows the file's popup menu. The 'go to parent' aka '..' button (go to settings to
  * activate it) is just a folder.
- *
- * <p>Created by Arpit on 11-04-2015 edited by Emmanuel Messulam <emmanuelbendavid@gmail.com> edited
- * by Jens Klingenberg <mail@jensklingenberg.de>
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements RecyclerPreloadSizeProvider.RecyclerPreloadSizeProviderCallback {
@@ -218,8 +215,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (imageView != null) {
                 imageView.clearAnimation();
                 imageView.startAnimation(iconAnimation);
-            } else {
-                // TODO: we don't have the check icon object probably because of config change
             }
         } else {
             // if view is un-checked, check it
@@ -230,8 +225,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (imageView != null) {
                 imageView.clearAnimation();
                 imageView.startAnimation(iconAnimation);
-            } else {
-                // TODO: we don't have the check icon object probably because of config change
             }
         }
 

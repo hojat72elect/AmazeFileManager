@@ -34,9 +34,6 @@ class HiddenAdapter(
     var materialDialog: MaterialDialog?,
     private val hide: Boolean,
 ) : RecyclerView.Adapter<HiddenViewHolder>() {
-    companion object {
-        private const val TAG = "HiddenAdapter"
-    }
 
     private val hiddenFiles = hiddenFiles.toMutableList()
 

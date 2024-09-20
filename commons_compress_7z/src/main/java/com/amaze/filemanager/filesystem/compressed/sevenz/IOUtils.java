@@ -113,7 +113,7 @@ class IOUtils {
         if (len < 0 || offset < 0 || len + offset > array.length || len + offset < 0) {
             throw new IndexOutOfBoundsException();
         }
-        int count = 0, x = 0;
+        int count = 0, x;
         while (count != len) {
             x = input.read(array, offset + count, len - count);
             if (x == -1) {
@@ -153,28 +153,6 @@ class IOUtils {
         }
     }
 
-    // toByteArray(InputStream) copied from:
-    // commons/proper/io/trunk/src/main/java/org/apache/commons/io/IOUtils.java?revision=1428941
-    // January 8th, 2013
-    //
-    // Assuming our copy() works just as well as theirs!  :-)
-
-    /**
-     * Gets the contents of an {@code InputStream} as a {@code byte[]}.
-     *
-     * <p>This method buffers the input internally, so there is no need to use a {@code
-     * BufferedInputStream}.
-     *
-     * @param input the {@code InputStream} to read from
-     * @return the requested byte array
-     * @throws NullPointerException if the input is null
-     * @throws IOException          if an I/O error occurs
-     * @since 1.5
-     */
-    public static byte[] toByteArray(final InputStream input) throws IOException {
-        return ByteStreamsKt.readBytes(input);
-    }
-
     /**
      * Copies part of the content of a InputStream into an OutputStream. Uses a default buffer size of
      * 8024 bytes.
@@ -184,7 +162,6 @@ class IOUtils {
      * @param len    maximum amount of bytes to copy
      * @return the number of bytes copied
      * @throws IOException if an error occurs
-     * @since 1.21
      */
     public static long copyRange(final InputStream input, final long len, final OutputStream output)
             throws IOException {
@@ -202,7 +179,6 @@ class IOUtils {
      * @return the number of bytes copied
      * @throws IOException              if an error occurs
      * @throws IllegalArgumentException if buffersize is smaller than or equal to 0
-     * @since 1.21
      */
     public static long copyRange(
             final InputStream input, final long len, final OutputStream output, final int buffersize)
@@ -211,7 +187,7 @@ class IOUtils {
             throw new IllegalArgumentException("buffersize must be bigger than 0");
         }
         final byte[] buffer = new byte[(int) Math.min(buffersize, len)];
-        int n = 0;
+        int n;
         long count = 0;
         while (count < len
                 && -1 != (n = input.read(buffer, 0, (int) Math.min(len - count, buffer.length)))) {
@@ -231,40 +207,10 @@ class IOUtils {
      * @return the requested byte array
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
-     * @since 1.21
      */
     public static byte[] readRange(final InputStream input, final int len) throws IOException {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         copyRange(input, len, output);
-        return output.toByteArray();
-    }
-
-    /**
-     * Gets part of the contents of an {@code ReadableByteChannel} as a {@code byte[]}.
-     *
-     * @param input the {@code ReadableByteChannel} to read from
-     * @param len   maximum amount of bytes to copy
-     * @return the requested byte array
-     * @throws NullPointerException if the input is null
-     * @throws IOException          if an I/O error occurs
-     * @since 1.21
-     */
-    public static byte[] readRange(final ReadableByteChannel input, final int len)
-            throws IOException {
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final ByteBuffer b = ByteBuffer.allocate(Math.min(len, COPY_BUF_SIZE));
-        int read = 0;
-        while (read < len) {
-            // Make sure we never read more than len bytes
-            b.limit(Math.min(len - read, b.capacity()));
-            final int readNow = input.read(b);
-            if (readNow <= 0) {
-                break;
-            }
-            output.write(b.array(), 0, readNow);
-            b.rewind();
-            read += readNow;
-        }
         return output.toByteArray();
     }
 }

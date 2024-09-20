@@ -30,14 +30,12 @@ import org.apache.commons.compress.MemoryLimitException;
 import org.apache.commons.compress.utils.BoundedInputStream;
 import org.apache.commons.compress.utils.ByteUtils;
 import org.apache.commons.compress.utils.CRC32VerifyingInputStream;
-import org.apache.commons.compress.utils.InputStreamStatistics;
 
 /**
  * Reads a 7z file, using SeekableByteChannel under the covers.
  *
  * <p>The 7z file format is a flexible container that can contain many compression and encryption
- * types, but at the moment only only Copy, LZMA, LZMA2, BZIP2, Deflate and AES-256 + SHA-256 are
- * supported.
+ * types, but at the moment only supports Copy, LZMA, LZMA2, BZIP2, Deflate and AES-256 + SHA-256.
  *
  * <p>The format is very Windows/Intel specific, so it uses little-endian byte order, doesn't store
  * user/group or permission bits, and represents times using NTFS timestamps (100 nanosecond units
@@ -51,13 +49,11 @@ import org.apache.commons.compress.utils.InputStreamStatistics;
  * <p>Multi volume archives can be read by concatenating the parts in correct order - either
  * manually or by using {link org.apache.commons.compress.utils.MultiReadOnlySeekableByteChannel}
  * for example. @NotThreadSafe
- *
- * @since 1.6
  */
 public class SevenZFile implements Closeable {
     static final int SIGNATURE_HEADER_SIZE = 32;
     // shared with SevenZOutputFile and tests, neither mutates it
-    static final byte[] sevenZSignature = { // NOSONAR
+    static final byte[] sevenZSignature = {
             (byte) '7', (byte) 'z', (byte) 0xBC, (byte) 0xAF, (byte) 0x27, (byte) 0x1C
     };
     private static final String DEFAULT_FILE_NAME = "unknown archive";
@@ -97,7 +93,7 @@ public class SevenZFile implements Closeable {
     public SevenZFile(final File fileName, final char[] password, final SevenZFileOptions options)
             throws IOException {
         this(
-                new FileInputStream(fileName).getChannel(), // NOSONAR
+                new FileInputStream(fileName).getChannel(),
                 fileName.getAbsolutePath(),
                 utf16Decode(password),
                 true,
@@ -123,139 +119,6 @@ public class SevenZFile implements Closeable {
                 SevenZFileOptions.DEFAULT);
     }
 
-    /**
-     * Reads a SeekableByteChannel as 7z archive
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel the channel to read
-     * @throws IOException if reading the archive fails
-     * @since 1.13
-     */
-    public SevenZFile(final FileChannel channel) throws IOException {
-        this(channel, SevenZFileOptions.DEFAULT);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive with addtional options.
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel the channel to read
-     * @param options the options to apply
-     * @throws IOException if reading the archive fails or the memory limit (if set) is too small
-     * @since 1.19
-     */
-    public SevenZFile(final FileChannel channel, final SevenZFileOptions options) throws IOException {
-        this(channel, DEFAULT_FILE_NAME, null, options);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel  the channel to read
-     * @param password optional password if the archive is encrypted
-     * @throws IOException if reading the archive fails
-     * @since 1.17
-     */
-    public SevenZFile(final FileChannel channel, final char[] password) throws IOException {
-        this(channel, password, SevenZFileOptions.DEFAULT);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive with additional options.
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel  the channel to read
-     * @param password optional password if the archive is encrypted
-     * @param options  the options to apply
-     * @throws IOException if reading the archive fails or the memory limit (if set) is too small
-     * @since 1.19
-     */
-    public SevenZFile(
-            final FileChannel channel, final char[] password, final SevenZFileOptions options)
-            throws IOException {
-        this(channel, DEFAULT_FILE_NAME, password, options);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel  the channel to read
-     * @param fileName name of the archive - only used for error reporting
-     * @param password optional password if the archive is encrypted
-     * @throws IOException if reading the archive fails
-     * @since 1.17
-     */
-    public SevenZFile(final FileChannel channel, final String fileName, final char[] password)
-            throws IOException {
-        this(channel, fileName, password, SevenZFileOptions.DEFAULT);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive with addtional options.
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel  the channel to read
-     * @param fileName name of the archive - only used for error reporting
-     * @param password optional password if the archive is encrypted
-     * @param options  the options to apply
-     * @throws IOException if reading the archive fails or the memory limit (if set) is too small
-     * @since 1.19
-     */
-    public SevenZFile(
-            final FileChannel channel,
-            final String fileName,
-            final char[] password,
-            final SevenZFileOptions options)
-            throws IOException {
-        this(channel, fileName, utf16Decode(password), false, options);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel  the channel to read
-     * @param fileName name of the archive - only used for error reporting
-     * @throws IOException if reading the archive fails
-     * @since 1.17
-     */
-    public SevenZFile(final FileChannel channel, final String fileName) throws IOException {
-        this(channel, fileName, SevenZFileOptions.DEFAULT);
-    }
-
-    /**
-     * Reads a SeekableByteChannel as 7z archive with additional options.
-     *
-     * <p>{@link org.apache.commons.compress.utils.SeekableInMemoryByteChannel} allows you to read
-     * from an in-memory archive.
-     *
-     * @param channel  the channel to read
-     * @param fileName name of the archive - only used for error reporting
-     * @param options  the options to apply
-     * @throws IOException if reading the archive fails or the memory limit (if set) is too small
-     * @since 1.19
-     */
-    public SevenZFile(
-            final FileChannel channel, final String fileName, final SevenZFileOptions options)
-            throws IOException {
-        this(channel, fileName, null, false, options);
-    }
 
     /**
      * Reads a SeekableByteChannel as 7z archive
@@ -267,7 +130,6 @@ public class SevenZFile implements Closeable {
      * @param password optional password if the archive is encrypted - the byte array is supposed to
      *                 be the UTF16-LE encoded representation of the password.
      * @throws IOException if reading the archive fails
-     * @since 1.13
      * @deprecated use the char[]-arg version for the password instead
      */
     @Deprecated
@@ -286,7 +148,6 @@ public class SevenZFile implements Closeable {
      * @param password optional password if the archive is encrypted - the byte array is supposed to
      *                 be the UTF16-LE encoded representation of the password.
      * @throws IOException if reading the archive fails
-     * @since 1.13
      * @deprecated use the char[]-arg version for the password instead
      */
     @Deprecated
@@ -400,7 +261,6 @@ public class SevenZFile implements Closeable {
      * @param signature the bytes to check
      * @param length    the number of bytes to check
      * @return true, if this is the signature of a 7z archive.
-     * @since 1.8
      */
     public static boolean matches(final byte[] signature, final int length) {
         if (length < sevenZSignature.length) {
@@ -508,7 +368,6 @@ public class SevenZFile implements Closeable {
      * #getNextEntry}.
      *
      * @return a copy of meta-data of all archive entries.
-     * @since 1.11
      */
     public Iterable<SevenZArchiveEntry> getEntries() {
         return new ArrayList<>(Arrays.asList(archive.files));
@@ -2047,26 +1906,6 @@ public class SevenZFile implements Closeable {
             uncompressedBytesReadFromCurrentEntry += cnt;
         }
         return cnt;
-    }
-
-    /**
-     * Provides statistics for bytes read from the current entry.
-     *
-     * @return statistics for bytes read from the current entry
-     * @since 1.17
-     */
-    public InputStreamStatistics getStatisticsForCurrentEntry() {
-        return new InputStreamStatistics() {
-            @Override
-            public long getCompressedCount() {
-                return compressedBytesReadFromCurrentEntry;
-            }
-
-            @Override
-            public long getUncompressedCount() {
-                return uncompressedBytesReadFromCurrentEntry;
-            }
-        };
     }
 
     private void readFully(final ByteBuffer buf) throws IOException {

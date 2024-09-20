@@ -24,7 +24,6 @@ import com.amaze.filemanager.filesystem.HybridFileParcelable
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
 import com.amaze.filemanager.filesystem.files.FileUtils
 import com.amaze.filemanager.ui.activities.MainActivity
-import com.amaze.filemanager.utils.OnFileFound
 import com.amaze.filemanager.utils.Utils
 import java.lang.ref.WeakReference
 import java.util.LinkedList
@@ -161,16 +160,13 @@ class PreparePasteTask(strongRefMain: MainActivity) {
             destination.forEachChildrenFile(
                 context.get(),
                 isRootMode,
-                object : OnFileFound {
-                    override fun onFileFound(file: HybridFileParcelable) {
-                        for (fileToCopy in filesToCopy) {
-                            if (file.getName(context.get()) == fileToCopy.getName(context.get())) {
-                                conflictingFiles.add(fileToCopy)
-                            }
-                        }
+            ) { file ->
+                for (fileToCopy in filesToCopy) {
+                    if (file.getName(context.get()) == fileToCopy.getName(context.get())) {
+                        conflictingFiles.add(fileToCopy)
                     }
-                },
-            )
+                }
+            }
             withContext(Dispatchers.Main) {
                 prepareDialog(conflictingFiles, conflictingDirActionMap)
                 @Suppress("DEPRECATION")

@@ -17,22 +17,10 @@ import java.util.Objects;
  * <tr><td>LZMA2</td><td>org.tukaani.xz.LZMA2Options</td><td>Whole set of LZMA2 options.</td></tr>
  * <tr><td>DELTA_FILTER</td><td>Number</td><td>Delta Distance - a number between 1 and 256</td></tr>
  * </table>
- *
- * @Immutable
- * @since 1.8
  */
 public class SevenZMethodConfiguration {
     private final SevenZMethod method;
     private final Object options;
-
-    /**
-     * Doesn't configure any additional options.
-     *
-     * @param method the method to use
-     */
-    public SevenZMethodConfiguration(final SevenZMethod method) {
-        this(method, null);
-    }
 
     /**
      * Specifies and method plus configuration options.

@@ -31,17 +31,13 @@ data class StorageDirectoryParcelable(
         parcel.writeInt(iconRes)
     }
 
-    companion object {
-        @JvmField
-        val CREATOR =
-            object : Parcelable.Creator<StorageDirectoryParcelable> {
-                override fun createFromParcel(parcel: Parcel): StorageDirectoryParcelable {
-                    return StorageDirectoryParcelable(parcel)
-                }
+    companion object CREATOR : Parcelable.Creator<StorageDirectoryParcelable> {
+        override fun createFromParcel(parcel: Parcel): StorageDirectoryParcelable {
+            return StorageDirectoryParcelable(parcel)
+        }
 
-                override fun newArray(size: Int): Array<StorageDirectoryParcelable?> {
-                    return arrayOfNulls(size)
-                }
-            }
+        override fun newArray(size: Int): Array<StorageDirectoryParcelable?> {
+            return arrayOfNulls(size)
+        }
     }
 }

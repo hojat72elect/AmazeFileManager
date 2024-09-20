@@ -469,7 +469,6 @@ class SftpConnectDialog : DialogFragment() {
                 hostname,
                 port,
                 explicitTls,
-                requireContext(),
             ) { hostInfo ->
                 createFirstConnectCallback.invoke(
                     edit,
@@ -576,7 +575,6 @@ class SftpConnectDialog : DialogFragment() {
                     hostname,
                     port,
                     explicitTls,
-                    requireContext(),
                 ) { hostInfo: JSONObject ->
                     createReconnectSecureServerCallback(
                         connectionSettings,

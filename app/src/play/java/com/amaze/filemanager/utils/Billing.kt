@@ -135,14 +135,14 @@ class Billing(private val activity: BasicActivity) :
     ) {
         if (holder is DonationViewHolder && productDetails.isNotEmpty()) {
             val titleRaw: String = productDetails[position].title
-            holder.TITLE.text =
+            holder.title.text =
                 titleRaw.subSequence(
                     0,
                     titleRaw.lastIndexOf("("),
                 )
-            holder.SUMMARY.text = productDetails[position].description
-            holder.PRICE.text = productDetails[position].oneTimePurchaseOfferDetails?.formattedPrice
-            holder.ROOT_VIEW.setOnClickListener {
+            holder.summary.text = productDetails[position].description
+            holder.price.text = productDetails[position].oneTimePurchaseOfferDetails?.formattedPrice
+            holder.rootView.setOnClickListener {
                 purchaseProduct.purchaseItem(
                     productDetails[position],
                 )

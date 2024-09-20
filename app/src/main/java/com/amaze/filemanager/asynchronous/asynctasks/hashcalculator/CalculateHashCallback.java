@@ -54,12 +54,12 @@ public class CalculateHashCallback implements Callable<Hash> {
 
     private String getMD5Checksum() throws Exception {
         byte[] b = createChecksum();
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (byte aB : b) {
-            result += Integer.toString((aB & 0xff) + 0x100, 16).substring(1);
+            result.append(Integer.toString((aB & 0xff) + 0x100, 16).substring(1));
         }
-        return result;
+        return result.toString();
     }
 
     private String getSHA256Checksum() throws NoSuchAlgorithmException, IOException {

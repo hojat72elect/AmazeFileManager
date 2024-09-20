@@ -1,11 +1,11 @@
 package com.amaze.filemanager.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +37,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Arpit on 25-01-2015 edited by Emmanuel Messulam<emmanuelbendavid@gmail.com>
- */
+@SuppressLint("UseCompatLoadingForDrawables")
 public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedItemViewHolder> {
 
     private static final int TYPE_HEADER = 0, TYPE_ITEM = 1;
@@ -55,6 +54,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
     private boolean[] itemsChecked;
     private int offset = 0;
     private SharedPreferences sharedPrefs;
+
 
     public CompressedExplorerAdapter(
             Context c,
@@ -119,8 +119,6 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
 
         if (imageView != null) {
             imageView.setAnimation(animation);
-        } else {
-            // TODO: we don't have the check icon object probably because of config change
         }
 
         itemsChecked[position] = !itemsChecked[position];
@@ -128,8 +126,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
         notifyDataSetChanged();
         if (!compressedExplorerFragment.selection || compressedExplorerFragment.mActionMode == null) {
             compressedExplorerFragment.selection = true;
-      /*compressedExplorerFragment.mActionMode = compressedExplorerFragment.getActivity().startActionMode(
-      compressedExplorerFragment.mActionModeCallback);*/
+
             compressedExplorerFragment.mActionMode =
                     compressedExplorerFragment
                             .requireMainActivity()
@@ -138,7 +135,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
                             .startActionMode(compressedExplorerFragment.mActionModeCallback);
         }
         compressedExplorerFragment.mActionMode.invalidate();
-        if (getCheckedItemPositions().size() == 0) {
+        if (getCheckedItemPositions().isEmpty()) {
             compressedExplorerFragment.selection = false;
             compressedExplorerFragment.mActionMode.finish();
             compressedExplorerFragment.mActionMode = null;
@@ -169,13 +166,14 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position)) return TYPE_HEADER;
+        if (isPositionHeader()) return TYPE_HEADER;
 
         return TYPE_ITEM;
     }
 
+    @NonNull
     @Override
-    public CompressedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CompressedItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
             View v = mInflater.inflate(R.layout.rowlayout, parent, false);
             v.findViewById(R.id.picture_icon).setVisibility(View.INVISIBLE);
@@ -192,7 +190,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
     }
 
     @Override
-    public void onBindViewHolder(final CompressedItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final CompressedItemViewHolder holder, int position) {
         if (!stoppedAnimation) {
             animate(holder);
         }
@@ -205,18 +203,13 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
         final CompressedObjectParcelable rowItem = items.get(position);
         GradientDrawable gradientDrawable = (GradientDrawable) holder.genericIcon.getBackground();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            holder.checkImageView.setBackground(
-                    new CircleGradientDrawable(
-                            compressedExplorerFragment.accentColor,
-                            utilsProvider.getAppTheme(),
-                            compressedExplorerFragment.getResources().getDisplayMetrics()));
-        } else
-            holder.checkImageView.setBackgroundDrawable(
-                    new CircleGradientDrawable(
-                            compressedExplorerFragment.accentColor,
-                            utilsProvider.getAppTheme(),
-                            compressedExplorerFragment.getResources().getDisplayMetrics()));
+
+        holder.checkImageView.setBackground(
+                new CircleGradientDrawable(
+                        compressedExplorerFragment.accentColor,
+                        utilsProvider.getAppTheme(),
+                        compressedExplorerFragment.getResources().getDisplayMetrics()));
+
 
         if (rowItem.type == CompressedObjectParcelable.TYPE_GOBACK) {
             Glide.with(compressedExplorerFragment)
@@ -329,14 +322,14 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
     }
 
     @Override
-    public void onViewDetachedFromWindow(CompressedItemViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull CompressedItemViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         holder.rl.clearAnimation();
         holder.txtTitle.setSelected(false);
     }
 
     @Override
-    public void onViewAttachedToWindow(CompressedItemViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull CompressedItemViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         boolean enableMarqueeFilename =
                 sharedPrefs.getBoolean(PreferencesConstants.PREFERENCE_ENABLE_MARQUEE_FILENAME, true);
@@ -352,7 +345,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
         return super.onFailedToRecycleView(holder);
     }
 
-    private boolean isPositionHeader(int position) {
+    private boolean isPositionHeader() {
         return false; // TODO:
     }
 }

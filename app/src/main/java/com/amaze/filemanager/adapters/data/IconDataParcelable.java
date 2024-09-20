@@ -5,15 +5,13 @@ import android.os.Parcelable;
 import androidx.annotation.DrawableRes;
 
 /**
- * Saves data on what should be loaded as an icon for LayoutElementParcelable
- *
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 6/12/2017, at 17:52.
+ * Saves data on what should be loaded as an icon for LayoutElementParcelable.
  */
 public class IconDataParcelable implements Parcelable {
 
     public static final int IMAGE_RES = 0, IMAGE_FROMFILE = 1, IMAGE_FROMCLOUD = 2;
     public static final Parcelable.Creator<IconDataParcelable> CREATOR =
-            new Parcelable.Creator<IconDataParcelable>() {
+            new Parcelable.Creator<>() {
                 public IconDataParcelable createFromParcel(Parcel in) {
                     return new IconDataParcelable(in);
                 }

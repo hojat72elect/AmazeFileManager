@@ -1,6 +1,5 @@
 package com.amaze.filemanager.filesystem.compressed.sevenz;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -50,20 +49,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
         ntfsEpoch.set(Calendar.MILLISECOND, 0);
         final long realTime = ntfsEpoch.getTimeInMillis() + (ntfsTime / (10 * 1000));
         return new Date(realTime);
-    }
-
-    /**
-     * Converts Java time to NTFS time.
-     *
-     * @param date the Java time
-     * @return the NTFS time
-     */
-    public static long javaTimeToNtfsTime(final Date date) {
-        final Calendar ntfsEpoch = Calendar.getInstance();
-        ntfsEpoch.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-        ntfsEpoch.set(1601, 0, 1, 0, 0, 0);
-        ntfsEpoch.set(Calendar.MILLISECOND, 0);
-        return ((date.getTime() - ntfsEpoch.getTimeInMillis()) * 1000 * 10);
     }
 
     /**
@@ -125,16 +110,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
     }
 
     /**
-     * Indicates whether this is an "anti-item" used in differential backups, meaning it should delete
-     * the same file from a previous backup.
-     *
-     * @return true if it is an anti-item, false otherwise
-     */
-    public boolean isAntiItem() {
-        return isAntiItem;
-    }
-
-    /**
      * Sets whether this is an "anti-item" used in differential backups, meaning it should delete the
      * same file from a previous backup.
      *
@@ -163,37 +138,12 @@ public class SevenZArchiveEntry implements ArchiveEntry {
     }
 
     /**
-     * Gets the creation date.
-     *
-     * @return the creation date
-     * @throws UnsupportedOperationException if the entry hasn't got a creation date.
-     */
-    public Date getCreationDate() {
-        if (hasCreationDate) {
-            return ntfsTimeToJavaTime(creationDate);
-        }
-        throw new UnsupportedOperationException("The entry doesn't have this timestamp");
-    }
-
-    /**
      * Sets the creation date using NTFS time (100 nanosecond units since 1 January 1601)
      *
      * @param ntfsCreationDate the creation date
      */
     public void setCreationDate(final long ntfsCreationDate) {
         this.creationDate = ntfsCreationDate;
-    }
-
-    /**
-     * Sets the creation date,
-     *
-     * @param creationDate the creation date
-     */
-    public void setCreationDate(final Date creationDate) {
-        hasCreationDate = creationDate != null;
-        if (hasCreationDate) {
-            this.creationDate = javaTimeToNtfsTime(creationDate);
-        }
     }
 
     /**
@@ -238,18 +188,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
     }
 
     /**
-     * Sets the last modified date,
-     *
-     * @param lastModifiedDate the last modified date
-     */
-    public void setLastModifiedDate(final Date lastModifiedDate) {
-        hasLastModifiedDate = lastModifiedDate != null;
-        if (hasLastModifiedDate) {
-            this.lastModifiedDate = javaTimeToNtfsTime(lastModifiedDate);
-        }
-    }
-
-    /**
      * Returns whether this entry has got an access date at all.
      *
      * @return whether this entry has got an access date at all.
@@ -268,37 +206,12 @@ public class SevenZArchiveEntry implements ArchiveEntry {
     }
 
     /**
-     * Gets the access date.
-     *
-     * @return the access date
-     * @throws UnsupportedOperationException if the entry hasn't got a access date.
-     */
-    public Date getAccessDate() {
-        if (hasAccessDate) {
-            return ntfsTimeToJavaTime(accessDate);
-        }
-        throw new UnsupportedOperationException("The entry doesn't have this timestamp");
-    }
-
-    /**
      * Sets the access date using NTFS time (100 nanosecond units since 1 January 1601)
      *
      * @param ntfsAccessDate the access date
      */
     public void setAccessDate(final long ntfsAccessDate) {
         this.accessDate = ntfsAccessDate;
-    }
-
-    /**
-     * Sets the access date,
-     *
-     * @param accessDate the access date
-     */
-    public void setAccessDate(final Date accessDate) {
-        hasAccessDate = accessDate != null;
-        if (hasAccessDate) {
-            this.accessDate = javaTimeToNtfsTime(accessDate);
-        }
     }
 
     /**
@@ -319,14 +232,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
         this.hasWindowsAttributes = hasWindowsAttributes;
     }
 
-    /**
-     * Gets the windows attributes.
-     *
-     * @return the windows attributes
-     */
-    public int getWindowsAttributes() {
-        return windowsAttributes;
-    }
 
     /**
      * Sets the windows attributes.
@@ -421,25 +326,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
         this.compressedCrc = crc;
     }
 
-    /**
-     * Gets the compressed CRC.
-     *
-     * @return the CRC
-     * @since 1.7
-     */
-    long getCompressedCrcValue() {
-        return compressedCrc;
-    }
-
-    /**
-     * Sets the compressed CRC.
-     *
-     * @param crc the CRC
-     * @since 1.7
-     */
-    void setCompressedCrcValue(final long crc) {
-        this.compressedCrc = crc;
-    }
 
     /**
      * Get this entry's file size.
@@ -460,23 +346,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
         this.size = size;
     }
 
-    /**
-     * Get this entry's compressed file size.
-     *
-     * @return This entry's compressed file size.
-     */
-    long getCompressedSize() {
-        return compressedSize;
-    }
-
-    /**
-     * Set this entry's compressed file size.
-     *
-     * @param size This entry's new compressed file size.
-     */
-    void setCompressedSize(final long size) {
-        this.compressedSize = size;
-    }
 
     /**
      * Gets the (compression) methods to use for entry's content - the default is LZMA2.
@@ -514,21 +383,6 @@ public class SevenZArchiveEntry implements ArchiveEntry {
         } else {
             contentMethods = null;
         }
-    }
-
-    /**
-     * Sets the (compression) methods to use for entry's content - the default is LZMA2.
-     *
-     * <p>Currently only {@link SevenZMethod#COPY}, {@link SevenZMethod#LZMA2}, {@link
-     * SevenZMethod#BZIP2} and {@link SevenZMethod#DEFLATE} are supported when writing archives.
-     *
-     * <p>The methods will be consulted in iteration order to create the final output.
-     *
-     * @param methods the methods to use for the content
-     * @since 1.22
-     */
-    public void setContentMethods(SevenZMethodConfiguration... methods) {
-        setContentMethods(Arrays.asList(methods));
     }
 
     @Override

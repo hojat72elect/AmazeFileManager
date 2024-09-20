@@ -80,15 +80,11 @@ class SearchRecyclerViewAdapter :
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val fileNameTV: AppCompatTextView
-        val filePathTV: AppCompatTextView
-        val colorView: View
+        val fileNameTV: AppCompatTextView = view.findViewById(R.id.searchItemFileNameTV)
+        val filePathTV: AppCompatTextView = view.findViewById(R.id.searchItemFilePathTV)
+        val colorView: View = view.findViewById(R.id.searchItemSampleColorView)
 
         init {
-
-            fileNameTV = view.findViewById(R.id.searchItemFileNameTV)
-            filePathTV = view.findViewById(R.id.searchItemFilePathTV)
-            colorView = view.findViewById(R.id.searchItemSampleColorView)
 
             view.setOnClickListener {
 
