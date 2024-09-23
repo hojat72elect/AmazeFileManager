@@ -2,10 +2,7 @@ package com.amaze.filemanager.filesystem.compressed.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import org.apache.commons.compress.MemoryLimitException;
-import org.tukaani.xz.FinishableOutputStream;
-import org.tukaani.xz.FinishableWrapperOutputStream;
 import org.tukaani.xz.LZMA2InputStream;
 import org.tukaani.xz.LZMA2Options;
 
@@ -36,30 +33,8 @@ class LZMA2Decoder extends CoderBase {
     }
 
     @Override
-    OutputStream encode(final OutputStream out, final Object opts) throws IOException {
-        final LZMA2Options options = getOptions(opts);
-        final FinishableOutputStream wrapped = new FinishableWrapperOutputStream(out);
-        return options.getOutputStream(wrapped);
-    }
-
-    @Override
-    byte[] getOptionsAsProperties(final Object opts) {
-        final int dictSize = getDictSize(opts);
-        final int lead = Integer.numberOfLeadingZeros(dictSize);
-        final int secondBit = (dictSize >>> (30 - lead)) - 2;
-        return new byte[]{(byte) ((19 - lead) * 2 + secondBit)};
-    }
-
-    @Override
     Object getOptionsFromCoder(final Coder coder, final InputStream in) throws IOException {
         return getDictionarySize(coder);
-    }
-
-    private int getDictSize(final Object opts) {
-        if (opts instanceof LZMA2Options) {
-            return ((LZMA2Options) opts).getDictSize();
-        }
-        return numberOptionOrDefault(opts);
     }
 
     private int getDictionarySize(final Coder coder) throws IOException {
@@ -82,16 +57,4 @@ class LZMA2Decoder extends CoderBase {
         return (2 | (dictionarySizeBits & 0x1)) << (dictionarySizeBits / 2 + 11);
     }
 
-    private LZMA2Options getOptions(final Object opts) throws IOException {
-        if (opts instanceof LZMA2Options) {
-            return (LZMA2Options) opts;
-        }
-        final LZMA2Options options = new LZMA2Options();
-        options.setDictSize(numberOptionOrDefault(opts));
-        return options;
-    }
-
-    private int numberOptionOrDefault(final Object opts) {
-        return numberOptionOrDefault(opts, LZMA2Options.DICT_SIZE_DEFAULT);
-    }
 }

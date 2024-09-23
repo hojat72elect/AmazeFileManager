@@ -2,10 +2,7 @@ package com.amaze.filemanager.filesystem.compressed.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import org.tukaani.xz.DeltaOptions;
-import org.tukaani.xz.FinishableWrapperOutputStream;
-import org.tukaani.xz.UnsupportedOptionsException;
 
 class DeltaDecoder extends CoderBase {
     DeltaDecoder() {
@@ -22,21 +19,6 @@ class DeltaDecoder extends CoderBase {
             final int maxMemoryLimitInKb)
             throws IOException {
         return new DeltaOptions(getOptionsFromCoder(coder)).getInputStream(in);
-    }
-
-    @Override
-    OutputStream encode(final OutputStream out, final Object options) throws IOException {
-        final int distance = numberOptionOrDefault(options, 1);
-        try {
-            return new DeltaOptions(distance).getOutputStream(new FinishableWrapperOutputStream(out));
-        } catch (final UnsupportedOptionsException ex) {
-            throw new IOException(ex.getMessage());
-        }
-    }
-
-    @Override
-    byte[] getOptionsAsProperties(final Object options) {
-        return new byte[]{(byte) (numberOptionOrDefault(options, 1) - 1)};
     }
 
     @Override

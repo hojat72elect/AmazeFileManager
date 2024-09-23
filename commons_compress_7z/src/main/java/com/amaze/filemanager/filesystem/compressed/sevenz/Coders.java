@@ -3,23 +3,17 @@ package com.amaze.filemanager.filesystem.compressed.sevenz;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.SequenceInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.Deflater;
-import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.apache.commons.compress.compressors.deflate64.Deflate64CompressorInputStream;
-import org.apache.commons.compress.utils.FlushShieldFilterOutputStream;
 import org.tukaani.xz.ARMOptions;
 import org.tukaani.xz.ARMThumbOptions;
 import org.tukaani.xz.FilterOptions;
-import org.tukaani.xz.FinishableWrapperOutputStream;
 import org.tukaani.xz.IA64Options;
 import org.tukaani.xz.PowerPCOptions;
 import org.tukaani.xz.SPARCOptions;
@@ -84,10 +78,6 @@ class Coders {
             return in;
         }
 
-        @Override
-        OutputStream encode(final OutputStream out, final Object options) {
-            return out;
-        }
     }
 
     static class BCJDecoder extends CoderBase {
@@ -118,11 +108,6 @@ class Coders {
             }
         }
 
-        @Override
-        OutputStream encode(final OutputStream out, final Object options) {
-            return new FlushShieldFilterOutputStream(
-                    opts.getOutputStream(new FinishableWrapperOutputStream(out)));
-        }
     }
 
     static class DeflateDecoder extends CoderBase {
@@ -150,14 +135,6 @@ class Coders {
                     new InflaterInputStream(
                             new SequenceInputStream(in, new ByteArrayInputStream(ONE_ZERO_BYTE)), inflater);
             return new DeflateDecoderInputStream(inflaterInputStream, inflater);
-        }
-
-        @Override
-        OutputStream encode(final OutputStream out, final Object options) {
-            final int level = numberOptionOrDefault(options, 9);
-            final Deflater deflater = new Deflater(level, true);
-            final DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(out, deflater);
-            return new DeflateDecoderOutputStream(deflaterOutputStream, deflater);
         }
 
         static class DeflateDecoderInputStream extends InputStream {
@@ -192,42 +169,6 @@ class Coders {
                     inflaterInputStream.close();
                 } finally {
                     inflater.end();
-                }
-            }
-        }
-
-        static class DeflateDecoderOutputStream extends OutputStream {
-
-            final DeflaterOutputStream deflaterOutputStream;
-            Deflater deflater;
-
-            public DeflateDecoderOutputStream(
-                    final DeflaterOutputStream deflaterOutputStream, final Deflater deflater) {
-                this.deflaterOutputStream = deflaterOutputStream;
-                this.deflater = deflater;
-            }
-
-            @Override
-            public void write(final int b) throws IOException {
-                deflaterOutputStream.write(b);
-            }
-
-            @Override
-            public void write(final byte[] b) throws IOException {
-                deflaterOutputStream.write(b);
-            }
-
-            @Override
-            public void write(final byte[] b, final int off, final int len) throws IOException {
-                deflaterOutputStream.write(b, off, len);
-            }
-
-            @Override
-            public void close() throws IOException {
-                try {
-                    deflaterOutputStream.close();
-                } finally {
-                    deflater.end();
                 }
             }
         }
@@ -267,11 +208,6 @@ class Coders {
             return new BZip2CompressorInputStream(in);
         }
 
-        @Override
-        OutputStream encode(final OutputStream out, final Object options) throws IOException {
-            final int blockSize =
-                    numberOptionOrDefault(options, BZip2CompressorOutputStream.MAX_BLOCKSIZE);
-            return new BZip2CompressorOutputStream(out, blockSize);
-        }
+
     }
 }

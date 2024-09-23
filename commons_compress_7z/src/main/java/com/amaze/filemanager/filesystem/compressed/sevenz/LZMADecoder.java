@@ -2,13 +2,10 @@ package com.amaze.filemanager.filesystem.compressed.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import org.apache.commons.compress.MemoryLimitException;
 import org.apache.commons.compress.utils.ByteUtils;
-import org.apache.commons.compress.utils.FlushShieldFilterOutputStream;
 import org.tukaani.xz.LZMA2Options;
 import org.tukaani.xz.LZMAInputStream;
-import org.tukaani.xz.LZMAOutputStream;
 
 class LZMADecoder extends CoderBase {
     LZMADecoder() {
@@ -44,22 +41,6 @@ class LZMADecoder extends CoderBase {
         return lzmaIn;
     }
 
-    @Override
-    OutputStream encode(final OutputStream out, final Object opts) throws IOException {
-        // NOOP as LZMAOutputStream throws an exception in flush
-        return new FlushShieldFilterOutputStream(new LZMAOutputStream(out, getOptions(opts), false));
-    }
-
-    @Override
-    byte[] getOptionsAsProperties(final Object opts) throws IOException {
-        final LZMA2Options options = getOptions(opts);
-        final byte props = (byte) ((options.getPb() * 5 + options.getLp()) * 9 + options.getLc());
-        final int dictSize = options.getDictSize();
-        final byte[] o = new byte[5];
-        o[0] = props;
-        ByteUtils.toLittleEndian(o, dictSize, 1, 4);
-        return o;
-    }
 
     @Override
     Object getOptionsFromCoder(final Coder coder, final InputStream in) throws IOException {
@@ -86,16 +67,4 @@ class LZMADecoder extends CoderBase {
         return (int) ByteUtils.fromLittleEndian(coder.properties, 1, 4);
     }
 
-    private LZMA2Options getOptions(final Object opts) throws IOException {
-        if (opts instanceof LZMA2Options) {
-            return (LZMA2Options) opts;
-        }
-        final LZMA2Options options = new LZMA2Options();
-        options.setDictSize(numberOptionOrDefault(opts));
-        return options;
-    }
-
-    private int numberOptionOrDefault(final Object opts) {
-        return numberOptionOrDefault(opts, LZMA2Options.DICT_SIZE_DEFAULT);
-    }
 }
