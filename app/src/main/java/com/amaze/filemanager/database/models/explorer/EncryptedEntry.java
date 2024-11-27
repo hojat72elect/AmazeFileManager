@@ -8,9 +8,7 @@ import com.amaze.filemanager.database.ExplorerDatabase;
 import com.amaze.filemanager.database.models.StringWrapper;
 import com.amaze.filemanager.database.typeconverters.EncryptedStringTypeConverter;
 
-/**
- * Created by vishal on 8/4/17.
- */
+
 @Entity(tableName = ExplorerDatabase.TABLE_ENCRYPTED)
 public class EncryptedEntry {
 

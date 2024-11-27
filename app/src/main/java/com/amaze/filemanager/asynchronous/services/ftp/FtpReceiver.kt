@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.amaze.filemanager.BuildConfig.DEBUG
 import com.amaze.filemanager.asynchronous.services.ftp.FtpService.Companion.isRunning
 
-/** Created by yashwanthreddyg on 09-06-2016.  */
+
 class FtpReceiver : BroadcastReceiver() {
     private val TAG = FtpReceiver::class.java.simpleName
 

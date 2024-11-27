@@ -11,9 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by vishal on 18/4/17.
- */
+
 public class CloudHandler {
 
     public static final String CLOUD_PREFIX_BOX = "box:/";

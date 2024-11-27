@@ -1,9 +1,5 @@
 package com.amaze.filemanager.filesystem;
 
-/**
- * Created by Arpit on 29-06-2015.
- */
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,12 +26,10 @@ import java.util.Locale;
  * characteristics of the media content provider API, and as such is not guaranteed to be
  * future-proof. Then again, we did all think the java.io.File API was going to be future-proof for
  * media card access, so all bets are off. If you're forced to use this class, it's because
- * Google/AOSP made a very poor API decision in Android 4.4 KitKat. Read more at
- * https://plus.google.com/+TodLiebeck/posts/gjnmuaDM8sn Your application must declare the
- * permission "android.permission.WRITE_EXTERNAL_STORAGE". Adapted from:
- * http://forum.xda-developers.com/showpost.php?p=52151865&postcount=20
- *
- * @author Jared Rummler <jared.rummler@gmail.com>
+ * Google/AOSP made a very poor API decision in Android 4.4 KitKat. Read more about it
+ * <a href="https://plus.google.com/+TodLiebeck/posts/gjnmuaDM8sn">here</a>. Your application must declare the
+ * permission "android.permission.WRITE_EXTERNAL_STORAGE". Adapted from
+ * <a href="http://forum.xda-developers.com/showpost.php?p=52151865&postcount=20">an article on XDA forum</a>.
  */
 public class MediaStoreHack {
     private static final String TAG = "MediaStoreHack";

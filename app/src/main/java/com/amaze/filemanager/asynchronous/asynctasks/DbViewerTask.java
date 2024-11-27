@@ -8,9 +8,6 @@ import com.amaze.filemanager.ui.fragments.DbViewerFragment;
 import com.amaze.filemanager.ui.theme.AppTheme;
 import java.util.ArrayList;
 
-/**
- * Created by Vishal on 20-03-2015.
- */
 public class DbViewerTask extends AsyncTask<Void, Integer, Void> {
 
     Cursor schemaCursor, contentCursor;

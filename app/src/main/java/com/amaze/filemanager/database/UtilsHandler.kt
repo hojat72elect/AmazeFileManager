@@ -24,11 +24,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * Created by Vishal on 29-05-2017. Class handles database with tables having list of various
- * utilities like history, hidden files, list paths, grid paths, bookmarks, SMB entry
+ * this class handles database with tables having list of various
+ * utilities like history, hidden files, list paths, grid paths, bookmarks, SMB entry.
  *
  *
- * Try to use these functions from a background thread
+ * Try to use these functions from a background thread.
  */
 class UtilsHandler(
     private val context: Context,

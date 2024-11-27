@@ -10,9 +10,7 @@ import com.amaze.filemanager.database.typeconverters.EncryptedStringTypeConverte
 import com.amaze.filemanager.database.typeconverters.OpenModeTypeConverter;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 
-/**
- * Created by vishal on 18/4/17.
- */
+
 @Entity(tableName = ExplorerDatabase.TABLE_CLOUD_PERSIST)
 public class CloudEntry {
 

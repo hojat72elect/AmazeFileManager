@@ -35,9 +35,6 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by vishal on 8/4/17 edited by Emmanuel Messulam <emmanuelbendavid@gmail.com>
- */
 public class EncryptService extends AbstractProgressiveService {
 
     public static final String TAG_SOURCE = "crypt_source"; // source file to encrypt or decrypt

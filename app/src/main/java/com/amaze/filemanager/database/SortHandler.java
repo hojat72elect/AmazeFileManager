@@ -16,9 +16,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Ning on 5/28/2018.
- */
 public class SortHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(SortHandler.class);

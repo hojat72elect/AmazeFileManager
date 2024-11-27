@@ -6,9 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.amaze.filemanager.database.ExplorerDatabase;
 
-/**
- * Created by Ning on 5/28/2018.
- */
+
 @Entity(tableName = ExplorerDatabase.TABLE_SORT)
 public class Sort {
 

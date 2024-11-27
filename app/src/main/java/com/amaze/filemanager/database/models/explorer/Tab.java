@@ -7,9 +7,7 @@ import androidx.room.PrimaryKey;
 import com.amaze.filemanager.database.ExplorerDatabase;
 import com.amaze.filemanager.filesystem.files.FileUtils;
 
-/**
- * Created by Vishal on 9/17/2014
- */
+
 @Entity(tableName = ExplorerDatabase.TABLE_TAB)
 public class Tab {
 

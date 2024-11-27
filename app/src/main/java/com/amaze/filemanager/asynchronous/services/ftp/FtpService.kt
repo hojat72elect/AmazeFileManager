@@ -50,12 +50,6 @@ import org.greenrobot.eventbus.EventBus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-/**
- * Created by yashwanthreddyg on 09-06-2016.
- *
- *
- * Edited by zent-co on 30-07-2019 Edited by bowiechen on 2019-10-19.
- */
 class FtpService : Service(), Runnable {
     private val binder: IBinder = ObtainableServiceBinder(this)
 

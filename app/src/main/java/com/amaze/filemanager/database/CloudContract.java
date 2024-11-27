@@ -1,8 +1,5 @@
 package com.amaze.filemanager.database;
 
-/**
- * Created by vishal on 19/4/17.
- */
 public class CloudContract {
 
     public static final String APP_PACKAGE_NAME = "com.filemanager.amazecloud";

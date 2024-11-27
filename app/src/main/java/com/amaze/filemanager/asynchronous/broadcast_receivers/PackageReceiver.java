@@ -7,10 +7,8 @@ import android.content.IntentFilter;
 import com.amaze.filemanager.asynchronous.loaders.AppListLoader;
 
 /**
- * Created by vishal on 23/2/17.
- *
- * <p>A broadcast receiver that watches over app installation and removal and notifies {@link
- * AppListLoader} for the same
+ * A broadcast receiver that watches over app installation and removal and notifies {@link
+ * AppListLoader} for the same.
  */
 public class PackageReceiver extends BroadcastReceiver {
 

@@ -11,9 +11,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Vishal on 9/17/2014.
- */
 public class TabHandler {
     private static final Logger LOG = LoggerFactory.getLogger(TabHandler.class);
 

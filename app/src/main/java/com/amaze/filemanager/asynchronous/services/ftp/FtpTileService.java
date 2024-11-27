@@ -12,9 +12,7 @@ import com.amaze.filemanager.utils.NetworkUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-/**
- * Created by vishal on 1/1/17.
- */
+
 @TargetApi(Build.VERSION_CODES.N)
 public class FtpTileService extends TileService {
 

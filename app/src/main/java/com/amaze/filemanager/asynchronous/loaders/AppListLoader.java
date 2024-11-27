@@ -20,9 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by vishal on 23/2/17.
- *
- * <p>Class loads all the packages installed
+ * This class loads all the packages installed.
  */
 public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
 
@@ -106,7 +104,8 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
                             sourceDir.length(),
                             sourceDir.lastModified(),
                             isSystemApp,
-                            null);
+                            null
+                    );
 
             mApps.add(elem);
         }

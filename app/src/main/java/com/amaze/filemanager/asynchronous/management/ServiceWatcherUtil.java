@@ -1,13 +1,5 @@
 package com.amaze.filemanager.asynchronous.management;
 
-/**
- * Created by vishal on 4/1/17.
- *
- * <p>Helper class providing helper methods to manage Service startup and it's progress Be advised -
- * this class can only handle progress with one object at a time. Hence, class also provides
- * convenience methods to serialize the service startup.
- */
-
 import static com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil.ServiceStatusCallbacks.STATE_HALTED;
 import static com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil.ServiceStatusCallbacks.STATE_RESUMED;
 import static com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil.ServiceStatusCallbacks.STATE_UNSET;
@@ -28,6 +20,10 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Helper class providing helper methods to manage Service startup and it's progress Be advised - this class can only handle
+ * progress with one object at a time. Hence, class also provides convenience methods to serialize the service startup.
+ */
 public class ServiceWatcherUtil {
 
     public static int state = STATE_UNSET;
@@ -146,7 +142,7 @@ public class ServiceWatcherUtil {
         Context getApplicationContext();
 
         /**
-         * This is for a hack, read about it where it's used
+         * This is for a hack, read about it where it's used.
          */
         boolean isDecryptService();
     }
@@ -158,7 +154,8 @@ public class ServiceWatcherUtil {
         public ServiceWatcherRepeatingRunnable(
                 boolean startImmediately,
                 ServiceStatusCallbacks serviceStatusCallbacks,
-                ProgressHandler progressHandler) {
+                ProgressHandler progressHandler
+        ) {
             super(1, 1, TimeUnit.SECONDS, startImmediately);
 
             this.serviceStatusCallbacks = new WeakReference<>(serviceStatusCallbacks);

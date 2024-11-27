@@ -22,8 +22,6 @@ public class CloudStreamer extends CloudStreamServer {
     private InputStream inputStream;
     private String fileName;
 
-    // private CBItem source;
-    // private String mime;
 
     protected CloudStreamer(int port) throws IOException {
         super(port, new File("."));
@@ -57,7 +55,8 @@ public class CloudStreamer extends CloudStreamServer {
 
     @Override
     public CloudStreamServer.Response serve(
-            String uri, String method, Properties header, Properties parms, Properties files) {
+            String uri, String method, Properties header, Properties parms, Properties files
+    ) {
         CloudStreamServer.Response res = null;
 
         if (inputStream == null)
@@ -82,9 +81,7 @@ public class CloudStreamer extends CloudStreamServer {
             }
             log.debug("Request: " + range + " from: " + startFrom + ", to: " + endAt);
 
-            // Change return code and add Content-Range header when skipping
-            // is requested
-            // source.open();
+
             final CloudStreamSource source = new CloudStreamSource(fileName, length, inputStream);
             long fileLen = source.length();
             if (range != null && startFrom > 0) {
@@ -111,8 +108,7 @@ public class CloudStreamer extends CloudStreamServer {
         }
 
         res.addHeader("Accept-Ranges", "bytes"); // Announce that the file
-        // server accepts partial
-        // content requestes
+        // server accepts partial content requests
         return res;
     }
 }

@@ -6,7 +6,6 @@ import io.reactivex.schedulers.Schedulers
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-/** Created by vishal on 15/4/17.  */
 object CryptHandler {
     private val log: Logger = LoggerFactory.getLogger(CryptHandler::class.java)
     private val database: ExplorerDatabase = AppConfig.getInstance().explorerDatabase
