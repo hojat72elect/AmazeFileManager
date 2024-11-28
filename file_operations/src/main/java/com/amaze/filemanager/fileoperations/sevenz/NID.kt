@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz
+package com.amaze.filemanager.fileoperations.sevenz
 
 object NID {
     const val kEnd = 0x00

@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ class LZMADecoder extends CoderBase {
             final String archiveName,
             final InputStream in,
             final long uncompressedLength,
-            final Coder coder,
+            final com.amaze.filemanager.fileoperations.sevenz.Coder coder,
             final byte[] password,
             final int maxMemoryLimitInKb)
             throws IOException {
@@ -43,7 +43,7 @@ class LZMADecoder extends CoderBase {
 
 
     @Override
-    Object getOptionsFromCoder(final Coder coder, final InputStream in) throws IOException {
+    Object getOptionsFromCoder(final com.amaze.filemanager.fileoperations.sevenz.Coder coder, final InputStream in) throws IOException {
         if (coder.properties == null) {
             throw new IOException("Missing LZMA properties");
         }
@@ -63,7 +63,7 @@ class LZMADecoder extends CoderBase {
         return opts;
     }
 
-    private int getDictionarySize(final Coder coder) throws IllegalArgumentException {
+    private int getDictionarySize(final com.amaze.filemanager.fileoperations.sevenz.Coder coder) throws IllegalArgumentException {
         return (int) ByteUtils.fromLittleEndian(coder.properties, 1, 4);
     }
 

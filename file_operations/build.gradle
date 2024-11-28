@@ -81,8 +81,6 @@ dependencies {
     //zip4j: support password-protected zips
     implementation libs.zip4j
 
-    implementation project(':commons_compress_7z')
-
     //SFTP
     implementation libs.sshj
 
@@ -92,6 +90,7 @@ dependencies {
     implementation libs.androidX.multidex //Multiple dex files
 
     //TODO some libs are not needed
+    implementation libs.xz
 
     //For tests
     testImplementation libs.junit //tests the app logic

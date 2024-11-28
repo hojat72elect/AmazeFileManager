@@ -248,7 +248,6 @@ dependencies {
     // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
     implementation libs.rxjava
 
-    implementation project(':commons_compress_7z')
     implementation project(':file_operations')
 
     implementation libs.kotlin.stdlib.jdk8

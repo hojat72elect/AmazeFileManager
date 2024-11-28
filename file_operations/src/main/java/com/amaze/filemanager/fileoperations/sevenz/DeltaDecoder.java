@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ class DeltaDecoder extends CoderBase {
             final String archiveName,
             final InputStream in,
             final long uncompressedLength,
-            final Coder coder,
+            final com.amaze.filemanager.fileoperations.sevenz.Coder coder,
             final byte[] password,
             final int maxMemoryLimitInKb)
             throws IOException {
@@ -22,11 +22,11 @@ class DeltaDecoder extends CoderBase {
     }
 
     @Override
-    Object getOptionsFromCoder(final Coder coder, final InputStream in) {
+    Object getOptionsFromCoder(final com.amaze.filemanager.fileoperations.sevenz.Coder coder, final InputStream in) {
         return getOptionsFromCoder(coder);
     }
 
-    private int getOptionsFromCoder(final Coder coder) {
+    private int getOptionsFromCoder(final com.amaze.filemanager.fileoperations.sevenz.Coder coder) {
         if (coder.properties == null || coder.properties.length == 0) {
             return 1;
         }

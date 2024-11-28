@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 /**
  * Collects options for reading 7z archives.

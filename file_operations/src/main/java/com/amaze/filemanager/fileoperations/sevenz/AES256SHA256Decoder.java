@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ class AES256SHA256Decoder extends CoderBase {
             final String archiveName,
             final InputStream in,
             final long uncompressedLength,
-            final Coder coder,
+            final com.amaze.filemanager.fileoperations.sevenz.Coder coder,
             final byte[] passwordBytes,
             final int maxMemoryLimitInKb) {
         return new InputStream() {

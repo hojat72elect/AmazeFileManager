@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class SevenZArchiveEntry implements ArchiveEntry {
     private boolean hasCrc;
     private long crc, compressedCrc;
     private long size, compressedSize;
-    private Iterable<? extends SevenZMethodConfiguration> contentMethods;
+    private Iterable<? extends com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> contentMethods;
 
     public SevenZArchiveEntry() {
     }
@@ -358,7 +358,7 @@ public class SevenZArchiveEntry implements ArchiveEntry {
      * @return the methods to use for the content
      * @since 1.8
      */
-    public Iterable<? extends SevenZMethodConfiguration> getContentMethods() {
+    public Iterable<? extends com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> getContentMethods() {
         return contentMethods;
     }
 
@@ -373,10 +373,10 @@ public class SevenZArchiveEntry implements ArchiveEntry {
      * @param methods the methods to use for the content
      * @since 1.8
      */
-    public void setContentMethods(final Iterable<? extends SevenZMethodConfiguration> methods) {
+    public void setContentMethods(final Iterable<? extends com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> methods) {
         if (methods != null) {
-            final LinkedList<SevenZMethodConfiguration> l = new LinkedList<>();
-            for (final SevenZMethodConfiguration m : methods) {
+            final LinkedList<com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> l = new LinkedList<>();
+            for (final com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration m : methods) {
                 l.addLast(m);
             }
             contentMethods = Collections.unmodifiableList(l);
@@ -421,16 +421,16 @@ public class SevenZArchiveEntry implements ArchiveEntry {
     }
 
     private boolean equalSevenZMethods(
-            final Iterable<? extends SevenZMethodConfiguration> c1,
-            final Iterable<? extends SevenZMethodConfiguration> c2) {
+            final Iterable<? extends com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> c1,
+            final Iterable<? extends com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> c2) {
         if (c1 == null) {
             return c2 == null;
         }
         if (c2 == null) {
             return false;
         }
-        final Iterator<? extends SevenZMethodConfiguration> i2 = c2.iterator();
-        for (SevenZMethodConfiguration element : c1) {
+        final Iterator<? extends com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> i2 = c2.iterator();
+        for (com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration element : c1) {
             if (!i2.hasNext()) {
                 return false;
             }

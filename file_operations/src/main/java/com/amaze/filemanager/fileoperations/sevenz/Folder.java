@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.LinkedList;
 class Folder {
     static final Folder[] EMPTY_FOLDER_ARRAY = new Folder[0];
     /// List of coders used in this folder, eg. one for compression, one for encryption.
-    Coder[] coders;
+    com.amaze.filemanager.fileoperations.sevenz.Coder[] coders;
     /// Total number of input streams across all coders.
     /// this field is currently unused but technically part of the 7z API
     long totalInputStreams;
@@ -37,14 +37,14 @@ class Folder {
      * <p>The first coder reads from the packed stream (we currently only support single input stream
      * decoders), the second reads from the output of the first and so on.
      */
-    Iterable<Coder> getOrderedCoders() throws IOException {
+    Iterable<com.amaze.filemanager.fileoperations.sevenz.Coder> getOrderedCoders() throws IOException {
         if (packedStreams == null
                 || coders == null
                 || packedStreams.length == 0
                 || coders.length == 0) {
             return Collections.emptyList();
         }
-        final LinkedList<Coder> l = new LinkedList<>();
+        final LinkedList<com.amaze.filemanager.fileoperations.sevenz.Coder> l = new LinkedList<>();
         int current = (int) packedStreams[0]; // more that 2^31 coders?
         while (current >= 0 && current < coders.length) {
             if (l.contains(coders[current])) {
@@ -91,7 +91,7 @@ class Folder {
         return 0;
     }
 
-    long getUnpackSizeForCoder(final Coder coder) {
+    long getUnpackSizeForCoder(final com.amaze.filemanager.fileoperations.sevenz.Coder coder) {
         if (coders != null) {
             for (int i = 0; i < coders.length; i++) {
                 if (coders[i] == coder) {

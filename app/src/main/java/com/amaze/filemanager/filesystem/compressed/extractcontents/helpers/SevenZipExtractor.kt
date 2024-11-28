@@ -8,8 +8,8 @@ import com.amaze.filemanager.fileoperations.utils.UpdatePosition
 import com.amaze.filemanager.filesystem.FileUtil
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
 import com.amaze.filemanager.filesystem.compressed.extractcontents.Extractor
-import com.amaze.filemanager.filesystem.compressed.sevenz.SevenZArchiveEntry
-import com.amaze.filemanager.filesystem.compressed.sevenz.SevenZFile
+import com.amaze.filemanager.fileoperations.sevenz.SevenZArchiveEntry
+import com.amaze.filemanager.fileoperations.sevenz.SevenZFile
 import com.amaze.filemanager.filesystem.files.GenericCopyUtil
 import java.io.BufferedOutputStream
 import java.io.File

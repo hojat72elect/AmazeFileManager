@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz
+package com.amaze.filemanager.fileoperations.sevenz
 
 data class StartHeader(
     @JvmField

@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.sevenz;
+package com.amaze.filemanager.fileoperations.sevenz;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -453,7 +453,7 @@ public class SevenZFile implements Closeable {
             if (nid == NID.kEncodedHeader || nid == NID.kHeader) {
                 try {
                     // Try to initialize Archive structure from here
-                    final StartHeader startHeader = new StartHeader();
+                    final com.amaze.filemanager.fileoperations.sevenz.StartHeader startHeader = new com.amaze.filemanager.fileoperations.sevenz.StartHeader();
                     startHeader.nextHeaderOffset = pos - previousDataSize;
                     startHeader.nextHeaderSize = channel.size() - pos;
                     final Archive result = initializeArchive(startHeader, password, false);
@@ -470,7 +470,7 @@ public class SevenZFile implements Closeable {
     }
 
     private Archive initializeArchive(
-            final StartHeader startHeader, final byte[] password, final boolean verifyCrc)
+            final com.amaze.filemanager.fileoperations.sevenz.StartHeader startHeader, final byte[] password, final boolean verifyCrc)
             throws IOException {
         assertFitsIntoNonNegativeInt("nextHeaderSize", startHeader.nextHeaderSize);
         final int nextHeaderSizeInt = (int) startHeader.nextHeaderSize;
@@ -505,8 +505,8 @@ public class SevenZFile implements Closeable {
         return archive;
     }
 
-    private StartHeader readStartHeader(final long startHeaderCrc) throws IOException {
-        final StartHeader startHeader = new StartHeader();
+    private com.amaze.filemanager.fileoperations.sevenz.StartHeader readStartHeader(final long startHeaderCrc) throws IOException {
+        final com.amaze.filemanager.fileoperations.sevenz.StartHeader startHeader = new com.amaze.filemanager.fileoperations.sevenz.StartHeader();
         // using Stream rather than ByteBuffer for the benefit of the
         // built-in CRC check
         try (DataInputStream dataInputStream =
@@ -641,7 +641,7 @@ public class SevenZFile implements Closeable {
         channel.position(folderOffset);
         InputStream inputStreamStack =
                 new BoundedFileChannelInputStream(channel, archive.packSizes[firstPackStreamIndex]);
-        for (final Coder coder : folder.getOrderedCoders()) {
+        for (final com.amaze.filemanager.fileoperations.sevenz.Coder coder : folder.getOrderedCoders()) {
             if (coder.numInStreams != 1 || coder.numOutStreams != 1) {
                 throw new IOException("Multi input/output stream coders are not yet supported");
             }
@@ -949,7 +949,7 @@ public class SevenZFile implements Closeable {
         }
 
         final int totalUnpackStreams = (int) unpackStreamsCount;
-        final SubStreamsInfo subStreamsInfo = new SubStreamsInfo();
+        final com.amaze.filemanager.fileoperations.sevenz.SubStreamsInfo subStreamsInfo = new com.amaze.filemanager.fileoperations.sevenz.SubStreamsInfo();
         subStreamsInfo.unpackSizes = new long[totalUnpackStreams];
         subStreamsInfo.hasCrc = new BitSet(totalUnpackStreams);
         subStreamsInfo.crcs = new long[totalUnpackStreams];
@@ -1106,11 +1106,11 @@ public class SevenZFile implements Closeable {
         final Folder folder = new Folder();
 
         final long numCoders = readUint64(header);
-        final Coder[] coders = new Coder[(int) numCoders];
+        final com.amaze.filemanager.fileoperations.sevenz.Coder[] coders = new com.amaze.filemanager.fileoperations.sevenz.Coder[(int) numCoders];
         long totalInStreams = 0;
         long totalOutStreams = 0;
         for (int i = 0; i < coders.length; i++) {
-            coders[i] = new Coder();
+            coders[i] = new com.amaze.filemanager.fileoperations.sevenz.Coder();
             final int bits = getUnsignedByte(header);
             final int idSize = bits & 0xf;
             final boolean isSimple = (bits & 0x10) == 0;
@@ -1146,9 +1146,9 @@ public class SevenZFile implements Closeable {
         folder.totalOutputStreams = totalOutStreams;
 
         final long numBindPairs = totalOutStreams - 1;
-        final BindPair[] bindPairs = new BindPair[(int) numBindPairs];
+        final com.amaze.filemanager.fileoperations.sevenz.BindPair[] bindPairs = new com.amaze.filemanager.fileoperations.sevenz.BindPair[(int) numBindPairs];
         for (int i = 0; i < bindPairs.length; i++) {
-            bindPairs[i] = new BindPair();
+            bindPairs[i] = new com.amaze.filemanager.fileoperations.sevenz.BindPair();
             bindPairs[i].inIndex = readUint64(header);
             bindPairs[i].outIndex = readUint64(header);
         }
@@ -1497,7 +1497,7 @@ public class SevenZFile implements Closeable {
     }
 
     private void calculateStreamMap(final Archive archive) throws IOException {
-        final StreamMap streamMap = new StreamMap();
+        final com.amaze.filemanager.fileoperations.sevenz.StreamMap streamMap = new com.amaze.filemanager.fileoperations.sevenz.StreamMap();
 
         int nextFolderPackStreamIndex = 0;
         final int numFolders = archive.folders != null ? archive.folders.length : 0;
@@ -1786,8 +1786,8 @@ public class SevenZFile implements Closeable {
                         compressedBytesReadFromCurrentEntry += c;
                     }
                 };
-        final LinkedList<SevenZMethodConfiguration> methods = new LinkedList<>();
-        for (final Coder coder : folder.getOrderedCoders()) {
+        final LinkedList<com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration> methods = new LinkedList<>();
+        for (final com.amaze.filemanager.fileoperations.sevenz.Coder coder : folder.getOrderedCoders()) {
             if (coder.numInStreams != 1 || coder.numOutStreams != 1) {
                 throw new IOException("Multi input/output stream coders are not yet supported");
             }
@@ -1801,7 +1801,7 @@ public class SevenZFile implements Closeable {
                             password,
                             options.getMaxMemoryLimitInKb());
             methods.addFirst(
-                    new SevenZMethodConfiguration(
+                    new com.amaze.filemanager.fileoperations.sevenz.SevenZMethodConfiguration(
                             method, Coders.findByMethod(method).getOptionsFromCoder(coder, inputStreamStack)));
         }
         entry.setContentMethods(methods);
