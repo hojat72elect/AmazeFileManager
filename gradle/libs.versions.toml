@@ -50,7 +50,6 @@ xz = "1.9"
 zip4j = "2.6.4"
 espresso = "3.5.1"
 materialDialogs = "0.9.6.0"
-jacoco = "0.8.11"
 commonsCompress = "1.22"
 libsu = "3.2.1"
 mockk = "1.12.2"
@@ -148,6 +147,7 @@ mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 robolectric-shadows-httpclient = { module = "org.robolectric:shadows-httpclient", version.ref = "robolectric" }
 

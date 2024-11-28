@@ -94,7 +94,7 @@ import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.adapters.data.StorageDirectoryParcelable;
 import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.SaveOnDataUtilsChange;
-import com.amaze.filemanager.asynchronous.asynctasks.CloudLoaderAsyncTask;
+import com.amaze.filemanager.play.asynchronous.asynctasks.CloudLoaderAsyncTask;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
 import com.amaze.filemanager.asynchronous.asynctasks.movecopy.MoveFilesTask;
@@ -1441,9 +1441,6 @@ public class MainActivity extends PermissionsActivity
         // TODO: https://developer.android.com/reference/android/app/Activity.html#onDestroy%28%29
         closeInteractiveShell();
         NetCopyClientConnectionPool.INSTANCE.shutdown();
-        if (drawer != null && drawer.getBilling() != null) {
-            drawer.getBilling().destroyBillingInstance();
-        }
     }
 
     /**
@@ -2240,10 +2237,6 @@ public class MainActivity extends PermissionsActivity
                 // cloud entry already exists
                 Toast.makeText(
                                 this, getResources().getString(R.string.connection_exists), Toast.LENGTH_LONG)
-                        .show();
-            } else if (BuildConfig.IS_VERSION_FDROID) {
-                Toast.makeText(
-                                this, getResources().getString(R.string.cloud_error_fdroid), Toast.LENGTH_LONG)
                         .show();
             } else {
                 Toast.makeText(

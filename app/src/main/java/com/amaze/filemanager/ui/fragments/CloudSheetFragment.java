@@ -80,6 +80,7 @@ public class CloudSheetFragment extends BottomSheetDialogFragment implements Vie
         return dialog;
     }
 
+    @android.annotation.SuppressLint("RestrictedApi")
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
@@ -110,14 +111,6 @@ public class CloudSheetFragment extends BottomSheetDialogFragment implements Vie
             mDropboxLayout.setVisibility(View.VISIBLE);
             mGoogleDriveLayout.setVisibility(View.VISIBLE);
             mOnedriveLayout.setVisibility(View.VISIBLE);
-            mGetCloudLayout.setVisibility(View.GONE);
-        }
-
-        if (BuildConfig.IS_VERSION_FDROID) {
-            mBoxLayout.setVisibility(View.GONE);
-            mDropboxLayout.setVisibility(View.GONE);
-            mGoogleDriveLayout.setVisibility(View.GONE);
-            mOnedriveLayout.setVisibility(View.GONE);
             mGetCloudLayout.setVisibility(View.GONE);
         }
 

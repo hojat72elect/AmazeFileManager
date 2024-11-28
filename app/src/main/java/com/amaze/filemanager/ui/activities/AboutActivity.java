@@ -21,7 +21,6 @@ import com.amaze.filemanager.R;
 import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity;
 import com.amaze.filemanager.ui.dialogs.share.ShareTask;
 import com.amaze.filemanager.ui.theme.AppTheme;
-import com.amaze.filemanager.utils.Billing;
 import com.amaze.filemanager.utils.PreferenceUtils;
 import com.amaze.filemanager.utils.Utils;
 import com.google.android.material.appbar.AppBarLayout;
@@ -33,9 +32,6 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by vishal on 27/7/16.
- */
 public class AboutActivity extends ThemedActivity implements View.OnClickListener {
     public static final String PACKAGE_AMAZE_UTILS = "com.amaze.fileutilities";
     public static final String URL_AMAZE_UTILS = "market://details?id=" + PACKAGE_AMAZE_UTILS;
@@ -63,7 +59,6 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppCompatTextView mTitleTextView;
     private View mAuthorsDivider, mDeveloper1Divider, mDeveloper2Divider;
-    private Billing billing;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -276,9 +271,6 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
             case R.id.relative_layout_rate:
                 openURL(URL_REPO_RATE, this);
                 break;
-            case R.id.relative_layout_donate:
-                billing = new Billing(this);
-                break;
         }
     }
 
@@ -286,8 +278,5 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
     protected void onDestroy() {
         super.onDestroy();
         LOG.debug("Destroying the manager.");
-        if (billing != null) {
-            billing.destroyBillingInstance();
-        }
     }
 }

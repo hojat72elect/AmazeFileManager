@@ -18,6 +18,7 @@ import android.text.format.Formatter;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.arch.core.util.Function;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.preference.PreferenceManager;
@@ -70,7 +71,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -82,7 +82,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -90,7 +89,6 @@ import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import kotlin.collections.ArraysKt;
 import kotlin.io.ByteStreamsKt;
-import kotlin.text.Charsets;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.Buffer;
 import net.schmizz.sshj.common.IOUtils;
@@ -107,8 +105,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hybrid file for handeling all types of files
+ * Hybrid file for handling all types of files
  */
+@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class HybridFile {
 
     public static final String DOCUMENT_FILE_PREFIX =
@@ -160,7 +159,8 @@ public class HybridFile {
     }
 
     private static String formatUriForDisplayInternal(
-            @NonNull String scheme, @NonNull String host, @NonNull String path) {
+            @NonNull String scheme, @NonNull String host, @NonNull String path
+    ) {
         return String.format("%s://%s%s", scheme, host, path);
     }
 
@@ -290,7 +290,8 @@ public class HybridFile {
                 SafRootHolder.getUriRoot(),
                 AppConfig.getInstance(),
                 OpenMode.DOCUMENT_FILE,
-                createRecursive);
+                createRecursive
+        );
     }
 
     HybridFileParcelable generateBaseFileFromParent() {
@@ -423,6 +424,7 @@ public class HybridFile {
      *
      * @return URL decoded path (for non-local files); the actual path for local files
      */
+
     public String getPath() {
 
         if (isLocal() || isTrashBin() || isRoot() || isDocumentFile() || isAndroidDataDir())
@@ -453,6 +455,7 @@ public class HybridFile {
         }
         return name;
     }
+
 
     public String getName(Context context) {
         switch (mode) {
@@ -520,10 +523,12 @@ public class HybridFile {
         }
     }
 
+
     @Nullable
     public FTPFile getFtpFile() {
         return NetCopyClientUtils.INSTANCE.execute(
                 new FtpClientTemplate<FTPFile>(path, false) {
+
                     public FTPFile executeWithFtpClient(@NonNull FTPClient ftpClient) throws IOException {
                         String path =
                                 NetCopyClientUtils.extractRemotePathFrom(getParent(AppConfig.getInstance()));
@@ -550,6 +555,7 @@ public class HybridFile {
     /**
      * Helper method to get parent path
      */
+
     @Nullable
     public String getParent(Context context) {
         switch (mode) {
@@ -770,7 +776,8 @@ public class HybridFile {
                         path,
                         context,
                         OpenMode.DOCUMENT_FILE,
-                        file -> totalBytes.addAndGet(FileUtils.getBaseFileSize(file, context)));
+                        file -> totalBytes.addAndGet(FileUtils.getBaseFileSize(file, context))
+                );
                 break;
             case DROPBOX:
             case BOX:
@@ -835,7 +842,8 @@ public class HybridFile {
                                                                     .request(
                                                                             Statvfs.request(
                                                                                     client, NetCopyClientUtils.extractRemotePathFrom(path)))
-                                                                    .retrieve());
+                                                                    .retrieve()
+                                                    );
                                             return response.diskFreeSpace();
                                         } catch (SFTPException e) {
                                             LOG.error("Error querying server", e);
@@ -923,7 +931,8 @@ public class HybridFile {
                                                                     .request(
                                                                             Statvfs.request(
                                                                                     client, NetCopyClientUtils.extractRemotePathFrom(path)))
-                                                                    .retrieve());
+                                                                    .retrieve()
+                                                    );
                                             return response.diskSize();
                                         } catch (SFTPException e) {
                                             LOG.error("Error querying server", e);
@@ -958,6 +967,7 @@ public class HybridFile {
     /**
      * Helper method to list children of this file
      */
+
     public void forEachChildrenFile(Context context, boolean isRoot, OnFileFound onFileFound) {
         switch (mode) {
             case SFTP:
@@ -985,7 +995,9 @@ public class HybridFile {
                                             context.getString(
                                                     R.string.cannot_read_directory,
                                                     parseAndFormatUriForDisplay(getPath()),
-                                                    e.getMessage()));
+                                                    e.getMessage()
+                                            )
+                                    );
                                 }
                                 return true;
                             }
@@ -1053,7 +1065,8 @@ public class HybridFile {
                         hybridFileParcelable -> {
                             onFileFound.onFileFound(hybridFileParcelable);
                             return null;
-                        });
+                        }
+                );
         }
     }
 
@@ -1079,6 +1092,7 @@ public class HybridFile {
      * @param context
      * @return
      */
+
     @Nullable
     public InputStream getInputStream(Context context) {
         InputStream inputStream;
@@ -1206,7 +1220,9 @@ public class HybridFile {
                                                 NetCopyClientUtils.extractRemotePathFrom(getPath()),
                                                 EnumSet.of(
                                                         net.schmizz.sshj.sftp.OpenMode.WRITE,
-                                                        net.schmizz.sshj.sftp.OpenMode.CREAT));
+                                                        net.schmizz.sshj.sftp.OpenMode.CREAT
+                                                )
+                                        );
                                 return rf.new RemoteFileOutputStream() {
                                     @Override
                                     public void close() throws IOException {
@@ -1379,6 +1395,7 @@ public class HybridFile {
                 && !isTrashBin();
     }
 
+
     public boolean setLastModified(final long date) {
         if (isSmb()) {
             try {
@@ -1401,7 +1418,8 @@ public class HybridFile {
                                         throws IOException {
                                     return ftpClient.setModificationTime(
                                             NetCopyClientUtils.extractRemotePathFrom(path),
-                                            NetCopyClientUtils.getTimestampForTouch(date));
+                                            NetCopyClientUtils.getTimestampForTouch(date)
+                                    );
                                 }
                             }));
         } else if (isSftp()) {
@@ -1416,7 +1434,8 @@ public class HybridFile {
                                                             Locale.US,
                                                             "touch -m -t %s \"%s\"",
                                                             NetCopyClientUtils.getTimestampForTouch(date),
-                                                            getPath()));
+                                                            getPath()
+                                                    ));
                                     // Quirk: need to wait the command to finish
                                     IOUtils.readFully(cmd.getInputStream());
                                     cmd.close();
@@ -1441,6 +1460,7 @@ public class HybridFile {
             return false;
         }
     }
+
 
     public void mkdir(Context context) {
         if (isSftp()) {
@@ -1486,7 +1506,8 @@ public class HybridFile {
                                 SafRootHolder.getUriRoot(),
                                 context,
                                 OpenMode.DOCUMENT_FILE,
-                                true);
+                                true
+                        );
                 if (parentDirectory.isDirectory()) {
                     parentDirectory.createDirectory(getName(context));
                 }
@@ -1501,6 +1522,7 @@ public class HybridFile {
         } else if (isTrashBin()) { // do nothing
         } else MakeDirectoryOperation.mkdirs(context, this);
     }
+
 
     public boolean delete(Context context, boolean rootmode)
             throws ShellNotRunningException, SmbException {
@@ -1520,7 +1542,7 @@ public class HybridFile {
         } else if (isFtp()) {
             Boolean retval =
                     NetCopyClientUtils.INSTANCE.<FTPClient, Boolean>execute(
-                            new FtpClientTemplate<Boolean>(path, false) {
+                            new FtpClientTemplate<>(path, false) {
                                 @Override
                                 public Boolean executeWithFtpClient(@NonNull FTPClient ftpClient)
                                         throws IOException {
@@ -1568,7 +1590,8 @@ public class HybridFile {
                         }
                         MediaConnectionUtils.scanFile(context, new HybridFile[]{this});
                         return true;
-                    });
+                    }
+            );
         }
     }
 
@@ -1583,7 +1606,8 @@ public class HybridFile {
                         File source = new File(originalFilePath);
                         File dest = new File(trashBinDestination);
                         return source.renameTo(dest);
-                    });
+                    }
+            );
         }
         return true;
     }
@@ -1601,7 +1625,8 @@ public class HybridFile {
                         isDelete.set(DeleteOperation.deleteFile(getFile(), context));
                         return isDelete.get();
                     },
-                    true);
+                    true
+            );
         }
         return isDelete.get();
     }
@@ -1643,7 +1668,8 @@ public class HybridFile {
                                     file.lastModified() + "",
                                     file.isDirectory(),
                                     showThumbs,
-                                    mode);
+                                    mode
+                            );
                 } else {
                     layoutElement =
                             new LayoutElementParcelable(
@@ -1657,7 +1683,8 @@ public class HybridFile {
                                     file.lastModified() + "",
                                     false,
                                     showThumbs,
-                                    mode);
+                                    mode
+                            );
                 }
                 return layoutElement;
             default:
@@ -1671,6 +1698,7 @@ public class HybridFile {
      * @param activity
      * @param doShowDialog should show confirmation dialog (in case of deeplink)
      */
+
     public void openFile(MainActivity activity, boolean doShowDialog) {
         if (doShowDialog) {
             AtomicReference<String> md5 = new AtomicReference<>(activity.getString(R.string.calculating));
@@ -1691,7 +1719,8 @@ public class HybridFile {
                                     pathToDisplay.get(),
                                     Formatter.formatShortFileSize(activity, length(activity)),
                                     md5.get(),
-                                    sha256.get()));
+                                    sha256.get()
+                            ));
             MaterialDialog dialog =
                     GeneralDialogCreation.showOpenFileDeeplinkDialog(
                             this, activity, dialogContent.get(), () -> openFileInternal(activity));
@@ -1707,10 +1736,12 @@ public class HybridFile {
                                         pathToDisplay.get(),
                                         Formatter.formatShortFileSize(activity, length(activity)),
                                         md5.get(),
-                                        sha256.get()));
+                                        sha256.get()
+                                ));
                         dialog.setContent(dialogContent.get());
                         return null;
-                    });
+                    }
+            );
             getSha256Checksum(
                     activity,
                     s -> {
@@ -1722,10 +1753,12 @@ public class HybridFile {
                                         pathToDisplay.get(),
                                         Formatter.formatShortFileSize(activity, length(activity)),
                                         md5.get(),
-                                        sha256.get()));
+                                        sha256.get()
+                                ));
                         dialog.setContent(dialogContent.get());
                         return null;
-                    });
+                    }
+            );
         } else {
             openFileInternal(activity);
         }
@@ -1904,7 +1937,8 @@ public class HybridFile {
                 Toast.makeText(
                                 activity,
                                 activity.getResources().getString(R.string.please_wait),
-                                Toast.LENGTH_LONG)
+                                Toast.LENGTH_LONG
+                        )
                         .show();
                 SshClientUtils.launchFtp(this, activity);
                 break;
@@ -1917,7 +1951,8 @@ public class HybridFile {
                         OTGUtil.getDocumentFile(
                                 path, SafRootHolder.getUriRoot(), activity, OpenMode.DOCUMENT_FILE, false),
                         activity,
-                        activity.getPrefs());
+                        activity.getPrefs()
+                );
                 break;
             case DROPBOX:
             case BOX:
@@ -1926,7 +1961,8 @@ public class HybridFile {
                 Toast.makeText(
                                 activity,
                                 activity.getResources().getString(R.string.please_wait),
-                                Toast.LENGTH_LONG)
+                                Toast.LENGTH_LONG
+                        )
                         .show();
                 CloudUtil.launchCloud(this, mode, activity);
                 break;

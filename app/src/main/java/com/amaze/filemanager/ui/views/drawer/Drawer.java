@@ -50,6 +50,7 @@ import com.amaze.filemanager.filesystem.HybridFile;
 import com.amaze.filemanager.filesystem.RootHelper;
 import com.amaze.filemanager.filesystem.cloud.CloudUtil;
 import com.amaze.filemanager.filesystem.files.FileUtils;
+import com.amaze.filemanager.play.utils.Billing;
 import com.amaze.filemanager.ui.ExtensionsKt;
 import com.amaze.filemanager.ui.activities.AboutActivity;
 import com.amaze.filemanager.ui.activities.MainActivity;
@@ -62,7 +63,6 @@ import com.amaze.filemanager.ui.fragments.FtpServerFragment;
 import com.amaze.filemanager.ui.fragments.MainFragment;
 import com.amaze.filemanager.ui.fragments.preferencefragments.QuickAccessesPrefsFragment;
 import com.amaze.filemanager.ui.theme.AppTheme;
-import com.amaze.filemanager.utils.Billing;
 import com.amaze.filemanager.utils.BookSorter;
 import com.amaze.filemanager.utils.DataUtils;
 import com.amaze.filemanager.utils.OTGUtil;
@@ -80,6 +80,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.slf4j.Logger;
+import android.widget.Toast;
 import org.slf4j.LoggerFactory;
 
 public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,8 +123,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
      */
     private boolean isOnTablet = false;
 
-    private Billing billing;
-
+    @android.annotation.SuppressLint("WrongViewCast")
+    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     public Drawer(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         dataUtils = DataUtils.getInstance();
@@ -138,32 +139,11 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         if (BuildConfig.DEBUG) {
             appVersion.setVisibility(View.VISIBLE);
         }
-        donateImageView.setOnClickListener(v -> new Billing(mainActivity));
+        donateImageView.setOnClickListener(v -> Toast.makeText(mainActivity, "You can donate money to us later, not yet!", Toast.LENGTH_LONG).show());
         telegramImageView.setOnClickListener(v -> Utils.openTelegramURL(mainActivity));
         instagramImageView.setOnClickListener(v -> Utils.openInstagramURL(mainActivity));
-        initDrawerFocusItems();
-    /*drawerHeaderView.setOnLongClickListener(
-    v -> {
-      Intent intent1;
-      if (SDK_INT < Build.VERSION_CODES.KITKAT) {
-        intent1 = new Intent();
-        intent1.setAction(Intent.ACTION_GET_CONTENT);
-      } else {
-        intent1 = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-      }
-      intent1.addCategory(Intent.CATEGORY_OPENABLE);
-      intent1.setType("image/*");
-      mainActivity.startActivityForResult(intent1, image_selector_request_code);
-      return false;
-    });*/
 
         navView = mainActivity.findViewById(R.id.navigation);
-
-        // set width of drawer in portrait to follow material guidelines
-    /*if(!Utils.isDeviceInLandScape(mainActivity)){
-        setNavViewDimension(navView);
-    }*/
-
         navView.setNavigationItemSelectedListener(this);
 
         int accentColor = mainActivity.getAccent(), idleColor;
@@ -185,7 +165,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                                 new int[]{android.R.attr.state_focused},
                                 new int[]{android.R.attr.state_pressed}
                         },
-                        new int[]{accentColor, idleColor, idleColor, idleColor, idleColor});
+                        new int[]{accentColor, idleColor, idleColor, idleColor, idleColor}
+                );
 
         navView.setItemTextColor(drawerColors);
         navView.setItemIconTintList(drawerColors);
@@ -199,10 +180,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
 
         mDrawerLayout = mainActivity.findViewById(R.id.drawer_layout);
-        // mDrawerLayout.setStatusBarBackgroundColor(Color.parseColor((currentTab==1 ? skinTwo :
-        // skin)));
         drawerHeaderView.setBackgroundResource(R.drawable.amaze_header);
-        // drawerHeaderParent.setBackgroundColor(Color.parseColor((currentTab==1 ? skinTwo : skin)));
         if (mainActivity.findViewById(R.id.tab_frame) != null) {
             isOnTablet = true;
             mDrawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -216,7 +194,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             mDrawerLayout, /* DrawerLayout object */
                             R.drawable.ic_drawer_l, /* nav drawer image to replace 'Up' caret */
                             R.string.drawer_open, /* "open drawer" description for accessibility */
-                            R.string.drawer_close /* "close drawer" description for accessibility */) {
+                            R.string.drawer_close /* "close drawer" description for accessibility */
+                    ) {
                         public void onDrawerClosed(View view) {
                             Drawer.this.onDrawerClosed();
                         }
@@ -259,6 +238,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
     }
 
+    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     public void refreshDrawer() {
         Menu menu = navView.getMenu();
         menu.clear();
@@ -292,7 +272,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.drawable.ic_usb_white_24dp,
                         R.drawable.ic_show_chart_black_24dp,
                         Formatter.formatFileSize(mainActivity, freeSpace),
-                        Formatter.formatFileSize(mainActivity, totalSpace));
+                        Formatter.formatFileSize(mainActivity, totalSpace)
+                );
                 continue;
             }
 
@@ -306,7 +287,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         icon,
                         R.drawable.ic_show_chart_black_24dp,
                         Formatter.formatFileSize(mainActivity, freeSpace),
-                        Formatter.formatFileSize(mainActivity, totalSpace));
+                        Formatter.formatFileSize(mainActivity, totalSpace)
+                );
                 if (phoneStorageCount == 0) firstPath = file;
                 else if (phoneStorageCount == 1) secondPath = file;
 
@@ -326,7 +308,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             file[0],
                             new MenuMetadata(file[1], false),
                             R.drawable.ic_settings_remote_white_24dp,
-                            R.drawable.ic_edit_24dp);
+                            R.drawable.ic_edit_24dp
+                    );
                 }
             }
         }
@@ -345,7 +328,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             CloudHandler.CLOUD_NAME_DROPBOX,
                             new MenuMetadata(CloudHandler.CLOUD_PREFIX_DROPBOX + "/", false),
                             R.drawable.ic_dropbox_white_24dp,
-                            deleteIcon);
+                            deleteIcon
+                    );
 
                     accountAuthenticationList.add(
                             new String[]{
@@ -359,7 +343,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             CloudHandler.CLOUD_NAME_BOX,
                             new MenuMetadata(CloudHandler.CLOUD_PREFIX_BOX + "/", false),
                             R.drawable.ic_box_white_24dp,
-                            deleteIcon);
+                            deleteIcon
+                    );
 
                     accountAuthenticationList.add(
                             new String[]{
@@ -373,7 +358,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             CloudHandler.CLOUD_NAME_ONE_DRIVE,
                             new MenuMetadata(CloudHandler.CLOUD_PREFIX_ONE_DRIVE + "/", false),
                             R.drawable.ic_onedrive_white_24dp,
-                            deleteIcon);
+                            deleteIcon
+                    );
 
                     accountAuthenticationList.add(
                             new String[]{
@@ -387,7 +373,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             CloudHandler.CLOUD_NAME_GOOGLE_DRIVE,
                             new MenuMetadata(CloudHandler.CLOUD_PREFIX_GOOGLE_DRIVE + "/", false),
                             R.drawable.ic_google_drive_white_24dp,
-                            deleteIcon);
+                            deleteIcon
+                    );
 
                     accountAuthenticationList.add(
                             new String[]{
@@ -412,7 +399,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                                 file[0],
                                 new MenuMetadata(file[1], false),
                                 R.drawable.ic_folder_white_24dp,
-                                R.drawable.ic_edit_24dp);
+                                R.drawable.ic_edit_24dp
+                        );
                     }
                 }
             }
@@ -422,7 +410,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 TinyDB.getBooleanArray(
                         mainActivity.getPrefs(),
                         QuickAccessesPrefsFragment.KEY,
-                        QuickAccessesPrefsFragment.Companion.getDEFAULT());
+                        QuickAccessesPrefsFragment.Companion.getDEFAULT()
+                );
 
         if (mainActivity.getBoolean(PREFERENCE_SHOW_SIDEBAR_QUICKACCESSES)) {
             if (quickAccessPref[0]) {
@@ -433,7 +422,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.quick,
                         new MenuMetadata("5", true),
                         R.drawable.ic_star_white_24dp,
-                        null);
+                        null
+                );
             }
             if (quickAccessPref[1]) {
                 addNewItem(
@@ -443,7 +433,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.recent,
                         new MenuMetadata("6", true),
                         R.drawable.ic_history_white_24dp,
-                        null);
+                        null
+                );
             }
             if (quickAccessPref[2]) {
                 addNewItem(
@@ -453,7 +444,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.images,
                         new MenuMetadata("0", true),
                         R.drawable.ic_photo_library_white_24dp,
-                        null);
+                        null
+                );
             }
             if (quickAccessPref[3]) {
                 addNewItem(
@@ -463,7 +455,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.videos,
                         new MenuMetadata("1", true),
                         R.drawable.ic_video_library_white_24dp,
-                        null);
+                        null
+                );
             }
             if (quickAccessPref[4]) {
                 addNewItem(
@@ -473,7 +466,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.audio,
                         new MenuMetadata("2", true),
                         R.drawable.ic_library_music_white_24dp,
-                        null);
+                        null
+                );
             }
             if (quickAccessPref[5]) {
                 addNewItem(
@@ -483,7 +477,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.documents,
                         new MenuMetadata("3", true),
                         R.drawable.ic_library_books_white_24dp,
-                        null);
+                        null
+                );
             }
             if (quickAccessPref[6]) {
                 addNewItem(
@@ -493,7 +488,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         R.string.apks,
                         new MenuMetadata("4", true),
                         R.drawable.ic_apk_library_white_24dp,
-                        null);
+                        null
+                );
             }
         }
 
@@ -519,7 +515,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             else onDrawerClosed();
                         }),
                 R.drawable.ic_ftp_white_24dp,
-                null);
+                null
+        );
 
         addNewItem(
                 menu,
@@ -543,7 +540,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             }
                         }),
                 R.drawable.ic_round_connect_without_contact_24,
-                null);
+                null
+        );
 
         addNewItem(
                 menu,
@@ -567,7 +565,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             }
                         }),
                 R.drawable.ic_round_analytics_24,
-                null);
+                null
+        );
 
         // initially load trash bin items with "7" but ones listed they're referred as
         // @link{OpenMode.TRASH_BIN}
@@ -578,7 +577,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 R.string.trash_bin,
                 new MenuMetadata("7", true),
                 R.drawable.round_delete_outline_24,
-                null);
+                null
+        );
 
         addNewItem(
                 menu,
@@ -602,7 +602,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             else onDrawerClosed();
                         }),
                 R.drawable.ic_android_white_24dp,
-                null);
+                null
+        );
 
         addNewItem(
                 menu,
@@ -616,7 +617,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             mainActivity.finish();
                         }),
                 R.drawable.ic_settings_white_24dp,
-                null);
+                null
+        );
 
         for (int i = 0; i < navView.getMenu().size(); i++) {
             navView.getMenu().getItem(i).setEnabled(true);
@@ -633,25 +635,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
     }
 
-    private void initDrawerFocusItems() {
-        donateImageView.setOnKeyListener(
-                (v, keyCode, event) -> {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                            mainActivity.getAppbar().getAppbarLayout().requestFocus();
-                            mainActivity.getAppbar().getToolbar().requestFocus();
-                        } else if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
-                            new Billing(mainActivity);
-                        } else if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                            mainActivity.onBackPressed();
-                        } else {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
-    }
-
     public AppCompatImageView getDonateImageView() {
         return this.donateImageView;
     }
@@ -663,7 +646,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
             @StringRes int text,
             MenuMetadata meta,
             @DrawableRes int icon,
-            @DrawableRes Integer actionViewIcon) {
+            @DrawableRes Integer actionViewIcon
+    ) {
         addNewItem(
                 menu, group, order, mainActivity.getString(text), meta, icon, actionViewIcon, null, null);
     }
@@ -675,7 +659,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
             String text,
             MenuMetadata meta,
             @DrawableRes int icon,
-            @DrawableRes Integer actionViewIcon) {
+            @DrawableRes Integer actionViewIcon
+    ) {
         addNewItem(menu, group, order, text, meta, icon, actionViewIcon, null, null);
     }
 
@@ -688,7 +673,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
             @DrawableRes int icon,
             @DrawableRes Integer actionViewIcon,
             @Nullable String freeSpace,
-            @Nullable String totalSpace) {
+            @Nullable String totalSpace
+    ) {
         if (BuildConfig.DEBUG && menu.findItem(order) != null)
             throw new IllegalStateException("Item already id exists: " + order);
 
@@ -751,6 +737,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         mDrawerLayout.closeDrawer(navView);
     }
 
+    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     public void onDrawerClosed() {
         if (pending_fragmentTransaction != null) {
             pending_fragmentTransaction.commit();
@@ -781,6 +768,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         mainActivity.supportInvalidateOptionsMenu();
     }
 
+    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         actionViewStateManager.deselectCurrentActionView();
@@ -821,7 +809,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                                                 mainActivity,
                                                 () ->
                                                         mainActivity.startActivityForResult(
-                                                                safIntent, MainActivity.REQUEST_CODE_SAF));
+                                                                safIntent, MainActivity.REQUEST_CODE_SAF)
+                                        );
 
                                         dialog.dismiss();
                                     });
@@ -855,7 +844,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                     GeneralDialogCreation.showPropertiesDialogForStorage(
                             RootHelper.generateBaseFile(new File(path), true),
                             mainActivity,
-                            mainActivity.getAppTheme());
+                            mainActivity.getAppTheme()
+                    );
                 }
                 break;
             // not to remove the first bookmark (storage) and permanent bookmarks
@@ -1017,10 +1007,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         return secondPath;
     }
 
-    public Billing getBilling() {
-        return this.billing;
-    }
-
     private SpannableString getSpannableText(String text, String freeSpace, String totalSpace) {
 
         String s = mainActivity.getString(R.string.free_of, text, freeSpace, totalSpace);
@@ -1033,7 +1019,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 new TextAppearanceSpan(mainActivity, R.style.DrawerItemDriveSizeTextStyle),
                 text.length() + 1,
                 s.length(),
-                0);
+                0
+        );
 
         return spannableString;
     }

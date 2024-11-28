@@ -1,8 +1,9 @@
-package com.amaze.filemanager.asynchronous.asynctasks.compress
+package com.amaze.filemanager.play.asynchronous.asynctasks.compress
 
 import com.amaze.filemanager.adapters.data.CompressedObjectParcelable
+import com.amaze.filemanager.asynchronous.asynctasks.compress.CompressedHelperCallable
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
-import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.RarDecompressor.Companion.convertName
+import com.amaze.filemanager.play.filesystem.compressed.showcontents.helpers.RarDecompressor.Companion.convertName
 import com.github.junrar.Archive
 import com.github.junrar.exception.RarException
 import com.github.junrar.exception.UnsupportedRarV5Exception

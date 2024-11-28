@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed
+package com.amaze.filemanager.play.filesystem.compressed
 
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M

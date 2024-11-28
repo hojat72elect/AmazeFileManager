@@ -1,4 +1,4 @@
-package com.amaze.filemanager.filesystem.compressed.extractcontents.helpers
+package com.amaze.filemanager.play.filesystem.compressed.extractcontents.helpers
 
 import android.content.Context
 import android.os.Build
@@ -9,7 +9,7 @@ import com.amaze.filemanager.filesystem.FileUtil
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
 import com.amaze.filemanager.filesystem.compressed.extractcontents.Extractor
-import com.amaze.filemanager.filesystem.compressed.isPasswordProtectedCompat
+import com.amaze.filemanager.play.filesystem.compressed.isPasswordProtectedCompat
 import com.amaze.filemanager.filesystem.files.GenericCopyUtil
 import com.github.junrar.Archive
 import com.github.junrar.exception.CorruptHeaderException

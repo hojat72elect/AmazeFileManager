@@ -38,9 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by vishal on 19/4/17.
- *
- * <p>Class provides helper methods for cloud utilities
+ * Class provides helper methods for cloud utilities.
  */
 public class CloudUtil {
 

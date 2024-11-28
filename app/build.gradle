@@ -66,19 +66,6 @@ android {
 
     flavorDimensions = ['static']
 
-    productFlavors {
-        fdroid {
-            dimension 'static'
-            buildConfigField "boolean", "IS_VERSION_FDROID", "true"
-        }
-
-        play {
-            dimension 'static'
-            buildConfigField "boolean", "IS_VERSION_FDROID", "false"
-            signingConfig signingConfigs.config
-        }
-    }
-
     dependenciesInfo {
         // Disables dependency metadata when building APKs.
         includeInApk = false
@@ -198,9 +185,9 @@ dependencies {
     implementation libs.libsu.core
     implementation libs.libsu.io
 
-    playImplementation libs.cloudrail.si.android
-    playImplementation libs.junrar
-    playImplementation libs.google.play.billing
+    implementation libs.cloudrail.si.android
+    implementation libs.junrar
+    implementation libs.google.play.billing
 
     implementation libs.mpAndroidChart//Nice charts and graphs
 

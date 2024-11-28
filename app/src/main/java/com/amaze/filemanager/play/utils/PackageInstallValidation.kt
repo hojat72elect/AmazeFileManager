@@ -1,4 +1,4 @@
-package com.amaze.filemanager.utils
+package com.amaze.filemanager.play.utils
 
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager

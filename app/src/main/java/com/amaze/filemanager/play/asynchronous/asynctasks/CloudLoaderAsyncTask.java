@@ -1,4 +1,4 @@
-package com.amaze.filemanager.asynchronous.asynctasks;
+package com.amaze.filemanager.play.asynchronous.asynctasks;
 
 import android.database.Cursor;
 import android.os.AsyncTask;

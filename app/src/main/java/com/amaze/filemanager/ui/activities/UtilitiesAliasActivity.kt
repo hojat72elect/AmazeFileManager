@@ -3,7 +3,6 @@ package com.amaze.filemanager.ui.activities
 import android.content.ActivityNotFoundException
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.amaze.filemanager.BuildConfig
 import com.amaze.filemanager.R
 import com.amaze.filemanager.application.AppConfig
 import com.amaze.filemanager.databinding.UtilitiesAliasLayoutBinding
@@ -24,14 +23,7 @@ class UtilitiesAliasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(_binding.root)
         _binding.downloadButton.setOnClickListener {
-            Utils.openURL(
-                if (BuildConfig.IS_VERSION_FDROID) {
-                    AboutActivity.URL_AMAZE_UTILS_FDROID
-                } else {
-                    AboutActivity.URL_AMAZE_UTILS
-                },
-                this,
-            )
+            Utils.openURL(AboutActivity.URL_AMAZE_UTILS, this)
         }
         _binding.cancelButton.setOnClickListener {
             finish()

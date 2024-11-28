@@ -9,7 +9,7 @@ import com.amaze.filemanager.filesystem.compressed.extractcontents.Extractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.Bzip2Extractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.GzipExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.LzmaExtractor;
-import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.RarExtractor;
+import com.amaze.filemanager.play.filesystem.compressed.extractcontents.helpers.RarExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.SevenZipExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.TarBzip2Extractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.TarExtractor;
@@ -19,7 +19,7 @@ import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.TarXz
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.XzExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.ZipExtractor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.Decompressor;
-import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.RarDecompressor;
+import com.amaze.filemanager.play.filesystem.compressed.showcontents.helpers.RarDecompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.SevenZipDecompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.TarBzip2Decompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.TarDecompressor;
@@ -74,7 +74,7 @@ public abstract class CompressedHelper {
 
         if (isZip(type)) {
             extractor = new ZipExtractor(context, file.getPath(), outputPath, listener, updatePosition);
-        } else if (BuildConfig.FLAVOR.equals("play") && isRar(type)) {
+        } else if (isRar(type)) {
             extractor = new RarExtractor(context, file.getPath(), outputPath, listener, updatePosition);
         } else if (isTar(type)) {
             extractor = new TarExtractor(context, file.getPath(), outputPath, listener, updatePosition);
@@ -120,7 +120,7 @@ public abstract class CompressedHelper {
 
         if (isZip(type)) {
             decompressor = new ZipDecompressor(context);
-        } else if (BuildConfig.FLAVOR.equals("play") && isRar(type)) {
+        } else if (isRar(type)) {
             decompressor = new RarDecompressor(context);
         } else if (isTar(type)) {
             decompressor = new TarDecompressor(context);
