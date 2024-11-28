@@ -1,15 +1,14 @@
-package com.stealthcopter.networktools
+package com.amaze.filemanager.networktools
 
-import com.stealthcopter.networktools.IPTools.isIpAddressLocalNetwork
-import com.stealthcopter.networktools.IPTools.isIpAddressLocalhost
-import com.stealthcopter.networktools.portscanning.PortScanTCP
-import com.stealthcopter.networktools.portscanning.PortScanUDP
+import com.amaze.filemanager.networktools.IPTools.isIpAddressLocalNetwork
+import com.amaze.filemanager.networktools.IPTools.isIpAddressLocalhost
+import com.amaze.filemanager.networktools.portscanning.PortScanTCP
+import com.amaze.filemanager.networktools.portscanning.PortScanUDP
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import java.net.InetAddress
 import java.net.UnknownHostException
 
-/** Created by mat on 14/12/15.  */
 class PortScan // This class is not to be instantiated
 private constructor() {
     private var method = METHOD_TCP

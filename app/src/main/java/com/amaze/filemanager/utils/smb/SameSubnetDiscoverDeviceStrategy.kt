@@ -1,9 +1,9 @@
 package com.amaze.filemanager.utils.smb
 
 import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.networktools.PortScan
 import com.amaze.filemanager.utils.ComputerParcelable
 import com.amaze.filemanager.utils.NetworkUtil
-import com.stealthcopter.networktools.PortScan
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

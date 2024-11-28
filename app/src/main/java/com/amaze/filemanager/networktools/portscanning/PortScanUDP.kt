@@ -1,4 +1,4 @@
-package com.stealthcopter.networktools.portscanning
+package com.amaze.filemanager.networktools.portscanning
 
 import java.net.DatagramPacket
 import java.net.DatagramSocket
