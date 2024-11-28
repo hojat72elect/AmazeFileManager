@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,7 +11,6 @@ import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.R
-import com.amaze.filemanager.TagsHelper
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -25,17 +23,18 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class BackupPrefsFragment : BasePrefsFragment() {
-    private val TAG: String = TagsHelper.getTag(BasePrefsFragment::class.java)
+
     private val log: Logger = LoggerFactory.getLogger(BackupPrefsFragment::class.java)
 
     companion object {
-        val IMPORT_BACKUP_FILE: Int = 2
+        private const val IMPORT_BACKUP_FILE = 2
+        private const val TAG = "BasePrefsFragment"
     }
 
     override val title = R.string.backup
 
     /** Export app settings to a JSON file */
-    fun exportPrefs() {
+    private fun exportPrefs() {
         val map: Map<String?, *> =
             PreferenceManager
                 .getDefaultSharedPreferences(requireActivity()).all
@@ -74,31 +73,25 @@ class BackupPrefsFragment : BasePrefsFragment() {
         }
     }
 
-    /** Import app settings from a JSON file */
+
+    /**
+     * Import app settings from a JSON file
+     */
     private fun importPrefs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            startActivityForResult(
-                Intent(Intent.ACTION_OPEN_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType("*/*")
-                    .putExtra(
-                        Intent.EXTRA_MIME_TYPES,
-                        arrayOf("application/json"),
-                    ),
-                IMPORT_BACKUP_FILE,
-            )
-        } else {
-            startActivityForResult(
-                Intent.createChooser(
-                    Intent(Intent.ACTION_GET_CONTENT)
-                        .setType("application/json"),
-                    "Choose backup file",
+
+        startActivityForResult(
+            Intent(Intent.ACTION_OPEN_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("*/*")
+                .putExtra(
+                    Intent.EXTRA_MIME_TYPES,
+                    arrayOf("application/json"),
                 ),
-                IMPORT_BACKUP_FILE,
-            )
-        }
+            IMPORT_BACKUP_FILE,
+        )
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
