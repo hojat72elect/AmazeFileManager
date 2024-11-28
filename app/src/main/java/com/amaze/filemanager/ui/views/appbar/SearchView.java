@@ -135,12 +135,14 @@ public class SearchView {
                 ResourcesCompat.getDrawable(
                         mainActivity.getResources(),
                         R.drawable.baseline_sort_24_asc_white,
-                        mainActivity.getTheme());
+                        mainActivity.getTheme()
+                );
         searchResultsSortDescDrawable =
                 ResourcesCompat.getDrawable(
                         mainActivity.getResources(),
                         R.drawable.baseline_sort_24_desc_white,
-                        mainActivity.getTheme());
+                        mainActivity.getTheme()
+                );
 
         setUpSearchResultsSortButton();
 
@@ -207,14 +209,16 @@ public class SearchView {
                                 .indexedSearch(mainActivity, s)
                                 .observe(
                                         mainActivity.getCurrentMainFragment().getViewLifecycleOwner(),
-                                        hybridFileParcelables -> updateResultList(hybridFileParcelables, s));
+                                        hybridFileParcelables -> updateResultList(hybridFileParcelables, s)
+                                );
 
                         searchMode = 2;
 
                         deepSearchTV.setText(
                                 getSpannableText(
                                         mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-                                        mainActivity.getString(R.string.try_deep_search)));
+                                        mainActivity.getString(R.string.try_deep_search)
+                                ));
 
                     } else if (searchMode == 2) {
 
@@ -224,7 +228,8 @@ public class SearchView {
                                 .deepSearch(mainActivity, s)
                                 .observe(
                                         mainActivity.getCurrentMainFragment().getViewLifecycleOwner(),
-                                        hybridFileParcelables -> updateResultList(hybridFileParcelables, s));
+                                        hybridFileParcelables -> updateResultList(hybridFileParcelables, s)
+                                );
 
                         deepSearchTV.setVisibility(View.GONE);
                     }
@@ -263,7 +268,8 @@ public class SearchView {
         deepSearchTV.setText(
                 getSpannableText(
                         mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-                        mainActivity.getString(R.string.try_indexed_search)));
+                        mainActivity.getString(R.string.try_indexed_search)
+                ));
 
         mainActivity
                 .getCurrentMainFragment()
@@ -271,7 +277,8 @@ public class SearchView {
                 .basicSearch(mainActivity, s)
                 .observe(
                         mainActivity.getCurrentMainFragment().getViewLifecycleOwner(),
-                        hybridFileParcelables -> updateResultList(hybridFileParcelables, s));
+                        hybridFileParcelables -> updateResultList(hybridFileParcelables, s)
+                );
     }
 
     private void saveRecentPreference(String s) {
@@ -347,7 +354,8 @@ public class SearchView {
         deepSearchTV.setText(
                 getSpannableText(
                         mainActivity.getString(R.string.not_finding_what_you_re_looking_for),
-                        mainActivity.getString(R.string.try_indexed_search)));
+                        mainActivity.getString(R.string.try_indexed_search)
+                ));
         deepSearchTV.setVisibility(View.GONE);
     }
 
@@ -396,7 +404,8 @@ public class SearchView {
                             searchCoords[0] + 32,
                             searchCoords[1] - 16,
                             START_RADIUS,
-                            endRadius);
+                            endRadius
+                    );
         } else {
             // TODO:ViewAnimationUtils.createCircularReveal
             animator = ObjectAnimator.ofFloat(searchViewLayout, "alpha", 0f, 1f);
@@ -511,7 +520,8 @@ public class SearchView {
         orderDrawable.setColorFilter(
                 new PorterDuffColorFilter(
                         mainActivity.getResources().getColor(R.color.accent_material_light),
-                        PorterDuff.Mode.SRC_ATOP));
+                        PorterDuff.Mode.SRC_ATOP
+                ));
         searchResultsSortButton.setCompoundDrawablesWithIntrinsicBounds(
                 null, null, orderDrawable, null);
     }
@@ -537,7 +547,8 @@ public class SearchView {
                             searchCoords[0] + 32,
                             searchCoords[1] - 16,
                             startRadius,
-                            END_RADIUS);
+                            END_RADIUS
+                    );
         } else {
             // TODO: ViewAnimationUtils.createCircularReveal
             animator = ObjectAnimator.ofFloat(searchViewLayout, "alpha", 1f, 0f);
@@ -634,12 +645,14 @@ public class SearchView {
                 new ForegroundColorSpan(mainActivity.getCurrentColorPreference().getAccent()),
                 s1.length() + 1,
                 spannableString.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
         spannableString.setSpan(
                 new StyleSpan(Typeface.BOLD),
                 s1.length() + 1,
                 spannableString.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
 
         return spannableString;
     }

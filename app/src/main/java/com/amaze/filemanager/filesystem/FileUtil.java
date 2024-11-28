@@ -13,31 +13,18 @@ import com.amaze.filemanager.R;
 import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.exceptions.NotAllowedException;
 import com.amaze.filemanager.exceptions.OperationWouldOverwriteException;
-import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
-import com.amaze.filemanager.filesystem.cloud.CloudUtil;
-import com.amaze.filemanager.filesystem.files.GenericCopyUtil;
 import com.amaze.filemanager.ui.activities.MainActivity;
-import com.amaze.filemanager.utils.DataUtils;
-import com.amaze.filemanager.utils.OTGUtil;
-import com.amaze.filemanager.utils.smb.SmbUtil;
-import com.cloudrail.si.interfaces.CloudStorage;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
-import jcifs.smb.SmbFile;
-import kotlin.NotImplementedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +72,8 @@ public abstract class FileUtil {
             @NonNull final MainActivity mainActivity,
             @NonNull final List<Uri> uris,
             @NonNull final ContentResolver contentResolver,
-            @NonNull final String currentPath) {
+            @NonNull final String currentPath
+    ) {
 
         MaybeOnSubscribe<List<String>> writeUri =
                 emitter -> {
@@ -195,7 +183,8 @@ public abstract class FileUtil {
                                     bufferedOutputStream =
                                             new java.io.BufferedOutputStream(
                                                     contentResolver.openOutputStream(documentTargetFile.getUri()),
-                                                    com.amaze.filemanager.filesystem.files.GenericCopyUtil.DEFAULT_BUFFER_SIZE);
+                                                    com.amaze.filemanager.filesystem.files.GenericCopyUtil.DEFAULT_BUFFER_SIZE
+                                            );
 
                                     retval.add(documentTargetFile.getUri().getPath());
                                     break;
@@ -254,18 +243,21 @@ public abstract class FileUtil {
                                         mainActivity.getApplicationContext(),
                                         paths.toArray(new String[0]),
                                         new String[paths.size()],
-                                        null);
+                                        null
+                                );
                                 if (paths.size() == 1) {
                                     Toast.makeText(
                                                     mainActivity,
                                                     mainActivity.getString(R.string.saved_single_file, paths.get(0)),
-                                                    Toast.LENGTH_LONG)
+                                                    Toast.LENGTH_LONG
+                                            )
                                             .show();
                                 } else {
                                     Toast.makeText(
                                                     mainActivity,
                                                     mainActivity.getString(R.string.saved_multi_files, paths.size()),
-                                                    Toast.LENGTH_LONG)
+                                                    Toast.LENGTH_LONG
+                                            )
                                             .show();
                                 }
                             }

@@ -59,15 +59,15 @@ import io.reactivex.Observable.create
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import net.schmizz.sshj.common.SecurityUtils
-import org.json.JSONObject
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.lang.ref.WeakReference
 import java.security.KeyPair
 import java.security.PublicKey
 import java.util.concurrent.Callable
+import net.schmizz.sshj.common.SecurityUtils
+import org.json.JSONObject
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /** SSH/SFTP connection setup dialog.  */
 class SftpConnectDialog : DialogFragment() {

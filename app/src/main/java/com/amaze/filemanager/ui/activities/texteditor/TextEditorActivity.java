@@ -4,31 +4,6 @@ import static com.amaze.filemanager.filesystem.EditableFileAbstraction.Scheme.CO
 import static com.amaze.filemanager.filesystem.EditableFileAbstraction.Scheme.FILE;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_TEXTEDITOR_NEWSTACK;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.amaze.filemanager.R;
-import com.amaze.filemanager.asynchronous.asynctasks.SearchTextTask;
-import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
-import com.amaze.filemanager.asynchronous.asynctasks.texteditor.read.ReadTextFileTask;
-import com.amaze.filemanager.asynchronous.asynctasks.texteditor.write.WriteTextFileTask;
-import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
-import com.amaze.filemanager.filesystem.EditableFileAbstraction;
-import com.amaze.filemanager.filesystem.HybridFileParcelable;
-import com.amaze.filemanager.filesystem.files.FileUtils;
-import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity;
-import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
-import com.amaze.filemanager.ui.theme.AppTheme;
-import com.amaze.filemanager.utils.OnAsyncTaskFinished;
-import com.amaze.filemanager.utils.OnProgressUpdate;
-import com.amaze.filemanager.utils.Utils;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -46,7 +21,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 import android.widget.Toast;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -54,6 +28,29 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.amaze.filemanager.R;
+import com.amaze.filemanager.asynchronous.asynctasks.SearchTextTask;
+import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
+import com.amaze.filemanager.asynchronous.asynctasks.texteditor.read.ReadTextFileTask;
+import com.amaze.filemanager.asynchronous.asynctasks.texteditor.write.WriteTextFileTask;
+import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
+import com.amaze.filemanager.filesystem.EditableFileAbstraction;
+import com.amaze.filemanager.filesystem.HybridFileParcelable;
+import com.amaze.filemanager.filesystem.files.FileUtils;
+import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity;
+import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
+import com.amaze.filemanager.ui.theme.AppTheme;
+import com.amaze.filemanager.utils.OnAsyncTaskFinished;
+import com.amaze.filemanager.utils.OnProgressUpdate;
+import com.amaze.filemanager.utils.Utils;
+import com.google.android.material.snackbar.Snackbar;
+import java.io.File;
+import java.lang.ref.WeakReference;
+import java.util.Collections;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TextEditorActivity extends ThemedActivity
         implements TextWatcher, View.OnClickListener {
@@ -400,7 +397,8 @@ public class TextEditorActivity extends ThemedActivity
                             }
                         }
                     },
-                    250);
+                    250
+            );
 
             viewModel.setTimer(newTimer);
         }
@@ -456,7 +454,8 @@ public class TextEditorActivity extends ThemedActivity
                                 mainTextView.getText().toString(),
                                 editable.toString(),
                                 onProgressUpdate,
-                                onAsyncTaskFinished);
+                                onAsyncTaskFinished
+                        );
                 searchTextTask.execute();
             }
         }
@@ -574,7 +573,8 @@ public class TextEditorActivity extends ThemedActivity
                     keyValueNew.getLineNumber()
                             + mainTextView.getLineHeight()
                             + Math.round(mainTextView.getLineSpacingExtra())
-                            - getSupportActionBar().getHeight());
+                            - getSupportActionBar().getHeight()
+            );
         }
     }
 
@@ -586,7 +586,8 @@ public class TextEditorActivity extends ThemedActivity
                             new BackgroundColorSpan(color),
                             resultIndex.getStartCharNumber(),
                             resultIndex.getEndCharNumber(),
-                            Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                    );
         }
     }
 

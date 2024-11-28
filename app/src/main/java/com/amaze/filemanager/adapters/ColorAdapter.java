@@ -16,8 +16,8 @@ import com.amaze.filemanager.utils.Utils;
 public class ColorAdapter extends ArrayAdapter<Integer> implements AdapterView.OnItemClickListener {
 
     private final LayoutInflater inflater;
-    private @ColorInt int selectedColor;
     private final OnColorSelected onColorSelected;
+    private @ColorInt int selectedColor;
 
     /**
      * Constructor for adapter that handles the view creation of color chooser dialog in preferences
@@ -28,7 +28,8 @@ public class ColorAdapter extends ArrayAdapter<Integer> implements AdapterView.O
      * @param l             OnColorSelected listener for when a color is selected
      */
     public ColorAdapter(
-            Context context, Integer[] colors, @ColorInt int selectedColor, OnColorSelected l) {
+            Context context, Integer[] colors, @ColorInt int selectedColor, OnColorSelected l
+    ) {
         super(context, R.layout.rowlayout, colors);
         this.selectedColor = selectedColor;
         this.onColorSelected = l;

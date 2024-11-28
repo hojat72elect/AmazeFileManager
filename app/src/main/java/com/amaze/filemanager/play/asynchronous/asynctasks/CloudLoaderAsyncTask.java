@@ -83,7 +83,8 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                                                 data.getString(1),
                                                 "",
                                                 MainActivity.CLOUD_AUTHENTICATOR_REDIRECT_URI,
-                                                data.getString(2));
+                                                data.getString(2)
+                                        );
                             } else {
                                 cancel(true);
                                 return false;

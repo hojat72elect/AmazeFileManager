@@ -299,7 +299,8 @@ public class CopyService extends AbstractProgressiveService {
                             // iterating each file inside source files which were copied to find instance of
                             // any copied / moved encrypted file
                             findAndReplaceEncryptedEntry(file);
-                        });
+                        }
+                );
             } else {
 
                 if (sourceFile.getName(c).endsWith(CryptUtil.CRYPT_EXTENSION)) {
@@ -348,7 +349,8 @@ public class CopyService extends AbstractProgressiveService {
                     final ArrayList<HybridFileParcelable> sourceFiles,
                     final String targetPath,
                     final boolean move,
-                    OpenMode mode) {
+                    OpenMode mode
+            ) {
 
                 // initial start of copy, initiate the watcher
                 watcherUtil.watch(CopyService.this);
@@ -407,7 +409,8 @@ public class CopyService extends AbstractProgressiveService {
                                             mode,
                                             targetPath,
                                             sourceFiles.get(i).getName(c),
-                                            sourceFiles.get(i).isDirectory());
+                                            sourceFiles.get(i).isDirectory()
+                                    );
                             progressHandler.setSourceFilesProcessed(++sourceProgress);
                             progressHandler.setFileName(sourceFiles.get(i).getName(c));
                             copyRoot(sourceFiles.get(i), hFile, move);
@@ -447,7 +450,8 @@ public class CopyService extends AbstractProgressiveService {
                             "failed to copy root file source: {} dest: {}",
                             sourceFile.getPath(),
                             targetFile.getPath(),
-                            e);
+                            e
+                    );
                     failedFOps.add(sourceFile);
                 }
                 MediaConnectionUtils.scanFile(c, new HybridFile[]{targetFile});
@@ -456,7 +460,8 @@ public class CopyService extends AbstractProgressiveService {
             private void copyFiles(
                     final HybridFileParcelable sourceFile,
                     final HybridFile targetFile,
-                    final ProgressHandler progressHandler)
+                    final ProgressHandler progressHandler
+            )
                     throws IOException {
 
                 if (progressHandler.getCancelled()) return;
@@ -486,14 +491,16 @@ public class CopyService extends AbstractProgressiveService {
                                                 targetFile.getMode(),
                                                 targetFile.getPath(),
                                                 file.getName(c),
-                                                file.isDirectory());
+                                                file.isDirectory()
+                                        );
                                 try {
                                     copyFiles(file, destFile, progressHandler);
                                     destFile.setLastModified(file.lastModified());
                                 } catch (IOException e) {
                                     throw new IllegalStateException(e); // throw unchecked exception, no throws needed
                                 }
-                            });
+                            }
+                    );
                 } else {
                     if (!Operations.isFileNameValid(sourceFile.getName(c))) {
                         failedFOps.add(sourceFile);
@@ -510,7 +517,8 @@ public class CopyService extends AbstractProgressiveService {
                                 // we ran out of memory to map the whole channel, let's switch to streams
                                 AppConfig.toast(c, c.getString(R.string.copy_low_memory));
                             },
-                            ServiceWatcherUtil.UPDATE_POSITION);
+                            ServiceWatcherUtil.UPDATE_POSITION
+                    );
                     targetFile.setLastModified(sourceFile.lastModified());
                 }
             }

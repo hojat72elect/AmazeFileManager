@@ -19,7 +19,8 @@ public class RecyclerPreloadModelProvider
     private final RequestBuilder<Drawable> request;
 
     public RecyclerPreloadModelProvider(
-            @NonNull Fragment fragment, @NonNull List<IconDataParcelable> uris, boolean isCircled) {
+            @NonNull Fragment fragment, @NonNull List<IconDataParcelable> uris, boolean isCircled
+    ) {
         urisToLoad = uris;
         RequestBuilder<Drawable> incompleteRequest = Glide.with(fragment).asDrawable();
 

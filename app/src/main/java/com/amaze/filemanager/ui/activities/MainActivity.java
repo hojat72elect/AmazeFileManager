@@ -87,14 +87,12 @@ import androidx.loader.content.Loader;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.folderselector.FolderChooserDialog;
-import com.amaze.filemanager.BuildConfig;
 import com.amaze.filemanager.LogHelper;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.adapters.data.StorageDirectoryParcelable;
 import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.SaveOnDataUtilsChange;
-import com.amaze.filemanager.play.asynchronous.asynctasks.CloudLoaderAsyncTask;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
 import com.amaze.filemanager.asynchronous.asynctasks.movecopy.MoveFilesTask;
@@ -123,6 +121,7 @@ import com.amaze.filemanager.filesystem.files.FileUtils;
 import com.amaze.filemanager.filesystem.ftp.NetCopyClientConnectionPool;
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo;
 import com.amaze.filemanager.filesystem.ssh.SshClientUtils;
+import com.amaze.filemanager.play.asynchronous.asynctasks.CloudLoaderAsyncTask;
 import com.amaze.filemanager.ui.ExtensionsKt;
 import com.amaze.filemanager.ui.activities.superclasses.PermissionsActivity;
 import com.amaze.filemanager.ui.dialogs.AlertDialog;
@@ -189,6 +188,7 @@ import kotlin.text.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
 public class MainActivity extends PermissionsActivity
         implements SmbConnectionListener,
         BookmarkCallback,
@@ -198,7 +198,6 @@ public class MainActivity extends PermissionsActivity
         PermissionsActivity.OnPermissionGranted {
 
     public static final Pattern DIR_SEPARATOR = Pattern.compile("/");
-    public static final String TAG_ASYNC_HELPER = "async_helper";
     public static final String PASTEHELPER_BUNDLE = "pasteHelper";
     public static final int REQUEST_CODE_SAF = 223;
     public static final String KEY_INTENT_PROCESS_VIEWER = "openprocesses";
@@ -235,27 +234,36 @@ public class MainActivity extends PermissionsActivity
     private static final String KEY_SELECTED_LIST_ITEM = "select_list_item";
     private static final String DEFAULT_FALLBACK_STORAGE_PATH = "/storage/sdcard0";
     private static final String INTERNAL_SHARED_STORAGE = "Internal shared storage";
-    private static final String INTENT_ACTION_OPEN_QUICK_ACCESS =
-            "com.amaze.filemanager.openQuickAccess";
+    private static final String INTENT_ACTION_OPEN_QUICK_ACCESS = "com.amaze.filemanager.openQuickAccess";
     private static final String INTENT_ACTION_OPEN_RECENT = "com.amaze.filemanager.openRecent";
     private static final String INTENT_ACTION_OPEN_FTP_SERVER = "com.amaze.filemanager.openFTPServer";
-    private static final String INTENT_ACTION_OPEN_APP_MANAGER =
-            "com.amaze.filemanager.openAppManager";
+    private static final String INTENT_ACTION_OPEN_APP_MANAGER = "com.amaze.filemanager.openAppManager";
     // the current visible tab, either 0 or 1
     public static int currentTab;
+    // private HistoryManager history, grid;
+    private final MainActivity mainActivity = this;
     public String path = "";
     public boolean mReturnIntent = false;
     public boolean isCompressedOpen = false;
     public boolean mRingtonePickerIntent = false;
     public int skinStatusBar;
     public MainActivityHelper mainActivityHelper;
+    private final BroadcastReceiver receiver2 =
+            new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent i) {
+                    if (i.getStringArrayListExtra(TAG_INTENT_FILTER_FAILED_OPS) != null) {
+                        ArrayList<HybridFileParcelable> failedOps =
+                                i.getParcelableArrayListExtra(TAG_INTENT_FILTER_FAILED_OPS);
+                        if (failedOps != null) {
+                            mainActivityHelper.showFailedOperationDialog(failedOps, mainActivity);
+                        }
+                    }
+                }
+            };
     public int operation = -1;
     public ArrayList<HybridFileParcelable> oparrayList;
     public ArrayList<ArrayList<HybridFileParcelable>> oparrayListList;
-    // oppathe - the path at which certain operation needs to be performed
-    // oppathe1 - the new path which user wants to create/modify
-    // oppathList - the paths at which certain operation needs to be performed (pairs with
-    // oparrayList)
     public String oppathe, oppathe1;
     public ArrayList<String> oppatheList;
     public MainActivityActionMode mainActivityActionMode;
@@ -266,8 +274,6 @@ public class MainActivity extends PermissionsActivity
     private List<Uri> urisToBeSaved;
     private AppBar appbar;
     private Drawer drawer;
-    // private HistoryManager history, grid;
-    private final MainActivity mainActivity = this;
     private String pathInCompressedArchive;
     private boolean openProcesses = false;
     private MaterialDialog materialDialog;
@@ -311,19 +317,6 @@ public class MainActivity extends PermissionsActivity
     private boolean listItemSelected = false;
     private String scrollToFileName = null;
     private PasteHelper pasteHelper;
-    private final BroadcastReceiver receiver2 =
-            new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent i) {
-                    if (i.getStringArrayListExtra(TAG_INTENT_FILTER_FAILED_OPS) != null) {
-                        ArrayList<HybridFileParcelable> failedOps =
-                                i.getParcelableArrayListExtra(TAG_INTENT_FILTER_FAILED_OPS);
-                        if (failedOps != null) {
-                            mainActivityHelper.showFailedOperationDialog(failedOps, mainActivity);
-                        }
-                    }
-                }
-            };
 
     /**
      * Called when the activity is first created.
@@ -367,7 +360,8 @@ public class MainActivity extends PermissionsActivity
                         R.string.cloud_connection_credentials_cleared,
                         android.R.string.ok,
                         null,
-                        false);
+                        false
+                );
                 LoaderManager.getInstance(this).initLoader(REQUEST_CODE_CLOUD_LIST_KEYS, null, this);
             }
         }
@@ -413,7 +407,8 @@ public class MainActivity extends PermissionsActivity
                                     !PackageUtils.Companion.appInstalledOrNot(
                                             AboutActivity.PACKAGE_AMAZE_UTILS, mainActivity.getPackageManager())
                                             && !getBoolean(
-                                            PreferencesConstants.PREFERENCE_DISABLE_PLAYER_INTENT_FILTERS));
+                                            PreferencesConstants.PREFERENCE_DISABLE_PLAYER_INTENT_FILTERS)
+                            );
                         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -497,7 +492,8 @@ public class MainActivity extends PermissionsActivity
                             file.setPath(authorisedPath);
                             LOG.info(
                                     "Opening smb file from deeplink, modify plain path to authorised path {}",
-                                    authorisedPath);
+                                    authorisedPath
+                            );
                         }
                         file.openFile(this, true);
                     }
@@ -672,7 +668,8 @@ public class MainActivity extends PermissionsActivity
                 getString(R.string.select_save_location),
                 BaseTransientBottomBar.LENGTH_INDEFINITE,
                 R.string.save,
-                () -> saveExternalIntent(uris));
+                () -> saveExternalIntent(uris)
+        );
     }
 
     private void saveExternalIntent(final List<Uri> uris) {
@@ -704,7 +701,8 @@ public class MainActivity extends PermissionsActivity
                                     getResources().getString(R.string.saving)
                                             + " to "
                                             + mainFragment.getCurrentPath(),
-                                    Toast.LENGTH_LONG)
+                                    Toast.LENGTH_LONG
+                            )
                             .show();
                     finish();
                     return null;
@@ -730,12 +728,6 @@ public class MainActivity extends PermissionsActivity
                                                     data.toString(), mainFragment.getCurrentPath(), fileName));
                     return null;
                 });
-    }
-
-    public void clearFabActionItems() {
-        floatingActionButton.removeActionItemById(R.id.menu_new_folder);
-        floatingActionButton.removeActionItemById(R.id.menu_new_file);
-        floatingActionButton.removeActionItemById(R.id.menu_new_cloud);
     }
 
     /**
@@ -765,7 +757,8 @@ public class MainActivity extends PermissionsActivity
                     new StorageDirectoryParcelable(
                             "/",
                             getResources().getString(R.string.root_directory),
-                            R.drawable.ic_drawer_root_white));
+                            R.drawable.ic_drawer_root_white
+                    ));
         }
         return volumes;
     }
@@ -955,7 +948,7 @@ public class MainActivity extends PermissionsActivity
             }
         } else if (fragment instanceof FtpServerFragment) {
             // returning back from FTP server
-            if (path != null && path.length() > 0) {
+            if (path != null && !path.isEmpty()) {
                 HybridFile file = new HybridFile(OpenMode.UNKNOWN, path);
                 file.generateMode(this);
                 if (file.isDirectory(this)) goToMain(path);
@@ -994,7 +987,8 @@ public class MainActivity extends PermissionsActivity
                             () -> {
                                 backPressedToExitOnce = false;
                             },
-                            2000);
+                            2000
+                    );
         }
     }
 
@@ -1107,7 +1101,8 @@ public class MainActivity extends PermissionsActivity
                                             mainFragment.getMainFragmentViewModel().getOpenMode(),
                                             mainFragment.getMainFragmentViewModel().getFolderCount(),
                                             mainFragment.getMainFragmentViewModel().getFileCount(),
-                                            mainFragment);
+                                            mainFragment
+                                    );
                             return null;
                         });
             } catch (Exception e) {
@@ -1199,7 +1194,8 @@ public class MainActivity extends PermissionsActivity
                                             R.string.question_set_path_as_home,
                                             R.string.set_as_home,
                                             R.string.yes,
-                                            R.string.no);
+                                            R.string.no
+                                    );
                             dialog
                                     .getActionButton(DialogAction.POSITIVE)
                                     .setOnClickListener(
@@ -1243,11 +1239,13 @@ public class MainActivity extends PermissionsActivity
                                                         .initSortModes(
                                                                 SortHandler.getSortType(
                                                                         this, mainFragment.getMainFragmentViewModel().getCurrentPath()),
-                                                                getPrefs());
+                                                                getPrefs()
+                                                        );
                                                 mainFragment.updateList(false);
                                                 dialog1.dismiss();
                                                 return true;
-                                            });
+                                            }
+                                    );
                             builder.build().show();
                             break;
                         case R.id.hiddenitems:
@@ -1301,7 +1299,8 @@ public class MainActivity extends PermissionsActivity
                     }
                     return null;
                 },
-                false);
+                false
+        );
 
         return super.onOptionsItemSelected(item);
     }
@@ -1582,7 +1581,8 @@ public class MainActivity extends PermissionsActivity
                 getContentResolver()
                         .takePersistableUriPermission(
                                 treeUri,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        );
             }
 
             executeWithMainFragment(
@@ -1627,13 +1627,15 @@ public class MainActivity extends PermissionsActivity
                                                 mainFragment.getCurrentPath(),
                                                 this,
                                                 OpenMode.FILE,
-                                                oppatheList));
+                                                oppatheList
+                                        ));
                                 break;
                             case NEW_FOLDER: // mkdir
                                 mainActivityHelper.mkDir(
                                         new HybridFile(OpenMode.FILE, oppathe),
                                         RootHelper.generateBaseFile(new File(oppathe), true),
-                                        mainFragment);
+                                        mainFragment
+                                );
                                 break;
                             case RENAME:
                                 mainActivityHelper.rename(
@@ -1643,14 +1645,16 @@ public class MainActivity extends PermissionsActivity
                                         null,
                                         false,
                                         mainActivity,
-                                        isRootExplorer());
+                                        isRootExplorer()
+                                );
                                 mainFragment.updateList(false);
                                 break;
                             case NEW_FILE:
                                 mainActivityHelper.mkFile(
                                         new HybridFile(OpenMode.FILE, oppathe),
                                         new HybridFile(OpenMode.FILE, oppathe),
-                                        mainFragment);
+                                        mainFragment
+                                );
                                 break;
                             case EXTRACT:
                                 mainActivityHelper.extractFile(new File(oppathe));
@@ -1669,7 +1673,8 @@ public class MainActivity extends PermissionsActivity
                         }
                         return null;
                     },
-                    true);
+                    true
+            );
             operation = UNDEFINED;
         } else if (requestCode == REQUEST_CODE_SAF) {
             executeWithMainFragment(
@@ -1693,7 +1698,8 @@ public class MainActivity extends PermissionsActivity
                         }
                         return null;
                     },
-                    true);
+                    true
+            );
         }
     }
 
@@ -1878,7 +1884,8 @@ public class MainActivity extends PermissionsActivity
     }
 
     private FabWithLabelView initFabTitle(
-            @IdRes int id, @StringRes int fabTitle, @DrawableRes int icon) {
+            @IdRes int id, @StringRes int fabTitle, @DrawableRes int icon
+    ) {
         int iconSkin = getCurrentColorPreference().getIconSkin();
 
         SpeedDialActionItem.Builder builder =
@@ -2082,7 +2089,9 @@ public class MainActivity extends PermissionsActivity
                                                 -1,
                                                 "",
                                                 (Function1<String, String>)
-                                                        s -> GenericExtKt.urlDecoded(s, Charsets.UTF_8)));
+                                                        s -> GenericExtKt.urlDecoded(s, Charsets.UTF_8)
+                                        )
+                                );
                             }
                             if (!TextUtils.isEmpty(connectionInfo.getUsername())) {
                                 retval.putString(ARG_USERNAME, connectionInfo.getUsername());
@@ -2136,7 +2145,8 @@ public class MainActivity extends PermissionsActivity
             @NonNull final String name,
             @NonNull final String encryptedPath,
             @Nullable final String oldname,
-            @Nullable final String oldPath) {
+            @Nullable final String oldPath
+    ) {
         String[] s = new String[]{name, encryptedPath};
         if (!edit) {
             if ((dataUtils.containsServer(encryptedPath)) == -1) {
@@ -2156,13 +2166,15 @@ public class MainActivity extends PermissionsActivity
                                                 mainFragment.loadlist(encryptedPath, false, OpenMode.UNKNOWN, true);
                                                 return null;
                                             },
-                                            true);
+                                            true
+                                    );
                                 });
             } else {
                 Snackbar.make(
                                 findViewById(R.id.navigation),
                                 getString(R.string.connection_exists),
-                                Snackbar.LENGTH_SHORT)
+                                Snackbar.LENGTH_SHORT
+                        )
                         .show();
             }
         } else {
@@ -2242,7 +2254,8 @@ public class MainActivity extends PermissionsActivity
                 Toast.makeText(
                                 MainActivity.this,
                                 getResources().getString(R.string.please_wait),
-                                Toast.LENGTH_LONG)
+                                Toast.LENGTH_LONG
+                        )
                         .show();
                 Bundle args = new Bundle();
                 args.putInt(ARGS_KEY_LOADER, service.ordinal());
@@ -2352,7 +2365,8 @@ public class MainActivity extends PermissionsActivity
             Toast.makeText(
                             this,
                             getResources().getString(R.string.cloud_error_failed_restart),
-                            Toast.LENGTH_LONG)
+                            Toast.LENGTH_LONG
+                    )
                     .show();
             return;
         }
@@ -2404,7 +2418,8 @@ public class MainActivity extends PermissionsActivity
                             () -> {
                                 getCurrentMainFragment().stopSmoothScrollListView();
                                 return null;
-                            }));
+                            }
+                    ));
         }
     }
 
@@ -2436,7 +2451,8 @@ public class MainActivity extends PermissionsActivity
                                     R.string.error,
                                     android.R.string.ok,
                                     null,
-                                    false);
+                                    false
+                            );
                         } else {
                             MaterialDialog confirmDialog =
                                     GeneralDialogCreation.showBasicDialog(
@@ -2444,7 +2460,8 @@ public class MainActivity extends PermissionsActivity
                                             R.string.ftp_server_root_filesystem_warning,
                                             R.string.warning,
                                             android.R.string.ok,
-                                            android.R.string.cancel);
+                                            android.R.string.cancel
+                                    );
                             confirmDialog
                                     .getActionButton(DialogAction.POSITIVE)
                                     .setOnClickListener(
@@ -2526,7 +2543,8 @@ public class MainActivity extends PermissionsActivity
 
     @Nullable
     private void executeWithMainFragment(
-            @NonNull Function<MainFragment, Void> lambda, boolean showToastIfMainFragmentIsNull) {
+            @NonNull Function<MainFragment, Void> lambda, boolean showToastIfMainFragmentIsNull
+    ) {
         final MainFragment mainFragment = getCurrentMainFragment();
         if (mainFragment != null && mainFragment.getMainFragmentViewModel() != null) {
             lambda.apply(mainFragment);

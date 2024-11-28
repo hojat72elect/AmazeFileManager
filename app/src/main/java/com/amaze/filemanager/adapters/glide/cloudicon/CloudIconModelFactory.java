@@ -2,10 +2,10 @@ package com.amaze.filemanager.adapters.glide.cloudicon;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import androidx.annotation.NonNull;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
-import androidx.annotation.NonNull;
 
 public class CloudIconModelFactory implements ModelLoaderFactory<String, Bitmap> {
 

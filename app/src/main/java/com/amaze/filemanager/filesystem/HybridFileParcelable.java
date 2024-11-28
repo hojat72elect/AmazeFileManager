@@ -47,7 +47,8 @@ public class HybridFileParcelable extends HybridFile implements Parcelable, Comp
     }
 
     public HybridFileParcelable(
-            String path, String permission, long date, long size, boolean isDirectory) {
+            String path, String permission, long date, long size, boolean isDirectory
+    ) {
         super(OpenMode.FILE, path);
         this.date = date;
         this.size = size;
@@ -69,7 +70,8 @@ public class HybridFileParcelable extends HybridFile implements Parcelable, Comp
     public HybridFileParcelable(String path, FTPFile ftpFile) {
         super(
                 OpenMode.FTP,
-                path + (ftpFile.getName().startsWith("/") ? ftpFile.getName() : "/" + ftpFile.getName()));
+                path + (ftpFile.getName().startsWith("/") ? ftpFile.getName() : "/" + ftpFile.getName())
+        );
         setName(ftpFile.getName());
         setDirectory(ftpFile.getType() == FTPFile.DIRECTORY_TYPE);
         setDate(ftpFile.getTimestamp().getTimeInMillis());

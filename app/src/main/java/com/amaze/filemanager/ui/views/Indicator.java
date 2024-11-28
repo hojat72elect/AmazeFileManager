@@ -45,15 +45,6 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     private final Path unselectedDotRightPath;
     private final RectF rectF;
     private final Interpolator interpolator;
-    // working values for beziers
-    float endX1;
-    float endY1;
-    float endX2;
-    float endY2;
-    float controlX1;
-    float controlY1;
-    float controlX2;
-    float controlY2;
     // configurable attributes
     private final int dotDiameter;
     private final int gap;
@@ -64,6 +55,15 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     private final float dotRadius;
     private final float halfDotRadius;
     private final long animHalfDuration;
+    // working values for beziers
+    float endX1;
+    float endY1;
+    float endX2;
+    float endY2;
+    float controlX1;
+    float controlY1;
+    float controlX2;
+    float controlY2;
     private float dotTopY;
     private float dotCenterY;
     private float dotBottomY;
@@ -279,8 +279,10 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
                             dotCenterX[page],
                             dotCenterX[nextXIndex],
                             page == pageCount - 1 ? INVALID_FRACTION : joiningFractions[page],
-                            dotRevealFractions[page]),
-                    Path.Op.UNION);
+                            dotRevealFractions[page]
+                    ),
+                    Path.Op.UNION
+            );
         }
         // draw any retreating joins
         if (retreatingJoinX1 != INVALID_FRACTION) {
@@ -303,7 +305,8 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
      * or retreating from it's neighbour
      */
     private Path getUnselectedPath(
-            int page, float centerX, float nextCenterX, float joiningFraction, float dotRevealFraction) {
+            int page, float centerX, float nextCenterX, float joiningFraction, float dotRevealFraction
+    ) {
 
         unselectedDotPath.rewind();
 
@@ -496,7 +499,8 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     }
 
     private ValueAnimator createMoveSelectedAnimator(
-            final float moveTo, int was, int now, int steps) {
+            final float moveTo, int was, int now, int steps
+    ) {
 
         // create the actual move animator
         ValueAnimator moveSelected = ValueAnimator.ofFloat(selectedDotX, moveTo);
@@ -509,7 +513,8 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
                         steps,
                         now > was
                                 ? new RightwardStartPredicate(moveTo - ((moveTo - selectedDotX) * 0.25f))
-                                : new LeftwardStartPredicate(moveTo + ((selectedDotX - moveTo) * 0.25f)));
+                                : new LeftwardStartPredicate(moveTo + ((selectedDotX - moveTo) * 0.25f))
+                );
         retreatAnimation.addListener(
                 new AnimatorListenerAdapter() {
                     @Override

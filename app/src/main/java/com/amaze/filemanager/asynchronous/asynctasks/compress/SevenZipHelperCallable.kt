@@ -2,9 +2,9 @@ package com.amaze.filemanager.asynchronous.asynctasks.compress
 
 import com.amaze.filemanager.adapters.data.CompressedObjectParcelable
 import com.amaze.filemanager.fileoperations.filesystem.compressed.ArchivePasswordCache
+import com.amaze.filemanager.fileoperations.sevenz.SevenZFile
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper.SEPARATOR
-import com.amaze.filemanager.fileoperations.sevenz.SevenZFile
 import java.io.File
 import java.io.IOException
 import org.apache.commons.compress.PasswordRequiredException

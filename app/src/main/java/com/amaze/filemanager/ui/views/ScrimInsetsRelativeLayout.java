@@ -1,7 +1,5 @@
 package com.amaze.filemanager.ui.views;
 
-import com.amaze.filemanager.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,18 +7,17 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-
 import androidx.core.view.ViewCompat;
+import com.amaze.filemanager.R;
 
 /*
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(Rect)}, i.e. the area above UI chrome
  * (status and navigation bars, overlay action bars).
  */
 public class ScrimInsetsRelativeLayout extends RelativeLayout {
-    private Drawable mInsetForeground;
-
-    private Rect mInsets;
     private final Rect mTempRect = new Rect();
+    private Drawable mInsetForeground;
+    private Rect mInsets;
     private OnInsetsCallback mOnInsetsCallback;
 
     public ScrimInsetsRelativeLayout(Context context) {

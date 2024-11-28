@@ -41,15 +41,13 @@ import java.util.List;
 public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedItemViewHolder> {
 
     private static final int TYPE_HEADER = 0, TYPE_ITEM = 1;
-
-    public boolean stoppedAnimation = false;
-
     private final Context context;
     private final UtilitiesProvider utilsProvider;
+    private final Decompressor decompressor;
+    public boolean stoppedAnimation = false;
     private Drawable folder;
     private List<CompressedObjectParcelable> items;
     private CompressedExplorerFragment compressedExplorerFragment;
-    private final Decompressor decompressor;
     private LayoutInflater mInflater;
     private boolean[] itemsChecked;
     private int offset = 0;
@@ -62,7 +60,8 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
             List<CompressedObjectParcelable> items,
             CompressedExplorerFragment compressedExplorerFragment,
             Decompressor decompressor,
-            SharedPreferences sharedPrefs) {
+            SharedPreferences sharedPrefs
+    ) {
         setHasStableIds(true);
 
         this.utilsProvider = utilsProvider;
@@ -208,7 +207,8 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
                 new CircleGradientDrawable(
                         compressedExplorerFragment.accentColor,
                         utilsProvider.getAppTheme(),
-                        compressedExplorerFragment.getResources().getDisplayMetrics()));
+                        compressedExplorerFragment.getResources().getDisplayMetrics()
+                ));
 
 
         if (rowItem.type == CompressedObjectParcelable.TYPE_GOBACK) {
@@ -305,11 +305,13 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
                                 Toast.makeText(
                                                 compressedExplorerFragment.getContext(),
                                                 compressedExplorerFragment.getContext().getString(R.string.please_wait),
-                                                Toast.LENGTH_SHORT)
+                                                Toast.LENGTH_SHORT
+                                        )
                                         .show();
                                 decompressor.decompress(
                                         compressedExplorerFragment.getActivity().getExternalCacheDir().getPath(),
-                                        new String[]{rowItem.path});
+                                        new String[]{rowItem.path}
+                                );
                             }
                         }
                     }

@@ -19,8 +19,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private final Drawable mDivider;
 
     private final boolean show;
-    private int leftPaddingPx = 0, rightPaddingPx = 0;
     private final boolean showtopbottomdividers;
+    private int leftPaddingPx = 0, rightPaddingPx = 0;
 
     public DividerItemDecoration(Context context, boolean showtopbottomdividers, boolean show) {
         final TypedArray typedArray = context.obtainStyledAttributes(ATTRS);
@@ -70,7 +70,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(
-            Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            Rect outRect, View view, RecyclerView parent, RecyclerView.State state
+    ) {
         super.getItemOffsets(outRect, view, parent, state);
 
         if (parent.getChildAdapterPosition(view) == 0) {

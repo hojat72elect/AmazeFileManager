@@ -116,7 +116,8 @@ public class DatabaseViewerActivity extends ThemedActivity {
                                 new ArrayAdapter(
                                         DatabaseViewerActivity.this,
                                         android.R.layout.simple_list_item_1,
-                                        arrayList);
+                                        arrayList
+                                );
                     } catch (Exception e) {
                         LOG.warn("failed to load file in database viewer", e);
                         finish();

@@ -101,7 +101,8 @@ public class GeneralDialogCreation {
             @StringRes int content,
             @StringRes int title,
             @StringRes int postiveText,
-            @StringRes int negativeText) {
+            @StringRes int negativeText
+    ) {
         int accentColor = themedActivity.getAccent();
         MaterialDialog.Builder a =
                 new MaterialDialog.Builder(themedActivity)
@@ -125,7 +126,8 @@ public class GeneralDialogCreation {
             String neutralButtonText,
             String negativeButtonText,
             MaterialDialog.SingleButtonCallback positiveButtonAction,
-            WarnableTextInputValidator.OnTextValidate validator) {
+            WarnableTextInputValidator.OnTextValidate validator
+    ) {
         int accentColor = m.getAccent();
         MaterialDialog.Builder builder = new MaterialDialog.Builder(m);
 
@@ -164,7 +166,8 @@ public class GeneralDialogCreation {
                         textfield,
                         tilTextfield,
                         dialog.getActionButton(DialogAction.POSITIVE),
-                        validator);
+                        validator
+                );
 
         if (!TextUtils.isEmpty(prefill)) textInputValidator.afterTextChanged(textfield.getText());
 
@@ -176,7 +179,8 @@ public class GeneralDialogCreation {
             @NonNull final Context context,
             @NonNull final MainActivity mainActivity,
             @NonNull final List<LayoutElementParcelable> positions,
-            @NonNull AppTheme appTheme) {
+            @NonNull AppTheme appTheme
+    ) {
 
         final ArrayList<HybridFileParcelable> itemsToDelete = new ArrayList<>();
         int accentColor = mainActivity.getAccent();
@@ -184,7 +188,8 @@ public class GeneralDialogCreation {
         boolean needConfirmation =
                 sharedPreferences.getBoolean(
                         PreferencesConstants.PREFERENCE_DELETE_CONFIRMATION,
-                        PreferencesConstants.DEFAULT_PREFERENCE_DELETE_CONFIRMATION);
+                        PreferencesConstants.DEFAULT_PREFERENCE_DELETE_CONFIRMATION
+                );
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_delete, null);
         TextView deleteDisclaimerTextView = dialogView.findViewById(R.id.dialog_delete_disclaimer);
         final AppCompatCheckBox deletePermanentlyCheckbox =
@@ -213,7 +218,8 @@ public class GeneralDialogCreation {
                                     mainActivity.mainActivityHelper.deleteFiles(
                                             itemsToDelete,
                                             deletePermanentlyCheckbox.isChecked()
-                                                    || deletePermanentlyCheckbox.getVisibility() == View.GONE);
+                                                    || deletePermanentlyCheckbox.getVisibility() == View.GONE
+                                    );
                                 })
                         .build();
 
@@ -229,9 +235,9 @@ public class GeneralDialogCreation {
 
         new AsyncTask<Void, Object, Void>() {
 
-            long sizeTotal = 0;
             final StringBuilder files = new StringBuilder();
             final StringBuilder directories = new StringBuilder();
+            long sizeTotal = 0;
             int counterDirectories = 0;
             int counterFiles = 0;
 
@@ -307,7 +313,8 @@ public class GeneralDialogCreation {
                             tempFilesStringBuilder,
                             tempDirectoriesStringBuilder,
                             tempCounterFiles,
-                            tempCounterDirectories);
+                            tempCounterDirectories
+                    );
                 }
             }
 
@@ -321,7 +328,8 @@ public class GeneralDialogCreation {
                     mainActivity.mainActivityHelper.deleteFiles(
                             itemsToDelete,
                             deletePermanentlyCheckbox.isChecked()
-                                    || deletePermanentlyCheckbox.getVisibility() == View.GONE);
+                                    || deletePermanentlyCheckbox.getVisibility() == View.GONE
+                    );
                 }
             }
 
@@ -329,7 +337,8 @@ public class GeneralDialogCreation {
                     long tempSizeTotal,
                     StringBuilder filesStringBuilder,
                     StringBuilder directoriesStringBuilder,
-                    int... values) {
+                    int... values
+            ) {
 
                 int tempCounterFiles = values[0];
                 int tempCounterDirectories = values[1];
@@ -405,7 +414,8 @@ public class GeneralDialogCreation {
             @NonNull final Context context,
             @NonNull final MainActivity mainActivity,
             @NonNull final List<LayoutElementParcelable> positions,
-            @NonNull AppTheme appTheme) {
+            @NonNull AppTheme appTheme
+    ) {
 
         final ArrayList<HybridFileParcelable> itemsToDelete = new ArrayList<>();
         int accentColor = mainActivity.getAccent();
@@ -446,9 +456,9 @@ public class GeneralDialogCreation {
 
         new AsyncTask<Void, Object, Void>() {
 
-            long sizeTotal = 0;
             final StringBuilder files = new StringBuilder();
             final StringBuilder directories = new StringBuilder();
+            long sizeTotal = 0;
             int counterDirectories = 0;
             int counterFiles = 0;
 
@@ -519,7 +529,8 @@ public class GeneralDialogCreation {
                         tempFilesStringBuilder,
                         tempDirectoriesStringBuilder,
                         tempCounterFiles,
-                        tempCounterDirectories);
+                        tempCounterDirectories
+                );
             }
 
             @Override
@@ -532,7 +543,8 @@ public class GeneralDialogCreation {
                     long tempSizeTotal,
                     StringBuilder filesStringBuilder,
                     StringBuilder directoriesStringBuilder,
-                    int... values) {
+                    int... values
+            ) {
 
                 int tempCounterFiles = values[0];
                 int tempCounterDirectories = values[1];
@@ -597,7 +609,8 @@ public class GeneralDialogCreation {
             @NonNull MainActivity themedActivity,
             @NonNull MainFragment mainFragment,
             boolean isRoot,
-            @NonNull AppTheme appTheme) {
+            @NonNull AppTheme appTheme
+    ) {
         showPropertiesDialog(
                 baseFile, themedActivity, mainFragment, permissions, isRoot, appTheme, false);
     }
@@ -605,14 +618,16 @@ public class GeneralDialogCreation {
     public static void showPropertiesDialogWithoutPermissions(
             @NonNull final HybridFileParcelable f,
             @NonNull ThemedActivity themedActivity,
-            @NonNull AppTheme appTheme) {
+            @NonNull AppTheme appTheme
+    ) {
         showPropertiesDialog(f, themedActivity, null, null, false, appTheme, false);
     }
 
     public static void showPropertiesDialogForStorage(
             @NonNull final HybridFileParcelable f,
             @NonNull MainActivity themedActivity,
-            @NonNull AppTheme appTheme) {
+            @NonNull AppTheme appTheme
+    ) {
         showPropertiesDialog(f, themedActivity, null, null, false, appTheme, true);
     }
 
@@ -623,7 +638,8 @@ public class GeneralDialogCreation {
             @Nullable final String permissions,
             boolean isRoot,
             @NonNull AppTheme appTheme,
-            boolean forStorage) {
+            boolean forStorage
+    ) {
         final ExecutorService executor = Executors.newFixedThreadPool(3);
         final Context c = themedActivity.getApplicationContext();
         int accentColor = themedActivity.getAccent();
@@ -690,7 +706,8 @@ public class GeneralDialogCreation {
                                         c.getString(R.string.name)
                                                 + " "
                                                 + c.getString(R.string.properties_copied_clipboard),
-                                        Toast.LENGTH_SHORT)
+                                        Toast.LENGTH_SHORT
+                                )
                                 .show();
                         return false;
                     });
@@ -702,7 +719,8 @@ public class GeneralDialogCreation {
                                         c.getString(R.string.location)
                                                 + " "
                                                 + c.getString(R.string.properties_copied_clipboard),
-                                        Toast.LENGTH_SHORT)
+                                        Toast.LENGTH_SHORT
+                                )
                                 .show();
                         return false;
                     });
@@ -714,7 +732,8 @@ public class GeneralDialogCreation {
                                         c.getString(R.string.size)
                                                 + " "
                                                 + c.getString(R.string.properties_copied_clipboard),
-                                        Toast.LENGTH_SHORT)
+                                        Toast.LENGTH_SHORT
+                                )
                                 .show();
                         return false;
                     });
@@ -726,7 +745,8 @@ public class GeneralDialogCreation {
                                         c.getString(R.string.date)
                                                 + " "
                                                 + c.getString(R.string.properties_copied_clipboard),
-                                        Toast.LENGTH_SHORT)
+                                        Toast.LENGTH_SHORT
+                                )
                                 .show();
                         return false;
                     });
@@ -866,7 +886,8 @@ public class GeneralDialogCreation {
     }
 
     public static void showCloudDialog(
-            final MainActivity mainActivity, AppTheme appTheme, final OpenMode openMode) {
+            final MainActivity mainActivity, AppTheme appTheme, final OpenMode openMode
+    ) {
         int accentColor = mainActivity.getAccent();
         final MaterialDialog.Builder builder = new MaterialDialog.Builder(mainActivity);
 
@@ -906,7 +927,8 @@ public class GeneralDialogCreation {
             final Intent intent,
             AppTheme appTheme,
             final String password,
-            final EncryptDecryptUtils.DecryptButtonCallbackInterface decryptButtonCallbackInterface) {
+            final EncryptDecryptUtils.DecryptButtonCallbackInterface decryptButtonCallbackInterface
+    ) {
 
         showPasswordDialog(
                 c,
@@ -923,7 +945,8 @@ public class GeneralDialogCreation {
 
                     dialog.dismiss();
                 }),
-                null);
+                null
+        );
     }
 
     public static void showPasswordDialog(
@@ -933,7 +956,8 @@ public class GeneralDialogCreation {
             @StringRes int titleText,
             @StringRes int promptText,
             @NonNull MaterialDialog.SingleButtonCallback positiveCallback,
-            @Nullable MaterialDialog.SingleButtonCallback negativeCallback) {
+            @Nullable MaterialDialog.SingleButtonCallback negativeCallback
+    ) {
         int accentColor = main.getAccent();
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(c);
@@ -974,7 +998,8 @@ public class GeneralDialogCreation {
                                 WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.field_empty);
                     }
                     return new WarnableTextInputValidator.ReturnState();
-                });
+                }
+        );
     }
 
     public static void showSMBHelpDialog(Context m, int accentColor) {
@@ -1004,7 +1029,8 @@ public class GeneralDialogCreation {
     }
 
     public static MaterialDialog showOpenFileDeeplinkDialog(
-            final HybridFile file, final MainActivity m, final String content, Runnable openCallback) {
+            final HybridFile file, final MainActivity m, final String content, Runnable openCallback
+    ) {
         int accentColor = m.getAccent();
         return new MaterialDialog.Builder(m)
                 .title(R.string.confirmation)
@@ -1045,7 +1071,8 @@ public class GeneralDialogCreation {
     public static void showCompressDialog(
             @NonNull final MainActivity mainActivity,
             final HybridFileParcelable baseFile,
-            final String current) {
+            final String current
+    ) {
         ArrayList<HybridFileParcelable> baseFiles = new ArrayList<>();
         baseFiles.add(baseFile);
         showCompressDialog(mainActivity, baseFiles, current);
@@ -1054,7 +1081,8 @@ public class GeneralDialogCreation {
     public static void showCompressDialog(
             @NonNull final MainActivity mainActivity,
             final ArrayList<HybridFileParcelable> baseFiles,
-            final String current) {
+            final String current
+    ) {
         int accentColor = mainActivity.getAccent();
         MaterialDialog.Builder a = new MaterialDialog.Builder(mainActivity);
 
@@ -1098,7 +1126,8 @@ public class GeneralDialogCreation {
                     if (isValidFilename && text.length() > 0 && !text.toLowerCase().endsWith(".zip")) {
                         return new WarnableTextInputValidator.ReturnState(
                                 WarnableTextInputValidator.ReturnState.STATE_WARNING,
-                                R.string.compress_file_suggest_zip_extension);
+                                R.string.compress_file_suggest_zip_extension
+                        );
                     } else {
                         if (!isValidFilename) {
                             return new WarnableTextInputValidator.ReturnState(
@@ -1110,7 +1139,8 @@ public class GeneralDialogCreation {
                     }
 
                     return new WarnableTextInputValidator.ReturnState();
-                });
+                }
+        );
 
         materialDialog.show();
 
@@ -1121,7 +1151,8 @@ public class GeneralDialogCreation {
     }
 
     public static void showSortDialog(
-            final MainFragment m, AppTheme appTheme, final SharedPreferences sharedPref) {
+            final MainFragment m, AppTheme appTheme, final SharedPreferences sharedPref
+    ) {
         final String path = m.getCurrentPath();
         int accentColor = m.getMainActivity().getAccent();
         String[] sort = m.getResources().getStringArray(R.array.sortby);
@@ -1144,7 +1175,8 @@ public class GeneralDialogCreation {
                     } else {
                         onlyThisFloders.remove(path);
                     }
-                });
+                }
+        );
         a.negativeText(R.string.ascending).positiveColor(accentColor);
         a.positiveText(R.string.descending).negativeColor(accentColor);
         a.onNegative(
@@ -1164,7 +1196,8 @@ public class GeneralDialogCreation {
             SharedPreferences sharedPref,
             Set<String> onlyThisFloders,
             MaterialDialog dialog,
-            SortOrder sortOrder) {
+            SortOrder sortOrder
+    ) {
         final SortType sortType =
                 new SortType(SortBy.getDirectorySortBy(dialog.getSelectedIndex()), sortOrder);
         SortHandler sortHandler = SortHandler.getInstance();
@@ -1190,7 +1223,8 @@ public class GeneralDialogCreation {
             final HybridFile file,
             final String f,
             final Context context,
-            final MainFragment mainFrag) {
+            final MainFragment mainFrag
+    ) {
         final AppCompatCheckBox readown = v.findViewById(R.id.creadown);
         final AppCompatCheckBox readgroup = v.findViewById(R.id.creadgroup);
         final AppCompatCheckBox readother = v.findViewById(R.id.creadother);
@@ -1232,7 +1266,8 @@ public class GeneralDialogCreation {
                                     exegroup.isChecked(),
                                     readother.isChecked(),
                                     writeother.isChecked(),
-                                    exeother.isChecked());
+                                    exeother.isChecked()
+                            );
 
                     try {
                         ChangeFilePermissionsCommand.INSTANCE.changeFilePermissions(
@@ -1247,11 +1282,13 @@ public class GeneralDialogCreation {
                                         Toast.makeText(
                                                         context,
                                                         mainFrag.getString(R.string.operation_unsuccesful),
-                                                        Toast.LENGTH_LONG)
+                                                        Toast.LENGTH_LONG
+                                                )
                                                 .show();
                                     }
                                     return null;
-                                });
+                                }
+                        );
                     } catch (ShellNotRunningException e) {
                         Toast.makeText(context, mainFrag.getString(R.string.root_failure), Toast.LENGTH_LONG)
                                 .show();
@@ -1261,7 +1298,8 @@ public class GeneralDialogCreation {
     }
 
     public static void showChangePathsDialog(
-            final MainActivity mainActivity, final SharedPreferences prefs) {
+            final MainActivity mainActivity, final SharedPreferences prefs
+    ) {
         final MainFragment mainFragment = mainActivity.getCurrentMainFragment();
         Objects.requireNonNull(mainActivity);
         final MaterialDialog.Builder a = new MaterialDialog.Builder(mainActivity);
@@ -1272,7 +1310,8 @@ public class GeneralDialogCreation {
                 (dialog, charSequence) -> {
                     boolean isAccessible = FileUtils.isPathAccessible(charSequence.toString(), prefs);
                     dialog.getActionButton(DialogAction.POSITIVE).setEnabled(isAccessible);
-                });
+                }
+        );
 
         a.alwaysCallInputCallback();
 
@@ -1304,7 +1343,8 @@ public class GeneralDialogCreation {
                 R.string.saf_otg_explanation,
                 R.string.otg_access,
                 R.string.ok,
-                R.string.cancel);
+                R.string.cancel
+        );
     }
 
     public static void showSignInWithGoogleDialog(@NonNull MainActivity mainActivity) {
@@ -1342,7 +1382,8 @@ public class GeneralDialogCreation {
 
         @Override
         public String getFormattedValue(
-                float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler
+        ) {
             String prefix =
                     entry.getData() != null && entry.getData() instanceof String
                             ? (String) entry.getData()

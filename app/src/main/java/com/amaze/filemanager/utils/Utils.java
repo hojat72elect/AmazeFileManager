@@ -95,7 +95,8 @@ public class Utils {
                         new int[][]{
                                 new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked}
                         },
-                        new int[]{getColor(context, R.color.grey), color});
+                        new int[]{getColor(context, R.color.grey), color}
+                );
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             box.setButtonTintList(sl);
@@ -112,7 +113,8 @@ public class Utils {
         return String.format(
                 DATE_TIME_FORMAT,
                 DateUtils.formatDateTime(c, f, DateUtils.FORMAT_ABBREV_MONTH),
-                DateUtils.formatDateTime(c, f, DateUtils.FORMAT_SHOW_TIME));
+                DateUtils.formatDateTime(c, f, DateUtils.FORMAT_SHOW_TIME)
+        );
     }
 
     /**
@@ -230,7 +232,8 @@ public class Utils {
      * Returns uri associated to specific basefile
      */
     public static Uri getUriForBaseFile(
-            @NonNull Context context, @NonNull HybridFileParcelable baseFile) {
+            @NonNull Context context, @NonNull HybridFileParcelable baseFile
+    ) {
         switch (baseFile.getMode()) {
             case FILE:
             case ROOT:
@@ -308,7 +311,8 @@ public class Utils {
             CharSequence text,
             int length,
             @StringRes int actionTextId,
-            Runnable actionCallback) {
+            Runnable actionCallback
+    ) {
         Snackbar snackbar =
                 Snackbar.make(mainActivity.findViewById(R.id.content_frame), text, length)
                         .setAction(actionTextId, v -> actionCallback.run());
@@ -328,7 +332,8 @@ public class Utils {
             int length,
             @StringRes int actionTextId,
             Runnable actionCallback,
-            Runnable cancelCallback) {
+            Runnable cancelCallback
+    ) {
 
         final Snackbar snackbar =
                 Snackbar.make(mainActivity.findViewById(R.id.content_frame), "", length);
@@ -418,7 +423,8 @@ public class Utils {
                 FileProvider.getUriForFile(
                         context,
                         context.getPackageName(),
-                        new File(String.format("/data/data/%s/cache/logs.txt", context.getPackageName())));
+                        new File(String.format("/data/data/%s/cache/logs.txt", context.getPackageName()))
+                );
         emailIntent.putExtra(Intent.EXTRA_STREAM, logUri);
         if (!Utils.isNullOrEmpty(text)) {
             emailIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -435,7 +441,8 @@ public class Utils {
     }
 
     public static void addShortcut(
-            Context context, ComponentName componentName, LayoutElementParcelable path) {
+            Context context, ComponentName componentName, LayoutElementParcelable path
+    ) {
         // Adding shortcut for MainActivity
         // on Home screen
 
@@ -443,7 +450,8 @@ public class Utils {
             Toast.makeText(
                             context,
                             context.getString(R.string.add_shortcut_not_supported_by_launcher),
-                            Toast.LENGTH_SHORT)
+                            Toast.LENGTH_SHORT
+                    )
                     .show();
             return;
         }

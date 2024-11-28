@@ -51,7 +51,8 @@ public class CheckableCircleView extends View {
                     (int) checkMargin,
                     (int) checkMargin,
                     (int) (getWidth() - checkMargin),
-                    (int) (getHeight() - checkMargin));
+                    (int) (getHeight() - checkMargin)
+            );
             check.draw(canvas);
         }
     }

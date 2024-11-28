@@ -39,12 +39,10 @@ import com.amaze.filemanager.utils.Utils;
 import com.amaze.filemanager.utils.smb.SmbUtil;
 import com.google.android.material.textfield.TextInputLayout;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import jcifs.smb.SmbFile;
-import kotlin.text.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -358,7 +356,8 @@ public class SmbConnectDialog extends DialogFragment {
             }
             return new SmbFile(
                     sb.toString(),
-                    CifsContexts.createWithDisableIpcSigningCheck(sb.toString(), disableIpcSignCheck));
+                    CifsContexts.createWithDisableIpcSigningCheck(sb.toString(), disableIpcSignCheck)
+            );
         } catch (MalformedURLException e) {
             LOG.warn("failed to load smb path", e);
         } catch (IllegalArgumentException e) {
@@ -385,7 +384,8 @@ public class SmbConnectDialog extends DialogFragment {
                 @NonNull String name,
                 @NonNull String encryptedPath,
                 @Nullable String oldname,
-                @Nullable String oldPath);
+                @Nullable String oldPath
+        );
 
         /**
          * Callback denoting a connection been deleted from dialog

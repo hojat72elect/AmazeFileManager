@@ -80,7 +80,8 @@ public class RootHelper {
                     hybridFileParcelable -> {
                         filesList.add(hybridFileParcelable);
                         return null;
-                    });
+                    }
+            );
             for (HybridFileParcelable strings : filesList) {
                 if (strings.getPath() != null && strings.getPath().equals(path)) {
                     return true;
@@ -98,7 +99,8 @@ public class RootHelper {
      * @param showHidden to show hidden files
      */
     public static ArrayList<HybridFileParcelable> getFilesList(
-            String path, boolean root, boolean showHidden) {
+            String path, boolean root, boolean showHidden
+    ) {
         ArrayList<HybridFileParcelable> files = new ArrayList<>();
         ListFilesCommand.INSTANCE.listFiles(
                 path,
@@ -108,7 +110,8 @@ public class RootHelper {
                 hybridFileParcelable -> {
                     files.add(hybridFileParcelable);
                     return null;
-                });
+                }
+        );
         return files;
     }
 
@@ -126,7 +129,8 @@ public class RootHelper {
             boolean gx,
             boolean or,
             boolean ow,
-            boolean ox) {
+            boolean ox
+    ) {
         int u = getPermissionInOctal(ur, uw, ux) << 6;
         int g = getPermissionInOctal(gr, gw, gx) << 3;
         int o = getPermissionInOctal(or, ow, ox);

@@ -6,6 +6,12 @@ import com.amaze.filemanager.application.AppConfig
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo.Companion.SLASH
 import com.amaze.filemanager.utils.ComputerParcelable
 import com.amaze.filemanager.utils.NetworkUtil
+import java.io.StringReader
+import java.net.DatagramPacket
+import java.net.InetAddress
+import java.net.MulticastSocket
+import java.util.UUID
+import java.util.WeakHashMap
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -16,12 +22,6 @@ import org.slf4j.LoggerFactory
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
-import java.io.StringReader
-import java.net.DatagramPacket
-import java.net.InetAddress
-import java.net.MulticastSocket
-import java.util.UUID
-import java.util.WeakHashMap
 
 /**
  * [SmbDeviceScannerObservable.DiscoverDeviceStrategy] implementation to discover SMB devices using

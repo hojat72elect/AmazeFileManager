@@ -1,8 +1,7 @@
 package com.amaze.filemanager.utils;
 
-import java.util.Map;
-
 import androidx.annotation.Nullable;
+import java.util.Map;
 
 /**
  * From:

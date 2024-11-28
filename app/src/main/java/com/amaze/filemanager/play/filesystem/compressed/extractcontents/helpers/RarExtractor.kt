@@ -9,8 +9,8 @@ import com.amaze.filemanager.filesystem.FileUtil
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
 import com.amaze.filemanager.filesystem.compressed.extractcontents.Extractor
-import com.amaze.filemanager.play.filesystem.compressed.isPasswordProtectedCompat
 import com.amaze.filemanager.filesystem.files.GenericCopyUtil
+import com.amaze.filemanager.play.filesystem.compressed.isPasswordProtectedCompat
 import com.github.junrar.Archive
 import com.github.junrar.exception.CorruptHeaderException
 import com.github.junrar.exception.MainHeaderNullException

@@ -78,7 +78,8 @@ public class FastScroller extends FrameLayout {
                 Utils.clamp(
                         0,
                         getHeightMinusPadding() - handle.getHeight(),
-                        relativePos * (getHeightMinusPadding() - handle.getHeight())));
+                        relativePos * (getHeightMinusPadding() - handle.getHeight())
+                ));
     }
 
     private void setUpBarBackground() {
@@ -90,7 +91,8 @@ public class FastScroller extends FrameLayout {
                         getResources().getDimensionPixelSize(R.dimen.fastscroller_track_padding),
                         0,
                         0,
-                        0);
+                        0
+                );
         this.bar.setBackgroundDrawable(insetDrawable);
     }
 
@@ -173,7 +175,9 @@ public class FastScroller extends FrameLayout {
                         getResources().getDimensionPixelSize(R.dimen.fastscroller_track_padding),
                         0,
                         0,
-                        0));
+                        0
+                )
+        );
         stateListDrawable.addState(
                 View.EMPTY_STATE_SET,
                 new InsetDrawable(
@@ -181,7 +185,9 @@ public class FastScroller extends FrameLayout {
                         getResources().getDimensionPixelSize(R.dimen.fastscroller_track_padding),
                         0,
                         0,
-                        0));
+                        0
+                )
+        );
         this.handle.setImageDrawable(stateListDrawable);
     }
 

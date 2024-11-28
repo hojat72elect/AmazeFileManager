@@ -42,7 +42,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
     private OpenMode mode = OpenMode.FILE;
 
     public LayoutElementParcelable(
-            @NonNull Context c, String goback, boolean showThumbs) {
+            @NonNull Context c, String goback, boolean showThumbs
+    ) {
         this(
                 c,
                 true,
@@ -56,7 +57,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
                 "",
                 true,
                 showThumbs,
-                OpenMode.UNKNOWN);
+                OpenMode.UNKNOWN
+        );
     }
 
     public LayoutElementParcelable(
@@ -70,7 +72,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
             String date,
             boolean isDirectory,
             boolean useThumbs,
-            OpenMode openMode) {
+            OpenMode openMode
+    ) {
         this(
                 c,
                 new File(path).getName(),
@@ -83,7 +86,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
                 date,
                 isDirectory,
                 useThumbs,
-                openMode);
+                openMode
+        );
     }
 
     public LayoutElementParcelable(
@@ -98,7 +102,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
             String date,
             boolean isDirectory,
             boolean useThumbs,
-            OpenMode openMode) {
+            OpenMode openMode
+    ) {
         this(
                 c,
                 false,
@@ -112,7 +117,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
                 date,
                 isDirectory,
                 useThumbs,
-                openMode);
+                openMode
+        );
     }
 
     public LayoutElementParcelable(
@@ -128,7 +134,8 @@ public class LayoutElementParcelable implements Parcelable, ComparableParcelable
             String date,
             boolean isDirectory,
             boolean useThumbs,
-            OpenMode openMode) {
+            OpenMode openMode
+    ) {
         filetype = Icons.getTypeOfFile(path, isDirectory);
         @DrawableRes int fallbackIcon = Icons.loadMimeIcon(path, isDirectory);
         this.mode = openMode;

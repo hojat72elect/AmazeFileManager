@@ -13,7 +13,8 @@ import com.amaze.filemanager.utils.Utils;
 public class ColorUtils {
 
     public static void colorizeIcons(
-            Context context, int iconType, GradientDrawable background, @ColorInt int defaultColor) {
+            Context context, int iconType, GradientDrawable background, @ColorInt int defaultColor
+    ) {
         switch (iconType) {
             case Icons.VIDEO:
             case Icons.IMAGE:

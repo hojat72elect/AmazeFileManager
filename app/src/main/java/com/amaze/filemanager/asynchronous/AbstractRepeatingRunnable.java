@@ -11,7 +11,8 @@ public abstract class AbstractRepeatingRunnable implements Runnable {
     protected final ScheduledFuture handle;
 
     public AbstractRepeatingRunnable(
-            long initialDelay, long period, @NonNull TimeUnit unit, boolean startImmediately) {
+            long initialDelay, long period, @NonNull TimeUnit unit, boolean startImmediately
+    ) {
         if (!startImmediately) {
             throw new UnsupportedOperationException("RepeatingRunnables are immediately executed!");
         }

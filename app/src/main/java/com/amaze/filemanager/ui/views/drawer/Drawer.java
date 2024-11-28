@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -78,7 +79,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.slf4j.Logger;
-import android.widget.Toast;
 import org.slf4j.LoggerFactory;
 
 public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
@@ -98,15 +98,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     private final DataUtils dataUtils;
 
     private final ActionViewStateManager actionViewStateManager;
-    private volatile int phoneStorageCount =
-            0; // number of storage available (internal/external/otg etc)
-    private boolean isDrawerLocked = false;
-    private FragmentTransaction pending_fragmentTransaction;
-    private PendingPath pendingPath;
-    private String firstPath = null, secondPath = null;
-
     private final DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
     private final CustomNavigationView navView;
     private final RelativeLayout drawerHeaderParent;
     private final View drawerHeaderLayout;
@@ -115,7 +107,13 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     private final AppCompatImageView telegramImageView;
     private final AppCompatImageView instagramImageView;
     private final AppCompatTextView appVersion;
-
+    private volatile int phoneStorageCount =
+            0; // number of storage available (internal/external/otg etc)
+    private boolean isDrawerLocked = false;
+    private FragmentTransaction pending_fragmentTransaction;
+    private PendingPath pendingPath;
+    private String firstPath = null, secondPath = null;
+    private ActionBarDrawerToggle mDrawerToggle;
     /**
      * Tablet is defined as 'width > 720dp'
      */

@@ -61,7 +61,8 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
             @NonNull MainFragment mainFragment,
             @NonNull LayoutElementParcelable ri,
             @NonNull View anchor,
-            @NonNull SharedPreferences sharedPreferences) {
+            @NonNull SharedPreferences sharedPreferences
+    ) {
         super(c, anchor);
 
         context = c;
@@ -85,7 +86,8 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
                         mainActivity,
                         mainFragment,
                         mainActivity.isRootExplorer(),
-                        utilitiesProvider.getAppTheme());
+                        utilitiesProvider.getAppTheme()
+                );
                 return true;
             case R.id.share:
                 switch (rowItem.getMode()) {
@@ -126,13 +128,15 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
                     Toast.makeText(
                                     mainFragment.getActivity(),
                                     mainFragment.getString(R.string.bookmarks_added),
-                                    Toast.LENGTH_LONG)
+                                    Toast.LENGTH_LONG
+                            )
                             .show();
                 } else {
                     Toast.makeText(
                                     mainFragment.getActivity(),
                                     mainFragment.getString(R.string.bookmark_exists),
-                                    Toast.LENGTH_LONG)
+                                    Toast.LENGTH_LONG
+                            )
                             .show();
                 }
                 return true;
@@ -192,30 +196,35 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
                 if (!preferences
                         .getString(
                                 PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD,
-                                PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD_DEFAULT)
+                                PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD_DEFAULT
+                        )
                         .equals("")) {
                     EncryptWithPresetPasswordSaveAsDialog.show(
                             context,
                             encryptIntent,
                             mainActivity,
                             PreferencesConstants.ENCRYPT_PASSWORD_MASTER,
-                            encryptButtonCallbackInterfaceAuthenticate);
+                            encryptButtonCallbackInterfaceAuthenticate
+                    );
                 } else if (preferences.getBoolean(
                         PreferencesConstants.PREFERENCE_CRYPT_FINGERPRINT,
-                        PreferencesConstants.PREFERENCE_CRYPT_FINGERPRINT_DEFAULT)) {
+                        PreferencesConstants.PREFERENCE_CRYPT_FINGERPRINT_DEFAULT
+                )) {
                     EncryptWithPresetPasswordSaveAsDialog.show(
                             context,
                             encryptIntent,
                             mainActivity,
                             PreferencesConstants.ENCRYPT_PASSWORD_FINGERPRINT,
-                            encryptButtonCallbackInterfaceAuthenticate);
+                            encryptButtonCallbackInterfaceAuthenticate
+                    );
                 } else {
                     EncryptAuthenticateDialog.show(
                             context,
                             encryptIntent,
                             mainActivity,
                             utilitiesProvider.getAppTheme(),
-                            encryptButtonCallbackInterfaceAuthenticate);
+                            encryptButtonCallbackInterfaceAuthenticate
+                    );
                 }
                 return true;
             case R.id.decrypt:
@@ -227,13 +236,15 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
                         rowItem.generateBaseFile(),
                         rowItem.generateBaseFile().getParent(context),
                         utilitiesProvider,
-                        false);
+                        false
+                );
                 return true;
             case R.id.compress:
                 GeneralDialogCreation.showCompressDialog(
                         mainActivity,
                         rowItem.generateBaseFile(),
-                        mainActivity.getCurrentMainFragment().getMainFragmentViewModel().getCurrentPath());
+                        mainActivity.getCurrentMainFragment().getMainFragmentViewModel().getCurrentPath()
+                );
                 return true;
             case R.id.return_select:
                 mainFragment.returnIntentResults(new HybridFileParcelable[]{rowItem.generateBaseFile()});

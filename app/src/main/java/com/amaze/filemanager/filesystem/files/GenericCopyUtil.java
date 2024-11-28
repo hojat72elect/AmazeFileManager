@@ -72,7 +72,8 @@ public class GenericCopyUtil {
      *                    each part instead.
      */
     private void startCopy(
-            boolean lowOnMemory, @NonNull OnLowMemory onLowMemory, @NonNull UpdatePosition updatePosition)
+            boolean lowOnMemory, @NonNull OnLowMemory onLowMemory, @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
 
         ReadableByteChannel inChannel = null;
@@ -92,7 +93,8 @@ public class GenericCopyUtil {
                                 SafRootHolder.getUriRoot(),
                                 mContext,
                                 mSourceFile.isOtgFile() ? OpenMode.OTG : OpenMode.DOCUMENT_FILE,
-                                false)
+                                false
+                        )
                                 : OTGUtil.getDocumentFile(mSourceFile.getPath(), mContext, false);
 
                 bufferedInputStream =
@@ -137,7 +139,8 @@ public class GenericCopyUtil {
                         bufferedInputStream =
                                 new BufferedInputStream(
                                         contentResolver.openInputStream(documentSourceFile.getUri()),
-                                        DEFAULT_BUFFER_SIZE);
+                                        DEFAULT_BUFFER_SIZE
+                                );
                     } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
                         InputStream inputStream1 =
                                 MediaStoreHack.getInputStream(mContext, file, mSourceFile.getSize());
@@ -157,7 +160,8 @@ public class GenericCopyUtil {
                                 SafRootHolder.getUriRoot(),
                                 mContext,
                                 mTargetFile.isOtgFile() ? OpenMode.OTG : OpenMode.DOCUMENT_FILE,
-                                true)
+                                true
+                        )
                                 : OTGUtil.getDocumentFile(mTargetFile.getPath(), mContext, true);
 
                 bufferedOutputStream =
@@ -194,7 +198,8 @@ public class GenericCopyUtil {
                         bufferedOutputStream =
                                 new BufferedOutputStream(
                                         contentResolver.openOutputStream(documentTargetFile.getUri()),
-                                        DEFAULT_BUFFER_SIZE);
+                                        DEFAULT_BUFFER_SIZE
+                                );
                     } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
                         // Workaround for Kitkat ext SD card
                         bufferedOutputStream =
@@ -250,7 +255,8 @@ public class GenericCopyUtil {
     }
 
     private void cloudCopy(
-            @NonNull OpenMode openMode, @NonNull BufferedInputStream bufferedInputStream)
+            @NonNull OpenMode openMode, @NonNull BufferedInputStream bufferedInputStream
+    )
             throws IOException {
         DataUtils dataUtils = DataUtils.getInstance();
         // API doesn't support output stream, we'll upload the file directly
@@ -260,13 +266,15 @@ public class GenericCopyUtil {
             // we're in the same provider, use api method
             cloudStorage.copy(
                     CloudUtil.stripPath(openMode, mSourceFile.getPath()),
-                    CloudUtil.stripPath(openMode, mTargetFile.getPath()));
+                    CloudUtil.stripPath(openMode, mTargetFile.getPath())
+            );
         } else {
             cloudStorage.upload(
                     CloudUtil.stripPath(openMode, mTargetFile.getPath()),
                     bufferedInputStream,
                     mSourceFile.getSize(),
-                    true);
+                    true
+            );
             bufferedInputStream.close();
         }
     }
@@ -281,7 +289,8 @@ public class GenericCopyUtil {
             HybridFileParcelable sourceFile,
             HybridFile targetFile,
             @NonNull OnLowMemory onLowMemory,
-            @NonNull UpdatePosition updatePosition)
+            @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
         this.mSourceFile = sourceFile;
         this.mTargetFile = targetFile;
@@ -301,7 +310,8 @@ public class GenericCopyUtil {
     void copyFile(
             @NonNull BufferedInputStream bufferedInputStream,
             @NonNull FileChannel outChannel,
-            @NonNull UpdatePosition updatePosition)
+            @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
         doCopy(Channels.newChannel(bufferedInputStream), outChannel, updatePosition);
     }
@@ -317,7 +327,8 @@ public class GenericCopyUtil {
     void copyFile(
             @NonNull FileChannel inChannel,
             @NonNull FileChannel outChannel,
-            @NonNull UpdatePosition updatePosition)
+            @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
         // MappedByteBuffer inByteBuffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0,
         // inChannel.size());
@@ -339,12 +350,14 @@ public class GenericCopyUtil {
     void copyFile(
             @NonNull BufferedInputStream bufferedInputStream,
             @NonNull BufferedOutputStream bufferedOutputStream,
-            @NonNull UpdatePosition updatePosition)
+            @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
         doCopy(
                 Channels.newChannel(bufferedInputStream),
                 Channels.newChannel(bufferedOutputStream),
-                updatePosition);
+                updatePosition
+        );
     }
 
     /**
@@ -359,7 +372,8 @@ public class GenericCopyUtil {
     void copyFile(
             @NonNull FileChannel inChannel,
             @NonNull BufferedOutputStream bufferedOutputStream,
-            @NonNull UpdatePosition updatePosition)
+            @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
         doCopy(inChannel, Channels.newChannel(bufferedOutputStream), updatePosition);
     }
@@ -368,7 +382,8 @@ public class GenericCopyUtil {
     void doCopy(
             @NonNull ReadableByteChannel from,
             @NonNull WritableByteChannel to,
-            @NonNull UpdatePosition updatePosition)
+            @NonNull UpdatePosition updatePosition
+    )
             throws IOException {
         ByteBuffer buffer = ByteBuffer.allocateDirect(DEFAULT_TRANSFER_QUANTUM);
         long count;

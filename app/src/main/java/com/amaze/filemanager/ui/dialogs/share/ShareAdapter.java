@@ -21,16 +21,17 @@ import java.util.ArrayList;
 class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
 
     private final ArrayList<Intent> items;
-    private MaterialDialog dialog;
     private final ArrayList<String> labels;
     private final ArrayList<Drawable> drawables;
     private final Context context;
+    private MaterialDialog dialog;
 
     ShareAdapter(
             Context context,
             ArrayList<Intent> intents,
             ArrayList<String> labels,
-            ArrayList<Drawable> arrayList1) {
+            ArrayList<Drawable> arrayList1
+    ) {
         items = new ArrayList<>(intents);
         this.context = context;
         this.labels = labels;

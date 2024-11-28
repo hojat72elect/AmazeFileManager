@@ -245,7 +245,8 @@ public class EncryptService extends AbstractProgressiveService {
                         baseFile.getName(context),
                         1,
                         totalSize,
-                        true); // we're using encrypt as move flag false
+                        true
+                ); // we're using encrypt as move flag false
 
                 if (FileProperties.checkFolder(baseFile.getPath(), context) == 1) {
                     serviceWatcherUtil.watch(EncryptService.this);
@@ -259,7 +260,8 @@ public class EncryptService extends AbstractProgressiveService {
                                 failedOps,
                                 targetFilename,
                                 useAesCrypt,
-                                password);
+                                password
+                        );
                     } catch (Exception e) {
                         LOG.warn("failed to get crypt util instance", e);
                         failedOps.add(baseFile);

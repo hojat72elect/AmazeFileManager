@@ -41,7 +41,8 @@ public class MoveFiles implements Callable<MoveFilesReturn> {
             boolean isRootExplorer,
             Context context,
             OpenMode mode,
-            ArrayList<String> paths) {
+            ArrayList<String> paths
+    ) {
         this.context = context;
         this.files = files;
         this.mode = mode;
@@ -90,7 +91,8 @@ public class MoveFiles implements Callable<MoveFilesReturn> {
 
     @Nullable
     private MoveFilesReturn processFile(
-            HybridFileParcelable baseFile, String path, long destinationSize) {
+            HybridFileParcelable baseFile, String path, long destinationSize
+    ) {
         String destPath = path + "/" + baseFile.getName(context);
         if (baseFile.getPath().indexOf('?') > 0)
             destPath += baseFile.getPath().substring(baseFile.getPath().indexOf('?'));

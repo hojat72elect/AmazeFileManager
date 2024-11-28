@@ -39,11 +39,11 @@ public class CustomFileObserver extends FileObserver {
     private static final int MASK = CREATE | MOVED_TO | DELETE | MOVED_FROM | DELETE_SELF | MOVE_SELF;
     private final List<String> pathsAdded = Collections.synchronizedList(new ArrayList<>());
     private final List<String> pathsRemoved = Collections.synchronizedList(new ArrayList<>());
+    private final Handler handler;
+    private final String path;
     private long lastMessagedTime = 0L;
     private boolean messagingScheduled = false;
     private boolean wasStopped = false;
-    private final Handler handler;
-    private final String path;
     private ScheduledExecutorService executor = null;
 
     public CustomFileObserver(String path, Handler handler) {
@@ -118,7 +118,8 @@ public class CustomFileObserver extends FileObserver {
                                     sendMessages();
                                 }
                             },
-                            DEFER_CONSTANT - deltaTime);
+                            DEFER_CONSTANT - deltaTime
+                    );
 
             messagingScheduled = true;
         } else {
@@ -159,7 +160,8 @@ public class CustomFileObserver extends FileObserver {
                 new FileTimerTask(path, this),
                 DEFER_CONSTANT_SECONDS,
                 DEFER_CONSTANT_SECONDS,
-                TimeUnit.SECONDS); // This doesn't work with milliseconds (don't know why)
+                TimeUnit.SECONDS
+        ); // This doesn't work with milliseconds (don't know why)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -170,8 +172,8 @@ public class CustomFileObserver extends FileObserver {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static class FileTimerTask implements Runnable {
         private final FileObserver fileObserver;
-        private String[] files = null;
         private final File file;
+        private String[] files = null;
 
         private FileTimerTask(String path, FileObserver fileObserver) {
             file = new File(path);

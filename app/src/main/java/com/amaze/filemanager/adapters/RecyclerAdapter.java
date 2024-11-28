@@ -152,7 +152,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @NonNull RecyclerView recyclerView,
             @NonNull List<LayoutElementParcelable> itemsRaw,
             @NonNull Context context,
-            boolean isGrid) {
+            boolean isGrid
+    ) {
         setHasStableIds(true);
 
         this.preferenceActivity = preferenceActivity;
@@ -165,7 +166,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.dragAndDropPreference =
                 sharedPrefs.getInt(
                         PreferencesConstants.PREFERENCE_DRAG_AND_DROP_PREFERENCE,
-                        PreferencesConstants.PREFERENCE_DRAG_DEFAULT);
+                        PreferencesConstants.PREFERENCE_DRAG_DEFAULT
+                );
         this.isGrid = isGrid;
 
         mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -536,14 +538,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setItems(
-            @NonNull RecyclerView recyclerView, @NonNull List<LayoutElementParcelable> elements) {
+            @NonNull RecyclerView recyclerView, @NonNull List<LayoutElementParcelable> elements
+    ) {
         setItems(recyclerView, elements, true);
     }
 
     private void setItems(
             @NonNull RecyclerView recyclerView,
             @NonNull List<LayoutElementParcelable> elements,
-            boolean invalidate) {
+            boolean invalidate
+    ) {
         if (preloader != null) {
             recyclerView.removeOnScrollListener(preloader);
             preloader = null;
@@ -600,7 +604,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         Glide.with(mainFragment),
                         modelProvider,
                         sizeProvider,
-                        GlideConstants.MAX_PRELOAD_FILES);
+                        GlideConstants.MAX_PRELOAD_FILES
+                );
 
         recyclerView.addOnScrollListener(preloader);
     }
@@ -818,13 +823,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     new CircleGradientDrawable(
                             accentColor,
                             utilsProvider.getAppTheme(),
-                            mainFragment.getResources().getDisplayMetrics()));
+                            mainFragment.getResources().getDisplayMetrics()
+                    ));
         } else {
             holder.checkImageView.setBackgroundDrawable(
                     new CircleGradientDrawable(
                             accentColor,
                             utilsProvider.getAppTheme(),
-                            mainFragment.getResources().getDisplayMetrics()));
+                            mainFragment.getResources().getDisplayMetrics()
+                    ));
         }
         holder.txtTitle.setText(rowItem.title);
         holder.genericText.setText("");
@@ -1233,7 +1240,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 new CircleGradientDrawable(
                         accentColor,
                         utilsProvider.getAppTheme(),
-                        mainFragment.getResources().getDisplayMetrics()));
+                        mainFragment.getResources().getDisplayMetrics()
+                ));
         return mainFragment.getMainActivity().getTabFragment().getDragPlaceholder();
     }
 
@@ -1253,7 +1261,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ItemViewHolder viewHolder,
             IconDataParcelable iconData,
             AppCompatImageView view,
-            OnImageProcessed errorListener) {
+            OnImageProcessed errorListener
+    ) {
         if (iconData.isImageBroken()) {
             viewHolder.genericIcon.setVisibility(View.VISIBLE);
             Glide.with(mainFragment)
@@ -1275,7 +1284,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     @Override
                     public boolean onLoadFailed(
-                            @Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
+                            @Nullable GlideException e, Object model, Target target, boolean isFirstResource
+                    ) {
                         new Handler(
                                 msg -> {
                                     viewHolder.genericIcon.setVisibility(View.VISIBLE);
@@ -1298,7 +1308,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             Object model,
                             Target<Drawable> target,
                             DataSource dataSource,
-                            boolean isFirstResource) {
+                            boolean isFirstResource
+                    ) {
                         viewHolder.genericIcon.setImageDrawable(null);
                         viewHolder.genericIcon.setVisibility(View.GONE);
                         gradientDrawable.setColor(
@@ -1316,7 +1327,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ItemViewHolder viewHolder,
             IconDataParcelable iconData,
             AppCompatImageView view,
-            OnImageProcessed errorListener) {
+            OnImageProcessed errorListener
+    ) {
         if (iconData.isImageBroken()) {
             View iconBackground =
                     getBoolean(PREFERENCE_USE_CIRCULAR_IMAGES)
@@ -1345,7 +1357,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(
-                            @Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
+                            @Nullable GlideException e, Object model, Target target, boolean isFirstResource
+                    ) {
                         iconBackground.setBackgroundColor(grey_color);
                         new Handler(
                                 msg -> {
@@ -1366,7 +1379,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             Object model,
                             Target<Drawable> target,
                             DataSource dataSource,
-                            boolean isFirstResource) {
+                            boolean isFirstResource
+                    ) {
                         viewHolder.genericIcon.setImageDrawable(null);
                         viewHolder.genericIcon.setVisibility(View.GONE);
                         view.setVisibility(View.VISIBLE);
@@ -1393,7 +1407,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         mainFragment,
                         rowItem,
                         view,
-                        sharedPrefs);
+                        sharedPrefs
+                );
         popupMenu.inflate(R.menu.item_extras);
         String description = rowItem.desc.toLowerCase();
 
@@ -1475,7 +1490,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Toast.makeText(
                             mainFragment.requireContext(),
                             mainFragment.getString(R.string.complete_paste_warning),
-                            Toast.LENGTH_LONG)
+                            Toast.LENGTH_LONG
+                    )
                     .show();
             return true;
         }

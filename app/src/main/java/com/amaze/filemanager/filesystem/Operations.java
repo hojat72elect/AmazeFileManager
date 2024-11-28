@@ -65,7 +65,8 @@ public class Operations {
             @NonNull final HybridFile file,
             final Context context,
             final boolean rootMode,
-            @NonNull final ErrorCallBack errorCallBack) {
+            @NonNull final ErrorCallBack errorCallBack
+    ) {
 
         new AsyncTask<Void, Void, Void>() {
 
@@ -143,7 +144,8 @@ public class Operations {
                                     SafRootHolder.getUriRoot(),
                                     context,
                                     OpenMode.DOCUMENT_FILE,
-                                    false));
+                                    false
+                            ));
                     return null;
                 } else if (file.isDropBoxFile()) {
                     CloudStorage cloudStorageDropbox = dataUtils.getAccount(OpenMode.DROPBOX);
@@ -219,7 +221,8 @@ public class Operations {
             @NonNull final HybridFile file,
             final Context context,
             final boolean rootMode,
-            @NonNull final ErrorCallBack errorCallBack) {
+            @NonNull final ErrorCallBack errorCallBack
+    ) {
 
         new AsyncTask<Void, Void, Void>() {
 
@@ -233,7 +236,8 @@ public class Operations {
                                 result =
                                         input.createFile(
                                                 file.getName(context).substring(file.getName(context).lastIndexOf(".")),
-                                                file.getName(context))
+                                                file.getName(context)
+                                        )
                                                 != null;
                             } catch (Exception e) {
                                 LOG.warn(getClass().getSimpleName(), "Failed to make file", e);
@@ -296,7 +300,8 @@ public class Operations {
                                 CloudUtil.stripPath(OpenMode.DROPBOX, file.getPath()),
                                 byteArrayInputStream,
                                 0L,
-                                true);
+                                true
+                        );
                         errorCallBack.done(file, true);
                     } catch (Exception e) {
                         LOG.warn("failed to make file in cloud connection", e);
@@ -323,7 +328,8 @@ public class Operations {
                                 CloudUtil.stripPath(OpenMode.ONEDRIVE, file.getPath()),
                                 byteArrayInputStream,
                                 0L,
-                                true);
+                                true
+                        );
                         errorCallBack.done(file, true);
                     } catch (Exception e) {
                         LOG.warn("failed to make file in cloud connection", e);
@@ -338,7 +344,8 @@ public class Operations {
                                 CloudUtil.stripPath(OpenMode.GDRIVE, file.getPath()),
                                 byteArrayInputStream,
                                 0L,
-                                true);
+                                true
+                        );
                         errorCallBack.done(file, true);
                     } catch (Exception e) {
                         LOG.warn("failed to make file in cloud connection", e);
@@ -362,7 +369,8 @@ public class Operations {
                                     SafRootHolder.getUriRoot(),
                                     context,
                                     OpenMode.DOCUMENT_FILE,
-                                    false));
+                                    false
+                            ));
                     return null;
                 } else {
                     if (file.isLocal() || file.isRoot()) {
@@ -399,7 +407,8 @@ public class Operations {
             @NonNull final HybridFile newFile,
             final boolean rootMode,
             @NonNull final Context context,
-            @NonNull final ErrorCallBack errorCallBack) {
+            @NonNull final ErrorCallBack errorCallBack
+    ) {
 
         new AsyncTask<Void, Void, Void>() {
 
@@ -513,7 +522,8 @@ public class Operations {
                                 context.getString(
                                         R.string.cannot_rename_file,
                                         HybridFile.parseAndFormatUriForDisplay(oldFile.getPath()),
-                                        e.getMessage());
+                                        e.getMessage()
+                                );
                         try {
                             ArrayList<HybridFileParcelable> failedOps = new ArrayList<>();
                             failedOps.add(new HybridFileParcelable(oldFile.getSmbFile()));
@@ -535,14 +545,16 @@ public class Operations {
                                     try {
                                         client.rename(
                                                 NetCopyClientUtils.extractRemotePathFrom(oldFile.getPath()),
-                                                NetCopyClientUtils.extractRemotePathFrom(newFile.getPath()));
+                                                NetCopyClientUtils.extractRemotePathFrom(newFile.getPath())
+                                        );
                                         errorCallBack.done(newFile, true);
                                     } catch (IOException e) {
                                         String errmsg =
                                                 context.getString(
                                                         R.string.cannot_rename_file,
                                                         HybridFile.parseAndFormatUriForDisplay(oldFile.getPath()),
-                                                        e.getMessage());
+                                                        e.getMessage()
+                                                );
                                         LOG.error(errmsg);
                                         ArrayList<HybridFileParcelable> failedOps = new ArrayList<>();
                                         // Nobody care the size or actual permission here. Put a simple "r" and zero
@@ -553,7 +565,8 @@ public class Operations {
                                                         "r",
                                                         oldFile.lastModified(),
                                                         0,
-                                                        oldFile.isDirectory(context)));
+                                                        oldFile.isDirectory(context)
+                                                ));
                                         context.sendBroadcast(
                                                 new Intent(TAG_INTENT_FILTER_GENERAL)
                                                         .putParcelableArrayListExtra(TAG_INTENT_FILTER_FAILED_OPS, failedOps));
@@ -570,7 +583,8 @@ public class Operations {
                                     boolean result =
                                             ftpClient.rename(
                                                     NetCopyClientUtils.extractRemotePathFrom(oldFile.getPath()),
-                                                    NetCopyClientUtils.extractRemotePathFrom(newFile.getPath()));
+                                                    NetCopyClientUtils.extractRemotePathFrom(newFile.getPath())
+                                            );
                                     errorCallBack.done(newFile, result);
                                     return result;
                                 }
@@ -580,7 +594,8 @@ public class Operations {
                     try {
                         cloudStorageDropbox.move(
                                 CloudUtil.stripPath(OpenMode.DROPBOX, oldFile.getPath()),
-                                CloudUtil.stripPath(OpenMode.DROPBOX, newFile.getPath()));
+                                CloudUtil.stripPath(OpenMode.DROPBOX, newFile.getPath())
+                        );
                         errorCallBack.done(newFile, true);
                     } catch (Exception e) {
                         LOG.warn("failed to rename file in cloud connection", e);
@@ -591,7 +606,8 @@ public class Operations {
                     try {
                         cloudStorageBox.move(
                                 CloudUtil.stripPath(OpenMode.BOX, oldFile.getPath()),
-                                CloudUtil.stripPath(OpenMode.BOX, newFile.getPath()));
+                                CloudUtil.stripPath(OpenMode.BOX, newFile.getPath())
+                        );
                         errorCallBack.done(newFile, true);
                     } catch (Exception e) {
                         LOG.warn("failed to rename file in cloud connection", e);
@@ -602,7 +618,8 @@ public class Operations {
                     try {
                         cloudStorageOneDrive.move(
                                 CloudUtil.stripPath(OpenMode.ONEDRIVE, oldFile.getPath()),
-                                CloudUtil.stripPath(OpenMode.ONEDRIVE, newFile.getPath()));
+                                CloudUtil.stripPath(OpenMode.ONEDRIVE, newFile.getPath())
+                        );
                         errorCallBack.done(newFile, true);
                     } catch (Exception e) {
                         LOG.warn("failed to rename file in cloud connection", e);
@@ -613,7 +630,8 @@ public class Operations {
                     try {
                         cloudStorageGdrive.move(
                                 CloudUtil.stripPath(OpenMode.GDRIVE, oldFile.getPath()),
-                                CloudUtil.stripPath(OpenMode.GDRIVE, newFile.getPath()));
+                                CloudUtil.stripPath(OpenMode.GDRIVE, newFile.getPath())
+                        );
                         errorCallBack.done(newFile, true);
                     } catch (Exception e) {
                         LOG.warn("failed to rename file in cloud connection", e);
@@ -637,7 +655,8 @@ public class Operations {
                                     SafRootHolder.getUriRoot(),
                                     context,
                                     OpenMode.DOCUMENT_FILE,
-                                    false));
+                                    false
+                            ));
                     return null;
                 } else {
                     File file = new File(oldFile.getPath());
@@ -689,7 +708,8 @@ public class Operations {
                             SafRootHolder.getUriRoot(),
                             context,
                             OpenMode.DOCUMENT_FILE,
-                            false)
+                            false
+                    )
                             != null;
         } catch (Exception e) {
             LOG.warn("Failed to find existing file", e);

@@ -1,11 +1,9 @@
 package com.amaze.filemanager.ui.icons;
 
-import java.util.HashMap;
-
+import androidx.annotation.DrawableRes;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper;
-
-import androidx.annotation.DrawableRes;
+import java.util.HashMap;
 
 public class Icons {
     public static final int NOT_KNOWN = -1;
@@ -44,7 +42,8 @@ public class Icons {
                 "application/x-x509-user-cert",
                 "application/x-pkcs7-certificates",
                 "application/x-pkcs7-mime",
-                "application/x-pkcs7-signature");
+                "application/x-pkcs7-signature"
+        );
         putKeys(
                 CODE,
                 "application/rdf+xml",
@@ -74,7 +73,8 @@ public class Icons {
                 "application/javascript",
                 "application/xml",
                 "text/javascript",
-                "application/x-javascript");
+                "application/x-javascript"
+        );
         putKeys(
                 COMPRESSED,
                 "application/mac-binhex40",
@@ -99,7 +99,8 @@ public class Icons {
                 "application/x-rar-compressed",
                 "application/x-lzma",
                 "application/x-xz",
-                "application/x-bzip2");
+                "application/x-bzip2"
+        );
         putKeys(CONTACT, "text/x-vcard", "text/vcard");
         putKeys(EVENTS, "text/calendar", "text/x-vcalendar");
         putKeys(
@@ -107,7 +108,8 @@ public class Icons {
                 "application/x-font",
                 "application/font-woff",
                 "application/x-font-woff",
-                "application/x-font-ttf");
+                "application/x-font-ttf"
+        );
         putKeys(
                 IMAGE,
                 "application/vnd.oasis.opendocument.graphics",
@@ -117,7 +119,8 @@ public class Icons {
                 "application/vnd.sun.xml.draw",
                 "application/vnd.sun.xml.draw.template",
                 "image/jpeg",
-                "image/png");
+                "image/png"
+        );
         putKeys(PDF, "application/pdf");
         putKeys(
                 PRESENTATION,
@@ -129,7 +132,8 @@ public class Icons {
                 "application/vnd.sun.xml.impress",
                 "application/vnd.sun.xml.impress.template",
                 "application/x-kpresenter",
-                "application/vnd.oasis.opendocument.presentation");
+                "application/vnd.oasis.opendocument.presentation"
+        );
         putKeys(
                 SPREADSHEETS,
                 "application/vnd.oasis.opendocument.spreadsheet",
@@ -141,7 +145,8 @@ public class Icons {
                 "application/vnd.sun.xml.calc",
                 "application/vnd.sun.xml.calc.template",
                 "application/x-kspread",
-                "text/comma-separated-values");
+                "text/comma-separated-values"
+        );
         putKeys(
                 DOCUMENTS,
                 "application/msword",
@@ -158,7 +163,8 @@ public class Icons {
                 "application/vnd.sun.xml.writer.template",
                 "application/x-abiword",
                 "application/x-kword",
-                "text/markdown");
+                "text/markdown"
+        );
         putKeys(TEXT, "text/plain");
         putKeys(VIDEO, "application/x-quicktimeplayer", "application/x-shockwave-flash");
         putKeys(ENCRYPTED, "application/octet-stream");

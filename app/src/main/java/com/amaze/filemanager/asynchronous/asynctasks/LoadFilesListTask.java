@@ -71,12 +71,12 @@ public class LoadFilesListTask
     private final String path;
     private final WeakReference<MainFragment> mainFragmentReference;
     private final WeakReference<Context> context;
-    private OpenMode openmode;
     private final boolean showHiddenFiles;
     private final boolean showThumbs;
     private final DataUtils dataUtils = DataUtils.getInstance();
     private final OnAsyncTaskFinished<Pair<OpenMode, List<LayoutElementParcelable>>> listener;
     private final boolean forceReload;
+    private OpenMode openmode;
 
     public LoadFilesListTask(
             Context context,
@@ -86,7 +86,8 @@ public class LoadFilesListTask
             boolean showThumbs,
             boolean showHiddenFiles,
             boolean forceReload,
-            OnAsyncTaskFinished<Pair<OpenMode, List<LayoutElementParcelable>>> l) {
+            OnAsyncTaskFinished<Pair<OpenMode, List<LayoutElementParcelable>>> l
+    ) {
         this.path = path;
         this.mainFragmentReference = new WeakReference<>(mainFragment);
         this.openmode = openmode;
@@ -200,12 +201,14 @@ public class LoadFilesListTask
                                             .get()
                                             .getString(
                                                     R.string.error_listfile_smb_noipcshare,
-                                                    HybridFile.parseAndFormatUriForDisplay(path)))
+                                                    HybridFile.parseAndFormatUriForDisplay(path)
+                                            ))
                             .setPositiveButton(
                                     android.R.string.ok,
                                     (dialog, which) -> {
                                         dialog.dismiss();
-                                    })
+                                    }
+                            )
                             .show();
                 } else {
                     Toast.makeText(
@@ -215,8 +218,10 @@ public class LoadFilesListTask
                                             .getString(
                                                     R.string.error_listfile_smb,
                                                     HybridFile.parseAndFormatUriForDisplay(path),
-                                                    exception.getMessage()),
-                                    Toast.LENGTH_LONG)
+                                                    exception.getMessage()
+                                            ),
+                                    Toast.LENGTH_LONG
+                            )
                             .show();
                 }
             }
@@ -229,7 +234,8 @@ public class LoadFilesListTask
     }
 
     private List<LayoutElementParcelable> getCachedMediaList(
-            MainActivityViewModel mainActivityViewModel) throws IllegalStateException {
+            MainActivityViewModel mainActivityViewModel
+    ) throws IllegalStateException {
         List<LayoutElementParcelable> list;
         int mediaType = Integer.parseInt(path);
         if (5 == mediaType
@@ -276,7 +282,8 @@ public class LoadFilesListTask
     }
 
     private void postListCustomPathProcess(
-            @NonNull List<LayoutElementParcelable> list, @NonNull MainFragment mainFragment) {
+            @NonNull List<LayoutElementParcelable> list, @NonNull MainFragment mainFragment
+    ) {
 
         SortType sortType = SortHandler.getSortType(context.get(), path);
 
@@ -346,7 +353,8 @@ public class LoadFilesListTask
                         baseFile.getDate() + "",
                         baseFile.isDirectory(),
                         showThumbs,
-                        baseFile.getMode());
+                        baseFile.getMode()
+                );
         return layoutElement;
     }
 
@@ -367,7 +375,8 @@ public class LoadFilesListTask
     }
 
     private @Nullable List<LayoutElementParcelable> listMediaCommon(
-            Uri contentUri, @NonNull String[] projection, @Nullable String selection) {
+            Uri contentUri, @NonNull String[] projection, @Nullable String selection
+    ) {
         final Context context = this.context.get();
 
         if (context == null) {
@@ -532,10 +541,12 @@ public class LoadFilesListTask
             queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT, 20);
             queryArgs.putStringArray(
                     ContentResolver.QUERY_ARG_SORT_COLUMNS,
-                    new String[]{MediaStore.Files.FileColumns.DATE_MODIFIED});
+                    new String[]{MediaStore.Files.FileColumns.DATE_MODIFIED}
+            );
             queryArgs.putInt(
                     ContentResolver.QUERY_ARG_SORT_DIRECTION,
-                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING);
+                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+            );
             cursor =
                     context
                             .getContentResolver()
@@ -549,7 +560,8 @@ public class LoadFilesListTask
                                     projection,
                                     null,
                                     null,
-                                    MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC LIMIT 20");
+                                    MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC LIMIT 20"
+                            );
         }
         if (cursor == null) return recentFiles;
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -594,7 +606,8 @@ public class LoadFilesListTask
                             trashBinFile.getDeletedPath(
                                     AppConfig.getInstance().getTrashBinInstance().getConfig()),
                             trashBinFile.getFileName(),
-                            trashBinFile.isDirectory());
+                            trashBinFile.isDirectory()
+                    );
             if (trashBinFile.getDeleteTime() != null) {
                 hybridFile.setLastModified(trashBinFile.getDeleteTime() * 1000);
             }
@@ -621,7 +634,8 @@ public class LoadFilesListTask
             for (ResolveInfo app :
                     CollectionsKt.distinctBy(
                             pm.queryIntentActivities(intent, 0),
-                            resolveInfo -> resolveInfo.activityInfo.packageName)) {
+                            resolveInfo -> resolveInfo.activityInfo.packageName
+                    )) {
                 File dir = new File(new File(basePath), app.activityInfo.packageName);
                 if (dir.exists()) {
                     LayoutElementParcelable element =
@@ -636,7 +650,8 @@ public class LoadFilesListTask
                                     Long.toString(dir.lastModified()),
                                     true,
                                     false,
-                                    OpenMode.ANDROID_DATA);
+                                    OpenMode.ANDROID_DATA
+                            );
                     retval.add(element);
                 }
             }
@@ -647,7 +662,8 @@ public class LoadFilesListTask
     private List<LayoutElementParcelable> listSmb(
             @Nullable final HybridFile hFile,
             @NonNull MainActivityViewModel mainActivityViewModel,
-            @NonNull MainFragment mainFragment) {
+            @NonNull MainFragment mainFragment
+    ) {
         HybridFile _file = hFile;
         if (_file == null) {
             _file = new HybridFile(OpenMode.SMB, path);
@@ -682,7 +698,8 @@ public class LoadFilesListTask
     }
 
     private List<LayoutElementParcelable> listSftp(
-            @NonNull MainActivityViewModel mainActivityViewModel) {
+            @NonNull MainActivityViewModel mainActivityViewModel
+    ) {
         HybridFile ftpHFile = new HybridFile(openmode, path);
         List<LayoutElementParcelable> list;
         List<LayoutElementParcelable> sftpCache = mainActivityViewModel.getFromListCache(path);
@@ -700,7 +717,8 @@ public class LoadFilesListTask
                                 list.add(elem);
                             }
                         }
-                    });
+                    }
+            );
             mainActivityViewModel.putInCache(path, list);
         }
         return list;
@@ -713,12 +731,14 @@ public class LoadFilesListTask
                 file -> {
                     LayoutElementParcelable elem = createListParcelables(file);
                     if (elem != null) list.add(elem);
-                });
+                }
+        );
         return list;
     }
 
     private List<LayoutElementParcelable> listDocumentFiles(
-            @NonNull MainActivityViewModel mainActivityViewModel) {
+            @NonNull MainActivityViewModel mainActivityViewModel
+    ) {
         List<LayoutElementParcelable> list;
         List<LayoutElementParcelable> cache = mainActivityViewModel.getFromListCache(path);
         if (cache != null && !forceReload) {
@@ -736,7 +756,8 @@ public class LoadFilesListTask
     }
 
     private List<LayoutElementParcelable> listCloud(
-            @NonNull MainActivityViewModel mainActivityViewModel) throws CloudPluginException {
+            @NonNull MainActivityViewModel mainActivityViewModel
+    ) throws CloudPluginException {
         List<LayoutElementParcelable> list;
         List<LayoutElementParcelable> cloudCache = mainActivityViewModel.getFromListCache(path);
         if (cloudCache != null && !forceReload) {
@@ -751,14 +772,16 @@ public class LoadFilesListTask
                     file -> {
                         LayoutElementParcelable elem = createListParcelables(file);
                         if (elem != null) list.add(elem);
-                    });
+                    }
+            );
             mainActivityViewModel.putInCache(path, list);
         }
         return list;
     }
 
     private List<LayoutElementParcelable> listDefault(
-            @NonNull MainActivityViewModel mainActivityViewModel, @NonNull MainFragment mainFragment) {
+            @NonNull MainActivityViewModel mainActivityViewModel, @NonNull MainFragment mainFragment
+    ) {
         List<LayoutElementParcelable> list;
         List<LayoutElementParcelable> localCache = mainActivityViewModel.getFromListCache(path);
         openmode =
@@ -781,7 +804,8 @@ public class LoadFilesListTask
                         LayoutElementParcelable elem = createListParcelables(hybridFileParcelable);
                         if (elem != null) list.add(elem);
                         return null;
-                    });
+                    }
+            );
             if (list.size() > MainActivityViewModel.Companion.getCACHE_LOCAL_LIST_THRESHOLD()) {
                 mainActivityViewModel.putInCache(path, list);
             }
@@ -823,7 +847,8 @@ public class LoadFilesListTask
     }
 
     private void listCloudInternal(
-            String path, CloudStorage cloudStorage, OpenMode openMode, OnFileFound fileFoundCallback)
+            String path, CloudStorage cloudStorage, OpenMode openMode, OnFileFound fileFoundCallback
+    )
             throws CloudPluginException {
         final Context context = this.context.get();
 

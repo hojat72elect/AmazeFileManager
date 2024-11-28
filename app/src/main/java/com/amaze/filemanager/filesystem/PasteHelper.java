@@ -147,10 +147,12 @@ public final class PasteHelper implements Parcelable {
                                                                     move,
                                                                     mainActivity.isRootExplorer(),
                                                                     mainFragment.getMainFragmentViewModel().getOpenMode(),
-                                                                    arrayList);
+                                                                    arrayList
+                                                            );
                                                     dismissSnackbar(true);
                                                 },
-                                                () -> dismissSnackbar(true));
+                                                () -> dismissSnackbar(true)
+                                        );
                             }
 
                             @Override
@@ -167,7 +169,8 @@ public final class PasteHelper implements Parcelable {
                         operationText,
                         operation == OPERATION_COPY
                                 ? mainActivity.getString(R.string.copy)
-                                : mainActivity.getString(R.string.move));
+                                : mainActivity.getString(R.string.move)
+                );
         operationText = operationText.concat(": ");
         int foldersCount = 0;
         int filesCount = 0;

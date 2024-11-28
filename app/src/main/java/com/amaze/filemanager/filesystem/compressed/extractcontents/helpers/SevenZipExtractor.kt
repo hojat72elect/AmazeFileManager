@@ -4,12 +4,12 @@ import android.content.Context
 import com.amaze.filemanager.R
 import com.amaze.filemanager.application.AppConfig
 import com.amaze.filemanager.fileoperations.filesystem.compressed.ArchivePasswordCache
+import com.amaze.filemanager.fileoperations.sevenz.SevenZArchiveEntry
+import com.amaze.filemanager.fileoperations.sevenz.SevenZFile
 import com.amaze.filemanager.fileoperations.utils.UpdatePosition
 import com.amaze.filemanager.filesystem.FileUtil
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
 import com.amaze.filemanager.filesystem.compressed.extractcontents.Extractor
-import com.amaze.filemanager.fileoperations.sevenz.SevenZArchiveEntry
-import com.amaze.filemanager.fileoperations.sevenz.SevenZFile
 import com.amaze.filemanager.filesystem.files.GenericCopyUtil
 import java.io.BufferedOutputStream
 import java.io.File

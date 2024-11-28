@@ -68,13 +68,15 @@ public class ErrorActivity extends ThemedActivity {
             final Context context,
             final List<Throwable> el,
             final View rootView,
-            final ErrorInfo errorInfo) {
+            final ErrorInfo errorInfo
+    ) {
         if (rootView != null) {
             Snackbar.make(rootView, R.string.error_snackbar_message, 3 * 1000)
                     .setActionTextColor(Color.YELLOW)
                     .setAction(
                             context.getString(R.string.error_snackbar_action).toUpperCase(),
-                            v -> startErrorActivity(context, errorInfo, el))
+                            v -> startErrorActivity(context, errorInfo, el)
+                    )
                     .show();
         } else {
             startErrorActivity(context, errorInfo, el);
@@ -82,7 +84,8 @@ public class ErrorActivity extends ThemedActivity {
     }
 
     private static void startErrorActivity(
-            final Context context, final ErrorInfo errorInfo, final List<Throwable> el) {
+            final Context context, final ErrorInfo errorInfo, final List<Throwable> el
+    ) {
         final Intent intent = new Intent(context, ErrorActivity.class);
         intent.putExtra(ERROR_INFO, errorInfo);
         intent.putExtra(ERROR_LIST, elToSl(el));
@@ -91,7 +94,8 @@ public class ErrorActivity extends ThemedActivity {
     }
 
     public static void reportError(
-            final Context context, final Throwable e, final View rootView, final ErrorInfo errorInfo) {
+            final Context context, final Throwable e, final View rootView, final ErrorInfo errorInfo
+    ) {
         List<Throwable> el = null;
         if (e != null) {
             el = new Vector<>();
@@ -101,7 +105,8 @@ public class ErrorActivity extends ThemedActivity {
     }
 
     public static void reportError(
-            final Context context, final CrashReportData report, final ErrorInfo errorInfo) {
+            final Context context, final CrashReportData report, final ErrorInfo errorInfo
+    ) {
         System.out.println("ErrorActivity reportError");
         final String[] el = new String[]{report.getString(ReportField.STACK_TRACE)};
         // Add this to try figure out what happened when stacktrace is sent to acra.
@@ -442,7 +447,8 @@ public class ErrorActivity extends ThemedActivity {
         }
 
         public static ErrorInfo make(
-                final String userAction, final String request, @StringRes final int message) {
+                final String userAction, final String request, @StringRes final int message
+        ) {
             return new ErrorInfo(userAction, request, message);
         }
 

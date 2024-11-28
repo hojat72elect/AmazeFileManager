@@ -95,7 +95,8 @@ public class CryptUtil {
             @NonNull ArrayList<HybridFile> failedOps,
             @NonNull String targetFilename,
             boolean useAesCrypt,
-            @Nullable String password)
+            @Nullable String password
+    )
             throws GeneralSecurityException, IOException {
 
         this.progressHandler = progressHandler;
@@ -124,7 +125,8 @@ public class CryptUtil {
             @NonNull String targetPath,
             @NonNull ProgressHandler progressHandler,
             @NonNull ArrayList<HybridFile> failedOps,
-            @Nullable String password)
+            @Nullable String password
+    )
             throws GeneralSecurityException, IOException {
 
         this.progressHandler = progressHandler;
@@ -168,7 +170,8 @@ public class CryptUtil {
             @NonNull HybridFileParcelable sourceFile,
             @NonNull HybridFile targetDirectory,
             boolean useAescrypt,
-            @Nullable String password)
+            @Nullable String password
+    )
             throws GeneralSecurityException, IOException {
 
         if (progressHandler.getCancelled()) return;
@@ -182,7 +185,8 @@ public class CryptUtil {
                                     .getName(context)
                                     .replace(CRYPT_EXTENSION, "")
                                     .replace(AESCRYPT_EXTENSION, ""),
-                            sourceFile.isDirectory());
+                            sourceFile.isDirectory()
+                    );
             MakeDirectoryOperation.mkdirs(context, hFile);
 
             sourceFile.forEachChildrenFile(
@@ -194,7 +198,8 @@ public class CryptUtil {
                         } catch (IOException | GeneralSecurityException e) {
                             throw new IllegalStateException(e); // throw unchecked exception, no throws needed
                         }
-                    });
+                    }
+            );
         } else {
 
             if (!sourceFile.getPath().endsWith(CRYPT_EXTENSION)
@@ -215,7 +220,8 @@ public class CryptUtil {
                                     .getName(context)
                                     .replace(CRYPT_EXTENSION, "")
                                     .replace(AESCRYPT_EXTENSION, ""),
-                            sourceFile.isDirectory());
+                            sourceFile.isDirectory()
+                    );
 
             progressHandler.setFileName(sourceFile.getName(context));
 
@@ -243,7 +249,8 @@ public class CryptUtil {
             @NonNull HybridFile targetDirectory,
             @NonNull String targetFilename,
             boolean useAesCrypt,
-            @Nullable String password)
+            @Nullable String password
+    )
             throws GeneralSecurityException, IOException {
 
         if (progressHandler.getCancelled()) return;
@@ -255,7 +262,8 @@ public class CryptUtil {
                             targetDirectory.getMode(),
                             targetDirectory.getPath(),
                             targetFilename,
-                            sourceFile.isDirectory());
+                            sourceFile.isDirectory()
+                    );
             MakeDirectoryOperation.mkdirs(context, hFile);
 
             sourceFile.forEachChildrenFile(
@@ -269,11 +277,13 @@ public class CryptUtil {
                                     hFile,
                                     file.getName(context).concat(useAesCrypt ? AESCRYPT_EXTENSION : CRYPT_EXTENSION),
                                     useAesCrypt,
-                                    password);
+                                    password
+                            );
                         } catch (IOException | GeneralSecurityException e) {
                             throw new IllegalStateException(e); // throw unchecked exception, no throws needed
                         }
-                    });
+                    }
+            );
         } else {
 
             if (sourceFile.getName(context).endsWith(CRYPT_EXTENSION)
@@ -292,7 +302,8 @@ public class CryptUtil {
                             targetDirectory.getMode(),
                             targetDirectory.getPath(),
                             targetFilename,
-                            sourceFile.isDirectory());
+                            sourceFile.isDirectory()
+                    );
 
             progressHandler.setFileName(sourceFile.getName(context));
 
@@ -306,7 +317,8 @@ public class CryptUtil {
                                 AESCrypt.AESCRYPT_SPEC_VERSION,
                                 sourceFile.getInputStream(AppConfig.getInstance()),
                                 targetFile.getOutputStream(AppConfig.getInstance()),
-                                progressHandler);
+                                progressHandler
+                        );
             } else {
                 doEncrypt(inputStream, outputStream, Cipher.ENCRYPT_MODE);
             }
@@ -322,7 +334,8 @@ public class CryptUtil {
      *                      </code>
      */
     private void doEncrypt(
-            BufferedInputStream inputStream, BufferedOutputStream outputStream, int operationMode)
+            BufferedInputStream inputStream, BufferedOutputStream outputStream, int operationMode
+    )
             throws GeneralSecurityException, IOException {
 
         Cipher cipher = Cipher.getInstance(ALGO_AES);

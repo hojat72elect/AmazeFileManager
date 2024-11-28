@@ -2,8 +2,8 @@ package com.amaze.filemanager.adapters.glide;
 
 import android.util.SparseArray;
 import android.view.View;
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.amaze.filemanager.adapters.data.IconDataParcelable;
 import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.request.target.SizeReadyCallback;

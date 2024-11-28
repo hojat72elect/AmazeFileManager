@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.annotation.Nullable;
 
 /**
@@ -18,11 +17,10 @@ public class CircularColorsView extends View {
     private static final float DISTANCE_PERCENTUAL = 0.08f;
     private static final float DIAMETER_PERCENTUAL = 0.65f;
     private static final int SEMICIRCLE_LINE_WIDTH = 0;
-
-    private boolean paintInitialized = false;
     private final Paint dividerPaint = new Paint();
     private final Paint[] colors = {new Paint(), new Paint(), new Paint(), new Paint()};
     private final RectF semicicleRect = new RectF();
+    private boolean paintInitialized = false;
 
     public CircularColorsView(Context context) {
         super(context);
@@ -88,7 +86,8 @@ public class CircularColorsView extends View {
                 semicicleRect.top,
                 semicicleRect.centerX(),
                 semicicleRect.bottom,
-                dividerPaint);
+                dividerPaint
+        );
 
         canvas.drawCircle(positionX[1], centerY, radius, colors[2]);
         canvas.drawCircle(positionX[2], centerY, radius, colors[3]);

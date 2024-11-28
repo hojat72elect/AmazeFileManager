@@ -11,16 +11,49 @@ import static com.amaze.filemanager.ui.fragments.preferencefragments.Preferences
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_HIDDENFILES;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_THUMB;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.UriPermission;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.text.TextUtils;
+import android.text.format.Formatter;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
@@ -64,56 +97,18 @@ import com.amaze.filemanager.utils.GenericExtKt;
 import com.amaze.filemanager.utils.OTGUtil;
 import com.amaze.filemanager.utils.Utils;
 import com.google.android.material.appbar.AppBarLayout;
-
-import android.content.BroadcastReceiver;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.UriPermission;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.text.TextUtils;
-import android.text.format.Formatter;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import kotlin.collections.ArraysKt;
 import kotlin.collections.CollectionsKt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainFragment extends Fragment
         implements BottomBarButtonPath,
@@ -126,8 +121,8 @@ public class MainFragment extends Fragment
     public static final String BUNDLE_HIDE_FAB = "hideFab";
     private static final Logger LOG = LoggerFactory.getLogger(MainFragment.class);
     private static final String KEY_FRAGMENT_MAIN = "main";
+    private final HashMap<String, Bundle> scrolls = new HashMap<>();
     public SwipeRefreshLayout mSwipeRefreshLayout;
-
     public RecyclerAdapter adapter;
     LoadFilesListTask loadFilesListTask;
     private SharedPreferences sharedPref;
@@ -139,7 +134,6 @@ public class MainFragment extends Fragment
     private SwipeRefreshLayout nofilesview;
     private RecyclerView listView;
     private UtilitiesProvider utilsProvider;
-    private final HashMap<String, Bundle> scrolls = new HashMap<>();
     private View rootView;
     private FastScroller fastScroller;
 
@@ -147,6 +141,22 @@ public class MainFragment extends Fragment
     // private int mCurrentTab;
     private CustomFileObserver customFileObserver;
     private MainFragmentViewModel mainFragmentViewModel;
+    private final BroadcastReceiver decryptReceiver =
+            new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+
+                    if (mainFragmentViewModel.isEncryptOpen()
+                            && mainFragmentViewModel.getEncryptBaseFile() != null) {
+                        FileUtils.openFile(
+                                mainFragmentViewModel.getEncryptBaseFile().getFile(),
+                                requireMainActivity(),
+                                sharedPref
+                        );
+                        mainFragmentViewModel.setEncryptOpen(false);
+                    }
+                }
+            };
     private MainActivityViewModel mainActivityViewModel;
     private boolean hideFab = false;    private final ActivityResultLauncher<Intent> handleDocumentUriForRestrictedDirectories =
             registerForActivityResult(
@@ -159,29 +169,16 @@ public class MainFragment extends Fragment
                                         .takePersistableUriPermission(
                                                 result.getData().getData(),
                                                 Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                        );
                                 SafRootHolder.setUriRoot(result.getData().getData());
                                 loadlist(result.getData().getDataString(), false, OpenMode.DOCUMENT_FILE, true);
                             } else if (getContext() != null) {
                                 AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
                             }
                         }
-                    });
-    private final BroadcastReceiver decryptReceiver =
-            new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-
-                    if (mainFragmentViewModel.isEncryptOpen()
-                            && mainFragmentViewModel.getEncryptBaseFile() != null) {
-                        FileUtils.openFile(
-                                mainFragmentViewModel.getEncryptBaseFile().getFile(),
-                                requireMainActivity(),
-                                sharedPref);
-                        mainFragmentViewModel.setEncryptOpen(false);
                     }
-                }
-            };
+            );
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -209,7 +206,8 @@ public class MainFragment extends Fragment
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
+    ) {
         rootView = inflater.inflate(R.layout.main_frag, container, false);
         return rootView;
     }
@@ -380,27 +378,15 @@ public class MainFragment extends Fragment
                         mainFragmentViewModel.getCurrentPath(),
                         true,
                         mainFragmentViewModel.getOpenMode(),
-                        false);
+                        false
+                );
             } else {
                 reloadListElements(true, !mainFragmentViewModel.isList());
             }
         } else {
             loadlist(mainFragmentViewModel.getHome(), true, mainFragmentViewModel.getOpenMode(), false);
         }
-    }    private final BroadcastReceiver receiver2 =
-            new BroadcastReceiver() {
-
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    // load the list on a load broadcast
-                    // local file system don't need an explicit load, we've set an observer to
-                    // take actions on creation/moving/deletion/modification of file on current path
-                    if (getCurrentPath() != null) {
-                        mainActivityViewModel.evictPathFromListCache(getCurrentPath());
-                    }
-                    updateList(false);
-                }
-            };
+    }
 
     public void home() {
         loadlist((mainFragmentViewModel.getHome()), false, OpenMode.FILE, false);
@@ -418,7 +404,8 @@ public class MainFragment extends Fragment
             boolean isBackButton,
             int position,
             LayoutElementParcelable layoutElementParcelable,
-            AppCompatImageView imageView) {
+            AppCompatImageView imageView
+    ) {
 
         if (requireMainActivity().getListItemSelected()) {
             if (isBackButton) {
@@ -474,7 +461,8 @@ public class MainFragment extends Fragment
                             layoutElementParcelable.generateBaseFile(),
                             getActivity().getExternalCacheDir().getPath(),
                             utilsProvider,
-                            true);
+                            true
+                    );
                 } else {
                     if (getMainActivity().mReturnIntent) {
                         // are we here to return an intent to another app
@@ -487,7 +475,20 @@ public class MainFragment extends Fragment
                 }
             }
         }
-    }
+    }    private final BroadcastReceiver receiver2 =
+            new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    // load the list on a load broadcast
+                    // local file system don't need an explicit load, we've set an observer to
+                    // take actions on creation/moving/deletion/modification of file on current path
+                    if (getCurrentPath() != null) {
+                        mainActivityViewModel.evictPathFromListCache(getCurrentPath());
+                    }
+                    updateList(false);
+                }
+            };
 
     public void registerListItemChecked(int position, AppCompatImageView imageView) {
         MainActivity mainActivity = requireMainActivity();
@@ -547,7 +548,8 @@ public class MainFragment extends Fragment
                 if (requireMainActivity().mRingtonePickerIntent) {
                     intent.setDataAndType(
                             resultUri,
-                            MimeTypes.getMimeType(resultBaseFile.getPath(), resultBaseFile.isDirectory()));
+                            MimeTypes.getMimeType(resultBaseFile.getPath(), resultBaseFile.isDirectory())
+                    );
                     intent.putExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI, resultUri);
                 } else {
                     LOG.debug("pickup file");
@@ -569,7 +571,8 @@ public class MainFragment extends Fragment
                         new ClipData(
                                 ClipDescription.MIMETYPE_TEXT_URILIST,
                                 mimeTypes.toArray(new String[0]),
-                                uriDataClipItems.remove(0));
+                                uriDataClipItems.remove(0)
+                        );
                 for (ClipData.Item item : uriDataClipItems) {
                     clipData.addItem(item);
                 }
@@ -600,7 +603,8 @@ public class MainFragment extends Fragment
             final String providedPath,
             final boolean back,
             final OpenMode providedOpenMode,
-            boolean forceReload) {
+            boolean forceReload
+    ) {
         if (mainFragmentViewModel == null) {
             LOG.warn("Viewmodel not available to load the data");
             return;
@@ -651,7 +655,8 @@ public class MainFragment extends Fragment
                             } else {
                                 LOG.warn("Load list operation cancelled");
                             }
-                        });
+                        }
+                );
         loadFilesListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -685,21 +690,24 @@ public class MainFragment extends Fragment
                         new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
                                 .putExtra(
                                         DocumentsContract.EXTRA_INITIAL_URI,
-                                        Uri.parse(FileProperties.remapPathForApi30OrAbove(providedPath, true)));
+                                        Uri.parse(FileProperties.remapPathForApi30OrAbove(providedPath, true))
+                                );
                 MaterialDialog d =
                         GeneralDialogCreation.showBasicDialog(
                                 requireMainActivity(),
                                 R.string.android_data_prompt_saf_access,
                                 R.string.android_data_prompt_saf_access_title,
                                 android.R.string.ok,
-                                android.R.string.cancel);
+                                android.R.string.cancel
+                        );
                 d.getActionButton(DialogAction.POSITIVE)
                         .setOnClickListener(
                                 v -> {
                                     ExtensionsKt.runIfDocumentsUIExists(
                                             intent,
                                             requireMainActivity(),
-                                            () -> handleDocumentUriForRestrictedDirectories.launch(intent));
+                                            () -> handleDocumentUriForRestrictedDirectories.launch(intent)
+                                    );
 
                                     d.dismiss();
                                 });
@@ -723,7 +731,8 @@ public class MainFragment extends Fragment
                             (mainFragmentViewModel.getCurrentPath()),
                             false,
                             mainFragmentViewModel.getOpenMode(),
-                            false);
+                            false
+                    );
                     nofilesview.setRefreshing(false);
                 });
         nofilesview
@@ -768,7 +777,8 @@ public class MainFragment extends Fragment
             boolean back,
             String path,
             final OpenMode openMode,
-            boolean grid) {
+            boolean grid
+    ) {
         if (bitmap != null) {
             mainFragmentViewModel.setListElements(bitmap);
             mainFragmentViewModel.setCurrentPath(path);
@@ -829,7 +839,8 @@ public class MainFragment extends Fragment
                                 listView,
                                 listElements,
                                 requireContext(),
-                                grid);
+                                grid
+                        );
             } else {
                 adapter.setItems(listView, mainFragmentViewModel.getListElements());
             }
@@ -877,7 +888,8 @@ public class MainFragment extends Fragment
                             : (mainFragmentViewModel.getColumns() == 0
                             || mainFragmentViewModel.getColumns() == -1)
                             ? 3
-                            : mainFragmentViewModel.getColumns());
+                            : mainFragmentViewModel.getColumns()
+            );
             mToolbarContainer.addOnOffsetChangedListener(
                     (appBarLayout, verticalOffset) -> {
                         fastScroller.updateHandlePosition(verticalOffset, 112);
@@ -906,7 +918,8 @@ public class MainFragment extends Fragment
                                                     listView.scrollToPosition(
                                                             Math.min(scrollPosition + 4, adapter.getItemCount() - 1));
                                                 adapter.notifyItemChanged(scrollPosition);
-                                            });
+                                            }
+                                    );
                     });
 
         } else {
@@ -921,7 +934,8 @@ public class MainFragment extends Fragment
                     new LayoutElementParcelable(
                             requireContext(),
                             getString(R.string.goback),
-                            getBoolean(PREFERENCE_SHOW_THUMB)));
+                            getBoolean(PREFERENCE_SHOW_THUMB)
+                    ));
         }
         return mainFragmentViewModel.getBack();
     }
@@ -968,7 +982,8 @@ public class MainFragment extends Fragment
                     customFileObserver =
                             new CustomFileObserver(
                                     mainFragmentViewModel.getCurrentPath(),
-                                    new FileHandler(this, listView, getBoolean(PREFERENCE_SHOW_THUMB)));
+                                    new FileHandler(this, listView, getBoolean(PREFERENCE_SHOW_THUMB))
+                            );
                     customFileObserver.startWatching();
                 }
                 break;
@@ -1006,7 +1021,8 @@ public class MainFragment extends Fragment
                                             name1,
                                             f.isDirectory(),
                                             getActivity(),
-                                            getMainActivity().isRootExplorer());
+                                            getMainActivity().isRootExplorer()
+                                    );
                         },
                         (text) -> {
                             boolean isValidFilename = FileProperties.isValidFilename(text);
@@ -1020,7 +1036,8 @@ public class MainFragment extends Fragment
                             }
 
                             return new WarnableTextInputValidator.ReturnState();
-                        });
+                        }
+                );
 
         // place cursor at the starting of edit text by posting a runnable to edit text
         // this is done because in case android has not populated the edit text layouts yet, it'll
@@ -1080,7 +1097,8 @@ public class MainFragment extends Fragment
                             path.toString().replace("%3D", "="),
                             true,
                             mainFragmentViewModel.getOpenMode(),
-                            false);
+                            false
+                    );
                 } else loadlist(mainFragmentViewModel.getHome(), false, OpenMode.FILE, false);
             } else if (OpenMode.SFTP.equals(mainFragmentViewModel.getOpenMode())) {
                 if (currentFile.getParent(requireContext()) == null) {
@@ -1122,7 +1140,8 @@ public class MainFragment extends Fragment
                             currentFile.getParent(getContext()),
                             true,
                             mainFragmentViewModel.getOpenMode(),
-                            false);
+                            false
+                    );
                 }
             } else if (FileUtils.canGoBack(getContext(), currentFile)) {
                 loadlist(
@@ -1149,7 +1168,8 @@ public class MainFragment extends Fragment
                                                 .showSMBDialog(
                                                         DataUtils.getInstance().getServers().get(i)[0],
                                                         mainFragmentViewModel.getSmbPath(),
-                                                        true);
+                                                        true
+                                                );
                                     }
                                 });
             } catch (Exception e) {
@@ -1196,7 +1216,8 @@ public class MainFragment extends Fragment
                 mainFragmentViewModel.getCurrentPath(),
                 true,
                 mainFragmentViewModel.getOpenMode(),
-                forceReload);
+                forceReload
+        );
     }
 
     @Override
@@ -1223,7 +1244,8 @@ public class MainFragment extends Fragment
     }
 
     public ArrayList<LayoutElementParcelable> addToSmb(
-            @NonNull SmbFile[] mFile, @NonNull String path, boolean showHiddenFiles) throws SmbException {
+            @NonNull SmbFile[] mFile, @NonNull String path, boolean showHiddenFiles
+    ) throws SmbException {
         ArrayList<LayoutElementParcelable> smbFileList = new ArrayList<>();
         String extraParams = Uri.parse(path).getQuery();
 
@@ -1262,7 +1284,8 @@ public class MainFragment extends Fragment
                                 aMFile.lastModified() + "",
                                 true,
                                 getBoolean(PREFERENCE_SHOW_THUMB),
-                                OpenMode.SMB);
+                                OpenMode.SMB
+                        );
 
                 mainFragmentViewModel.getSearchHelper().add(layoutElement.generateBaseFile());
                 smbFileList.add(layoutElement);
@@ -1282,7 +1305,8 @@ public class MainFragment extends Fragment
                                 aMFile.lastModified() + "",
                                 false,
                                 getBoolean(PREFERENCE_SHOW_THUMB),
-                                OpenMode.SMB);
+                                OpenMode.SMB
+                        );
                 layoutElement.setMode(OpenMode.SMB);
                 mainFragmentViewModel.getSearchHelper().add(layoutElement.generateBaseFile());
                 smbFileList.add(layoutElement);
@@ -1311,7 +1335,8 @@ public class MainFragment extends Fragment
                             .mkFile(
                                     new HybridFile(OpenMode.FILE, path),
                                     new HybridFile(OpenMode.FILE, f1.getPath()),
-                                    this);
+                                    this
+                            );
                 } catch (Exception e) {
                     LOG.warn("failure when hiding file", e);
                 }
@@ -1330,7 +1355,8 @@ public class MainFragment extends Fragment
             Toast.makeText(
                             getActivity(),
                             getString(R.string.add_shortcut_not_supported_by_launcher),
-                            Toast.LENGTH_SHORT)
+                            Toast.LENGTH_SHORT
+                    )
                     .show();
             return;
         }
@@ -1389,7 +1415,8 @@ public class MainFragment extends Fragment
                             () -> {
                                 stopSmoothScrollListView();
                                 return null;
-                            }));
+                            }
+                    ));
             listView.setOnDragListener(
                     new RecyclerAdapterDragListener(
                             adapter, null, mainFragmentViewModel.getDragAndDropPreference(), this));
@@ -1496,7 +1523,8 @@ public class MainFragment extends Fragment
 
     @Override
     public void adjustListViewForTv(
-            @NonNull ItemViewHolder viewHolder, @NonNull MainActivity mainActivity) {
+            @NonNull ItemViewHolder viewHolder, @NonNull MainActivity mainActivity
+    ) {
         try {
             int[] location = new int[2];
             viewHolder.baseItemView.getLocationOnScreen(location);
@@ -1526,6 +1554,8 @@ public class MainFragment extends Fragment
     public void setHideFab(boolean hideFab) {
         this.hideFab = hideFab;
     }
+
+
 
 
 

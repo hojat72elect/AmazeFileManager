@@ -91,7 +91,8 @@ public class ThemedActivity extends PreferenceActivity {
                     new ActivityManager.TaskDescription(
                             getString(R.string.appbar_name),
                             ((BitmapDrawable) ContextCompat.getDrawable(this, R.mipmap.ic_launcher)).getBitmap(),
-                            getPrimary());
+                            getPrimary()
+                    );
             setTaskDescription(taskDescription);
         }
 

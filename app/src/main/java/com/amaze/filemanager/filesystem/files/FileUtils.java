@@ -34,6 +34,7 @@ import com.amaze.filemanager.filesystem.Operations;
 import com.amaze.filemanager.filesystem.RootHelper;
 import com.amaze.filemanager.filesystem.cloud.CloudUtil;
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper;
+import com.amaze.filemanager.play.utils.PackageInstallValidation;
 import com.amaze.filemanager.ui.activities.DatabaseViewerActivity;
 import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.ui.activities.superclasses.PermissionsActivity;
@@ -47,7 +48,6 @@ import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.utils.DataUtils;
 import com.amaze.filemanager.utils.OTGUtil;
 import com.amaze.filemanager.utils.OnProgressUpdate;
-import com.amaze.filemanager.play.utils.PackageInstallValidation;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.types.CloudMetaData;
 import com.googlecode.concurrenttrees.radix.ConcurrentRadixTree;
@@ -264,7 +264,8 @@ public class FileUtils {
     }
 
     public static void shareCloudFiles(
-            ArrayList<LayoutElementParcelable> files, final OpenMode openMode, final Context context) {
+            ArrayList<LayoutElementParcelable> files, final OpenMode openMode, final Context context
+    ) {
         String[] paths = new String[files.size()];
         for (int i = 0; i < files.size(); i++) {
             paths[i] = files.get(i).desc;
@@ -294,7 +295,8 @@ public class FileUtils {
     }
 
     public static void shareFiles(
-            ArrayList<File> files, Activity activity, AppTheme appTheme, int fab_skin) {
+            ArrayList<File> files, Activity activity, AppTheme appTheme, int fab_skin
+    ) {
 
         ArrayList<Uri> uris = new ArrayList<>();
         boolean isGenericFileType = false;
@@ -333,7 +335,8 @@ public class FileUtils {
      *                            Manifest.permission#REQUEST_INSTALL_PACKAGES} permission
      */
     public static void installApk(
-            final @NonNull File f, final @NonNull PermissionsActivity permissionsActivity) {
+            final @NonNull File f, final @NonNull PermissionsActivity permissionsActivity
+    ) {
 
         try {
             PackageInstallValidation.validatePackageInstallability(f);
@@ -341,7 +344,8 @@ public class FileUtils {
             Toast.makeText(
                             permissionsActivity,
                             R.string.error_google_play_cannot_update_myself,
-                            Toast.LENGTH_LONG)
+                            Toast.LENGTH_LONG
+                    )
                     .show();
             return;
         } catch (IllegalStateException e) {
@@ -349,7 +353,8 @@ public class FileUtils {
                             permissionsActivity,
                             permissionsActivity.getString(
                                     R.string.error_cannot_get_package_info, f.getAbsolutePath()),
-                            Toast.LENGTH_LONG)
+                            Toast.LENGTH_LONG
+                    )
                     .show();
         }
 
@@ -382,7 +387,8 @@ public class FileUtils {
     }
 
     private static void openUnknownInternal(
-            Uri contentUri, String type, MainActivity c, boolean forcechooser, boolean useNewStack) {
+            Uri contentUri, String type, MainActivity c, boolean forcechooser, boolean useNewStack
+    ) {
         Intent chooserIntent = new Intent();
         chooserIntent.setAction(Intent.ACTION_VIEW);
         chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -425,18 +431,21 @@ public class FileUtils {
      * Method supports showing a UI to ask user to open a file without any extension/mime
      */
     public static void openWith(
-            final File f, final PreferenceActivity activity, final boolean useNewStack) {
+            final File f, final PreferenceActivity activity, final boolean useNewStack
+    ) {
         openWith(
                 FileProvider.getUriForFile(activity, activity.getPackageName(), f), activity, useNewStack);
     }
 
     public static void openWith(
-            final DocumentFile f, final PreferenceActivity activity, final boolean useNewStack) {
+            final DocumentFile f, final PreferenceActivity activity, final boolean useNewStack
+    ) {
         openWith(f.getUri(), activity, useNewStack);
     }
 
     public static void openWith(
-            final Uri uri, final PreferenceActivity activity, final boolean useNewStack) {
+            final Uri uri, final PreferenceActivity activity, final boolean useNewStack
+    ) {
         MaterialDialog.Builder a = new MaterialDialog.Builder(activity);
         a.title(activity.getString(R.string.open_as));
         String[] items =
@@ -482,7 +491,9 @@ public class FileUtils {
                                             uri.getPath()
                                                     .substring(
                                                             uri.getPath().indexOf(FILE_PROVIDER_PREFIX) - 1,
-                                                            FILE_PROVIDER_PREFIX.length() + 1));
+                                                            FILE_PROVIDER_PREFIX.length() + 1
+                                                    )
+                                    );
                                     break;
                                 case 5:
                                     mimeType = MimeTypes.getMimeType(uri.getPath(), false);
@@ -524,7 +535,8 @@ public class FileUtils {
     }
 
     public static long[] getSpaces(
-            HybridFile hFile, Context context, final OnProgressUpdate<Long[]> updateState) {
+            HybridFile hFile, Context context, final OnProgressUpdate<Long[]> updateState
+    ) {
         long totalSpace = hFile.getTotal(context);
         long freeSpace = hFile.getUsableSpace();
         long fileSize = 0L;
@@ -641,7 +653,8 @@ public class FileUtils {
     public static void openFile(
             @NonNull final File f,
             @NonNull final MainActivity mainActivity,
-            @NonNull final SharedPreferences sharedPrefs) {
+            @NonNull final SharedPreferences sharedPrefs
+    ) {
         boolean useNewStack =
                 sharedPrefs.getBoolean(PreferencesConstants.PREFERENCE_TEXTEDITOR_NEWSTACK, false);
         boolean defaultHandler = isSelfDefault(f, mainActivity);
@@ -668,7 +681,8 @@ public class FileUtils {
     }
 
     private static void openFileDialogFragmentFor(
-            @NonNull File file, @NonNull MainActivity mainActivity, @NonNull Boolean useNewStack) {
+            @NonNull File file, @NonNull MainActivity mainActivity, @NonNull Boolean useNewStack
+    ) {
         openFileDialogFragmentFor(
                 file, mainActivity, MimeTypes.getMimeType(file.getAbsolutePath(), false), useNewStack);
     }
@@ -677,31 +691,36 @@ public class FileUtils {
             @NonNull File file,
             @NonNull MainActivity mainActivity,
             @NonNull String mimeType,
-            @NonNull Boolean useNewStack) {
+            @NonNull Boolean useNewStack
+    ) {
         OpenFileDialogFragment.Companion.openFileOrShow(
                 FileProvider.getUriForFile(mainActivity, mainActivity.getPackageName(), file),
                 mimeType,
                 useNewStack,
                 mainActivity,
-                false);
+                false
+        );
     }
 
     private static void openFileDialogFragmentFor(
             @NonNull DocumentFile file,
             @NonNull MainActivity mainActivity,
-            @NonNull Boolean useNewStack) {
+            @NonNull Boolean useNewStack
+    ) {
         openFileDialogFragmentFor(
                 file.getUri(),
                 mainActivity,
                 MimeTypes.getMimeType(file.getUri().toString(), false),
-                useNewStack);
+                useNewStack
+        );
     }
 
     private static void openFileDialogFragmentFor(
             @NonNull Uri uri,
             @NonNull MainActivity mainActivity,
             @NonNull String mimeType,
-            @NonNull Boolean useNewStack) {
+            @NonNull Boolean useNewStack
+    ) {
         OpenFileDialogFragment.Companion.openFileOrShow(
                 uri, mimeType, useNewStack, mainActivity, false);
     }
@@ -722,7 +741,8 @@ public class FileUtils {
      * Support file opening for {@link DocumentFile} (eg. OTG)
      */
     public static void openFile(
-            final DocumentFile f, final MainActivity m, SharedPreferences sharedPrefs) {
+            final DocumentFile f, final MainActivity m, SharedPreferences sharedPrefs
+    ) {
         boolean useNewStack =
                 sharedPrefs.getBoolean(PreferencesConstants.PREFERENCE_TEXTEDITOR_NEWSTACK, false);
         try {
@@ -760,7 +780,8 @@ public class FileUtils {
                                     Intent i = new Intent(Intent.ACTION_VIEW);
                                     i.setDataAndType(
                                             uri,
-                                            MimeTypes.getMimeType(baseFile.getPath(), baseFile.isDirectory(activity)));
+                                            MimeTypes.getMimeType(baseFile.getPath(), baseFile.isDirectory(activity))
+                                    );
                                     PackageManager packageManager = activity.getPackageManager();
                                     List<ResolveInfo> resInfos = packageManager.queryIntentActivities(i, 0);
                                     if (resInfos != null && resInfos.size() > 0)
@@ -769,7 +790,8 @@ public class FileUtils {
                                         Toast.makeText(
                                                         activity,
                                                         activity.getResources().getString(R.string.smb_launch_error),
-                                                        Toast.LENGTH_SHORT)
+                                                        Toast.LENGTH_SHORT
+                                                )
                                                 .show();
                                 } catch (ActivityNotFoundException e) {
                                     LOG.warn("Failed to launch smb file due to no activity", e);
@@ -784,7 +806,8 @@ public class FileUtils {
     }
 
     public static ArrayList<HybridFile> toHybridFileConcurrentRadixTree(
-            ConcurrentRadixTree<VoidValue> a) {
+            ConcurrentRadixTree<VoidValue> a
+    ) {
         ArrayList<HybridFile> b = new ArrayList<>();
         for (CharSequence o : a.getKeysStartingWith("")) {
             HybridFile hFile = new HybridFile(OpenMode.UNKNOWN, o.toString());
@@ -946,7 +969,8 @@ public class FileUtils {
     }
 
     public static boolean isRoot(
-            String dir) { // TODO: 5/5/2017 hardcoding root might lead to problems down the line
+            String dir
+    ) { // TODO: 5/5/2017 hardcoding root might lead to problems down the line
         return !dir.contains(OTGUtil.PREFIX_OTG)
                 && !dir.startsWith(OTGUtil.PREFIX_MEDIA_REMOVABLE)
                 && !dir.startsWith("/storage");
@@ -1004,7 +1028,8 @@ public class FileUtils {
                         @Override
                         public void invalidName(HybridFile file) {
                         }
-                    });
+                    }
+            );
         }
     }
 

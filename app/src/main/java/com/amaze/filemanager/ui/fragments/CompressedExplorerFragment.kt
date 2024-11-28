@@ -65,10 +65,10 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.apache.commons.compress.PasswordRequiredException
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import org.apache.commons.compress.PasswordRequiredException
 
 @Suppress("TooManyFunctions")
 class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {

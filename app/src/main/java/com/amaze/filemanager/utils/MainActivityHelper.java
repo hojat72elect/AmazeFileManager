@@ -101,7 +101,8 @@ public class MainActivityHelper {
     }
 
     public void showFailedOperationDialog(
-            ArrayList<HybridFileParcelable> failedOps, Context context) {
+            ArrayList<HybridFileParcelable> failedOps, Context context
+    ) {
         MaterialDialog.Builder mat = new MaterialDialog.Builder(context);
         mat.title(context.getString(R.string.operation_unsuccesful));
         mat.theme(mainActivity.getAppTheme().getMaterialDialogTheme());
@@ -138,7 +139,8 @@ public class MainActivityHelper {
                     mkDir(
                             new HybridFile(openMode, parentPath),
                             new HybridFile(openMode, parentPath, textfield.getText().toString().trim(), true),
-                            ma);
+                            ma
+                    );
                     dialog.dismiss();
                 },
                 (text) -> {
@@ -153,7 +155,8 @@ public class MainActivityHelper {
                     }
 
                     return new WarnableTextInputValidator.ReturnState();
-                });
+                }
+        );
     }
 
     /**
@@ -172,7 +175,8 @@ public class MainActivityHelper {
                     mkFile(
                             new HybridFile(openMode, path),
                             new HybridFile(openMode, path, textfield.getText().toString().trim(), false),
-                            ma);
+                            ma
+                    );
                     dialog.dismiss();
                 },
                 (text) -> {
@@ -190,14 +194,16 @@ public class MainActivityHelper {
                                     && !prefs.getBoolean(PreferencesConstants.PREFERENCE_SHOW_HIDDENFILES, false)) {
                                 return new WarnableTextInputValidator.ReturnState(
                                         WarnableTextInputValidator.ReturnState.STATE_WARNING,
-                                        R.string.create_hidden_file_warn);
+                                        R.string.create_hidden_file_warn
+                                );
                             } else if (!text.toLowerCase()
                                     .endsWith(
                                             AppConstants.NEW_FILE_DELIMITER.concat(
                                                     AppConstants.NEW_FILE_EXTENSION_TXT))) {
                                 return new WarnableTextInputValidator.ReturnState(
                                         WarnableTextInputValidator.ReturnState.STATE_WARNING,
-                                        R.string.create_file_suggest_txt_extension);
+                                        R.string.create_file_suggest_txt_extension
+                                );
                             }
                         }
                     } else {
@@ -205,14 +211,16 @@ public class MainActivityHelper {
                                 WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.field_empty);
                     }
                     return new WarnableTextInputValidator.ReturnState();
-                });
+                }
+        );
     }
 
     private void mk(
             @StringRes int newText,
             String prefill,
             final MaterialDialog.SingleButtonCallback onPositiveAction,
-            final WarnableTextInputValidator.OnTextValidate validator) {
+            final WarnableTextInputValidator.OnTextValidate validator
+    ) {
         MaterialDialog dialog =
                 GeneralDialogCreation.showNameDialog(
                         mainActivity,
@@ -223,7 +231,8 @@ public class MainActivityHelper {
                         mainActivity.getResources().getString(R.string.cancel),
                         null,
                         onPositiveAction,
-                        validator);
+                        validator
+                );
         dialog.show();
 
         // place cursor at the beginning
@@ -313,7 +322,8 @@ public class MainActivityHelper {
             final String newName,
             final boolean isDirectory,
             final Activity context,
-            boolean rootmode) {
+            boolean rootmode
+    ) {
         final Toast toast =
                 Toast.makeText(context, context.getString(R.string.renaming), Toast.LENGTH_SHORT);
         toast.show();
@@ -391,7 +401,8 @@ public class MainActivityHelper {
                                         Toast.makeText(
                                                         context,
                                                         context.getString(R.string.operation_unsuccesful),
-                                                        Toast.LENGTH_SHORT)
+                                                        Toast.LENGTH_SHORT
+                                                )
                                                 .show();
                                 });
                     }
@@ -404,11 +415,13 @@ public class MainActivityHelper {
                                     Toast.makeText(
                                                     context,
                                                     context.getString(R.string.invalid_name) + ": " + file.getName(context),
-                                                    Toast.LENGTH_LONG)
+                                                    Toast.LENGTH_LONG
+                                            )
                                             .show();
                                 });
                     }
-                });
+                }
+        );
     }
 
     public @FolderState int checkFolder(final @NonNull File folder, Context context) {
@@ -500,14 +513,16 @@ public class MainActivityHelper {
                                             Toast.makeText(
                                                             mainActivity,
                                                             mainActivity.getString(R.string.fileexist),
-                                                            Toast.LENGTH_SHORT)
+                                                            Toast.LENGTH_SHORT
+                                                    )
                                                     .show();
                                             if (ma != null && ma.getActivity() != null) {
                                                 // retry with dialog prompted again
                                                 mkfile(
                                                         file.getMode(),
                                                         file.getParent(mainActivity.getApplicationContext()),
-                                                        ma);
+                                                        ma
+                                                );
                                             }
                                         });
                     }
@@ -540,7 +555,8 @@ public class MainActivityHelper {
                                                 Toast.makeText(
                                                                 ma.getActivity(),
                                                                 ma.getString(R.string.operation_unsuccesful),
-                                                                Toast.LENGTH_SHORT)
+                                                                Toast.LENGTH_SHORT
+                                                        )
                                                         .show();
                                             }
                                         });
@@ -557,11 +573,13 @@ public class MainActivityHelper {
                                                             ma.getString(R.string.invalid_name)
                                                                     + ": "
                                                                     + file.getName(ma.getMainActivity()),
-                                                            Toast.LENGTH_LONG)
+                                                            Toast.LENGTH_LONG
+                                                    )
                                                     .show();
                                         });
                     }
-                });
+                }
+        );
     }
 
     public void mkDir(final HybridFile parentPath, final HybridFile path, final MainFragment ma) {
@@ -583,14 +601,16 @@ public class MainActivityHelper {
                                             Toast.makeText(
                                                             mainActivity,
                                                             mainActivity.getString(R.string.fileexist),
-                                                            Toast.LENGTH_SHORT)
+                                                            Toast.LENGTH_SHORT
+                                                    )
                                                     .show();
                                             if (ma != null && ma.getActivity() != null) {
                                                 // retry with dialog prompted again
                                                 mkdir(
                                                         file.getMode(),
                                                         file.getParent(mainActivity.getApplicationContext()),
-                                                        ma);
+                                                        ma
+                                                );
                                             }
                                         });
                     }
@@ -622,7 +642,8 @@ public class MainActivityHelper {
                                                 Toast.makeText(
                                                                 ma.getActivity(),
                                                                 ma.getString(R.string.operation_unsuccesful),
-                                                                Toast.LENGTH_SHORT)
+                                                                Toast.LENGTH_SHORT
+                                                        )
                                                         .show();
                                             }
                                         });
@@ -639,11 +660,13 @@ public class MainActivityHelper {
                                                             ma.getString(R.string.invalid_name)
                                                                     + ": "
                                                                     + file.getName(ma.getMainActivity()),
-                                                            Toast.LENGTH_LONG)
+                                                            Toast.LENGTH_LONG
+                                                    )
                                                     .show();
                                         });
                     }
-                });
+                }
+        );
     }
 
     public void deleteFiles(ArrayList<HybridFileParcelable> files, boolean doDeletePermanently) {

@@ -21,6 +21,7 @@ public class EditableFileAbstraction {
     public final String name;
     public final Scheme scheme;
     public final HybridFileParcelable hybridFileParcelable;
+
     public EditableFileAbstraction(@NonNull Context context, @NonNull Uri uri) {
         switch (uri.getScheme()) {
             case ContentResolver.SCHEME_CONTENT:

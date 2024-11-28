@@ -231,7 +231,9 @@ public class AppConfig extends GlideApplication {
                     ErrorActivity.ErrorInfo.make(
                             ErrorActivity.ERROR_UNKNOWN,
                             "Could not initialize ACRA crash report",
-                            R.string.app_ui_crash));
+                            R.string.app_ui_crash
+                    )
+            );
         }
     }
 
@@ -254,7 +256,8 @@ public class AppConfig extends GlideApplication {
                                         });
                                 return true;
                             },
-                            null);
+                            null
+                    );
         }
         return trashBin;
     }
@@ -266,19 +269,23 @@ public class AppConfig extends GlideApplication {
             int days =
                     sharedPrefs.getInt(
                             PreferencesConstants.KEY_TRASH_BIN_RETENTION_DAYS,
-                            TrashBinConfig.RETENTION_DAYS_INFINITE);
+                            TrashBinConfig.RETENTION_DAYS_INFINITE
+                    );
             long bytes =
                     sharedPrefs.getLong(
                             PreferencesConstants.KEY_TRASH_BIN_RETENTION_BYTES,
-                            TrashBinConfig.RETENTION_BYTES_INFINITE);
+                            TrashBinConfig.RETENTION_BYTES_INFINITE
+                    );
             int numOfFiles =
                     sharedPrefs.getInt(
                             PreferencesConstants.KEY_TRASH_BIN_RETENTION_NUM_OF_FILES,
-                            TrashBinConfig.RETENTION_NUM_OF_FILES);
+                            TrashBinConfig.RETENTION_NUM_OF_FILES
+                    );
             int intervalHours =
                     sharedPrefs.getInt(
                             PreferencesConstants.KEY_TRASH_BIN_CLEANUP_INTERVAL_HOURS,
-                            TrashBinConfig.INTERVAL_CLEANUP_HOURS);
+                            TrashBinConfig.INTERVAL_CLEANUP_HOURS
+                    );
             trashBinConfig =
                     new TrashBinConfig(
                             TRASH_BIN_BASE_PATH, days, bytes, numOfFiles, intervalHours, false, true);

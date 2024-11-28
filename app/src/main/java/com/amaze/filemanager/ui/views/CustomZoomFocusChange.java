@@ -1,9 +1,8 @@
 package com.amaze.filemanager.ui.views;
 
-import com.amaze.filemanager.utils.Utils;
-
 import android.graphics.PointF;
 import android.view.View;
+import com.amaze.filemanager.utils.Utils;
 
 /**
  * Use this with any widget that should be zoomed when it gains focus

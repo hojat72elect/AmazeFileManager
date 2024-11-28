@@ -247,7 +247,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                             when (checkedItems[0].mode) {
                                 OpenMode.DROPBOX, OpenMode.BOX, OpenMode.GDRIVE,
                                 OpenMode.ONEDRIVE,
-                                ->
+                                    ->
                                     FileUtils.shareCloudFiles(
                                         checkedItems,
                                         checkedItems[0].mode,

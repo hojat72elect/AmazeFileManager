@@ -1,13 +1,8 @@
 package com.amaze.filemanager.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import android.text.TextUtils;
+import android.view.MenuItem;
+import androidx.annotation.Nullable;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
@@ -21,11 +16,12 @@ import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharArrayNodeFa
 import com.googlecode.concurrenttrees.radix.node.concrete.voidvalue.VoidValue;
 import com.googlecode.concurrenttrees.radixinverted.ConcurrentInvertedRadixTree;
 import com.googlecode.concurrenttrees.radixinverted.InvertedRadixTree;
-
-import android.text.TextUtils;
-import android.view.MenuItem;
-
-import androidx.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Singleton class to handle data for various services
@@ -36,12 +32,11 @@ public class DataUtils {
 
     public static final int LIST = 0, GRID = 1;
     private static final Logger LOG = LoggerFactory.getLogger(DataUtils.class);
+    private final LinkedList<String> history = new LinkedList<>();
     private ConcurrentRadixTree<VoidValue> hiddenfiles =
             new ConcurrentRadixTree<>(new DefaultCharArrayNodeFactory());
     private InvertedRadixTree<Integer> filesGridOrList =
             new ConcurrentInvertedRadixTree<>(new DefaultCharArrayNodeFactory());
-
-    private final LinkedList<String> history = new LinkedList<>();
     private ArrayList<String> storages = new ArrayList<>();
 
     private InvertedRadixTree<Integer> tree =

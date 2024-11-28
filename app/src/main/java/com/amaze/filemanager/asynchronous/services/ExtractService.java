@@ -299,13 +299,15 @@ public class ExtractService extends AbstractProgressiveService {
                                         return progressHandler.getCancelled();
                                     }
                                 },
-                                ServiceWatcherUtil.UPDATE_POSITION);
+                                ServiceWatcherUtil.UPDATE_POSITION
+                        );
 
                 if (extractor == null) {
                     Toast.makeText(
                                     getApplicationContext(),
                                     R.string.error_cant_decompress_that_file,
-                                    Toast.LENGTH_LONG)
+                                    Toast.LENGTH_LONG
+                            )
                             .show();
                     return false;
                 }
@@ -321,7 +323,8 @@ public class ExtractService extends AbstractProgressiveService {
                     LOG.error("Archive " + compressedPath + " is an empty archive");
                     AppConfig.toast(
                             getApplicationContext(),
-                            extractService.getString(R.string.error_empty_archive, compressedPath));
+                            extractService.getString(R.string.error_empty_archive, compressedPath)
+                    );
                     return true;
                 } catch (Extractor.BadArchiveNotice e) {
                     LOG.error("Archive " + compressedPath + " is a corrupted archive.", e);
@@ -330,7 +333,8 @@ public class ExtractService extends AbstractProgressiveService {
                             e.getCause() != null && TextUtils.isEmpty(e.getCause().getMessage())
                                     ? getString(R.string.error_bad_archive_without_info, compressedPath)
                                     : getString(
-                                    R.string.error_bad_archive_with_info, compressedPath, e.getMessage()));
+                                    R.string.error_bad_archive_with_info, compressedPath, e.getMessage())
+                    );
                     return true;
                 } catch (CorruptedInputException e) {
                     LOG.debug("Corrupted LZMA input", e);
@@ -342,7 +346,8 @@ public class ExtractService extends AbstractProgressiveService {
                             ArchivePasswordCache.getInstance().remove(compressedPath);
                             AppConfig.toast(
                                     getApplicationContext(),
-                                    extractService.getString(R.string.error_archive_password_incorrect));
+                                    extractService.getString(R.string.error_archive_password_incorrect)
+                            );
                         }
                         passwordProtected = true;
                         paused = true;
@@ -352,7 +357,8 @@ public class ExtractService extends AbstractProgressiveService {
                         LOG.error("RAR " + compressedPath + " is unsupported V5 archive", e);
                         AppConfig.toast(
                                 getApplicationContext(),
-                                extractService.getString(R.string.error_unsupported_v5_rar, compressedPath));
+                                extractService.getString(R.string.error_unsupported_v5_rar, compressedPath)
+                        );
                         return false;
                     } else {
                         LOG.error("Error while extracting file " + compressedPath, e);
@@ -394,7 +400,8 @@ public class ExtractService extends AbstractProgressiveService {
                         progressHandler.setCancelled(true);
                         stopSelf(); // and this stops the ExtractService altogether.
                         this.paused = false;
-                    }));
+                    })
+            );
         }
 
         @Override
@@ -429,8 +436,10 @@ public class ExtractService extends AbstractProgressiveService {
                                     .getString(
                                             R.string.cannot_extract_archive,
                                             compressedPath,
-                                            result.getLocalizedMessage()),
-                            Toast.LENGTH_LONG)
+                                            result.getLocalizedMessage()
+                                    ),
+                            Toast.LENGTH_LONG
+                    )
                     .show();
         }
     }

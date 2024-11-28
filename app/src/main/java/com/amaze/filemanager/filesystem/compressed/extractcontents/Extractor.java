@@ -25,7 +25,8 @@ public abstract class Extractor {
             @NonNull String filePath,
             @NonNull String outputPath,
             @NonNull Extractor.OnUpdate listener,
-            @NonNull UpdatePosition updatePosition) {
+            @NonNull UpdatePosition updatePosition
+    ) {
         this.context = context;
         this.filePath = filePath;
         this.outputPath = outputPath;

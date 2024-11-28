@@ -36,7 +36,8 @@ public class WriteTextFileCallable implements Callable<Unit> {
             EditableFileAbstraction file,
             String dataToSave,
             File cachedFile,
-            boolean isRootExplorer) {
+            boolean isRootExplorer
+    ) {
         this.context = new WeakReference<>(context);
         this.contentResolver = contentResolver;
         this.fileAbstraction = file;

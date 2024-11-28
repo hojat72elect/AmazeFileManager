@@ -67,7 +67,8 @@ public class MediaStoreHack {
     }
 
     public static InputStream getInputStream(
-            final Context context, final File file, final long size) {
+            final Context context, final File file, final long size
+    ) {
         try {
             final String where = MediaStore.MediaColumns.DATA + "=?";
             final String[] selectionArgs = new String[]{file.getAbsolutePath()};
@@ -99,7 +100,7 @@ public class MediaStoreHack {
     /**
      * Fallback to get uri from a path. Used only as a workaround for Kitkat ext SD card
      *
-     * @param path file path
+     * @param path    file path
      * @param context context
      * @return uri of file or null if resolver.query fails
      */
@@ -112,7 +113,8 @@ public class MediaStoreHack {
                         new String[]{BaseColumns._ID},
                         MediaStore.MediaColumns.DATA + " = ?",
                         new String[]{path},
-                        MediaStore.MediaColumns.DATE_ADDED + " desc");
+                        MediaStore.MediaColumns.DATE_ADDED + " desc"
+                );
 
         if (filecursor == null) {
             Log.e(TAG, "Error when deleting file " + path);
@@ -138,7 +140,9 @@ public class MediaStoreHack {
         }
     }
 
-    /** Returns an OutputStream to write to the file. The file will be truncated immediately. */
+    /**
+     * Returns an OutputStream to write to the file. The file will be truncated immediately.
+     */
     private static int getTemporaryAlbumId(final Context context) {
         final File temporaryTrack;
         try {

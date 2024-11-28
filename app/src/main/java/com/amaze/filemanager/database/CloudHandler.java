@@ -52,7 +52,8 @@ public class CloudHandler {
                                         .delete(cloudEntry)
                                         .subscribeOn(Schedulers.io())
                                         .subscribe(),
-                        throwable -> LOG.warn("failed to delete cloud connection", throwable));
+                        throwable -> LOG.warn("failed to delete cloud connection", throwable)
+                );
     }
 
     public void clearAllCloudConnections() {

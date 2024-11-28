@@ -39,7 +39,8 @@ public class PermissionsActivity extends ThemedActivity
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == STORAGE_PERMISSION) {
             if (isGranted(grantResults)) {
@@ -96,7 +97,8 @@ public class PermissionsActivity extends ThemedActivity
                         R.string.grant_notification_permission,
                         R.string.grantper,
                         R.string.grant,
-                        R.string.cancel);
+                        R.string.cancel
+                );
         materialDialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(v -> finish());
         materialDialog.setCancelable(false);
 
@@ -107,11 +109,13 @@ public class PermissionsActivity extends ThemedActivity
                 () -> {
                     // do nothing
                 },
-                isInitialStart);
+                isInitialStart
+        );
     }
 
     public void requestStoragePermission(
-            @NonNull final OnPermissionGranted onPermissionGranted, boolean isInitialStart) {
+            @NonNull final OnPermissionGranted onPermissionGranted, boolean isInitialStart
+    ) {
         Utils.disableScreenRotation(this);
         final MaterialDialog materialDialog =
                 GeneralDialogCreation.showBasicDialog(
@@ -119,7 +123,8 @@ public class PermissionsActivity extends ThemedActivity
                         R.string.grant_storage_permission,
                         R.string.grantper,
                         R.string.grant,
-                        R.string.cancel);
+                        R.string.cancel
+                );
         materialDialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(v -> finish());
         materialDialog.setCancelable(false);
 
@@ -128,19 +133,22 @@ public class PermissionsActivity extends ThemedActivity
                 STORAGE_PERMISSION,
                 materialDialog,
                 onPermissionGranted,
-                isInitialStart);
+                isInitialStart
+        );
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void requestInstallApkPermission(
-            @NonNull final OnPermissionGranted onPermissionGranted, boolean isInitialStart) {
+            @NonNull final OnPermissionGranted onPermissionGranted, boolean isInitialStart
+    ) {
         final MaterialDialog materialDialog =
                 GeneralDialogCreation.showBasicDialog(
                         this,
                         R.string.grant_apkinstall_permission,
                         R.string.grantper,
                         R.string.grant,
-                        R.string.cancel);
+                        R.string.cancel
+                );
         materialDialog
                 .getActionButton(DialogAction.NEGATIVE)
                 .setOnClickListener(v -> materialDialog.dismiss());
@@ -151,7 +159,8 @@ public class PermissionsActivity extends ThemedActivity
                 INSTALL_APK_PERMISSION,
                 materialDialog,
                 onPermissionGranted,
-                isInitialStart);
+                isInitialStart
+        );
     }
 
     /**
@@ -170,7 +179,8 @@ public class PermissionsActivity extends ThemedActivity
             final int code,
             @NonNull final MaterialDialog rationale,
             @NonNull final OnPermissionGranted onPermissionGranted,
-            boolean isInitialStart) {
+            boolean isInitialStart
+    ) {
         permissionCallbacks[code] = onPermissionGranted;
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
@@ -190,21 +200,25 @@ public class PermissionsActivity extends ThemedActivity
                 Snackbar.make(
                                 findViewById(R.id.content_frame),
                                 R.string.grantfailed,
-                                BaseTransientBottomBar.LENGTH_INDEFINITE)
+                                BaseTransientBottomBar.LENGTH_INDEFINITE
+                        )
                         .setAction(R.string.grant, v -> requestAllFilesAccessPermission(onPermissionGranted))
                         .show();
             } else {
                 Snackbar.make(
                                 findViewById(R.id.content_frame),
                                 R.string.grantfailed,
-                                BaseTransientBottomBar.LENGTH_INDEFINITE)
+                                BaseTransientBottomBar.LENGTH_INDEFINITE
+                        )
                         .setAction(
                                 R.string.grant,
                                 v ->
                                         startActivity(
                                                 new Intent(
                                                         android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                                        Uri.parse(String.format("package:%s", getPackageName())))))
+                                                        Uri.parse(String.format("package:%s", getPackageName()))
+                                                ))
+                        )
                         .show();
             }
         }
@@ -223,7 +237,8 @@ public class PermissionsActivity extends ThemedActivity
                             R.string.grant_all_files_permission,
                             R.string.grantper,
                             R.string.grant,
-                            R.string.cancel);
+                            R.string.cancel
+                    );
             materialDialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(v -> finish());
             materialDialog
                     .getActionButton(DialogAction.POSITIVE)
@@ -239,7 +254,8 @@ public class PermissionsActivity extends ThemedActivity
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     private void requestAllFilesAccessPermission(
-            @NonNull final OnPermissionGranted onPermissionGranted) {
+            @NonNull final OnPermissionGranted onPermissionGranted
+    ) {
         Utils.disableScreenRotation(this);
         permissionCallbacks[ALL_FILES_PERMISSION] = onPermissionGranted;
         try {

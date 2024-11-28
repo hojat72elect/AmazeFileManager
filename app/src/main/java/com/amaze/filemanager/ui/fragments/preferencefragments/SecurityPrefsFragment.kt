@@ -14,10 +14,10 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.amaze.filemanager.R
 import com.amaze.filemanager.ui.views.preference.CheckBox
 import com.amaze.filemanager.utils.PasswordUtil
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.security.GeneralSecurityException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class SecurityPrefsFragment : BasePrefsFragment() {
     private val log: Logger = LoggerFactory.getLogger(SecurityPrefsFragment::class.java)

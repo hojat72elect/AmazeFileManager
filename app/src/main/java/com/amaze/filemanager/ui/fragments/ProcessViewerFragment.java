@@ -75,7 +75,8 @@ public class ProcessViewerFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
+    ) {
         binding = ProcessparentBinding.inflate(inflater);
         View rootView = binding.getRoot();
 
@@ -180,7 +181,8 @@ public class ProcessViewerFragment extends Fragment {
 
             addEntry(
                     FileUtils.readableFileSizeFloat(doneBytes),
-                    FileUtils.readableFileSizeFloat(dataPackage.getSpeedRaw()));
+                    FileUtils.readableFileSizeFloat(dataPackage.getSpeedRaw())
+            );
 
             binding.textViewProgressFileName.setText(name);
 
@@ -196,7 +198,8 @@ public class ProcessViewerFragment extends Fragment {
                                     + " <i>"
                                     + Formatter.formatFileSize(getContext(), total)
                                     + "</i>",
-                            FROM_HTML_MODE_COMPACT);
+                            FROM_HTML_MODE_COMPACT
+                    );
             binding.textViewProgressBytes.setText(bytesText);
 
             Spanned fileProcessedSpan =
@@ -211,7 +214,8 @@ public class ProcessViewerFragment extends Fragment {
                                     + " <i>"
                                     + dataPackage.getAmountOfSourceFiles()
                                     + "</i>",
-                            FROM_HTML_MODE_COMPACT);
+                            FROM_HTML_MODE_COMPACT
+                    );
             binding.textViewProgressFile.setText(fileProcessedSpan);
 
             Spanned speedSpan =
@@ -222,7 +226,8 @@ public class ProcessViewerFragment extends Fragment {
                                     + "'><i>"
                                     + Formatter.formatFileSize(getContext(), dataPackage.getSpeedRaw())
                                     + "/s</font></i>",
-                            FROM_HTML_MODE_COMPACT);
+                            FROM_HTML_MODE_COMPACT
+                    );
             binding.textViewProgressSpeed.setText(speedSpan);
 
             Spanned timerSpan =
@@ -233,7 +238,8 @@ public class ProcessViewerFragment extends Fragment {
                                     + "'><i>"
                                     + Utils.formatTimer(++looseTimeInSeconds)
                                     + "</font></i>",
-                            FROM_HTML_MODE_COMPACT);
+                            FROM_HTML_MODE_COMPACT
+                    );
 
             binding.textViewProgressTimer.setText(timerSpan);
 
@@ -428,7 +434,8 @@ public class ProcessViewerFragment extends Fragment {
         private final int serviceType;
 
         public CustomServiceConnection(
-                ProcessViewerFragment frag, LineChart lineChart, int serviceType) {
+                ProcessViewerFragment frag, LineChart lineChart, int serviceType
+        ) {
             fragment = new WeakReference<>(frag);
             this.lineChart = new WeakReference<>(lineChart);
             this.serviceType = serviceType;

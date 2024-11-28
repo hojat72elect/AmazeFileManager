@@ -26,7 +26,8 @@ import java.net.InetAddress;
 public class FtpNotification {
 
     private static NotificationCompat.Builder buildNotification(
-            Context context, @StringRes int contentTitleRes, String contentText, boolean noStopButton) {
+            Context context, @StringRes int contentTitleRes, String contentText, boolean noStopButton
+    ) {
         Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent =
@@ -67,7 +68,8 @@ public class FtpNotification {
                         context,
                         R.string.ftp_notif_starting_title,
                         context.getString(R.string.ftp_notif_starting),
-                        noStopButton);
+                        noStopButton
+                );
 
         return builder.build();
     }
@@ -98,7 +100,8 @@ public class FtpNotification {
                         context,
                         R.string.ftp_notif_title,
                         context.getString(R.string.ftp_notif_text, address_text),
-                        noStopButton);
+                        noStopButton
+                );
 
         notificationManager.notify(NotificationConstants.FTP_ID, builder.build());
     }

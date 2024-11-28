@@ -35,7 +35,8 @@ public class ReadTextFileCallable implements Callable<ReturnedValueOnReadFile> {
             ContentResolver contentResolver,
             EditableFileAbstraction file,
             File cacheDir,
-            boolean isRootExplorer) {
+            boolean isRootExplorer
+    ) {
         this.contentResolver = contentResolver;
         this.fileAbstraction = file;
         this.externalCacheDir = cacheDir;

@@ -21,7 +21,8 @@ public class CountItemsOrAndSizeTask extends AsyncTask<Void, Pair<Integer, Long>
     private final boolean isStorage;
 
     public CountItemsOrAndSizeTask(
-            Context c, AppCompatTextView itemsText, HybridFileParcelable f, boolean storage) {
+            Context c, AppCompatTextView itemsText, HybridFileParcelable f, boolean storage
+    ) {
         this.context = c;
         this.itemsText = itemsText;
         file = f;

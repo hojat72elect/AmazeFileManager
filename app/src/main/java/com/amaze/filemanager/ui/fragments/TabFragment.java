@@ -82,7 +82,8 @@ public class TabFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
+    ) {
         rootView = (ViewGroup) inflater.inflate(R.layout.tabfragment, container, false);
 
         fragmentManager = requireActivity().getSupportFragmentManager();
@@ -192,13 +193,15 @@ public class TabFragment extends Fragment {
                                 new Tab(
                                         i,
                                         mainFragment.getCurrentPath(),
-                                        mainFragment.getMainFragmentViewModel().getHome()));
+                                        mainFragment.getMainFragmentViewModel().getHome()
+                                ));
                     } else {
                         tabHandler.update(
                                 new Tab(
                                         i,
                                         mainFragment.getMainFragmentViewModel().getHome(),
-                                        mainFragment.getMainFragmentViewModel().getHome()));
+                                        mainFragment.getMainFragmentViewModel().getHome()
+                                ));
                     }
                 }
                 i++;
@@ -345,7 +348,8 @@ public class TabFragment extends Fragment {
                         mainFragment.getMainFragmentViewModel().getOpenMode(),
                         mainFragment.getMainFragmentViewModel().getFolderCount(),
                         mainFragment.getMainFragmentViewModel().getFileCount(),
-                        mainFragment);
+                        mainFragment
+                );
     }
 
     public void initLeftRightAndTopDragListeners(boolean destroy, boolean shouldInvokeLeftAndRight) {
@@ -409,7 +413,8 @@ public class TabFragment extends Fragment {
                                             requireContext(),
                                             requireMainActivity(),
                                             mainFragment.adapter.getCheckedItems(),
-                                            requireMainActivity().getAppTheme());
+                                            requireMainActivity().getAppTheme()
+                                    );
                                 } else {
                                     AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
                                 }
@@ -418,9 +423,11 @@ public class TabFragment extends Fragment {
                             () -> {
                                 dragToTrash.performHapticFeedback(
                                         HapticFeedbackConstants.LONG_PRESS,
-                                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                                );
                                 return null;
-                            }));
+                            }
+                    ));
         }
     }
 

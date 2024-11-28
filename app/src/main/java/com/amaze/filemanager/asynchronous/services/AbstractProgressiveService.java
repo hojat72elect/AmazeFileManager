@@ -118,13 +118,15 @@ public abstract class AbstractProgressiveService extends Service
                         R.id.notification_service_progressBar_small,
                         100,
                         Math.round(getProgressHandler().getPercentProgress()),
-                        false);
+                        false
+                );
         getNotificationCustomViewBig()
                 .setProgressBar(
                         R.id.notification_service_progressBar_big,
                         100,
                         Math.round(getProgressHandler().getPercentProgress()),
-                        false);
+                        false
+                );
         getNotificationManager().notify(getNotificationId(), getNotificationBuilder().build());
     }
 
@@ -175,7 +177,8 @@ public abstract class AbstractProgressiveService extends Service
                 getNotificationCustomViewBig()
                         .setTextViewText(
                                 R.id.notification_service_textView_transferRate_big,
-                                Formatter.formatFileSize(this, speed) + "/s");
+                                Formatter.formatFileSize(this, speed) + "/s"
+                        );
 
                 String remainingTime;
                 if (speed != 0) {
@@ -190,13 +193,15 @@ public abstract class AbstractProgressiveService extends Service
                                 R.id.notification_service_progressBar_small,
                                 100,
                                 Math.round(getProgressHandler().getPercentProgress()),
-                                false);
+                                false
+                        );
                 getNotificationCustomViewBig()
                         .setProgressBar(
                                 R.id.notification_service_progressBar_big,
                                 100,
                                 Math.round(getProgressHandler().getPercentProgress()),
-                                false);
+                                false
+                        );
                 getNotificationManager().notify(getNotificationId(), getNotificationBuilder().build());
             }
 
@@ -217,11 +222,13 @@ public abstract class AbstractProgressiveService extends Service
                     getNotificationCustomViewSmall()
                             .setTextViewText(
                                     R.id.notification_service_textView_filename_small,
-                                    getString(R.string.processing));
+                                    getString(R.string.processing)
+                            );
                     getNotificationCustomViewBig()
                             .setTextViewText(
                                     R.id.notification_service_textView_timeRemaining_big,
-                                    getString(R.string.unknown));
+                                    getString(R.string.unknown)
+                            );
                     getNotificationCustomViewBig()
                             .setTextViewText(
                                     R.id.notification_service_textView_transferRate_big, getString(R.string.unknown));
@@ -244,7 +251,8 @@ public abstract class AbstractProgressiveService extends Service
                             writtenSize,
                             speed,
                             move,
-                            isComplete);
+                            isComplete
+                    );
             // putDataPackage(intent);
             addDatapoint(intent);
         } else publishCompletedResult(getNotificationId());

@@ -38,7 +38,8 @@ public class LoadFolderSpaceDataTask extends AsyncTask<Void, Long, Pair<String, 
     private final HybridFileParcelable file;
 
     public LoadFolderSpaceDataTask(
-            Context c, AppTheme appTheme, PieChart chart, HybridFileParcelable f) {
+            Context c, AppTheme appTheme, PieChart chart, HybridFileParcelable f
+    ) {
         context = c;
         this.appTheme = appTheme;
         this.chart = chart;

@@ -27,8 +27,8 @@ public class AppsAdapterPreloadModel implements ListPreloader.PreloadModelProvid
 
     private final Context mContext;
     private final RequestBuilder<Drawable> request;
-    private List<String> items;
     private final boolean isBottomSheet;
+    private List<String> items;
 
     public AppsAdapterPreloadModel(Fragment f, boolean isBottomSheet) {
         request = Glide.with(f).asDrawable().fitCenter();

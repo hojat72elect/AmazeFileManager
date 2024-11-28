@@ -243,7 +243,8 @@ public class CustomLinearSmoothScroller extends RecyclerView.SmoothScroller {
                 (int) (mInterimTargetDx * TARGET_SEEK_EXTRA_SCROLL_RATIO),
                 (int) (mInterimTargetDy * TARGET_SEEK_EXTRA_SCROLL_RATIO),
                 (int) (time * TARGET_SEEK_EXTRA_SCROLL_RATIO),
-                mLinearInterpolator);
+                mLinearInterpolator
+        );
     }
 
     private int clampApplyScroll(int tmpDt, int dt) {
@@ -260,7 +261,8 @@ public class CustomLinearSmoothScroller extends RecyclerView.SmoothScroller {
      * #calculateDyToMakeVisible(android.view.View, int)}
      */
     public int calculateDtToFit(
-            int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference) {
+            int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference
+    ) {
         switch (snapPreference) {
             case SNAP_TO_START:
                 return boxStart - viewStart;

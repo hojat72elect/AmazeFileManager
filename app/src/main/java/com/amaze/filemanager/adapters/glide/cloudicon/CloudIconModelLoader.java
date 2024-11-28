@@ -28,7 +28,8 @@ public class CloudIconModelLoader implements ModelLoader<String, Bitmap> {
         // for future instances and they don't expose concrete paths either
         return new LoadData<>(
                 new ObjectKey(System.currentTimeMillis()),
-                new CloudIconDataFetcher(context, s, width, height));
+                new CloudIconDataFetcher(context, s, width, height)
+        );
     }
 
     @Override

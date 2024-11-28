@@ -58,7 +58,8 @@ public class ColorPreferenceHelper {
                     R.color.accent_pink,
                     R.color.accent_amber,
                     R.color.accent_light_blue,
-                    R.color.accent_light_green);
+                    R.color.accent_light_green
+            );
     private UserColorPreferences currentColors;
 
     /**
@@ -74,7 +75,8 @@ public class ColorPreferenceHelper {
                 Utils.getColor(c, colorPos[0]),
                 Utils.getColor(c, colorPos[0]),
                 Utils.getColor(c, colorPos[1]),
-                Utils.getColor(c, colorPos[2]));
+                Utils.getColor(c, colorPos[2])
+        );
     }
 
     /**
@@ -89,7 +91,8 @@ public class ColorPreferenceHelper {
     }
 
     public UserColorPreferences getCurrentUserColorPreferences(
-            Context context, SharedPreferences prefs) {
+            Context context, SharedPreferences prefs
+    ) {
         if (currentColors == null) currentColors = getColorPreferences(context, prefs);
         return currentColors;
     }
@@ -114,7 +117,8 @@ public class ColorPreferenceHelper {
         int tabTwo =
                 prefs.getInt(
                         PreferencesConstants.PREFERENCE_SKIN_TWO,
-                        Utils.getColor(c, DEFAULT_PRIMARY_SECOND_TAB));
+                        Utils.getColor(c, DEFAULT_PRIMARY_SECOND_TAB)
+                );
         int accent =
                 prefs.getInt(PreferencesConstants.PREFERENCE_ACCENT, Utils.getColor(c, DEFAULT_ACCENT));
         int iconSkin =

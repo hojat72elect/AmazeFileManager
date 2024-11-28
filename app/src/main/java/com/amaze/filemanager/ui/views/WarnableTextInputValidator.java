@@ -25,7 +25,8 @@ public final class WarnableTextInputValidator extends SimpleTextWatcher
             AppCompatEditText editText,
             WarnableTextInputLayout textInputLayout,
             View positiveButton,
-            OnTextValidate validator) {
+            OnTextValidate validator
+    ) {
         this.context = context;
         this.editText = editText;
         this.editText.setOnFocusChangeListener(this);

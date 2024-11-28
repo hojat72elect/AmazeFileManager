@@ -10,9 +10,9 @@ import androidx.appcompat.widget.AppCompatImageButton;
  */
 public class ActionViewStateManager {
 
-    private AppCompatImageButton lastItemSelected = null;
     private final @ColorInt int idleIconColor;
     private final @ColorInt int selectedIconColor;
+    private AppCompatImageButton lastItemSelected = null;
 
     public ActionViewStateManager(@ColorInt int idleColor, @ColorInt int accentColor) {
         idleIconColor = idleColor;

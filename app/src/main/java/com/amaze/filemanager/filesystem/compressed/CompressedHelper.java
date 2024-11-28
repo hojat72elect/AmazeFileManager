@@ -9,7 +9,6 @@ import com.amaze.filemanager.filesystem.compressed.extractcontents.Extractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.Bzip2Extractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.GzipExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.LzmaExtractor;
-import com.amaze.filemanager.play.filesystem.compressed.extractcontents.helpers.RarExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.SevenZipExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.TarBzip2Extractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.TarExtractor;
@@ -19,7 +18,6 @@ import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.TarXz
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.XzExtractor;
 import com.amaze.filemanager.filesystem.compressed.extractcontents.helpers.ZipExtractor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.Decompressor;
-import com.amaze.filemanager.play.filesystem.compressed.showcontents.helpers.RarDecompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.SevenZipDecompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.TarBzip2Decompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.TarDecompressor;
@@ -28,6 +26,8 @@ import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.TarLzmaD
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.TarXzDecompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.UnknownCompressedFileDecompressor;
 import com.amaze.filemanager.filesystem.compressed.showcontents.helpers.ZipDecompressor;
+import com.amaze.filemanager.play.filesystem.compressed.extractcontents.helpers.RarExtractor;
+import com.amaze.filemanager.play.filesystem.compressed.showcontents.helpers.RarDecompressor;
 import com.amaze.filemanager.utils.Utils;
 import java.io.File;
 import org.slf4j.Logger;
@@ -68,7 +68,8 @@ public abstract class CompressedHelper {
             @NonNull File file,
             @NonNull String outputPath,
             @NonNull Extractor.OnUpdate listener,
-            @NonNull UpdatePosition updatePosition) {
+            @NonNull UpdatePosition updatePosition
+    ) {
         Extractor extractor;
         String type = getExtension(file.getPath());
 

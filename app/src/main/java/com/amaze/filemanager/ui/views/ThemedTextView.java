@@ -23,7 +23,8 @@ public class ThemedTextView extends AppCompatTextView {
     }
 
     public static void setTextViewColor(
-            @NotNull AppCompatTextView textView, @NonNull Context context) {
+            @NotNull AppCompatTextView textView, @NonNull Context context
+    ) {
         if (((MainActivity) context).getAppTheme().equals(AppTheme.LIGHT)) {
             textView.setTextColor(Utils.getColor(context, android.R.color.black));
         } else if (((MainActivity) context).getAppTheme().equals(AppTheme.DARK)

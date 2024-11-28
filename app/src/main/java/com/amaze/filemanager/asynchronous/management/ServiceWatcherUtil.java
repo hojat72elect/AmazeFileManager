@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServiceWatcherUtil {
 
+    private static final ConcurrentLinkedQueue<Intent> pendingIntents = new ConcurrentLinkedQueue<>();
     public static int state = STATE_UNSET;
     /**
      * Position of byte in total byte size to be copied. This variable CANNOT be updated from more
@@ -40,7 +41,6 @@ public class ServiceWatcherUtil {
     private static AbstractRepeatingRunnable watcherRepeatingRunnable;
     private static NotificationManager notificationManager;
     private static NotificationCompat.Builder builder;
-    private static final ConcurrentLinkedQueue<Intent> pendingIntents = new ConcurrentLinkedQueue<>();
     private static int haltCounter = -1;
     private final ProgressHandler progressHandler;
 

@@ -1,9 +1,8 @@
 package com.amaze.filemanager.ui.theme;
 
-import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 
 /**
  * Saves and restores the AppTheme

@@ -41,9 +41,9 @@ public class DeleteTask
     private final Context applicationContext;
     private final boolean rootMode;
     private final DataUtils dataUtils = DataUtils.getInstance();
+    private final boolean doDeletePermanently;
     private ArrayList<HybridFileParcelable> files;
     private CompressedExplorerFragment compressedExplorerFragment;
-    private final boolean doDeletePermanently;
 
     public DeleteTask(@NonNull Context applicationContext, @NonNull boolean doDeletePermanently) {
         this.applicationContext = applicationContext.getApplicationContext();
@@ -54,7 +54,8 @@ public class DeleteTask
     }
 
     public DeleteTask(
-            @NonNull Context applicationContext, CompressedExplorerFragment compressedExplorerFragment) {
+            @NonNull Context applicationContext, CompressedExplorerFragment compressedExplorerFragment
+    ) {
         this.applicationContext = applicationContext.getApplicationContext();
         this.doDeletePermanently = false;
         rootMode =
@@ -72,7 +73,8 @@ public class DeleteTask
     @Override
     @SafeVarargs
     protected final AsyncTaskResult<Boolean> doInBackground(
-            final ArrayList<HybridFileParcelable>... p1) {
+            final ArrayList<HybridFileParcelable>... p1
+    ) {
         files = p1[0];
         boolean wasDeleted = true;
         if (files.size() == 0) return new AsyncTaskResult<>(true);
@@ -141,7 +143,8 @@ public class DeleteTask
                                 SafRootHolder.getUriRoot(),
                                 applicationContext,
                                 OpenMode.DOCUMENT_FILE,
-                                false);
+                                false
+                        );
                 return documentFile.delete();
             case DROPBOX:
             case BOX:

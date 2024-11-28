@@ -27,7 +27,8 @@ public class CustomNavigationView extends NavigationView
 
     @Override
     public void setNavigationItemSelectedListener(
-            @Nullable OnNavigationItemSelectedListener listener) {
+            @Nullable OnNavigationItemSelectedListener listener
+    ) {
         subclassListener = listener;
     }
 

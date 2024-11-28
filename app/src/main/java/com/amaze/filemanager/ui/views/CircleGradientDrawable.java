@@ -1,12 +1,10 @@
 package com.amaze.filemanager.ui.views;
 
-import com.amaze.filemanager.ui.theme.AppTheme;
-
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
-
 import androidx.annotation.ColorInt;
+import com.amaze.filemanager.ui.theme.AppTheme;
 
 /**
  * Created by vishal on 30/5/16. Class used to create background of check icon on selection with a
@@ -52,7 +50,8 @@ public class CircleGradientDrawable extends GradientDrawable {
                 dpToPx(STROKE_WIDTH),
                 (appTheme.equals(AppTheme.DARK) || appTheme.equals(AppTheme.BLACK))
                         ? Color.parseColor(STROKE_COLOR_DARK)
-                        : Color.parseColor(STROKE_COLOR_LIGHT));
+                        : Color.parseColor(STROKE_COLOR_LIGHT)
+        );
     }
 
     private int dpToPx(int dp) {

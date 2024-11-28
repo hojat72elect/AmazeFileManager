@@ -116,7 +116,8 @@ public class DecryptService extends AbstractProgressiveService {
                 new NotificationCompat.Action(
                         R.drawable.ic_folder_lock_open_white_36dp,
                         getString(R.string.stop_ftp),
-                        stopPendingIntent);
+                        stopPendingIntent
+                );
 
         notificationBuilder =
                 new NotificationCompat.Builder(this, NotificationConstants.CHANNEL_NORMAL_ID);
@@ -254,7 +255,8 @@ public class DecryptService extends AbstractProgressiveService {
                         baseFile.getName(context),
                         1,
                         totalSize,
-                        false); // we're using encrypt as move flag false
+                        false
+                ); // we're using encrypt as move flag false
 
                 if (FileProperties.checkFolder(baseFileFolder, context) == 1) {
                     serviceWatcherUtil.watch(DecryptService.this);

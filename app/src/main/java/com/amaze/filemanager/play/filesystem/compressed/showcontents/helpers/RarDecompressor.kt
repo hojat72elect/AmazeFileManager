@@ -1,9 +1,9 @@
 package com.amaze.filemanager.play.filesystem.compressed.showcontents.helpers
 
 import android.content.Context
-import com.amaze.filemanager.play.asynchronous.asynctasks.compress.RarHelperCallable
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
 import com.amaze.filemanager.filesystem.compressed.showcontents.Decompressor
+import com.amaze.filemanager.play.asynchronous.asynctasks.compress.RarHelperCallable
 import com.github.junrar.rarfile.FileHeader
 
 class RarDecompressor(context: Context) : Decompressor(context) {

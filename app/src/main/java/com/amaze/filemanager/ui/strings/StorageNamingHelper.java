@@ -14,7 +14,8 @@ public final class StorageNamingHelper {
     public static String getNameForDeviceDescription(
             @NonNull Context context,
             @NonNull File file,
-            @StorageNaming.DeviceDescription int deviceDescription) {
+            @StorageNaming.DeviceDescription int deviceDescription
+    ) {
         switch (deviceDescription) {
             case StorageNaming.STORAGE_INTERNAL:
                 return context.getString(R.string.storage_internal);

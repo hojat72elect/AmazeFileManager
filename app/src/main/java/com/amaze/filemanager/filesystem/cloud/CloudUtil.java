@@ -48,14 +48,16 @@ public class CloudUtil {
      * @deprecated use getCloudFiles()
      */
     public static ArrayList<HybridFileParcelable> listFiles(
-            String path, CloudStorage cloudStorage, OpenMode openMode) throws CloudPluginException {
+            String path, CloudStorage cloudStorage, OpenMode openMode
+    ) throws CloudPluginException {
         final ArrayList<HybridFileParcelable> baseFiles = new ArrayList<>();
         getCloudFiles(path, cloudStorage, openMode, baseFiles::add);
         return baseFiles;
     }
 
     public static void getCloudFiles(
-            String path, CloudStorage cloudStorage, OpenMode openMode, OnFileFound fileFoundCallback)
+            String path, CloudStorage cloudStorage, OpenMode openMode, OnFileFound fileFoundCallback
+    )
             throws CloudPluginException {
         String strippedPath = stripPath(openMode, path);
         try {
@@ -66,7 +68,8 @@ public class CloudUtil {
                                 "",
                                 (cloudMetaData.getModifiedAt() == null) ? 0L : cloudMetaData.getModifiedAt(),
                                 cloudMetaData.getSize(),
-                                cloudMetaData.getFolder());
+                                cloudMetaData.getFolder()
+                        );
                 baseFile.setName(cloudMetaData.getName());
                 baseFile.setMode(openMode);
                 fileFoundCallback.onFileFound(baseFile);
@@ -116,7 +119,8 @@ public class CloudUtil {
     }
 
     public static void launchCloud(
-            final HybridFile baseFile, final OpenMode serviceType, final Activity activity) {
+            final HybridFile baseFile, final OpenMode serviceType, final Activity activity
+    ) {
         final CloudStreamer streamer = CloudStreamer.getInstance();
 
         new Thread(
@@ -125,7 +129,8 @@ public class CloudUtil {
                         streamer.setStreamSrc(
                                 baseFile.getInputStream(activity),
                                 baseFile.getName(activity),
-                                baseFile.length(activity));
+                                baseFile.length(activity)
+                        );
                         activity.runOnUiThread(
                                 () -> {
                                     try {
@@ -139,7 +144,8 @@ public class CloudUtil {
                                         i.setDataAndType(
                                                 uri,
                                                 MimeTypes.getMimeType(
-                                                        baseFile.getPath(), baseFile.isDirectory(activity)));
+                                                        baseFile.getPath(), baseFile.isDirectory(activity))
+                                        );
                                         PackageManager packageManager = activity.getPackageManager();
                                         List<ResolveInfo> resInfos = packageManager.queryIntentActivities(i, 0);
                                         if (resInfos != null && resInfos.size() > 0)
@@ -148,7 +154,8 @@ public class CloudUtil {
                                             Toast.makeText(
                                                             activity,
                                                             activity.getString(R.string.smb_launch_error),
-                                                            Toast.LENGTH_SHORT)
+                                                            Toast.LENGTH_SHORT
+                                                    )
                                                     .show();
                                     } catch (ActivityNotFoundException e) {
                                         LOG.warn("failed to launch cloud file in activity", e);
@@ -218,7 +225,8 @@ public class CloudUtil {
                     Toast.makeText(
                                     mainActivity,
                                     mainActivity.getResources().getString(R.string.cloud_token_lost),
-                                    Toast.LENGTH_LONG)
+                                    Toast.LENGTH_LONG
+                            )
                             .show();
                     mainActivity.deleteConnection(serviceType);
                     mainActivity.addConnection(serviceType);

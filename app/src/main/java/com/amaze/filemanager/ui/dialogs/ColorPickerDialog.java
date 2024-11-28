@@ -56,7 +56,8 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                                     R.color.primary_indigo,
                                     R.color.primary_pink,
                                     R.color.accent_pink
-                            }),
+                            }
+                    ),
                     new ColorItemPair(
                             R.string.orange,
                             new int[]{
@@ -64,7 +65,8 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                                     R.color.primary_orange,
                                     R.color.primary_deep_orange,
                                     R.color.accent_amber
-                            }),
+                            }
+                    ),
                     new ColorItemPair(
                             R.string.blue,
                             new int[]{
@@ -72,7 +74,8 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                                     R.color.primary_blue,
                                     R.color.primary_deep_purple,
                                     R.color.accent_light_blue
-                            }),
+                            }
+                    ),
                     new ColorItemPair(
                             R.string.green,
                             new int[]{
@@ -80,7 +83,8 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                                     R.color.primary_green,
                                     R.color.primary_teal_900,
                                     R.color.accent_light_green
-                            })
+                            }
+                    )
             };
 
     private static final String ARG_COLOR_PREF = "colorPref";
@@ -92,7 +96,8 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
     private int selectedIndex = -1;
 
     public static ColorPickerDialog newInstance(
-            String key, UserColorPreferences color, AppTheme theme) {
+            String key, UserColorPreferences color, AppTheme theme
+    ) {
         ColorPickerDialog retval = new ColorPickerDialog();
         final Bundle b = new Bundle(2);
         b.putString(ARG_KEY, key);
@@ -228,7 +233,8 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                                     {-android.R.attr.state_enabled}, // disabled
                                     {android.R.attr.state_enabled} // enabled
                             },
-                            new int[]{accentColor, accentColor});
+                            new int[]{accentColor, accentColor}
+                    );
             radio.setButtonTintList(colorStateList);
         }
         return child;
@@ -271,7 +277,9 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                                         getColor(selectedIndex, 0),
                                         getColor(selectedIndex, 1),
                                         getColor(selectedIndex, 2),
-                                        getColor(selectedIndex, 3)));
+                                        getColor(selectedIndex, 3)
+                                )
+                        );
             }
 
             listener.onAcceptedConfig();

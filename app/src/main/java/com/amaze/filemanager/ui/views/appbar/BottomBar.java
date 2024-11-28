@@ -2,22 +2,6 @@ package com.amaze.filemanager.ui.views.appbar;
 
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_CHANGEPATHS;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
-import com.amaze.filemanager.R;
-import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
-import com.amaze.filemanager.filesystem.HybridFile;
-import com.amaze.filemanager.filesystem.files.FileUtils;
-import com.amaze.filemanager.ui.activities.MainActivity;
-import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
-import com.amaze.filemanager.ui.fragments.CompressedExplorerFragment;
-import com.amaze.filemanager.ui.fragments.MainFragment;
-import com.amaze.filemanager.ui.fragments.TabFragment;
-import com.amaze.filemanager.utils.BottomBarButtonPath;
-import com.amaze.filemanager.utils.MainActivityHelper;
-import com.amaze.filemanager.utils.Utils;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Color;
@@ -35,7 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -43,6 +26,20 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import com.amaze.filemanager.R;
+import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
+import com.amaze.filemanager.filesystem.HybridFile;
+import com.amaze.filemanager.filesystem.files.FileUtils;
+import com.amaze.filemanager.ui.activities.MainActivity;
+import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
+import com.amaze.filemanager.ui.fragments.CompressedExplorerFragment;
+import com.amaze.filemanager.ui.fragments.MainFragment;
+import com.amaze.filemanager.ui.fragments.TabFragment;
+import com.amaze.filemanager.utils.BottomBarButtonPath;
+import com.amaze.filemanager.utils.MainActivityHelper;
+import com.amaze.filemanager.utils.Utils;
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * layout_appbar.xml contains the layout for AppBar and BottomBar
@@ -58,8 +55,6 @@ public class BottomBar implements View.OnTouchListener {
 
     private final MainActivity mainActivity;
     private final AppBar appbar;
-    private String newPath;
-
     private final FrameLayout frame;
     private final LinearLayout pathLayout;
     private final LinearLayout buttons;
@@ -68,18 +63,17 @@ public class BottomBar implements View.OnTouchListener {
     private final AppCompatTextView pathText;
     private final AppCompatTextView fullPathText;
     private final AppCompatTextView fullPathAnim;
-
     private final LinearLayout.LayoutParams buttonParams;
     private final AppCompatImageButton buttonRoot;
     private final AppCompatImageButton buttonStorage;
     private final ArrayList<AppCompatImageView> arrowButtons = new ArrayList<>();
-    private int lastUsedArrowButton = 0;
     private final ArrayList<AppCompatButton> folderButtons = new ArrayList<>();
-    private int lastUsedFolderButton = 0;
     private final Drawable arrow;
-
     private final CountDownTimer timer;
     private final GestureDetector gestureDetector;
+    private String newPath;
+    private int lastUsedArrowButton = 0;
+    private int lastUsedFolderButton = 0;
 
     public BottomBar(AppBar appbar, MainActivity a) {
         mainActivity = a;
@@ -189,7 +183,8 @@ public class BottomBar implements View.OnTouchListener {
                                             mainActivity, mainActivity.getPrefs());
                                 }
                             }
-                        });
+                        }
+                );
     }
 
     public void
@@ -349,7 +344,8 @@ public class BottomBar implements View.OnTouchListener {
             OpenMode openmode,
             int folderCount,
             int fileCount,
-            BottomBarButtonPath buttonPathInterface) {
+            BottomBarButtonPath buttonPathInterface
+    ) {
 
         if (news.length() == 0) return;
 
@@ -406,7 +402,8 @@ public class BottomBar implements View.OnTouchListener {
                                                             fullPathAnim.setVisibility(View.GONE);
                                                             fullPathText.setText(newPath);
                                                         },
-                                                        PATH_ANIM_END_DELAY);
+                                                        PATH_ANIM_END_DELAY
+                                                );
                                     }
 
                                     @Override
@@ -480,7 +477,8 @@ public class BottomBar implements View.OnTouchListener {
                                                             fullPathAnim.setVisibility(View.GONE);
                                                             fullPathText.setText(newPath);
                                                         },
-                                                        PATH_ANIM_END_DELAY);
+                                                        PATH_ANIM_END_DELAY
+                                                );
                                     }
 
                                     @Override
@@ -531,7 +529,8 @@ public class BottomBar implements View.OnTouchListener {
                                                                                     fullPathAnim.setVisibility(View.GONE);
                                                                                     fullPathText.setText(newPath);
                                                                                 },
-                                                                                PATH_ANIM_END_DELAY);
+                                                                                PATH_ANIM_END_DELAY
+                                                                        );
                                                             }
 
                                                             @Override

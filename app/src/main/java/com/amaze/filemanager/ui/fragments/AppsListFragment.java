@@ -3,12 +3,24 @@ package com.amaze.filemanager.ui.fragments;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_APPLIST_ISASCENDING;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_APPLIST_SORTBY;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.AppsRecyclerAdapter;
@@ -25,27 +37,11 @@ import com.amaze.filemanager.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
 import com.bumptech.glide.util.ViewPreloadSizeProvider;
-
-import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class AppsListFragment extends Fragment
@@ -77,7 +73,8 @@ public class AppsListFragment extends Fragment
     public View onCreateView(
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState
+    ) {
         rootView = inflater.inflate(R.layout.fragment_app_list, container, false);
         return rootView;
     }
@@ -229,7 +226,8 @@ public class AppsListFragment extends Fragment
 
     @Override
     public void onLoadFinished(
-            @NonNull Loader<List<AppDataParcelable>> loader, List<AppDataParcelable> data) {
+            @NonNull Loader<List<AppDataParcelable>> loader, List<AppDataParcelable> data
+    ) {
         getSpinner().setVisibility(View.GONE);
         if (data.isEmpty()) {
             getRecyclerView().setVisibility(View.GONE);
@@ -256,7 +254,8 @@ public class AppsListFragment extends Fragment
 
     @Override
     public void adjustListViewForTv(
-            @NonNull AppHolder viewHolder, @NonNull MainActivity mainActivity) {
+            @NonNull AppHolder viewHolder, @NonNull MainActivity mainActivity
+    ) {
         try {
             int[] location = new int[2];
             viewHolder.rl.getLocationOnScreen(location);

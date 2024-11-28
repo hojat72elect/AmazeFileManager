@@ -67,7 +67,8 @@ public class OperationData {
             @NonNull String name,
             @Nullable String hostKey,
             @Nullable String sshKeyName,
-            @Nullable String sshKey) {
+            @Nullable String sshKey
+    ) {
         if (type != SFTP) throw new IllegalArgumentException("Wrong constructor for object type");
 
         this.type = type;

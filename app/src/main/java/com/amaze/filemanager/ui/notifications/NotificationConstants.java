@@ -32,7 +32,8 @@ public class NotificationConstants {
      * This creates a channel (API >= 26) or applies the correct metadata to a notification (API < 26)
      */
     public static void setMetadata(
-            Context context, NotificationCompat.Builder notification, int type) {
+            Context context, NotificationCompat.Builder notification, int type
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             switch (type) {
                 case TYPE_NORMAL:
@@ -82,7 +83,8 @@ public class NotificationConstants {
                     new NotificationChannel(
                             CHANNEL_FTP_ID,
                             context.getString(R.string.channel_name_ftp),
-                            NotificationManager.IMPORTANCE_HIGH);
+                            NotificationManager.IMPORTANCE_HIGH
+                    );
             // Configure the notification channel.
             mChannel.setDescription(context.getString(R.string.channel_description_ftp));
             mNotificationManager.createNotificationChannel(mChannel);
@@ -102,7 +104,8 @@ public class NotificationConstants {
                     new NotificationChannel(
                             CHANNEL_NORMAL_ID,
                             context.getString(R.string.channel_name_normal),
-                            NotificationManager.IMPORTANCE_MIN);
+                            NotificationManager.IMPORTANCE_MIN
+                    );
             // Configure the notification channel.
             mChannel.setDescription(context.getString(R.string.channel_description_normal));
             mNotificationManager.createNotificationChannel(mChannel);

@@ -22,7 +22,8 @@ public class DbViewerTask extends AsyncTask<Void, Integer, Void> {
             Cursor schemaCursor,
             Cursor contentCursor,
             WebView webView,
-            DbViewerFragment dbViewerFragment) {
+            DbViewerFragment dbViewerFragment
+    ) {
         this.schemaCursor = schemaCursor;
         this.contentCursor = contentCursor;
         this.webView = webView;

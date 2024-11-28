@@ -31,7 +31,8 @@ public class DbViewerFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState
+    ) {
         databaseViewerActivity = (DatabaseViewerActivity) getActivity();
 
         rootView = inflater.inflate(R.layout.fragment_db_viewer, null);
