@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
-apply plugin: 'com.hiya.jacoco-android'
 apply plugin: "com.starter.easylauncher"
 apply plugin: 'com.google.devtools.ksp'
 
@@ -11,7 +10,7 @@ android {
     compileSdk libs.versions.compileSdk.get().toInteger()
     packagingOptions {
         resources {
-            excludes += ['proguard-project.txt', 'META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES']
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES']
         }
     }
 
@@ -45,12 +44,9 @@ android {
         debug {
             applicationIdSuffix ".debug"
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
-            testProguardFile 'tests-proguard.cfg'
             buildConfigField "String", "CRYPTO_IV", "\"LxbHiJhhUXcj\""
             buildConfigField "String", "FTP_SERVER_KEYSTORE_PASSWORD", "\"vishal007\""
-            debuggable true //For "debug" banner on icon
-            enableUnitTestCoverage true
+            debuggable true
         }
 
         release {
@@ -298,23 +294,6 @@ project.afterEvaluate {
 
 clean.dependsOn supportOldLangCodes
 clean.mustRunAfter supportOldLangCodes
-
-jacoco {
-    toolVersion = libs.versions.jacoco.get()
-}
-
-tasks.withType(JacocoReport).configureEach {
-    reports {
-        csv.required.set(false)
-        html.required.set(true)
-        xml.required.set(true)
-    }
-}
-
-tasks.withType(Test).configureEach {
-    jacoco.includeNoLocationClasses = true
-    jacoco.excludes = ['jdk.internal.*']
-}
 
 Properties props = new Properties()
 def propFile = new File('signing.properties')
