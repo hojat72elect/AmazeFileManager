@@ -1,7 +1,5 @@
 package com.amaze.filemanager.ui.activities.superclasses;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_COLORED_NAVIGATION;
 
 import android.app.ActivityManager;
@@ -37,9 +35,6 @@ import com.amaze.filemanager.utils.PreferenceUtils;
 import com.amaze.filemanager.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-/**
- * Created by arpitkh996 on 03-03-2016.
- */
 public class ThemedActivity extends PreferenceActivity {
     /**
      * BroadcastReceiver responsible for updating the theme if battery saver mode is turned on or off
@@ -86,16 +81,9 @@ public class ThemedActivity extends PreferenceActivity {
             getColorPreference().saveColorPreferences(getPrefs(), ColorPreferenceHelper.randomize(this));
         }
 
-        if (SDK_INT >= 21) {
-            ActivityManager.TaskDescription taskDescription =
-                    new ActivityManager.TaskDescription(
-                            getString(R.string.appbar_name),
-                            ((BitmapDrawable) ContextCompat.getDrawable(this, R.mipmap.ic_launcher)).getBitmap(),
-                            getPrimary()
-                    );
-            setTaskDescription(taskDescription);
-        }
 
+        ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(getString(R.string.appbar_name), ((BitmapDrawable) ContextCompat.getDrawable(this, R.mipmap.ic_launcher)).getBitmap(), getPrimary());
+        setTaskDescription(taskDescription);
         setTheme();
     }
 
@@ -111,28 +99,23 @@ public class ThemedActivity extends PreferenceActivity {
         }
 
         Window window = getWindow();
-        if (SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (findViewById(R.id.tab_frame) != null || findViewById(R.id.drawer_layout) == null) {
-                window.setStatusBarColor(PreferenceUtils.getStatusColor(getPrimary()));
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        if (findViewById(R.id.tab_frame) != null || findViewById(R.id.drawer_layout) == null) {
+            window.setStatusBarColor(PreferenceUtils.getStatusColor(getPrimary()));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
+            window.setNavigationBarColor(PreferenceUtils.getStatusColor(getPrimary()));
+        } else {
+            if (getAppTheme().equals(AppTheme.LIGHT)) {
+                window.setNavigationBarColor(Utils.getColor(this, android.R.color.white));
+            } else if (getAppTheme().equals(AppTheme.BLACK)) {
+                window.setNavigationBarColor(Utils.getColor(this, android.R.color.black));
             } else {
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.setNavigationBarColor(Utils.getColor(this, R.color.holo_dark_background));
             }
-            if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
-                window.setNavigationBarColor(PreferenceUtils.getStatusColor(getPrimary()));
-            } else {
-                if (getAppTheme().equals(AppTheme.LIGHT)) {
-                    window.setNavigationBarColor(Utils.getColor(this, android.R.color.white));
-                } else if (getAppTheme().equals(AppTheme.BLACK)) {
-                    window.setNavigationBarColor(Utils.getColor(this, android.R.color.black));
-                } else {
-                    window.setNavigationBarColor(Utils.getColor(this, R.color.holo_dark_background));
-                }
-            }
-        } else if (SDK_INT == Build.VERSION_CODES.KITKAT_WATCH
-                || SDK_INT == Build.VERSION_CODES.KITKAT) {
-            setKitkatStatusBarMargin(parentView);
-            setKitkatStatusBarTint();
         }
     }
 
@@ -352,18 +335,13 @@ public class ThemedActivity extends PreferenceActivity {
      * save mode has been changed
      */
     private void registerPowerModeReceiver() {
-        if (SDK_INT >= LOLLIPOP) {
-            registerReceiver(
-                    powerModeReceiver, new IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED));
-        }
+        registerReceiver(powerModeReceiver, new IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED));
     }
 
     /**
      * Unregisters the BroadcastReceiver \`powerModeReceiver\`
      */
     private void unregisterPowerModeReceiver() {
-        if (SDK_INT >= LOLLIPOP) {
-            unregisterReceiver(powerModeReceiver);
-        }
+        unregisterReceiver(powerModeReceiver);
     }
 }

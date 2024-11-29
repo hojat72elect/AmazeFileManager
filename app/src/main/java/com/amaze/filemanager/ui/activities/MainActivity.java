@@ -1,12 +1,7 @@
 package com.amaze.filemanager.ui.activities;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 import static android.os.Build.VERSION_CODES.KITKAT;
-import static android.os.Build.VERSION_CODES.KITKAT_WATCH;
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
-import static android.os.Build.VERSION_CODES.M;
-import static android.os.Build.VERSION_CODES.N;
 import static com.amaze.filemanager.fileoperations.filesystem.FolderStateKt.WRITABLE_OR_ON_SDCARD;
 import static com.amaze.filemanager.fileoperations.filesystem.OperationTypeKt.COMPRESS;
 import static com.amaze.filemanager.fileoperations.filesystem.OperationTypeKt.COPY;
@@ -40,7 +35,6 @@ import static com.amaze.filemanager.ui.fragments.preferencefragments.Preferences
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_VIEW;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -56,7 +50,6 @@ import android.hardware.usb.UsbManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -106,10 +99,8 @@ import com.amaze.filemanager.database.models.OperationData;
 import com.amaze.filemanager.database.models.explorer.CloudEntry;
 import com.amaze.filemanager.fileoperations.exceptions.CloudPluginException;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
-import com.amaze.filemanager.fileoperations.filesystem.StorageNaming;
 import com.amaze.filemanager.fileoperations.filesystem.usb.SingletonUsbOtg;
 import com.amaze.filemanager.fileoperations.filesystem.usb.UsbOtgRepresentation;
-import com.amaze.filemanager.filesystem.ExternalSdCardOperation;
 import com.amaze.filemanager.filesystem.FileUtil;
 import com.amaze.filemanager.filesystem.HybridFile;
 import com.amaze.filemanager.filesystem.HybridFileParcelable;
@@ -143,7 +134,6 @@ import com.amaze.filemanager.ui.fragments.ProcessViewerFragment;
 import com.amaze.filemanager.ui.fragments.TabFragment;
 import com.amaze.filemanager.ui.fragments.data.MainFragmentViewModel;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
-import com.amaze.filemanager.ui.strings.StorageNamingHelper;
 import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.ui.views.CustomZoomFocusChange;
 import com.amaze.filemanager.ui.views.appbar.AppBar;
@@ -166,7 +156,6 @@ import com.leinardi.android.speeddial.FabWithLabelView;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialOverlayLayout;
 import com.leinardi.android.speeddial.SpeedDialView;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.topjohnwu.superuser.Shell;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -180,7 +169,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 import kotlin.collections.ArraysKt;
 import kotlin.jvm.functions.Function1;
 import kotlin.text.Charsets;
@@ -195,7 +183,6 @@ public class MainActivity extends PermissionsActivity
         FolderChooserDialog.FolderCallback,
         PermissionsActivity.OnPermissionGranted {
 
-    public static final Pattern DIR_SEPARATOR = Pattern.compile("/");
     public static final String PASTEHELPER_BUNDLE = "pasteHelper";
     public static final int REQUEST_CODE_SAF = 223;
     public static final String KEY_INTENT_PROCESS_VIEWER = "openprocesses";
@@ -546,17 +533,11 @@ public class MainActivity extends PermissionsActivity
     }
 
     private void checkForExternalPermission() {
-        if (SDK_INT >= Build.VERSION_CODES.M) {
-            if (!checkStoragePermission()) {
-                if (SDK_INT >= Build.VERSION_CODES.R) {
-                    requestAllFilesAccess(this);
-                } else {
-                    requestStoragePermission(this, true);
-                }
-            }
-            if (!checkNotificationPermission()) {
-                requestNotificationPermission(true);
-            }
+        if (!checkStoragePermission()) {
+            requestAllFilesAccess(this);
+        }
+        if (!checkNotificationPermission()) {
+            requestNotificationPermission(true);
         }
     }
 
@@ -674,22 +655,17 @@ public class MainActivity extends PermissionsActivity
         executeWithMainFragment(
                 mainFragment -> {
                     if (uris != null && uris.size() > 0) {
-                        if (SDK_INT >= LOLLIPOP) {
-                            File folder = new File(mainFragment.getCurrentPath());
-                            int result = mainActivityHelper.checkFolder(folder, MainActivity.this);
-                            if (result == WRITABLE_OR_ON_SDCARD) {
-                                FileUtil.writeUriToStorage(
-                                        MainActivity.this, uris, getContentResolver(), mainFragment.getCurrentPath());
-                                finish();
-                            } else {
-                                // Trigger SAF intent, keep uri until finish
-                                operation = SAVE_FILE;
-                                urisToBeSaved = uris;
-                                mainActivityHelper.checkFolder(folder, MainActivity.this);
-                            }
-                        } else {
+                        File folder = new File(mainFragment.getCurrentPath());
+                        int result = mainActivityHelper.checkFolder(folder, MainActivity.this);
+                        if (result == WRITABLE_OR_ON_SDCARD) {
                             FileUtil.writeUriToStorage(
                                     MainActivity.this, uris, getContentResolver(), mainFragment.getCurrentPath());
+                            finish();
+                        } else {
+                            // Trigger SAF intent, keep uri until finish
+                            operation = SAVE_FILE;
+                            urisToBeSaved = uris;
+                            mainActivityHelper.checkFolder(folder, MainActivity.this);
                         }
                     } else {
                         saveExternalIntentExtras();
@@ -745,11 +721,8 @@ public class MainActivity extends PermissionsActivity
      */
     public synchronized ArrayList<StorageDirectoryParcelable> getStorageDirectories() {
         ArrayList<StorageDirectoryParcelable> volumes;
-        if (SDK_INT >= N) {
-            volumes = getStorageDirectoriesNew();
-        } else {
-            volumes = getStorageDirectoriesLegacy();
-        }
+        volumes = getStorageDirectoriesNew();
+
         if (isRootExplorer()) {
             volumes.add(
                     new StorageDirectoryParcelable(
@@ -764,7 +737,6 @@ public class MainActivity extends PermissionsActivity
     /**
      * @return All available storage volumes (including internal storage, SD-Cards and USB devices)
      */
-    @TargetApi(N)
     public synchronized ArrayList<StorageDirectoryParcelable> getStorageDirectoriesNew() {
         // Final set of paths
         ArrayList<StorageDirectoryParcelable> volumes = new ArrayList<>();
@@ -793,113 +765,6 @@ public class MainActivity extends PermissionsActivity
             }
             volumes.add(new StorageDirectoryParcelable(path.getPath(), name, icon));
         }
-        return volumes;
-    }
-
-    /**
-     * Returns all available SD-Cards in the system (include emulated)
-     *
-     * <p>Warning: Hack! Based on Android source code of version 4.3 (API 18) Because there was no
-     * standard way to get it before android N
-     *
-     * @return All available SD-Cards in the system (include emulated)
-     */
-    public synchronized ArrayList<StorageDirectoryParcelable> getStorageDirectoriesLegacy() {
-        List<String> rv = new ArrayList<>();
-
-        // Primary physical SD-CARD (not emulated)
-        final String rawExternalStorage = System.getenv("EXTERNAL_STORAGE");
-        // All Secondary SD-CARDs (all exclude primary) separated by ":"
-        final String rawSecondaryStoragesStr = System.getenv("SECONDARY_STORAGE");
-        // Primary emulated SD-CARD
-        final String rawEmulatedStorageTarget = System.getenv("EMULATED_STORAGE_TARGET");
-        if (TextUtils.isEmpty(rawEmulatedStorageTarget)) {
-            // Device has physical external storage; use plain paths.
-            if (TextUtils.isEmpty(rawExternalStorage)) {
-                // EXTERNAL_STORAGE undefined; falling back to default.
-                // Check for actual existence of the directory before adding to list
-                if (new File(DEFAULT_FALLBACK_STORAGE_PATH).exists()) {
-                    rv.add(DEFAULT_FALLBACK_STORAGE_PATH);
-                } else {
-                    // We know nothing else, use Environment's fallback
-                    rv.add(Environment.getExternalStorageDirectory().getAbsolutePath());
-                }
-            } else {
-                rv.add(rawExternalStorage);
-            }
-        } else {
-            // Device has emulated storage; external storage paths should have
-            // userId burned into them.
-            final String rawUserId;
-            if (SDK_INT < JELLY_BEAN_MR1) {
-                rawUserId = "";
-            } else {
-                final String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-                final String[] folders = DIR_SEPARATOR.split(path);
-                final String lastFolder = folders[folders.length - 1];
-                boolean isDigit = false;
-                try {
-                    Integer.valueOf(lastFolder);
-                    isDigit = true;
-                } catch (NumberFormatException ignored) {
-                }
-                rawUserId = isDigit ? lastFolder : "";
-            }
-            // /storage/emulated/0[1,2,...]
-            if (TextUtils.isEmpty(rawUserId)) {
-                rv.add(rawEmulatedStorageTarget);
-            } else {
-                rv.add(rawEmulatedStorageTarget + File.separator + rawUserId);
-            }
-        }
-        // Add all secondary storages
-        if (!TextUtils.isEmpty(rawSecondaryStoragesStr)) {
-            // All Secondary SD-CARDs splited into array
-            final String[] rawSecondaryStorages = rawSecondaryStoragesStr.split(File.pathSeparator);
-            Collections.addAll(rv, rawSecondaryStorages);
-        }
-        if (SDK_INT >= M && checkStoragePermission()) rv.clear();
-        if (SDK_INT >= KITKAT) {
-            String[] strings = ExternalSdCardOperation.getExtSdCardPathsForActivity(this);
-            for (String s : strings) {
-                File f = new File(s);
-                if (!rv.contains(s) && FileUtils.canListFiles(f)) rv.add(s);
-            }
-        }
-        File usb = getUsbDrive();
-        if (usb != null && !rv.contains(usb.getPath())) rv.add(usb.getPath());
-
-        if (SDK_INT >= KITKAT) {
-            if (SingletonUsbOtg.getInstance().isDeviceConnected()) {
-                rv.add(OTGUtil.PREFIX_OTG + "/");
-            }
-        }
-
-        // Assign a label and icon to each directory
-        ArrayList<StorageDirectoryParcelable> volumes = new ArrayList<>();
-        for (String file : rv) {
-            File f = new File(file);
-            @DrawableRes int icon;
-
-            if ("/storage/emulated/legacy".equals(file)
-                    || "/storage/emulated/0".equals(file)
-                    || "/mnt/sdcard".equals(file)) {
-                icon = R.drawable.ic_phone_android_white_24dp;
-            } else if ("/storage/sdcard1".equals(file)) {
-                icon = R.drawable.ic_sd_storage_white_24dp;
-            } else if ("/".equals(file)) {
-                icon = R.drawable.ic_drawer_root_white;
-            } else {
-                icon = R.drawable.ic_sd_storage_white_24dp;
-            }
-
-            @StorageNaming.DeviceDescription
-            int deviceDescription = StorageNaming.getDeviceDescriptionLegacy(f);
-            String name = StorageNamingHelper.getNameForDeviceDescription(this, f, deviceDescription);
-
-            volumes.add(new StorageDirectoryParcelable(file, name, icon));
-        }
-
         return volumes;
     }
 
@@ -1012,7 +877,7 @@ public class MainActivity extends PermissionsActivity
             }
         }
         Bundle b = new Bundle();
-        if (path != null && path.length() > 0) {
+        if (path != null && !path.isEmpty()) {
             b.putString("path", path);
         }
         // This boolean will be given to the newly created MainFragment
@@ -1339,10 +1204,7 @@ public class MainActivity extends PermissionsActivity
         super.onPause();
         unregisterReceiver(mainActivityHelper.mNotificationReceiver);
         unregisterReceiver(receiver2);
-
-        if (SDK_INT >= KITKAT) {
-            unregisterReceiver(mOtgReceiver);
-        }
+        unregisterReceiver(mOtgReceiver);
 
         final Toast toast = this.toast.get();
         if (toast != null) {
@@ -1369,9 +1231,8 @@ public class MainActivity extends PermissionsActivity
         registerReceiver(mainActivityHelper.mNotificationReceiver, newFilter);
         registerReceiver(receiver2, new IntentFilter(TAG_INTENT_FILTER_GENERAL));
 
-        if (SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            updateUsbInformation();
-        }
+        updateUsbInformation();
+
     }
 
     /**
@@ -1608,7 +1469,7 @@ public class MainActivity extends PermissionsActivity
                                 break;
                             case MOVE: // moving
                                 // legacy compatibility
-                                if (oparrayList != null && oparrayList.size() != 0) {
+                                if (oparrayList != null && !oparrayList.isEmpty()) {
                                     oparrayListList = new ArrayList<>();
                                     oparrayListList.add(oparrayList);
                                     oparrayList = null;
@@ -1749,34 +1610,27 @@ public class MainActivity extends PermissionsActivity
 
         drawer.setBackgroundColor(colorDrawable.getColor());
 
-        if (SDK_INT >= LOLLIPOP) {
-            // for lollipop devices, the status bar color
-            mainActivity.getWindow().setStatusBarColor(colorDrawable.getColor());
-            if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
+
+        // for lollipop devices, the status bar color
+        mainActivity.getWindow().setStatusBarColor(colorDrawable.getColor());
+        if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
+            mainActivity
+                    .getWindow()
+                    .setNavigationBarColor(PreferenceUtils.getStatusColor(colorDrawable.getColor()));
+        } else {
+            if (getAppTheme().equals(AppTheme.LIGHT)) {
                 mainActivity
                         .getWindow()
-                        .setNavigationBarColor(PreferenceUtils.getStatusColor(colorDrawable.getColor()));
+                        .setNavigationBarColor(Utils.getColor(this, android.R.color.white));
+            } else if (getAppTheme().equals(AppTheme.BLACK)) {
+                mainActivity
+                        .getWindow()
+                        .setNavigationBarColor(Utils.getColor(this, android.R.color.black));
             } else {
-                if (getAppTheme().equals(AppTheme.LIGHT)) {
-                    mainActivity
-                            .getWindow()
-                            .setNavigationBarColor(Utils.getColor(this, android.R.color.white));
-                } else if (getAppTheme().equals(AppTheme.BLACK)) {
-                    mainActivity
-                            .getWindow()
-                            .setNavigationBarColor(Utils.getColor(this, android.R.color.black));
-                } else {
-                    mainActivity
-                            .getWindow()
-                            .setNavigationBarColor(Utils.getColor(this, R.color.holo_dark_background));
-                }
+                mainActivity
+                        .getWindow()
+                        .setNavigationBarColor(Utils.getColor(this, R.color.holo_dark_background));
             }
-        } else if (SDK_INT == KITKAT_WATCH || SDK_INT == KITKAT) {
-
-            // for kitkat devices, the status bar color
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintColor(colorDrawable.getColor());
         }
     }
 
@@ -1960,28 +1814,11 @@ public class MainActivity extends PermissionsActivity
         hideFab(fabConfirmSelection);
     }
 
-    public boolean copyToClipboard(Context context, String text) {
-        try {
-            android.content.ClipboardManager clipboard =
-                    (android.content.ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
-            android.content.ClipData clip =
-                    android.content.ClipData.newPlainText("Path copied to clipboard", text);
-            clipboard.setPrimaryClip(clip);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public void renameBookmark(final String title, final String path) {
         if (dataUtils.containsBooks(new String[]{title, path}) != -1) {
             RenameBookmark renameBookmark = RenameBookmark.getInstance(title, path, getAccent());
-            if (renameBookmark != null) renameBookmark.show(getFragmentManager(), "renamedialog");
+            renameBookmark.show(getFragmentManager(), "renamedialog");
         }
-    }
-
-    public PasteHelper getPaste() {
-        return pasteHelper;
     }
 
     public void setPaste(PasteHelper p) {
@@ -2035,17 +1872,16 @@ public class MainActivity extends PermissionsActivity
             checkForExternalIntent(intent);
             invalidateFragmentAndBundle(null, false);
 
-            if (SDK_INT >= KITKAT) {
-                if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                    SingletonUsbOtg.getInstance().resetUsbOtgRoot();
-                    drawer.refreshDrawer();
-                }
+
+            if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+                SingletonUsbOtg.getInstance().resetUsbOtgRoot();
+                drawer.refreshDrawer();
             }
         }
     }
 
     public void showSMBDialog(String name, String path, boolean edit) {
-        if (path.length() > 0 && name.length() == 0) {
+        if (!path.isEmpty() && name.isEmpty()) {
             int i = dataUtils.containsServer(new String[]{name, path});
             if (i != -1) name = dataUtils.getServers().get(i)[0];
         }
@@ -2060,7 +1896,7 @@ public class MainActivity extends PermissionsActivity
 
     @SuppressLint("CheckResult")
     public void showSftpDialog(String name, String path, boolean edit) {
-        if (path.length() > 0 && name.length() == 0) {
+        if (!path.isEmpty() && name.isEmpty()) {
             int i = dataUtils.containsServer(new String[]{name, path});
             if (i != -1) name = dataUtils.getServers().get(i)[0];
         }
@@ -2185,12 +2021,10 @@ public class MainActivity extends PermissionsActivity
                                 })
                         .subscribeOn(Schedulers.io())
                         .subscribe();
-                // mainActivity.grid.removePath(oldname, oldPath, DataUtils.SMB);
             }
             dataUtils.addServer(s);
             Collections.sort(dataUtils.getServers(), new BookSorter());
             drawer.refreshDrawer();
-            // mainActivity.grid.addPath(name, encryptedPath, DataUtils.SMB, 1);
         }
     }
 

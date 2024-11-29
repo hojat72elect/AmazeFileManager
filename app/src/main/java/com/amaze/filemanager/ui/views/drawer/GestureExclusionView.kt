@@ -3,7 +3,6 @@ package com.amaze.filemanager.ui.views.drawer
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 
@@ -33,11 +32,6 @@ class GestureExclusionView(
     }
 
     private fun updateGestureExclusion() {
-        // Skip this call if we're not running on Android 10+
-        if (Build.VERSION.SDK_INT < 29) {
-            visibility = GONE
-            return
-        }
         visibility = VISIBLE
         setBackgroundColor(resources.getColor(android.R.color.transparent))
         gestureExclusionRects.clear()

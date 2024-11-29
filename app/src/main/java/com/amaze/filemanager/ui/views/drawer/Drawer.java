@@ -785,8 +785,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                     CloudUtil.checkToken(meta.path, mainActivity);
                 }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                        && (meta.path.contains(OTGUtil.PREFIX_OTG)
+                if ((meta.path.contains(OTGUtil.PREFIX_OTG)
                         || meta.path.startsWith(OTGUtil.PREFIX_MEDIA_REMOVABLE))
                         && SingletonUsbOtg.getInstance().getUsbOtgRoot() == null) {
                     MaterialDialog dialog = GeneralDialogCreation.showOtgSafExplanationDialog(mainActivity);

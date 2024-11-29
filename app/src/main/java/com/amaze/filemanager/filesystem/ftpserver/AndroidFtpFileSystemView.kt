@@ -2,11 +2,7 @@ package com.amaze.filemanager.filesystem.ftpserver
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.os.Build.VERSION_CODES.KITKAT
-import android.os.Build.VERSION_CODES.M
 import androidx.documentfile.provider.DocumentFile
-import java.io.File
 import java.net.URI
 import org.apache.ftpserver.ftplet.FileSystemView
 import org.apache.ftpserver.ftplet.FtpFile
@@ -110,13 +106,8 @@ class AndroidFtpFileSystemView(private var context: Context, root: String) : Fil
         }
     }
 
-    private fun createDocumentFileFrom(path: String): DocumentFile {
-        return if (Build.VERSION.SDK_INT in KITKAT until M) {
-            DocumentFile.fromFile(File(path))
-        } else {
-            DocumentFile.fromTreeUri(context, Uri.parse(path))!!
-        }
-    }
+    private fun createDocumentFileFrom(path: String) = DocumentFile.fromTreeUri(context, Uri.parse(path))!!
+
 
     private fun resolveDocumentFileFromRoot(path: String?): DocumentFile? {
         return if (path.isNullOrBlank() or ("/" == path) or ("./" == path)) {

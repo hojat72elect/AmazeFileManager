@@ -1,14 +1,10 @@
 package com.amaze.filemanager.utils.security
 
 import android.content.Context
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.JELLY_BEAN_MR2
-import android.os.Build.VERSION_CODES.M
 import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
-import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.application.AppConfig
 import com.amaze.filemanager.filesystem.files.CryptUtil
@@ -38,15 +34,7 @@ object SecretKeygen {
      *
      * @return AES key for API 23 or above, RSA key for API 18 or above, or else null
      */
-    fun getSecretKey(): Key? {
-        return if (SDK_INT >= M) {
-            getAesSecretKey()
-        } else if (SDK_INT >= JELLY_BEAN_MR2) {
-            getRsaSecretKey()
-        } else {
-            null
-        }
-    }
+    fun getSecretKey() = getAesSecretKey()
 
     /**
      * Gets a secret key from Android key store. If no key has been generated with a given alias then

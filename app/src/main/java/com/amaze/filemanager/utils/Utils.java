@@ -88,27 +88,6 @@ public class Utils {
         return location[1];
     }
 
-    public static void setTint(Context context, AppCompatCheckBox box, int color) {
-        if (Build.VERSION.SDK_INT >= 21) return;
-        ColorStateList sl =
-                new ColorStateList(
-                        new int[][]{
-                                new int[]{-android.R.attr.state_checked}, new int[]{android.R.attr.state_checked}
-                        },
-                        new int[]{getColor(context, R.color.grey), color}
-                );
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            box.setButtonTintList(sl);
-        } else {
-            Drawable drawable =
-                    DrawableCompat.wrap(
-                            ContextCompat.getDrawable(box.getContext(), R.drawable.abc_btn_check_material));
-            DrawableCompat.setTintList(drawable, sl);
-            box.setButtonDrawable(drawable);
-        }
-    }
-
     public static String getDate(@NonNull Context c, long f) {
         return String.format(
                 DATE_TIME_FORMAT,
@@ -118,18 +97,11 @@ public class Utils {
     }
 
     /**
-     * Gets color
-     *
      * @param color the resource id for the color
      * @return the color
      */
-    @SuppressWarnings("deprecation")
     public static int getColor(Context c, @ColorRes int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return c.getColor(color);
-        } else {
-            return c.getResources().getColor(color);
-        }
+        return c.getColor(color);
     }
 
     public static int dpToPx(Context c, int dp) {
@@ -237,14 +209,11 @@ public class Utils {
         switch (baseFile.getMode()) {
             case FILE:
             case ROOT:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    return FileProvider.getUriForFile(
-                            context, context.getPackageName(), new File(baseFile.getPath()));
-                } else {
-                    return Uri.fromFile(new File(baseFile.getPath()));
-                }
+                return FileProvider.getUriForFile(context, context.getPackageName(), new File(baseFile.getPath()));
+
             case OTG:
                 return OTGUtil.getDocumentFile(baseFile.getPath(), context, true).getUri();
+
             case SMB:
             case DROPBOX:
             case GDRIVE:
@@ -253,6 +222,7 @@ public class Utils {
                 Toast.makeText(context, context.getString(R.string.smb_launch_error), Toast.LENGTH_LONG)
                         .show();
                 return null;
+
             default:
                 return null;
         }
@@ -286,7 +256,6 @@ public class Utils {
         return String.format("%02d:%02d", min, sec);
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
     public static File getVolumeDirectory(StorageVolume volume) {
         try {
             Field f = StorageVolume.class.getDeclaredField("mPath");

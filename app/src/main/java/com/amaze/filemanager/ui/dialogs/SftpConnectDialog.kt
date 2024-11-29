@@ -825,7 +825,7 @@ class SftpConnectDialog : DialogFragment() {
             if (true == binding.passwordET.text?.isEmpty()) {
                 if (edit) {
                     requireArguments().getString(ARG_PASSWORD, null)?.run {
-                        PasswordUtil.decryptPassword(AppConfig.getInstance(), this)
+                        PasswordUtil.decryptPassword(this)
                     }
                 } else {
                     requireArguments().getString(ARG_PASSWORD, null)

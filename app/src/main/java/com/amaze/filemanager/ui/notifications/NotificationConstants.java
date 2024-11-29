@@ -1,17 +1,10 @@
 package com.amaze.filemanager.ui.notifications;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.os.Build;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import com.amaze.filemanager.R;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 17/9/2017, at 13:34.
- */
 public class NotificationConstants {
 
     public static final int COPY_ID = 0;
@@ -31,42 +24,16 @@ public class NotificationConstants {
     /**
      * This creates a channel (API >= 26) or applies the correct metadata to a notification (API < 26)
      */
-    public static void setMetadata(
-            Context context, NotificationCompat.Builder notification, int type
-    ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            switch (type) {
-                case TYPE_NORMAL:
-                    createNormalChannel(context);
-                    break;
-                case TYPE_FTP:
-                    createFtpChannel(context);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unrecognized type:" + type);
-            }
-        } else {
-            switch (type) {
-                case TYPE_NORMAL:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        notification.setCategory(Notification.CATEGORY_SERVICE);
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        notification.setPriority(Notification.PRIORITY_MIN);
-                    }
-                    break;
-                case TYPE_FTP:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        notification.setCategory(Notification.CATEGORY_SERVICE);
-                        notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        notification.setPriority(Notification.PRIORITY_MAX);
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unrecognized type:" + type);
-            }
+    public static void setMetadata(Context context, int type) {
+        switch (type) {
+            case TYPE_NORMAL:
+                createNormalChannel(context);
+                break;
+            case TYPE_FTP:
+                createFtpChannel(context);
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized type:" + type);
         }
     }
 

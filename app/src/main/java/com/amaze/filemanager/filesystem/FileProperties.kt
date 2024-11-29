@@ -4,8 +4,6 @@ import android.app.usage.StorageStatsManager
 import android.content.ContentResolver.SCHEME_CONTENT
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.os.Build.VERSION_CODES.O
 import android.os.Environment
 import android.os.storage.StorageManager
 import android.provider.DocumentsContract
@@ -197,7 +195,7 @@ object FileProperties {
     @JvmStatic
     fun isValidFilename(text: String): Boolean {
         val filenameRegex =
-            Pattern.compile("[\\\\\\/:\\*\\?\"<>\\|\\x01-\\x1F\\x7F]", Pattern.CASE_INSENSITIVE)
+            Pattern.compile("[\\\\/:*?\"<>|\\x01-\\x1F\\x7F]", Pattern.CASE_INSENSITIVE)
 
         // It's not easy to use regex to detect single/double dot while leaving valid values
         // (filename.zip) behind...
@@ -256,13 +254,11 @@ object FileProperties {
 
     @JvmStatic
     fun getDeviceStorageRemainingSpace(volume: String = STORAGE_PRIMARY): Long {
-        return if (STORAGE_PRIMARY.equals(volume)) {
-            if (Build.VERSION.SDK_INT < O) {
-                Environment.getExternalStorageDirectory().freeSpace
-            } else {
-                AppConfig.getInstance().getSystemService(StorageStatsManager::class.java)
-                    .getFreeBytes(StorageManager.UUID_DEFAULT)
-            }
+        return if (STORAGE_PRIMARY == volume) {
+
+            AppConfig.getInstance().getSystemService(StorageStatsManager::class.java)
+                .getFreeBytes(StorageManager.UUID_DEFAULT)
+
         } else {
             0L
         }

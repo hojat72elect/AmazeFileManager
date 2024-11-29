@@ -1,5 +1,6 @@
 package com.amaze.filemanager.ui.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.BroadcastReceiver
 import android.content.ContentResolver
@@ -10,10 +11,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.LOLLIPOP
-import android.os.Build.VERSION_CODES.M
-import android.os.Build.VERSION_CODES.O
 import android.os.Bundle
 import android.os.Process
 import android.provider.DocumentsContract
@@ -342,13 +339,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun shouldUseSafFileSystem(): Boolean {
-        return mainActivity.prefs.getBoolean(
-            FtpService.KEY_PREFERENCE_SAF_FILESYSTEM,
-            false,
-        ) &&
-                SDK_INT >= M
-    }
+    private fun shouldUseSafFileSystem() = mainActivity.prefs.getBoolean(FtpService.KEY_PREFERENCE_SAF_FILESYSTEM, false)
 
     private val mWifiReceiver: BroadcastReceiver =
         object : BroadcastReceiver() {
@@ -418,7 +409,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         return registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
         ) {
-            if (it.resultCode == RESULT_OK && SDK_INT >= LOLLIPOP) {
+            if (it.resultCode == RESULT_OK) {
                 val directoryUri = it.data?.data ?: return@registerForActivityResult
                 requireContext().contentResolver.takePersistableUriPermission(
                     directoryUri,
@@ -465,11 +456,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                                     intent.runIfDocumentsUIExists(mainActivity) {
                                         activityResultHandlerOnFtpServerPathGrantedSafAccess.launch(
                                             intent.also {
-                                                if (SDK_INT >= O &&
-                                                    directoryUri.startsWith(
-                                                        defaultPathFromPreferences
-                                                    )
-                                                ) {
+                                                if (directoryUri.startsWith(defaultPathFromPreferences)) {
                                                     it.putExtra(
                                                         EXTRA_INITIAL_URI,
                                                         DocumentsContract.buildDocumentUri(
@@ -616,6 +603,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         setListener()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListener() {
         sharedPath.setOnTouchListener { _, event ->
 
@@ -822,7 +810,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                 if (encryptedPassword == "") {
                     ""
                 } else {
-                    PasswordUtil.decryptPassword(requireContext(), encryptedPassword)
+                    PasswordUtil.decryptPassword(encryptedPassword)
                 }
             }.onFailure {
                 log.warn("failed to decrypt ftp server password", it)

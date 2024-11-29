@@ -1,9 +1,5 @@
 package com.amaze.filemanager.ui.fragments;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.JELLY_BEAN;
-import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR2;
-import static android.os.Build.VERSION_CODES.Q;
 import static com.amaze.filemanager.filesystem.FileProperties.ANDROID_DATA_DIRS;
 import static com.amaze.filemanager.filesystem.FileProperties.ANDROID_DEVICE_DATA_DIRS;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_DIVIDERS;
@@ -11,6 +7,7 @@ import static com.amaze.filemanager.ui.fragments.preferencefragments.Preferences
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_HIDDENFILES;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_THUMB;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -32,18 +29,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -158,24 +150,23 @@ public class MainFragment extends Fragment
                 }
             };
     private MainActivityViewModel mainActivityViewModel;
-    private boolean hideFab = false;    private final ActivityResultLauncher<Intent> handleDocumentUriForRestrictedDirectories =
+    private boolean hideFab = false;
+    private final ActivityResultLauncher<Intent> handleDocumentUriForRestrictedDirectories =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
-                        if (SDK_INT >= Q) {
-                            if (result.getData() != null && getContext() != null) {
-                                getContext()
-                                        .getContentResolver()
-                                        .takePersistableUriPermission(
-                                                result.getData().getData(),
-                                                Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                                        );
-                                SafRootHolder.setUriRoot(result.getData().getData());
-                                loadlist(result.getData().getDataString(), false, OpenMode.DOCUMENT_FILE, true);
-                            } else if (getContext() != null) {
-                                AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
-                            }
+                        if (result.getData() != null && getContext() != null) {
+                            getContext()
+                                    .getContentResolver()
+                                    .takePersistableUriPermission(
+                                            result.getData().getData(),
+                                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                    );
+                            SafRootHolder.setUriRoot(result.getData().getData());
+                            loadlist(result.getData().getDataString(), false, OpenMode.DOCUMENT_FILE, true);
+                        } else if (getContext() != null) {
+                            AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
                         }
                     }
             );
@@ -214,6 +205,7 @@ public class MainFragment extends Fragment
 
     @Override
     @SuppressWarnings("PMD.NPathComplexity")
+    @SuppressLint("ClickableViewAccessibility")
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mainFragmentViewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
@@ -230,21 +222,16 @@ public class MainFragment extends Fragment
                     return false;
                 };
         listView.setOnTouchListener(onTouchListener);
-        //    listView.setOnDragListener(new MainFragmentDragListener());
         mToolbarContainer.setOnTouchListener(onTouchListener);
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> updateList(true));
 
-        // String itemsstring = res.getString(R.string.items);// TODO: 23/5/2017 use or delete
         mToolbarContainer.setBackgroundColor(
                 MainActivity.currentTab == 1
                         ? mainFragmentViewModel.getPrimaryTwoColor()
                         : mainFragmentViewModel.getPrimaryColor());
-
-        //   listView.setPadding(listView.getPaddingLeft(), paddingTop, listView.getPaddingRight(),
-        // listView.getPaddingBottom());
 
         setHasOptionsMenu(false);
         initNoFileLayout();
@@ -270,9 +257,7 @@ public class MainFragment extends Fragment
             setGridLayoutSpanSizeLookup(mLayoutManagerGrid);
             listView.setLayoutManager(mLayoutManagerGrid);
         }
-        // use a linear layout manager
-        // View footerView = getActivity().getLayoutInflater().inflate(R.layout.divider, null);// TODO:
-        // 23/5/2017 use or delete
+
         dividerItemDecoration =
                 new DividerItemDecoration(requireActivity(), false, getBoolean(PREFERENCE_SHOW_DIVIDERS));
         listView.addItemDecoration(dividerItemDecoration);
@@ -373,7 +358,7 @@ public class MainFragment extends Fragment
 
     private void loadViews() {
         if (mainFragmentViewModel.getCurrentPath() != null) {
-            if (mainFragmentViewModel.getListElements().size() == 0) {
+            if (mainFragmentViewModel.getListElements().isEmpty()) {
                 loadlist(
                         mainFragmentViewModel.getCurrentPath(),
                         true,
@@ -475,7 +460,9 @@ public class MainFragment extends Fragment
                 }
             }
         }
-    }    private final BroadcastReceiver receiver2 =
+    }
+
+    private final BroadcastReceiver receiver2 =
             new BroadcastReceiver() {
 
                 @Override
@@ -626,7 +613,7 @@ public class MainFragment extends Fragment
         OpenMode openMode = providedOpenMode;
         String actualPath = FileProperties.remapPathForApi30OrAbove(providedPath, false);
 
-        if (SDK_INT >= Q && ArraysKt.any(ANDROID_DATA_DIRS, providedPath::contains)) {
+        if (ArraysKt.any(ANDROID_DATA_DIRS, providedPath::contains)) {
             openMode = loadPathInQ(actualPath, providedPath, providedOpenMode);
         }
         // Monkeypatch :( to fix problems with unexpected non content URI path while openMode is still
@@ -768,7 +755,6 @@ public class MainFragment extends Fragment
      * @param back     if we're coming back from any directory and want the scroll to be restored
      * @param path     the path for the adapter
      * @param openMode the type of file being created
-     * @param results  is the list of elements a result from search
      * @param grid     whether to set grid view or list view
      */
     public void setListElements(
@@ -944,18 +930,18 @@ public class MainFragment extends Fragment
      * pending opened files in application cache
      */
     private void resumeDecryptOperations() {
-        if (SDK_INT >= JELLY_BEAN_MR2) {
-            (requireMainActivity())
-                    .registerReceiver(
-                            decryptReceiver, new IntentFilter(EncryptDecryptUtils.DECRYPT_BROADCAST));
-            if (!mainFragmentViewModel.isEncryptOpen()
-                    && !Utils.isNullOrEmpty(mainFragmentViewModel.getEncryptBaseFiles())) {
-                // we've opened the file and are ready to delete it
-                new DeleteTask(requireMainActivity(), true)
-                        .execute(mainFragmentViewModel.getEncryptBaseFiles());
-                mainFragmentViewModel.setEncryptBaseFiles(new ArrayList<>());
-            }
+
+        (requireMainActivity())
+                .registerReceiver(
+                        decryptReceiver, new IntentFilter(EncryptDecryptUtils.DECRYPT_BROADCAST));
+        if (!mainFragmentViewModel.isEncryptOpen()
+                && !Utils.isNullOrEmpty(mainFragmentViewModel.getEncryptBaseFiles())) {
+            // we've opened the file and are ready to delete it
+            new DeleteTask(requireMainActivity(), true)
+                    .execute(mainFragmentViewModel.getEncryptBaseFiles());
+            mainFragmentViewModel.setEncryptBaseFiles(new ArrayList<>());
         }
+
     }
 
     private void startFileObserver() {
@@ -1236,10 +1222,8 @@ public class MainFragment extends Fragment
         if (customFileObserver != null) {
             customFileObserver.stopWatching();
         }
+        (requireActivity()).unregisterReceiver(decryptReceiver);
 
-        if (SDK_INT >= JELLY_BEAN_MR2) {
-            (requireActivity()).unregisterReceiver(decryptReceiver);
-        }
     }
 
     public ArrayList<LayoutElementParcelable> addToSmb(
@@ -1343,39 +1327,6 @@ public class MainFragment extends Fragment
             MediaConnectionUtils.scanFile(
                     requireMainActivity(), new HybridFile[]{new HybridFile(OpenMode.FILE, path)});
         }
-    }
-
-    public void addShortcut(LayoutElementParcelable path) {
-        // Adding shortcut for MainActivity
-        // on Home screen
-        final Context ctx = requireContext();
-
-        if (!ShortcutManagerCompat.isRequestPinShortcutSupported(requireContext())) {
-            Toast.makeText(
-                            getActivity(),
-                            getString(R.string.add_shortcut_not_supported_by_launcher),
-                            Toast.LENGTH_SHORT
-                    )
-                    .show();
-            return;
-        }
-
-        Intent shortcutIntent = new Intent(ctx, MainActivity.class);
-        shortcutIntent.putExtra("path", path.desc);
-        shortcutIntent.setAction(Intent.ACTION_MAIN);
-        shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        // Using file path as shortcut id.
-        ShortcutInfoCompat info =
-                new ShortcutInfoCompat.Builder(ctx, path.desc)
-                        .setActivity(requireMainActivity().getComponentName())
-                        .setIcon(IconCompat.createWithResource(ctx, R.mipmap.ic_launcher))
-                        .setIntent(shortcutIntent)
-                        .setLongLabel(path.desc)
-                        .setShortLabel(new File(path.desc).getName())
-                        .build();
-
-        ShortcutManagerCompat.requestPinShortcut(ctx, info, null);
     }
 
     @Override
@@ -1485,14 +1436,9 @@ public class MainFragment extends Fragment
         }
         // TODO: This trigger causes to lose selected items in case of grid view,
         //  but is necessary to adjust columns for grid view when screen is rotated
-    /*if (!mainFragmentViewModel.isList()) {
-      loadViews();
-    }*/
-        if (android.os.Build.VERSION.SDK_INT >= JELLY_BEAN) {
-            mToolbarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        } else {
-            mToolbarContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-        }
+
+        mToolbarContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
     }
 
     public @Nullable MainFragmentViewModel getMainFragmentViewModel() {
@@ -1553,10 +1499,5 @@ public class MainFragment extends Fragment
     public void setHideFab(boolean hideFab) {
         this.hideFab = hideFab;
     }
-
-
-
-
-
 
 }

@@ -1,10 +1,8 @@
 package com.amaze.filemanager.ui.views.appbar;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
-import static android.os.Build.VERSION.SDK_INT;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -390,29 +388,22 @@ public class SearchView {
         clearRecyclerView();
 
         Animator animator;
-        if (SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            int[] searchCoords = new int[2];
-            View searchItem =
-                    appbar
-                            .getToolbar()
-                            .findViewById(R.id.search); // It could change position, get it every time
-            searchViewEditText.setText("");
-            searchItem.getLocationOnScreen(searchCoords);
-            animator =
-                    ViewAnimationUtils.createCircularReveal(
-                            searchViewLayout,
-                            searchCoords[0] + 32,
-                            searchCoords[1] - 16,
-                            START_RADIUS,
-                            endRadius
-                    );
-        } else {
-            // TODO:ViewAnimationUtils.createCircularReveal
-            animator = ObjectAnimator.ofFloat(searchViewLayout, "alpha", 0f, 1f);
 
-            searchViewLayout.bringToFront(); // since android:elevation won't work
-            searchViewEditText.requestFocus(); // for keyboard auto-popup
-        }
+        int[] searchCoords = new int[2];
+        View searchItem =
+                appbar
+                        .getToolbar()
+                        .findViewById(R.id.search); // It could change position, get it every time
+        searchViewEditText.setText("");
+        searchItem.getLocationOnScreen(searchCoords);
+        animator =
+                ViewAnimationUtils.createCircularReveal(
+                        searchViewLayout,
+                        searchCoords[0] + 32,
+                        searchCoords[1] - 16,
+                        START_RADIUS,
+                        endRadius
+                );
 
         mainActivity.showSmokeScreen();
         mainActivity.hideFab();
@@ -533,26 +524,14 @@ public class SearchView {
         final int END_RADIUS = 16;
         int startRadius = Math.max(searchViewLayout.getWidth(), searchViewLayout.getHeight());
         Animator animator;
-        if (SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            int[] searchCoords = new int[2];
-            View searchItem =
-                    appbar
-                            .getToolbar()
-                            .findViewById(R.id.search); // It could change position, get it every time
-            searchViewEditText.setText("");
-            searchItem.getLocationOnScreen(searchCoords);
-            animator =
-                    ViewAnimationUtils.createCircularReveal(
-                            searchViewLayout,
-                            searchCoords[0] + 32,
-                            searchCoords[1] - 16,
-                            startRadius,
-                            END_RADIUS
-                    );
-        } else {
-            // TODO: ViewAnimationUtils.createCircularReveal
-            animator = ObjectAnimator.ofFloat(searchViewLayout, "alpha", 1f, 0f);
-        }
+
+        int[] searchCoords = new int[2];
+        View searchItem = appbar
+                .getToolbar()
+                .findViewById(R.id.search); // It could change position, get it every time
+        searchViewEditText.setText("");
+        searchItem.getLocationOnScreen(searchCoords);
+        animator = ViewAnimationUtils.createCircularReveal(searchViewLayout, searchCoords[0] + 32, searchCoords[1] - 16, startRadius, END_RADIUS);
 
         clearRecyclerView();
 

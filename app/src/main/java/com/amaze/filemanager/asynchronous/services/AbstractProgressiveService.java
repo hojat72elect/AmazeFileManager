@@ -2,9 +2,8 @@ package com.amaze.filemanager.asynchronous.services;
 
 import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.S;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -45,14 +44,9 @@ public abstract class AbstractProgressiveService extends Service
      *
      * @param pendingIntentFlag proposed PendingIntent flag
      * @return original PendingIntent flag if SDK < 32, otherwise adding FLAG_IMMUTABLE flag.
-     * @see PendingIntent.FLAG_IMMUTABLE
      */
     public static int getPendingIntentFlag(final int pendingIntentFlag) {
-        if (SDK_INT < S) {
-            return pendingIntentFlag;
-        } else {
-            return pendingIntentFlag | FLAG_IMMUTABLE;
-        }
+        return pendingIntentFlag | FLAG_IMMUTABLE;
     }
 
     @Override
@@ -94,6 +88,7 @@ public abstract class AbstractProgressiveService extends Service
 
     protected abstract void clearDataPackages();
 
+    @SuppressLint("MissingPermission")
     @Override
     public void progressHalted() {
         // set notification to indeterminate unless progress resumes
@@ -110,6 +105,7 @@ public abstract class AbstractProgressiveService extends Service
         getNotificationManager().notify(getNotificationId(), getNotificationBuilder().build());
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void progressResumed() {
         // set notification to indeterminate unless progress resumes
@@ -291,7 +287,7 @@ public abstract class AbstractProgressiveService extends Service
 
     /**
      * Returns the {@link #getDataPackages()} list which contains data to be transferred to {@link
-     * ProcessViewerFragment} Method call is synchronized so as to avoid modifying the list by {@link
+     * ProcessViewerFragment} Method call is synchronized so as to avoid modifying the list by {
      * ServiceWatcherUtil#handlerThread} while {@link MainActivity#runOnUiThread(Runnable)} is
      * executing the callbacks in {@link ProcessViewerFragment}
      */
@@ -305,7 +301,7 @@ public abstract class AbstractProgressiveService extends Service
 
     /**
      * Puts a {@link DatapointParcelable} into a list Method call is synchronized so as to avoid
-     * modifying the list by {@link ServiceWatcherUtil#handlerThread} while {@link
+     * modifying the list by {ServiceWatcherUtil#handlerThread} while {@link
      * MainActivity#runOnUiThread(Runnable)} is executing the callbacks in {@link
      * ProcessViewerFragment}
      */
@@ -321,6 +317,7 @@ public abstract class AbstractProgressiveService extends Service
     /**
      * Displays a notification, sends intent and cancels progress if there were some failures
      */
+    @SuppressLint("MissingPermission")
     void finalizeNotification(ArrayList<HybridFile> failedOps, boolean move) {
         clearDataPackages();
 
@@ -359,6 +356,7 @@ public abstract class AbstractProgressiveService extends Service
     /**
      * Initializes notification views to initial (processing..) state
      */
+    @SuppressLint("MissingPermission")
     public void initNotificationViews() {
         getNotificationCustomViewBig()
                 .setTextViewText(

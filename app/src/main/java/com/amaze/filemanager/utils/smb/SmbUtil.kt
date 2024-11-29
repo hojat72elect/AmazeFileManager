@@ -40,7 +40,7 @@ object SmbUtil {
         path: String,
     ): String {
         return buildPath(path, withPassword = {
-            PasswordUtil.decryptPassword(context, it.urlDecoded())
+            PasswordUtil.decryptPassword(it.urlDecoded())
         })
     }
 

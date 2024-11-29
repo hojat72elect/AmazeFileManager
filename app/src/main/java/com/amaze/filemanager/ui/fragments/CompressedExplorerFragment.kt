@@ -1,14 +1,12 @@
 package com.amaze.filemanager.ui.fragments
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.KITKAT
-import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.MediaStore
@@ -415,17 +413,11 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                         ),
                     ),
                 )
-                if (SDK_INT >= LOLLIPOP) {
-                    val window = requireActivity().window
-                    if (requireMainActivity()
-                            .getBoolean(PreferencesConstants.PREFERENCE_COLORED_NAVIGATION)
-                    ) {
-                        window.navigationBarColor =
-                            Utils.getColor(context, android.R.color.black)
-                    }
-                }
-                if (SDK_INT < KITKAT) {
-                    requireMainActivity().appbar.toolbar.visibility = View.GONE
+
+                val window = requireActivity().window
+                if (requireMainActivity().getBoolean(PreferencesConstants.PREFERENCE_COLORED_NAVIGATION)) {
+                    window.navigationBarColor =
+                        Utils.getColor(context, android.R.color.black)
                 }
                 return true
             }
@@ -518,15 +510,15 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                     )
                 selection = false
                 requireMainActivity().updateViews(ColorDrawable(primaryColor))
-                if (SDK_INT >= LOLLIPOP) {
-                    val window = requireActivity().window
-                    if (requireMainActivity()
-                            .getBoolean(PreferencesConstants.PREFERENCE_COLORED_NAVIGATION)
-                    ) {
-                        window.navigationBarColor =
-                            requireMainActivity().skinStatusBar
-                    }
+
+                val window = requireActivity().window
+                if (requireMainActivity()
+                        .getBoolean(PreferencesConstants.PREFERENCE_COLORED_NAVIGATION)
+                ) {
+                    window.navigationBarColor =
+                        requireMainActivity().skinStatusBar
                 }
+
                 mActionMode = null
             }
         }
@@ -592,6 +584,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
             }
         }
 
+    @SuppressLint("CheckResult")
     override fun changePath(path: String) {
         var folder = path
         if (folder.startsWith("/")) folder = folder.substring(1)

@@ -132,8 +132,7 @@ public class MainActivityHelper {
                     AppCompatEditText textfield =
                             dialog.getCustomView().findViewById(R.id.singleedittext_input);
                     String parentPath = path;
-                    if (OpenMode.DOCUMENT_FILE.equals(openMode)
-                            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    if (OpenMode.DOCUMENT_FILE.equals(openMode)) {
                         parentPath = FileProperties.remapPathForApi30OrAbove(path, false);
                     }
                     mkDir(
@@ -443,34 +442,22 @@ public class MainActivityHelper {
             }
         } else {
             File folder = new File(path);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (ExternalSdCardOperation.isOnExtSdCard(folder, context)) {
-                    if (!folder.exists() || !folder.isDirectory()) {
-                        return DOESNT_EXIST;
-                    }
 
-                    // On Android 5, trigger storage access framework.
-                    if (!FileProperties.isWritableNormalOrSaf(folder, context)) {
-                        guideDialogForLEXA(folder.getPath());
-                        return CAN_CREATE_FILES;
-                    }
+            if (ExternalSdCardOperation.isOnExtSdCard(folder, context)) {
+                if (!folder.exists() || !folder.isDirectory()) {
+                    return DOESNT_EXIST;
+                }
 
-                    return WRITABLE_OR_ON_SDCARD;
-                } else if (FileProperties.isWritable(new File(folder, FileUtils.DUMMY_FILE))) {
-                    return WRITABLE_OR_ON_SDCARD;
-                } else return DOESNT_EXIST;
-            } else if (Build.VERSION.SDK_INT == 19) {
-                if (ExternalSdCardOperation.isOnExtSdCard(folder, context)) {
-                    // Assume that Kitkat workaround works
-                    return WRITABLE_OR_ON_SDCARD;
-                } else if (FileProperties.isWritable(new File(folder, FileUtils.DUMMY_FILE))) {
-                    return WRITABLE_OR_ON_SDCARD;
-                } else return DOESNT_EXIST;
+                // On Android 5, trigger storage access framework.
+                if (!FileProperties.isWritableNormalOrSaf(folder, context)) {
+                    guideDialogForLEXA(folder.getPath());
+                    return CAN_CREATE_FILES;
+                }
+
+                return WRITABLE_OR_ON_SDCARD;
             } else if (FileProperties.isWritable(new File(folder, FileUtils.DUMMY_FILE))) {
                 return WRITABLE_OR_ON_SDCARD;
-            } else {
-                return DOESNT_EXIST;
-            }
+            } else return DOESNT_EXIST;
         }
     }
 

@@ -6,7 +6,6 @@ import static com.amaze.filemanager.utils.Utils.openURL;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +34,6 @@ import org.slf4j.LoggerFactory;
 public class AboutActivity extends ThemedActivity implements View.OnClickListener {
     public static final String PACKAGE_AMAZE_UTILS = "com.amaze.fileutilities";
     public static final String URL_AMAZE_UTILS = "market://details?id=" + PACKAGE_AMAZE_UTILS;
-    public static final String URL_AMAZE_UTILS_FDROID =
-            "https://f-droid.org/en/packages/" + PACKAGE_AMAZE_UTILS + "/";
     private static final int HEADER_HEIGHT = 1024;
     private static final int HEADER_WIDTH = 500;
     private static final String URL_AUTHOR1_GITHUB = "https://github.com/arpitkh96";
@@ -63,15 +60,7 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            if (getAppTheme().equals(AppTheme.DARK)) {
-                setTheme(R.style.aboutDark);
-            } else if (getAppTheme().equals(AppTheme.BLACK)) {
-                setTheme(R.style.aboutBlack);
-            } else {
-                setTheme(R.style.aboutLight);
-            }
-        }
+
         setContentView(R.layout.activity_about);
 
         mAppBarLayout = findViewById(R.id.appBarLayout);
@@ -104,9 +93,7 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
                                             Utils.getColor(AboutActivity.this, R.color.primary_blue));
                             mCollapsingToolbarLayout.setContentScrimColor(mutedColor);
                             mCollapsingToolbarLayout.setStatusBarScrimColor(darkMutedColor);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                getWindow().setStatusBarColor(darkMutedColor);
-                            }
+                            getWindow().setStatusBarColor(darkMutedColor);
                         });
 
         mAppBarLayout.addOnOffsetChangedListener(
@@ -118,17 +105,16 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
                 (v, hasFocus) -> {
                     mAppBarLayout.setExpanded(hasFocus, true);
                 });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
-                getWindow().setNavigationBarColor(PreferenceUtils.getStatusColor(getPrimary()));
+
+        if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
+            getWindow().setNavigationBarColor(PreferenceUtils.getStatusColor(getPrimary()));
+        } else {
+            if (getAppTheme().equals(AppTheme.LIGHT)) {
+                getWindow().setNavigationBarColor(Utils.getColor(this, android.R.color.white));
+            } else if (getAppTheme().equals(AppTheme.BLACK)) {
+                getWindow().setNavigationBarColor(Utils.getColor(this, android.R.color.black));
             } else {
-                if (getAppTheme().equals(AppTheme.LIGHT)) {
-                    getWindow().setNavigationBarColor(Utils.getColor(this, android.R.color.white));
-                } else if (getAppTheme().equals(AppTheme.BLACK)) {
-                    getWindow().setNavigationBarColor(Utils.getColor(this, android.R.color.black));
-                } else {
-                    getWindow().setNavigationBarColor(Utils.getColor(this, R.color.holo_dark_background));
-                }
+                getWindow().setNavigationBarColor(Utils.getColor(this, R.color.holo_dark_background));
             }
         }
     }

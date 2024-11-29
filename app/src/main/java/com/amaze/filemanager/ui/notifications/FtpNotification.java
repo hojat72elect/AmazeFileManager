@@ -57,7 +57,7 @@ public class FtpNotification {
             builder.addAction(stopIcon, stopText, stopPendingIntent);
         }
 
-        NotificationConstants.setMetadata(context, builder, NotificationConstants.TYPE_FTP);
+        NotificationConstants.setMetadata(context, NotificationConstants.TYPE_FTP);
 
         return builder;
     }

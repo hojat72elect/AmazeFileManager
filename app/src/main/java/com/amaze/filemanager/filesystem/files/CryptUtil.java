@@ -1,9 +1,5 @@
 package com.amaze.filemanager.filesystem.files;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR2;
-import static android.os.Build.VERSION_CODES.KITKAT;
-
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,15 +18,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
-import kotlin.io.ByteStreamsKt;
-import kotlin.io.ConstantsKt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -147,15 +139,10 @@ public class CryptUtil {
      * android.hardware.fingerprint.FingerprintManager}
      */
     public static Cipher initCipher() throws GeneralSecurityException {
-        Cipher cipher = null;
-        if (SDK_INT >= KITKAT) {
-            cipher = Cipher.getInstance(ALGO_AES);
-            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, IV.getBytes());
-            cipher.init(Cipher.ENCRYPT_MODE, SecretKeygen.INSTANCE.getSecretKey(), gcmParameterSpec);
-        } else if (SDK_INT >= JELLY_BEAN_MR2) {
-            cipher = Cipher.getInstance(ALGO_AES);
-            cipher.init(Cipher.ENCRYPT_MODE, SecretKeygen.INSTANCE.getSecretKey());
-        }
+        Cipher cipher = Cipher.getInstance(ALGO_AES);
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, IV.getBytes());
+        cipher.init(Cipher.ENCRYPT_MODE, SecretKeygen.INSTANCE.getSecretKey(), gcmParameterSpec);
+
         return cipher;
     }
 
@@ -340,43 +327,30 @@ public class CryptUtil {
 
         Cipher cipher = Cipher.getInstance(ALGO_AES);
         AlgorithmParameterSpec parameterSpec;
-        if (SDK_INT >= KITKAT) {
-            parameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, IV.getBytes());
-        } else {
-            parameterSpec = new IvParameterSpec(IV.getBytes());
-        }
+        parameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, IV.getBytes());
 
-        Key secretKey = SecretKeygen.INSTANCE.getSecretKey();
-        if (secretKey == null) {
-            // Discard crypto setup objects and just pipe input to output
-            parameterSpec = null;
-            cipher = null;
-            ByteStreamsKt.copyTo(inputStream, outputStream, ConstantsKt.DEFAULT_BUFFER_SIZE);
+        cipher.init(operationMode, SecretKeygen.INSTANCE.getSecretKey(), parameterSpec);
+
+        byte[] buffer = new byte[GenericCopyUtil.DEFAULT_BUFFER_SIZE];
+        int count;
+
+        CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, cipher);
+
+        try {
+            while ((count = inputStream.read(buffer)) != -1) {
+                if (!progressHandler.getCancelled()) {
+                    cipherOutputStream.write(buffer, 0, count);
+                    ServiceWatcherUtil.position += count;
+                } else break;
+            }
+        } catch (Exception x) {
+            LOG.error("I/O error writing output", x);
+        } finally {
+            cipherOutputStream.flush();
+            cipherOutputStream.close();
             inputStream.close();
             outputStream.close();
-        } else {
-            cipher.init(operationMode, SecretKeygen.INSTANCE.getSecretKey(), parameterSpec);
-
-            byte[] buffer = new byte[GenericCopyUtil.DEFAULT_BUFFER_SIZE];
-            int count;
-
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, cipher);
-
-            try {
-                while ((count = inputStream.read(buffer)) != -1) {
-                    if (!progressHandler.getCancelled()) {
-                        cipherOutputStream.write(buffer, 0, count);
-                        ServiceWatcherUtil.position += count;
-                    } else break;
-                }
-            } catch (Exception x) {
-                LOG.error("I/O error writing output", x);
-            } finally {
-                cipherOutputStream.flush();
-                cipherOutputStream.close();
-                inputStream.close();
-                outputStream.close();
-            }
         }
+
     }
 }

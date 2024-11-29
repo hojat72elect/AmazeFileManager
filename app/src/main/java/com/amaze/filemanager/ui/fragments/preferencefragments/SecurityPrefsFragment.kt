@@ -5,7 +5,6 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.fingerprint.FingerprintManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -42,7 +41,7 @@ class SecurityPrefsFragment : BasePrefsFragment() {
                 )
                     .show()
                 false
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            } else if (
                 fingerprintManager?.hasEnrolledFingerprints() == false
             ) {
                 Toast.makeText(
@@ -52,9 +51,7 @@ class SecurityPrefsFragment : BasePrefsFragment() {
                 )
                     .show()
                 false
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                keyguardManager?.isKeyguardSecure == false
-            ) {
+            } else if (keyguardManager?.isKeyguardSecure == false) {
                 Toast.makeText(
                     activity,
                     resources.getString(R.string.crypt_fingerprint_no_security),
@@ -88,7 +85,7 @@ class SecurityPrefsFragment : BasePrefsFragment() {
                     ) {
 
                         // password is set, try to decrypt
-                        PasswordUtil.decryptPassword(activity, preferencePassword)
+                        PasswordUtil.decryptPassword(preferencePassword)
                     } else {
                         // no password set in preferences, just leave the field empty
                         ""
@@ -172,35 +169,22 @@ class SecurityPrefsFragment : BasePrefsFragment() {
                 PreferencesConstants.PREFERENCE_CRYPT_FINGERPRINT,
             )
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 ||
-            activity.prefs.getBoolean(
-                PreferencesConstants.PREFERENCE_CRYPT_FINGERPRINT,
-                false,
-            )
-        ) {
+        if (activity.prefs.getBoolean(PreferencesConstants.PREFERENCE_CRYPT_FINGERPRINT, false)) {
             // encryption feature not available
             masterPasswordPreference?.isEnabled = false
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // finger print sensor
-            keyguardManager =
-                activity.getSystemService(Context.KEYGUARD_SERVICE)
-                        as KeyguardManager?
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                fingerprintManager =
-                    activity.getSystemService(Context.FINGERPRINT_SERVICE)
-                            as FingerprintManager?
-                if (fingerprintManager?.isHardwareDetected == true) {
-                    checkBoxFingerprint?.isEnabled = true
-                }
-            }
 
-            checkBoxFingerprint?.onPreferenceChangeListener = onClickFingerprint
-        } else {
-            // fingerprint manager class not defined in the framework
-            checkBoxFingerprint?.isEnabled = false
-        }
+        // finger print sensor
+        keyguardManager =
+            activity.getSystemService(Context.KEYGUARD_SERVICE)
+                    as KeyguardManager?
+
+        fingerprintManager = activity.getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager?
+        if (fingerprintManager?.isHardwareDetected == true)
+            checkBoxFingerprint?.isEnabled = true
+
+        checkBoxFingerprint?.onPreferenceChangeListener = onClickFingerprint
 
         masterPasswordPreference?.onPreferenceClickListener = onClickMasterPassword
     }

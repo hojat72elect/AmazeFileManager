@@ -130,7 +130,7 @@ public class EncryptService extends AbstractProgressiveService {
                 .setSmallIcon(getSmallIcon());
 
         NotificationConstants.setMetadata(
-                getApplicationContext(), notificationBuilder, NotificationConstants.TYPE_NORMAL);
+                getApplicationContext(), NotificationConstants.TYPE_NORMAL);
 
         startForeground(getNotificationId(), notificationBuilder.build());
         initNotificationViews();

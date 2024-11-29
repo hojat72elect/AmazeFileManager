@@ -1,6 +1,5 @@
 package com.amaze.filemanager.asynchronous.asynctasks.ftp.auth
 
-import com.amaze.filemanager.application.AppConfig
 import com.amaze.filemanager.filesystem.ftp.FTPClientImpl
 import com.amaze.filemanager.filesystem.ftp.FTPClientImpl.Companion.ARG_TLS
 import com.amaze.filemanager.filesystem.ftp.FTPClientImpl.Companion.TLS_EXPLICIT
@@ -37,7 +36,7 @@ class FtpsAuthenticationTaskCallable(
             } else {
                 ftpClient.login(
                     username,
-                    PasswordUtil.decryptPassword(AppConfig.getInstance(), password),
+                    PasswordUtil.decryptPassword(password),
                 )
             }
         return if (loginSuccess) {

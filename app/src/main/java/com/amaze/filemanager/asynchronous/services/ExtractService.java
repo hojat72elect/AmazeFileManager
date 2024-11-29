@@ -125,7 +125,7 @@ public class ExtractService extends AbstractProgressiveService {
                 .setColor(accentColor);
 
         NotificationConstants.setMetadata(
-                getApplicationContext(), mBuilder, NotificationConstants.TYPE_NORMAL);
+                getApplicationContext(), NotificationConstants.TYPE_NORMAL);
         startForeground(NotificationConstants.EXTRACT_ID, mBuilder.build());
         initNotificationViews();
 

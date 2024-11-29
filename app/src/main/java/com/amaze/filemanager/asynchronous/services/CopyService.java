@@ -132,7 +132,7 @@ public class CopyService extends AbstractProgressiveService {
 
         // set default notification views text
 
-        NotificationConstants.setMetadata(c, mBuilder, NotificationConstants.TYPE_NORMAL);
+        NotificationConstants.setMetadata(c, NotificationConstants.TYPE_NORMAL);
 
         startForeground(NotificationConstants.COPY_ID, mBuilder.build());
         initNotificationViews();

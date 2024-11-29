@@ -98,7 +98,7 @@ public class ServiceWatcherUtil {
                         .setSmallIcon(R.drawable.ic_all_inclusive_white_36dp)
                         .setProgress(0, 0, true);
 
-        NotificationConstants.setMetadata(context, builder, NotificationConstants.TYPE_NORMAL);
+        NotificationConstants.setMetadata(context, NotificationConstants.TYPE_NORMAL);
 
         new WaitNotificationThread(context, true);
     }

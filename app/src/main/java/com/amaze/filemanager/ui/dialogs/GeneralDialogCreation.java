@@ -389,11 +389,10 @@ public class GeneralDialogCreation {
             }
         }.execute();
 
-        // Set category text color for Jelly Bean (API 16) and later.
-        if (SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            categoryDirectories.setTextColor(accentColor);
-            categoryFiles.setTextColor(accentColor);
-        }
+        // Set category text color
+        categoryDirectories.setTextColor(accentColor);
+        categoryFiles.setTextColor(accentColor);
+
 
         if (needConfirmation) {
             // Show dialog on screen.
@@ -403,11 +402,6 @@ public class GeneralDialogCreation {
 
     /**
      * Displays a dialog prompting user to restore files in trash bin.
-     *
-     * @param context
-     * @param mainActivity
-     * @param positions
-     * @param appTheme
      */
     @SuppressWarnings({"ConstantConditions", "PMD.NPathComplexity"})
     public static void restoreFilesDialog(
@@ -445,12 +439,9 @@ public class GeneralDialogCreation {
                         .build();
 
         // Get views from custom layout to set text values.
-        final AppCompatTextView categoryDirectories =
-                dialog.getCustomView().findViewById(R.id.category_directories);
-        final AppCompatTextView categoryFiles =
-                dialog.getCustomView().findViewById(R.id.category_files);
-        final AppCompatTextView listDirectories =
-                dialog.getCustomView().findViewById(R.id.list_directories);
+        final AppCompatTextView categoryDirectories = dialog.getCustomView().findViewById(R.id.category_directories);
+        final AppCompatTextView categoryFiles = dialog.getCustomView().findViewById(R.id.category_files);
+        final AppCompatTextView listDirectories = dialog.getCustomView().findViewById(R.id.list_directories);
         final AppCompatTextView listFiles = dialog.getCustomView().findViewById(R.id.list_files);
         final AppCompatTextView total = dialog.getCustomView().findViewById(R.id.total);
 
@@ -595,11 +586,9 @@ public class GeneralDialogCreation {
             }
         }.execute();
 
-        // Set category text color for Jelly Bean (API 16) and later.
-        if (SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            categoryDirectories.setTextColor(accentColor);
-            categoryFiles.setTextColor(accentColor);
-        }
+        // Set category text color
+        categoryDirectories.setTextColor(accentColor);
+        categoryFiles.setTextColor(accentColor);
         dialog.show();
     }
 

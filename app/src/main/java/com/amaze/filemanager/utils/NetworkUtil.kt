@@ -27,23 +27,14 @@ object NetworkUtil {
     fun isConnectedToLocalNetwork(context: Context): Boolean {
         val cm = getConnectivityManager(context)
         var connected: Boolean
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            connected = cm.activeNetwork?.let { activeNetwork ->
-                cm.getNetworkCapabilities(activeNetwork)?.let { ni ->
-                    ni.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) or
-                            ni.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-                } ?: false
+
+        connected = cm.activeNetwork?.let { activeNetwork ->
+            cm.getNetworkCapabilities(activeNetwork)?.let { ni ->
+                ni.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) or
+                        ni.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
             } ?: false
-        } else {
-            connected = cm.activeNetworkInfo?.let { ni ->
-                ni.isConnected && (
-                        ni.type and (
-                                ConnectivityManager.TYPE_WIFI
-                                        or ConnectivityManager.TYPE_ETHERNET
-                                ) != 0
-                        )
-            } ?: false
-        }
+        } ?: false
+
 
         if (!connected) {
             connected = runCatching {
@@ -63,15 +54,9 @@ object NetworkUtil {
     @JvmStatic
     fun isConnectedToWifi(context: Context): Boolean {
         val cm = getConnectivityManager(context)
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            cm.activeNetwork?.let {
-                cm.getNetworkCapabilities(it)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-            } ?: false
-        } else {
-            cm.activeNetworkInfo?.let {
-                it.isConnected && it.type == ConnectivityManager.TYPE_WIFI
-            } ?: false
-        }
+        return cm.activeNetwork?.let {
+            cm.getNetworkCapabilities(it)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        } ?: false
     }
 
     /**

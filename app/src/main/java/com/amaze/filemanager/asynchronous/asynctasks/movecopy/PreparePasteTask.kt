@@ -190,7 +190,6 @@ class PreparePasteTask(strongRefMain: MainActivity) {
         dialogBuilder.customView(copyDialogBinding.root, true)
         val checkBox: AppCompatCheckBox = copyDialogBinding.checkBox
 
-        Utils.setTint(contextRef, checkBox, accentColor)
         dialogBuilder.theme(contextRef.appTheme.materialDialogTheme)
         dialogBuilder.title(contextRef.resources.getString(R.string.paste))
         dialogBuilder.positiveText(R.string.rename)

@@ -1,8 +1,7 @@
 package com.amaze.filemanager.asynchronous.asynctasks;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.Q;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -374,6 +373,7 @@ public class LoadFilesListTask
         return listMediaCommon(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection);
     }
 
+    @SuppressLint("Range")
     private @Nullable List<LayoutElementParcelable> listMediaCommon(
             Uri contentUri, @NonNull String[] projection, @Nullable String selection
     ) {
@@ -403,6 +403,7 @@ public class LoadFilesListTask
         return retval;
     }
 
+    @SuppressLint("Range")
     private @Nullable List<LayoutElementParcelable> listDocs() {
         final Context context = this.context.get();
 
@@ -459,6 +460,7 @@ public class LoadFilesListTask
         return docs;
     }
 
+    @SuppressLint("Range")
     private @Nullable List<LayoutElementParcelable> listApks() {
         final Context context = this.context.get();
 
@@ -520,6 +522,7 @@ public class LoadFilesListTask
         return songs;
     }
 
+    @SuppressLint("Range")
     private @Nullable List<LayoutElementParcelable> listRecentFiles() {
         final Context context = this.context.get();
 
@@ -536,33 +539,23 @@ public class LoadFilesListTask
         c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) - 2);
         Date d = c.getTime();
         Cursor cursor;
-        if (SDK_INT >= Q) {
-            Bundle queryArgs = new Bundle();
-            queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT, 20);
-            queryArgs.putStringArray(
-                    ContentResolver.QUERY_ARG_SORT_COLUMNS,
-                    new String[]{MediaStore.Files.FileColumns.DATE_MODIFIED}
-            );
-            queryArgs.putInt(
-                    ContentResolver.QUERY_ARG_SORT_DIRECTION,
-                    ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
-            );
-            cursor =
-                    context
-                            .getContentResolver()
-                            .query(MediaStore.Files.getContentUri("external"), projection, queryArgs, null);
-        } else {
-            cursor =
-                    context
-                            .getContentResolver()
-                            .query(
-                                    MediaStore.Files.getContentUri("external"),
-                                    projection,
-                                    null,
-                                    null,
-                                    MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC LIMIT 20"
-                            );
-        }
+
+        Bundle queryArgs = new Bundle();
+        queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT, 20);
+        queryArgs.putStringArray(
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                new String[]{MediaStore.Files.FileColumns.DATE_MODIFIED}
+        );
+        queryArgs.putInt(
+                ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
+        );
+        cursor =
+                context
+                        .getContentResolver()
+                        .query(MediaStore.Files.getContentUri("external"), projection, queryArgs, null);
+
+
         if (cursor == null) return recentFiles;
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

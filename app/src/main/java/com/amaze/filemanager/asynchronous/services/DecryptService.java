@@ -133,7 +133,7 @@ public class DecryptService extends AbstractProgressiveService {
                 .setSmallIcon(R.drawable.ic_folder_lock_open_white_36dp);
 
         NotificationConstants.setMetadata(
-                getApplicationContext(), notificationBuilder, NotificationConstants.TYPE_NORMAL);
+                getApplicationContext(), NotificationConstants.TYPE_NORMAL);
 
         startForeground(getNotificationId(), notificationBuilder.build());
         initNotificationViews();

@@ -2,7 +2,6 @@ package com.amaze.filemanager.utils
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -56,21 +55,15 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
             mode.customView = actionModeView
             mainActivity.setPagingEnabled(false)
             mainActivity.hideFab()
-            if (mainActivity.mReturnIntent &&
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
-            ) {
+            if (mainActivity.mReturnIntent) {
                 mainActivity.showFabConfirmSelection()
             }
-
-            // translates the drawable content down
-            // if (mainActivity.isDrawerLocked) mainActivity.translateDrawerList(true);
 
             // assumes that you have "contexual.xml" menu resources
             inflater.inflate(R.menu.contextual, menu)
             hideOption(R.id.addshortcut, menu)
             hideOption(R.id.share, menu)
             hideOption(R.id.openwith, menu)
-            // hideOption(R.id.setringtone,menu);
             mode.title = mainActivity.resources.getString(R.string.select)
             mainActivity
                 .updateViews(
@@ -347,7 +340,7 @@ class MainActivityActionMode(private val mainActivityReference: WeakReference<Ma
                     // when passing copies to PasteHelper
                     if (copies.isNotEmpty()) {
                         pasteHelper = PasteHelper(mainActivity, op, copies)
-                        mainActivity.paste = pasteHelper
+                        mainActivity.setPaste(pasteHelper)
                     }
                     mode.finish()
                     true

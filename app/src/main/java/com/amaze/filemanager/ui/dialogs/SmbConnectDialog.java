@@ -32,7 +32,6 @@ import com.amaze.filemanager.ui.ExtensionsKt;
 import com.amaze.filemanager.ui.activities.superclasses.BasicActivity;
 import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity;
 import com.amaze.filemanager.ui.provider.UtilitiesProvider;
-import com.amaze.filemanager.utils.EditTextColorStateUtil;
 import com.amaze.filemanager.utils.PasswordUtil;
 import com.amaze.filemanager.utils.SimpleTextWatcher;
 import com.amaze.filemanager.utils.Utils;
@@ -167,11 +166,6 @@ public class SmbConnectDialog extends DialogFragment {
         final AppCompatCheckBox chkSmbDisableIpcSignature = binding.chkSmbDisableIpcSignature;
         AppCompatTextView help = binding.wanthelp;
 
-        EditTextColorStateUtil.setTint(getActivity(), conName, accentColor);
-        EditTextColorStateUtil.setTint(getActivity(), user, accentColor);
-        EditTextColorStateUtil.setTint(getActivity(), pass, accentColor);
-
-        Utils.setTint(getActivity(), chkSmbAnonymous, accentColor);
         help.setOnClickListener(
                 v -> {
                     int accentColor1 = ((ThemedActivity) getActivity()).getAccent();
@@ -212,7 +206,7 @@ public class SmbConnectDialog extends DialogFragment {
                         try {
                             passp =
                                     PasswordUtil.INSTANCE.decryptPassword(
-                                            context, inf.substring(inf.indexOf(COLON) + 1), URL_SAFE);
+                                            inf.substring(inf.indexOf(COLON) + 1), URL_SAFE);
                             passp = decode(passp, kotlin.text.Charsets.UTF_8);
                         } catch (GeneralSecurityException | IOException e) {
                             LOG.warn("Error decrypting password", e);

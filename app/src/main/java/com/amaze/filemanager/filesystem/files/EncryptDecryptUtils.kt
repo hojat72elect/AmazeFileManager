@@ -183,7 +183,6 @@ object EncryptDecryptUtils {
             decryptIntent,
             utilsProvider.appTheme,
             decryptPassword(
-                c,
                 preferences.getString(
                     PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD,
                     PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD_DEFAULT,
