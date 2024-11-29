@@ -1,7 +1,5 @@
 package com.amaze.filemanager.ui.activities;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.KITKAT;
 import static com.amaze.filemanager.fileoperations.filesystem.FolderStateKt.WRITABLE_OR_ON_SDCARD;
 import static com.amaze.filemanager.fileoperations.filesystem.OperationTypeKt.COMPRESS;
 import static com.amaze.filemanager.fileoperations.filesystem.OperationTypeKt.COPY;
@@ -217,7 +215,7 @@ public class MainActivity extends PermissionsActivity
     private static final String KEY_OPERATIONS_PATH_LIST = "oparraylist";
     private static final String KEY_OPERATION = "operation";
     private static final String KEY_SELECTED_LIST_ITEM = "select_list_item";
-    private static final String DEFAULT_FALLBACK_STORAGE_PATH = "/storage/sdcard0";
+
     private static final String INTERNAL_SHARED_STORAGE = "Internal shared storage";
     private static final String INTENT_ACTION_OPEN_QUICK_ACCESS = "com.amaze.filemanager.openQuickAccess";
     private static final String INTENT_ACTION_OPEN_RECENT = "com.amaze.filemanager.openRecent";
@@ -459,10 +457,10 @@ public class MainActivity extends PermissionsActivity
                 drawer.deselectEverything();
                 transaction3.commit();
             } else {
-                if (path != null && path.length() > 0) {
+                if (path != null && !path.isEmpty()) {
                     HybridFile file = new HybridFile(OpenMode.UNKNOWN, path);
                     file.generateMode(MainActivity.this);
-                    if (file.isCloudDriveFile() && dataUtils.getAccounts().size() == 0) {
+                    if (file.isCloudDriveFile() && dataUtils.getAccounts().isEmpty()) {
                         // not ready to serve cloud files
                         goToMain(null);
                     } else if (file.isDirectory(MainActivity.this) && !isCloudRefresh) {
@@ -597,10 +595,6 @@ public class MainActivity extends PermissionsActivity
                 pathInCompressedArchive = Utils.sanitizeInput(uri.toString());
                 openCompressed(pathInCompressedArchive);
             } else if (uri.getPath().startsWith("/open_file")) {
-                /**
-                 * Deeplink to open files directly through amaze using following format:
-                 * http://teamamaze.xyz/open_file?path=path-to-file
-                 */
                 path = Utils.sanitizeInput(uri.getQueryParameter("path"));
             } else {
                 LOG.warn(getString(R.string.error_cannot_find_way_open));
@@ -847,9 +841,7 @@ public class MainActivity extends PermissionsActivity
             toast.show();
             new Handler()
                     .postDelayed(
-                            () -> {
-                                backPressedToExitOnce = false;
-                            },
+                            () -> backPressedToExitOnce = false,
                             2000
                     );
         }
@@ -899,43 +891,9 @@ public class MainActivity extends PermissionsActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.activity_extra, menu);
-    /*
-    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-    SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-    searchView.setIconifiedByDefault(false);
 
-    MenuItem search = menu.findItem(R.id.search);
-    MenuItemCompat.setOnActionExpandListener(search, new MenuItemCompat.OnActionExpandListener() {
-        @Override
-        public boolean onMenuItemActionExpand(MenuItem item) {
-            // Stretching the SearchView across width of the Toolbar
-            toolbar.setContentInsetsRelative(0, 0);
-            return true;
-        }
-
-        @Override
-        public boolean onMenuItemActionCollapse(MenuItem item) {
-            // Restoring
-            toolbar.setContentInsetsRelative(TOOLBAR_START_INSET, 0);
-            return true;
-        }
-    });
-    */
         return super.onCreateOptionsMenu(menu);
     }
-
-  /*@Override
-  public void onRestoreInstanceState(Bundle savedInstanceState){
-      COPY_PATH=savedInstanceState.getStringArrayList("COPY_PATH");
-      MOVE_PATH=savedInstanceState.getStringArrayList("MOVE_PATH");
-      oppathe = savedInstanceState.getString(KEY_OPERATION_PATH);
-      oppathe1 = savedInstanceState.getString(KEY_OPERATED_ON_PATH);
-      oparrayList = savedInstanceState.getStringArrayList(KEY_OPERATIONS_PATH_LIST);
-      opnameList=savedInstanceState.getStringArrayList("opnameList");
-      operation = savedInstanceState.getInt(KEY_OPERATION);
-      selectedStorage = savedInstanceState.getInt(KEY_DRAWER_SELECTED, 0);
-  }*/
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -1027,7 +985,7 @@ public class MainActivity extends PermissionsActivity
 
     // called when the user exits the action mode
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
         if (drawer.onOptionsItemSelected(item)) return true;
@@ -1121,11 +1079,9 @@ public class MainActivity extends PermissionsActivity
                                 if (pathLayout == DataUtils.LIST) {
                                     AppConfig.getInstance()
                                             .runInBackground(
-                                                    () -> {
-                                                        utilsHandler.removeFromDatabase(
-                                                                new OperationData(
-                                                                        UtilsHandler.Operation.LIST, mainFragment.getCurrentPath()));
-                                                    });
+                                                    () -> utilsHandler.removeFromDatabase(
+                                                            new OperationData(
+                                                                    UtilsHandler.Operation.LIST, mainFragment.getCurrentPath())));
                                 }
                                 utilsHandler.saveToDatabase(
                                         new OperationData(UtilsHandler.Operation.GRID, mainFragment.getCurrentPath()));
@@ -1183,7 +1139,7 @@ public class MainActivity extends PermissionsActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_DRAWER_SELECTED, getDrawer().getDrawerSelectedItem());
         outState.putBoolean(KEY_SELECTED_LIST_ITEM, listItemSelected);
@@ -1278,12 +1234,7 @@ public class MainActivity extends PermissionsActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-      /*
-      ImageView ib = findViewById(R.id.action_overflow);
-      if (ib.getVisibility() == View.VISIBLE) {
-          ib.performClick();
-      }
-      */
+
             // return 'true' to prevent further propagation of the key event
             return true;
         }
@@ -1354,24 +1305,6 @@ public class MainActivity extends PermissionsActivity
         getTabFragment().setPagingEnabled(b);
     }
 
-    public File getUsbDrive() {
-        File parent = new File("/storage");
-
-        try {
-            for (File f : parent.listFiles())
-                if (f.exists() && f.getName().toLowerCase().contains("usb") && f.canExecute())
-                    return f;
-        } catch (Exception e) {
-        }
-
-        parent = new File("/mnt/sdcard/usbStorage");
-        if (parent.exists() && parent.canExecute()) return parent;
-        parent = new File("/mnt/sdcard/usb_storage");
-        if (parent.exists() && parent.canExecute()) return parent;
-
-        return null;
-    }
-
     public SpeedDialView getFAB() {
         return floatingActionButton;
     }
@@ -1435,13 +1368,12 @@ public class MainActivity extends PermissionsActivity
             // After confirmation, update stored value of folder.
             // Persist access permissions.
 
-            if (SDK_INT >= KITKAT) {
-                getContentResolver()
-                        .takePersistableUriPermission(
-                                treeUri,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        );
-            }
+            getContentResolver()
+                    .takePersistableUriPermission(
+                            treeUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    );
+
 
             executeWithMainFragment(
                     mainFragment -> {
@@ -1682,9 +1614,7 @@ public class MainActivity extends PermissionsActivity
                 });
 
         floatingActionButton.setOnClickListener(
-                view -> {
-                    fabButtonClick(cloudFab);
-                });
+                view -> fabButtonClick(cloudFab));
         floatingActionButton.setOnFocusChangeListener(new CustomZoomFocusChange());
         floatingActionButton.getMainFab().setOnFocusChangeListener(new CustomZoomFocusChange());
         floatingActionButton.setNextFocusUpId(cloudFab.getId());
@@ -2191,7 +2121,7 @@ public class MainActivity extends PermissionsActivity
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, final Cursor data) {
         if (data == null) {
             Toast.makeText(
                             this,
@@ -2262,7 +2192,6 @@ public class MainActivity extends PermissionsActivity
     /**
      * Invoke {@link FtpServerFragment#changeFTPServerPath(String)} to change FTP server share path.
      *
-     * @param dialog
      * @param folder selected folder
      * @see FtpServerFragment#changeFTPServerPath(String)
      * @see FolderChooserDialog
@@ -2270,68 +2199,65 @@ public class MainActivity extends PermissionsActivity
      */
     @Override
     public void onFolderSelection(@NonNull FolderChooserDialog dialog, @NonNull File folder) {
-        switch (dialog.getTag()) {
-            case FtpServerFragment.TAG:
-                FtpServerFragment ftpServerFragment = (FtpServerFragment) getFragmentAtFrame();
-                if (folder.exists() && folder.isDirectory()) {
-                    if (FileUtils.isRunningAboveStorage(folder.getAbsolutePath())) {
-                        if (!isRootExplorer()) {
-                            AlertDialog.show(
-                                    this,
-                                    R.string.ftp_server_root_unavailable,
-                                    R.string.error,
-                                    android.R.string.ok,
-                                    null,
-                                    false
-                            );
-                        } else {
-                            MaterialDialog confirmDialog =
-                                    GeneralDialogCreation.showBasicDialog(
-                                            this,
-                                            R.string.ftp_server_root_filesystem_warning,
-                                            R.string.warning,
-                                            android.R.string.ok,
-                                            android.R.string.cancel
-                                    );
-                            confirmDialog
-                                    .getActionButton(DialogAction.POSITIVE)
-                                    .setOnClickListener(
-                                            v -> {
-                                                ftpServerFragment.changeFTPServerPath(folder.getPath());
-                                                Toast.makeText(this, R.string.ftp_path_change_success, Toast.LENGTH_SHORT)
-                                                        .show();
-                                                confirmDialog.dismiss();
-                                            });
-                            confirmDialog
-                                    .getActionButton(DialogAction.NEGATIVE)
-                                    .setOnClickListener(v -> confirmDialog.dismiss());
-                            confirmDialog.show();
-                        }
+        if (dialog.getTag().equals(FtpServerFragment.TAG)) {
+            FtpServerFragment ftpServerFragment = (FtpServerFragment) getFragmentAtFrame();
+            if (folder.exists() && folder.isDirectory()) {
+                if (FileUtils.isRunningAboveStorage(folder.getAbsolutePath())) {
+                    if (!isRootExplorer()) {
+                        com.amaze.filemanager.ui.dialogs.AlertDialog.show(
+                                this,
+                                com.amaze.filemanager.R.string.ftp_server_root_unavailable,
+                                com.amaze.filemanager.R.string.error,
+                                android.R.string.ok,
+                                null,
+                                false
+                        );
                     } else {
-                        ftpServerFragment.changeFTPServerPath(folder.getPath());
-                        Toast.makeText(this, R.string.ftp_path_change_success, Toast.LENGTH_SHORT).show();
+                        MaterialDialog confirmDialog =
+                                com.amaze.filemanager.ui.dialogs.GeneralDialogCreation.showBasicDialog(
+                                        this,
+                                        com.amaze.filemanager.R.string.ftp_server_root_filesystem_warning,
+                                        com.amaze.filemanager.R.string.warning,
+                                        android.R.string.ok,
+                                        android.R.string.cancel
+                                );
+                        confirmDialog
+                                .getActionButton(DialogAction.POSITIVE)
+                                .setOnClickListener(
+                                        v -> {
+                                            ftpServerFragment.changeFTPServerPath(folder.getPath());
+                                            android.widget.Toast.makeText(this, R.string.ftp_path_change_success, android.widget.Toast.LENGTH_SHORT)
+                                                    .show();
+                                            confirmDialog.dismiss();
+                                        });
+                        confirmDialog
+                                .getActionButton(DialogAction.NEGATIVE)
+                                .setOnClickListener(v -> confirmDialog.dismiss());
+                        confirmDialog.show();
                     }
                 } else {
-                    // try to get parent
-                    String pathParentFilePath = folder.getParent();
-                    if (pathParentFilePath == null) {
-                        dialog.dismiss();
-                        return;
-                    }
-                    File pathParentFile = new File(pathParentFilePath);
-                    if (pathParentFile.exists() && pathParentFile.isDirectory()) {
-                        ftpServerFragment.changeFTPServerPath(pathParentFile.getPath());
-                        Toast.makeText(this, R.string.ftp_path_change_success, Toast.LENGTH_SHORT).show();
-                    } else {
-                        // don't have access, print error
-                        Toast.makeText(this, R.string.ftp_path_change_error_invalid, Toast.LENGTH_SHORT).show();
-                    }
+                    ftpServerFragment.changeFTPServerPath(folder.getPath());
+                    android.widget.Toast.makeText(this, R.string.ftp_path_change_success, android.widget.Toast.LENGTH_SHORT).show();
                 }
-                dialog.dismiss();
-                break;
-            default:
-                dialog.dismiss();
-                break;
+            } else {
+                // try to get parent
+                String pathParentFilePath = folder.getParent();
+                if (pathParentFilePath == null) {
+                    dialog.dismiss();
+                    return;
+                }
+                java.io.File pathParentFile = new java.io.File(pathParentFilePath);
+                if (pathParentFile.exists() && pathParentFile.isDirectory()) {
+                    ftpServerFragment.changeFTPServerPath(pathParentFile.getPath());
+                    android.widget.Toast.makeText(this, com.amaze.filemanager.R.string.ftp_path_change_success, android.widget.Toast.LENGTH_SHORT).show();
+                } else {
+                    // don't have access, print error
+                    android.widget.Toast.makeText(this, com.amaze.filemanager.R.string.ftp_path_change_error_invalid, android.widget.Toast.LENGTH_SHORT).show();
+                }
+            }
+            dialog.dismiss();
+        } else {
+            dialog.dismiss();
         }
     }
 
@@ -2360,7 +2286,6 @@ public class MainActivity extends PermissionsActivity
     /**
      * Do nothing other than dismissing the folder selection dialog.
      *
-     * @param dialog
      * @see com.afollestad.materialdialogs.folderselector.FolderChooserDialog.FolderCallback
      */
     @Override
