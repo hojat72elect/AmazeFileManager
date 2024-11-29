@@ -818,21 +818,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     return true;
                 });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            holder.checkImageView.setBackground(
-                    new CircleGradientDrawable(
-                            accentColor,
-                            utilsProvider.getAppTheme(),
-                            mainFragment.getResources().getDisplayMetrics()
-                    ));
-        } else {
-            holder.checkImageView.setBackgroundDrawable(
-                    new CircleGradientDrawable(
-                            accentColor,
-                            utilsProvider.getAppTheme(),
-                            mainFragment.getResources().getDisplayMetrics()
-                    ));
-        }
+        holder.checkImageView.setBackground(
+                new CircleGradientDrawable(
+                        accentColor,
+                        utilsProvider.getAppTheme(),
+                        mainFragment.getResources().getDisplayMetrics()
+                ));
+
         holder.txtTitle.setText(rowItem.title);
         holder.genericText.setText("");
 
@@ -1193,11 +1185,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             ? itemViewHolder.dummyView
                             : getDragShadow(getCheckedItems().size());
             View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(shadowView);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                view.startDragAndDrop(null, dragShadowBuilder, null, 0);
-            } else {
-                view.startDrag(null, dragShadowBuilder, null, 0);
-            }
+
+            view.startDragAndDrop(null, dragShadowBuilder, null, 0);
+
             mainFragment
                     .getMainActivity()
                     .initCornersDragListener(
@@ -1445,14 +1435,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            if (description.endsWith(CryptUtil.CRYPT_EXTENSION)
-                    || description.endsWith(CryptUtil.AESCRYPT_EXTENSION)) {
-                popupMenu.getMenu().findItem(R.id.decrypt).setVisible(true);
-            } else {
-                popupMenu.getMenu().findItem(R.id.encrypt).setVisible(true);
-            }
+
+        if (description.endsWith(CryptUtil.CRYPT_EXTENSION)
+                || description.endsWith(CryptUtil.AESCRYPT_EXTENSION)) {
+            popupMenu.getMenu().findItem(R.id.decrypt).setVisible(true);
+        } else {
+            popupMenu.getMenu().findItem(R.id.encrypt).setVisible(true);
         }
+
         if (rowItem.getMode() == OpenMode.TRASH_BIN) {
             popupMenu.getMenu().findItem(R.id.return_select).setVisible(false);
             popupMenu.getMenu().findItem(R.id.cut).setVisible(false);

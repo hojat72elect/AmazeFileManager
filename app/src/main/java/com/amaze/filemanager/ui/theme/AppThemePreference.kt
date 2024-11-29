@@ -2,7 +2,6 @@ package com.amaze.filemanager.ui.theme
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import android.os.PowerManager
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.Theme
@@ -93,11 +92,8 @@ enum class AppThemePreference(val id: Int, val canBeLight: Boolean) {
      */
     private fun isBatterySaverMode(context: Context): Boolean {
         val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            powerManager.isPowerSaveMode
-        } else {
-            false
-        }
+        return powerManager.isPowerSaveMode
+
     }
 
     companion object {

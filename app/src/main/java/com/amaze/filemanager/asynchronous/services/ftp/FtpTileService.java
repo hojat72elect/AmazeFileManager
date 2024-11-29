@@ -13,7 +13,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 
-@TargetApi(Build.VERSION_CODES.N)
 public class FtpTileService extends TileService {
 
     @Subscribe

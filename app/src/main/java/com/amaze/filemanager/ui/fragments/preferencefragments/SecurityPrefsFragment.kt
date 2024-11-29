@@ -122,7 +122,6 @@ class SecurityPrefsFragment : BasePrefsFragment() {
                         editor.putString(
                             PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD,
                             PasswordUtil.encryptPassword(
-                                activity,
                                 dialog.inputEditText!!.text.toString(),
                             ),
                         )

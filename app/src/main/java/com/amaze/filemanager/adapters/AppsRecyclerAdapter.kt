@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import android.text.TextUtils
@@ -504,20 +503,16 @@ class AppsRecyclerAdapter(
             .onPositive { _: MaterialDialog?, _: DialogAction? ->
                 val files =
                     ArrayList<HybridFileParcelable>()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val parent =
-                        f1.getParent(fragment.context)
-                    if (parent != "app" && parent != "priv-app") {
-                        val baseFile =
-                            HybridFileParcelable(
-                                f1.getParent(fragment.context),
-                            )
-                        baseFile.mode =
-                            OpenMode.ROOT
-                        files.add(baseFile)
-                    } else {
-                        files.add(f1)
-                    }
+                val parent =
+                    f1.getParent(fragment.context)
+                if (parent != "app" && parent != "priv-app") {
+                    val baseFile =
+                        HybridFileParcelable(
+                            f1.getParent(fragment.context),
+                        )
+                    baseFile.mode =
+                        OpenMode.ROOT
+                    files.add(baseFile)
                 } else {
                     files.add(f1)
                 }

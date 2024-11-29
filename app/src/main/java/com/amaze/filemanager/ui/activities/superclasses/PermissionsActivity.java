@@ -1,20 +1,16 @@
 package com.amaze.filemanager.ui.activities.superclasses;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.TIRAMISU;
 import android.Manifest;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -51,7 +47,7 @@ public class PermissionsActivity extends ThemedActivity
                 Toast.makeText(this, R.string.grantfailed, Toast.LENGTH_SHORT).show();
                 requestStoragePermission(permissionCallbacks[STORAGE_PERMISSION], false);
             }
-        } else if (requestCode == NOTIFICATION_PERMISSION && SDK_INT >= TIRAMISU) {
+        } else if (requestCode == NOTIFICATION_PERMISSION) {
             if (isGranted(grantResults)) {
                 Utils.enableScreenRotation(this);
             } else {
@@ -68,27 +64,21 @@ public class PermissionsActivity extends ThemedActivity
 
     public boolean checkStoragePermission() {
         // Verify that all required contact permissions have been granted.
-        if (SDK_INT >= Build.VERSION_CODES.R) {
-            return (ActivityCompat.checkSelfPermission(
-                    this, Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    == PackageManager.PERMISSION_GRANTED)
-                    || (ActivityCompat.checkSelfPermission(
-                    this, Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                    == PackageManager.PERMISSION_GRANTED)
-                    || Environment.isExternalStorageManager();
-        } else {
-            return ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED;
-        }
+
+        return (ActivityCompat.checkSelfPermission(
+                this, Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                == PackageManager.PERMISSION_GRANTED)
+                || (ActivityCompat.checkSelfPermission(
+                this, Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                == PackageManager.PERMISSION_GRANTED)
+                || Environment.isExternalStorageManager();
     }
 
-    @RequiresApi(TIRAMISU)
     public boolean checkNotificationPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    @RequiresApi(TIRAMISU)
     public void requestNotificationPermission(boolean isInitialStart) {
         Utils.disableScreenRotation(this);
         final MaterialDialog materialDialog =
@@ -137,7 +127,6 @@ public class PermissionsActivity extends ThemedActivity
         );
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void requestInstallApkPermission(
             @NonNull final OnPermissionGranted onPermissionGranted, boolean isInitialStart
     ) {
@@ -196,31 +185,9 @@ public class PermissionsActivity extends ThemedActivity
         } else if (isInitialStart) {
             ActivityCompat.requestPermissions(this, new String[]{permission}, code);
         } else {
-            if (SDK_INT >= Build.VERSION_CODES.R) {
-                Snackbar.make(
-                                findViewById(R.id.content_frame),
-                                R.string.grantfailed,
-                                BaseTransientBottomBar.LENGTH_INDEFINITE
-                        )
-                        .setAction(R.string.grant, v -> requestAllFilesAccessPermission(onPermissionGranted))
-                        .show();
-            } else {
-                Snackbar.make(
-                                findViewById(R.id.content_frame),
-                                R.string.grantfailed,
-                                BaseTransientBottomBar.LENGTH_INDEFINITE
-                        )
-                        .setAction(
-                                R.string.grant,
-                                v ->
-                                        startActivity(
-                                                new Intent(
-                                                        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                                        Uri.parse(String.format("package:%s", getPackageName()))
-                                                ))
-                        )
-                        .show();
-            }
+            Snackbar.make(findViewById(R.id.content_frame), R.string.grantfailed, BaseTransientBottomBar.LENGTH_INDEFINITE)
+                    .setAction(R.string.grant, v -> requestAllFilesAccessPermission(onPermissionGranted))
+                    .show();
         }
     }
 
@@ -230,7 +197,7 @@ public class PermissionsActivity extends ThemedActivity
      * @param onPermissionGranted permission granted callback
      */
     public void requestAllFilesAccess(@NonNull final OnPermissionGranted onPermissionGranted) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+        if (!Environment.isExternalStorageManager()) {
             final MaterialDialog materialDialog =
                     GeneralDialogCreation.showBasicDialog(
                             this,
@@ -252,7 +219,6 @@ public class PermissionsActivity extends ThemedActivity
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     private void requestAllFilesAccessPermission(
             @NonNull final OnPermissionGranted onPermissionGranted
     ) {

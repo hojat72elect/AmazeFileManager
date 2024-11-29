@@ -6,7 +6,6 @@ import static com.amaze.filemanager.ui.activities.MainActivity.TAG_INTENT_FILTER
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -718,25 +717,19 @@ public class Operations {
     }
 
     private static int checkFolder(final File folder, Context context) {
-        boolean lol = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-        if (lol) {
 
-            boolean ext = ExternalSdCardOperation.isOnExtSdCard(folder, context);
-            if (ext) {
+        boolean ext = ExternalSdCardOperation.isOnExtSdCard(folder, context);
+        if (ext) {
 
-                if (!folder.exists() || !folder.isDirectory()) {
-                    return 0;
-                }
-
-                // On Android 5, trigger storage access framework.
-                if (!FileProperties.isWritableNormalOrSaf(folder, context)) {
-                    return 2;
-                }
-                return 1;
+            if (!folder.exists() || !folder.isDirectory()) {
+                return 0;
             }
-        } else if (Build.VERSION.SDK_INT == 19) {
-            // Assume that Kitkat workaround works
-            if (ExternalSdCardOperation.isOnExtSdCard(folder, context)) return 1;
+
+            // On Android 5, trigger storage access framework.
+            if (!FileProperties.isWritableNormalOrSaf(folder, context)) {
+                return 2;
+            }
+            return 1;
         }
 
         // file not on external sd card

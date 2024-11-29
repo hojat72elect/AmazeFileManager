@@ -8,8 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.O
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.annotation.StringRes
@@ -307,18 +305,16 @@ class ZipService : AbstractProgressiveService() {
         path: String,
     ): ZipEntry =
         ZipEntry("${createZipEntryPrefixWith(path)}${file.name}").apply {
-            if (SDK_INT >= O) {
-                val attrs =
-                    Files.readAttributes(
-                        Paths.get(file.absolutePath),
-                        BasicFileAttributes::class.java,
-                    )
-                setCreationTime(attrs.creationTime())
-                    .setLastAccessTime(attrs.lastAccessTime())
-                    .lastModifiedTime = attrs.lastModifiedTime()
-            } else {
-                time = file.lastModified()
-            }
+
+            val attrs =
+                Files.readAttributes(
+                    Paths.get(file.absolutePath),
+                    BasicFileAttributes::class.java,
+                )
+            setCreationTime(attrs.creationTime())
+                .setLastAccessTime(attrs.lastAccessTime())
+                .lastModifiedTime = attrs.lastModifiedTime()
+
         }
 
     /*

@@ -4,12 +4,8 @@ import android.content.Context
 import android.hardware.usb.UsbConstants
 import android.hardware.usb.UsbManager
 import android.net.Uri
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.KITKAT
-import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.provider.DocumentsContract
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import com.amaze.filemanager.exceptions.DocumentFileNotFoundException
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode
@@ -19,18 +15,12 @@ import com.amaze.filemanager.filesystem.HybridFileParcelable
 import com.amaze.filemanager.filesystem.RootHelper
 import java.net.URLDecoder
 
-/** Created by Vishal on 27-04-2017.  */
 object OTGUtil {
     const val PREFIX_OTG = "otg:/"
     private const val PREFIX_DOCUMENT_FILE = "content:/"
     const val PREFIX_MEDIA_REMOVABLE = "/mnt/media_rw"
-
     private val TAG = OTGUtil::class.java.simpleName
-
-    // URLEncoder.encode("/", Charsets.UTF_8.name())
     private const val PATH_SEPARATOR_ENCODED = "%2F"
-    private const val PRIMARY_STORAGE_PREFIX = "primary%3AA"
-    private const val PATH_ELEMENT_DOCUMENT = "document"
 
     /**
      * Returns an array of list of files at a specific path in OTG
@@ -50,12 +40,7 @@ object OTGUtil {
         getDocumentFiles(
             path,
             context,
-            object : OnFileFound {
-                override fun onFileFound(file: HybridFileParcelable) {
-                    files.add(file)
-                }
-            },
-        )
+        ) { file -> files.add(file) }
         return files
     }
 
@@ -185,7 +170,6 @@ object OTGUtil {
     }
 
     /** Check if the usb uri is still accessible  */
-    @RequiresApi(api = KITKAT)
     @JvmStatic
     fun isUsbUriAccessible(context: Context?): Boolean {
         val rootUriString = SingletonUsbOtg.getInstance().usbOtgRoot
@@ -207,18 +191,16 @@ object OTGUtil {
                     == UsbConstants.USB_CLASS_MASS_STORAGE
                 ) {
                     var serial: String? = null
-                    if (SDK_INT >= LOLLIPOP) {
-                        try {
-                            serial = device.serialNumber
-                        } catch (ifPermissionDenied: SecurityException) {
-                            // May happen when device is running Android 10 or above.
-                            Log.w(
-                                TAG,
-                                "Permission denied reading serial number of device " +
-                                        "${device.vendorId}:${device.productId}",
-                                ifPermissionDenied,
-                            )
-                        }
+                    try {
+                        serial = device.serialNumber
+                    } catch (ifPermissionDenied: SecurityException) {
+                        // May happen when device is running Android 10 or above.
+                        Log.w(
+                            TAG,
+                            "Permission denied reading serial number of device " +
+                                    "${device.vendorId}:${device.productId}",
+                            ifPermissionDenied,
+                        )
                     }
                     retval = UsbOtgRepresentation(device.productId, device.vendorId, serial)
                 }

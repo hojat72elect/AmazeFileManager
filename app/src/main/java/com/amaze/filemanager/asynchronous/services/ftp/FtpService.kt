@@ -7,12 +7,6 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.KITKAT
-import android.os.Build.VERSION_CODES.LOLLIPOP
-import android.os.Build.VERSION_CODES.M
-import android.os.Build.VERSION_CODES.N
-import android.os.Build.VERSION_CODES.Q
 import android.os.Environment
 import android.os.IBinder
 import android.os.PowerManager
@@ -111,12 +105,12 @@ class FtpService : Service(), Runnable {
             val connectionConfigFactory = ConnectionConfigFactory()
             val shouldUseAndroidFileSystem =
                 preferences.getBoolean(KEY_PREFERENCE_SAF_FILESYSTEM, false)
-            if (SDK_INT >= KITKAT && shouldUseAndroidFileSystem) {
-                fileSystem = AndroidFileSystemFactory(applicationContext)
+            fileSystem = if (shouldUseAndroidFileSystem) {
+                AndroidFileSystemFactory(applicationContext)
             } else if (preferences.getBoolean(PREFERENCE_ROOTMODE, false)) {
-                fileSystem = RootFileSystemFactory()
+                RootFileSystemFactory()
             } else {
-                fileSystem = NativeFileSystemFactory()
+                NativeFileSystemFactory()
             }
 
             commandFactory = CommandFactoryFactory.create(shouldUseAndroidFileSystem)
@@ -275,38 +269,25 @@ class FtpService : Service(), Runnable {
         const val TAG_STARTED_BY_TILE = "started_by_tile"
         // attribute of action_started, used by notification
 
-        private lateinit var _enabledCipherSuites: Array<String>
+        private var _enabledCipherSuites: Array<String> = LinkedList<String>().apply {
 
-        init {
-            _enabledCipherSuites =
-                LinkedList<String>().apply {
-                    if (SDK_INT >= Q) {
-                        add("TLS_AES_128_GCM_SHA256")
-                        add("TLS_AES_256_GCM_SHA384")
-                        add("TLS_CHACHA20_POLY1305_SHA256")
-                    }
-                    if (SDK_INT >= N) {
-                        add("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256")
-                        add("TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256")
-                    }
-                    if (SDK_INT >= LOLLIPOP) {
-                        add("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA")
-                        add("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256")
-                        add("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA")
-                        add("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384")
-                        add("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA")
-                        add("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
-                        add("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA")
-                        add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384")
-                        add("TLS_RSA_WITH_AES_128_GCM_SHA256")
-                        add("TLS_RSA_WITH_AES_256_GCM_SHA384")
-                    }
-                    if (SDK_INT < LOLLIPOP) {
-                        add("TLS_RSA_WITH_AES_128_CBC_SHA")
-                        add("TLS_RSA_WITH_AES_256_CBC_SHA")
-                    }
-                }.toTypedArray()
-        }
+            add("TLS_AES_128_GCM_SHA256")
+            add("TLS_AES_256_GCM_SHA384")
+            add("TLS_CHACHA20_POLY1305_SHA256")
+            add("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256")
+            add("TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256")
+            add("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA")
+            add("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256")
+            add("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA")
+            add("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384")
+            add("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA")
+            add("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256")
+            add("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA")
+            add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384")
+            add("TLS_RSA_WITH_AES_128_GCM_SHA256")
+            add("TLS_RSA_WITH_AES_256_GCM_SHA384")
+
+        }.toTypedArray()
 
         /**
          * Return a list of available ciphers for ftpserver.
@@ -331,9 +312,7 @@ class FtpService : Service(), Runnable {
          */
         @JvmStatic
         fun defaultPath(context: Context): String {
-            return if (PreferenceManager.getDefaultSharedPreferences(context)
-                    .getBoolean(KEY_PREFERENCE_SAF_FILESYSTEM, false) && SDK_INT > M
-            ) {
+            return if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_PREFERENCE_SAF_FILESYSTEM, false)) {
                 DocumentsContract.buildTreeDocumentUri(
                     "com.android.externalstorage.documents",
                     "primary:",

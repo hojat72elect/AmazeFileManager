@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -149,16 +148,9 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION,
             )
 
-            if (useNewStack) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-                } else {
-                    chooserIntent.addFlags(
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                or Intent.FLAG_ACTIVITY_TASK_ON_HOME,
-                    )
-                }
-            }
+            if (useNewStack)
+                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+
             className?.run {
                 packageName?.run {
                     chooserIntent.setClassName(packageName, className)

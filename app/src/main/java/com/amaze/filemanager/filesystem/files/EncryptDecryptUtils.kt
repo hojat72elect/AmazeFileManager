@@ -3,7 +3,6 @@ package com.amaze.filemanager.filesystem.files
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.util.Base64
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
@@ -122,16 +121,12 @@ object EncryptDecryptUtils {
             when (encryptedEntry!!.password.value) {
                 PreferencesConstants.ENCRYPT_PASSWORD_FINGERPRINT ->
                     try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            show(
-                                c,
-                                mainActivity,
-                                decryptIntent,
-                                decryptButtonCallbackInterface,
-                            )
-                        } else {
-                            throw IllegalStateException("API < M!")
-                        }
+                        show(
+                            c,
+                            mainActivity,
+                            decryptIntent,
+                            decryptButtonCallbackInterface,
+                        )
                     } catch (e: GeneralSecurityException) {
                         LOG.warn("failed to form fingerprint dialog", e)
                         toastDecryptionFailure(main)

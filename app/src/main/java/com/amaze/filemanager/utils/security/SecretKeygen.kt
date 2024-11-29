@@ -52,7 +52,6 @@ object SecretKeygen {
      * Gets a secret key from Android key store. If no key has been generated with a given alias then
      * generate a new one
      */
-    @RequiresApi(api = M)
     @Throws(
         GeneralSecurityException::class,
         IOException::class,
@@ -82,7 +81,6 @@ object SecretKeygen {
     }
 
     @Throws(GeneralSecurityException::class, IOException::class)
-    @RequiresApi(JELLY_BEAN_MR2)
     private fun getRsaSecretKey(): Key {
         val preferences = PreferenceManager.getDefaultSharedPreferences(AppConfig.getInstance())
         val encodedString = preferences.getString(PREFERENCE_KEY, null)
@@ -99,7 +97,6 @@ object SecretKeygen {
     }
 
     /** Generates a RSA public/private key pair to encrypt AES key  */
-    @RequiresApi(api = JELLY_BEAN_MR2)
     private fun generateRsaKeyPair(context: Context) {
         val keyStore = KeyStore.getInstance(CryptUtil.KEY_STORE_ANDROID)
         keyStore.load(null)

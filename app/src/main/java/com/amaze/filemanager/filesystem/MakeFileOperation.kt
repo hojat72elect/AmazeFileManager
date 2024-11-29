@@ -1,7 +1,6 @@
 package com.amaze.filemanager.filesystem
 
 import android.content.Context
-import android.os.Build
 import com.amaze.filemanager.ui.icons.MimeTypes
 import com.amaze.filemanager.utils.AppConstants
 import java.io.File
@@ -58,9 +57,7 @@ object MakeFileOperation {
         }
 
         // Try with Storage Access Framework.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-            ExternalSdCardOperation.isOnExtSdCard(file, context)
-        ) {
+        if (ExternalSdCardOperation.isOnExtSdCard(file, context)) {
             val document = ExternalSdCardOperation.getDocumentFile(file.parentFile, true, context)
             // getDocumentFile implicitly creates the directory.
             return try {
@@ -76,11 +73,8 @@ object MakeFileOperation {
                 false
             }
         }
-        return if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            MediaStoreHack.mkfile(context, file)
-        } else {
-            false
-        }
+        return false
+
     }
 
     /**

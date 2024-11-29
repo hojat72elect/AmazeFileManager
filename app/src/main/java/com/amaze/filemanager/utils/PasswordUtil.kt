@@ -3,7 +3,6 @@ package com.amaze.filemanager.utils
 import android.content.Context
 import android.os.Build
 import android.util.Base64
-import androidx.annotation.RequiresApi
 import com.amaze.filemanager.BuildConfig
 import com.amaze.filemanager.filesystem.files.CryptUtil
 import com.amaze.filemanager.utils.security.SecretKeygen
@@ -18,7 +17,6 @@ object PasswordUtil {
     private const val IV = BuildConfig.CRYPTO_IV
 
     /** Helper method to encrypt plain text password  */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Throws(
         GeneralSecurityException::class,
         IOException::class,
@@ -35,7 +33,6 @@ object PasswordUtil {
     }
 
     /** Helper method to decrypt cipher text password  */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Throws(
         GeneralSecurityException::class,
         IOException::class,
@@ -51,7 +48,6 @@ object PasswordUtil {
         return String(decryptedBytes)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Throws(
         GeneralSecurityException::class,
         IOException::class,
@@ -67,7 +63,6 @@ object PasswordUtil {
         return Base64.encodeToString(cipher.doFinal(password.toByteArray()), base64Options)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Throws(
         GeneralSecurityException::class,
         IOException::class,
@@ -87,18 +82,10 @@ object PasswordUtil {
     /** Method handles encryption of plain text on various APIs  */
     @Throws(GeneralSecurityException::class, IOException::class)
     fun encryptPassword(
-        context: Context,
         plainText: String,
         base64Options: Int = Base64.URL_SAFE,
-    ): String? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            aesEncryptPassword(plainText, base64Options)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            rsaEncryptPassword(context, plainText, base64Options)
-        } else {
-            plainText
-        }
-    }
+    ) = aesEncryptPassword(plainText, base64Options)
+
 
     /** Method handles decryption of cipher text on various APIs  */
     @Throws(GeneralSecurityException::class, IOException::class)

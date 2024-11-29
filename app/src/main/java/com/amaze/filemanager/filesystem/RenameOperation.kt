@@ -1,7 +1,6 @@
 package com.amaze.filemanager.filesystem
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation.mkdir
@@ -43,21 +42,11 @@ object RenameOperation {
                 outChannel = outStream.channel
                 inChannel.transferTo(0, inChannel.size(), outChannel)
             } else {
-                outStream =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        // Storage Access Framework
-                        val targetDocument =
-                            ExternalSdCardOperation.getDocumentFile(target, false, context)
-                        targetDocument ?: throw IOException("Couldn't get DocumentFile")
-                        context.contentResolver.openOutputStream(targetDocument.uri)
-                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                        // Workaround for Kitkat ext SD card
-                        val uri = MediaStoreHack.getUriFromFile(target.absolutePath, context)
-                        uri ?: return false
-                        context.contentResolver.openOutputStream(uri)
-                    } else {
-                        return false
-                    }
+                // Storage Access Framework
+                val targetDocument = ExternalSdCardOperation.getDocumentFile(target, false, context)
+                targetDocument ?: throw IOException("Couldn't get DocumentFile")
+                outStream = context.contentResolver.openOutputStream(targetDocument.uri)
+
                 if (outStream != null) {
                     // Both for SAF and for Kitkat, write to output stream.
                     val buffer = ByteArray(16384) // MAGIC_NUMBER
@@ -143,10 +132,7 @@ object RenameOperation {
         }
 
         // Try the Storage Access Framework if it is just a rename within the same parent folder.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-            source.parent == target.parent &&
-            ExternalSdCardOperation.isOnExtSdCard(source, context)
-        ) {
+        if (source.parent == target.parent && ExternalSdCardOperation.isOnExtSdCard(source, context)) {
             val document = ExternalSdCardOperation.getDocumentFile(source, true, context)
             document ?: return false
             if (document.renameTo(target.name)) {

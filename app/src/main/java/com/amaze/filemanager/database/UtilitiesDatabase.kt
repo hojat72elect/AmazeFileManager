@@ -427,7 +427,6 @@ abstract class UtilitiesDatabase : RoomDatabase() {
                                     )
                                 val newPassword =
                                     encryptPassword(
-                                        AppConfig.getInstance(),
                                         oldPassword,
                                         Base64.URL_SAFE,
                                     )

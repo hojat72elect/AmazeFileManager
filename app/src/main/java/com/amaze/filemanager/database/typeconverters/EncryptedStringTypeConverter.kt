@@ -45,7 +45,6 @@ object EncryptedStringTypeConverter {
     fun fromPassword(unencryptedPasswordString: StringWrapper): String? {
         return runCatching {
             encryptPassword(
-                AppConfig.getInstance(),
                 unencryptedPasswordString.value,
             )
         }.onFailure {

@@ -25,7 +25,6 @@ object DecryptFingerprintDialog {
      * Display dialog prompting user for fingerprint in order to decrypt file.
      */
     @JvmStatic
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Throws(
         GeneralSecurityException::class,
         IOException::class,

@@ -120,7 +120,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     private boolean isOnTablet = false;
 
     @android.annotation.SuppressLint("WrongViewCast")
-    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     public Drawer(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         dataUtils = DataUtils.getInstance();
@@ -234,7 +233,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
     }
 
-    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     public void refreshDrawer() {
         Menu menu = navView.getMenu();
         menu.clear();
@@ -733,7 +731,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         mDrawerLayout.closeDrawer(navView);
     }
 
-    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     public void onDrawerClosed() {
         if (pending_fragmentTransaction != null) {
             pending_fragmentTransaction.commit();
@@ -764,7 +761,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         mainActivity.supportInvalidateOptionsMenu();
     }
 
-    @androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         actionViewStateManager.deselectCurrentActionView();

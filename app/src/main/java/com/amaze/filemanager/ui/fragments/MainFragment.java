@@ -660,7 +660,6 @@ public class MainFragment extends Fragment
         loadFilesListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    @RequiresApi(api = Q)
     private OpenMode loadPathInQ(String actualPath, String providedPath, OpenMode providedMode) {
 
         if (GenericExtKt.containsPath(ANDROID_DEVICE_DATA_DIRS, providedPath)

@@ -30,7 +30,7 @@ object ExternalSdCardOperation {
         isDirectory: Boolean,
         context: Context,
     ): DocumentFile? {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) return DocumentFile.fromFile(file)
+
         val baseFolder = getExtSdCardFolder(file, context)
         var originalDirectory = false
         if (baseFolder == null) {
@@ -92,7 +92,6 @@ object ExternalSdCardOperation {
      * @return A list of external SD card paths.
      */
     @JvmStatic
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private fun getExtSdCardPaths(context: Context): Array<String> {
         val paths: MutableList<String> = ArrayList()
         for (file in context.getExternalFilesDirs("external")) {
@@ -116,7 +115,6 @@ object ExternalSdCardOperation {
     }
 
     @JvmStatic
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     fun getExtSdCardPathsForActivity(context: Context): Array<String> {
         val paths: MutableList<String> = ArrayList()
         for (file in context.getExternalFilesDirs("external")) {
@@ -147,7 +145,6 @@ object ExternalSdCardOperation {
      * card. Otherwise, null is returned.
      */
     @JvmStatic
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     fun getExtSdCardFolder(
         file: File,
         context: Context,
@@ -172,7 +169,6 @@ object ExternalSdCardOperation {
      * @return true if on external sd card.
      */
     @JvmStatic
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     fun isOnExtSdCard(
         file: File,
         c: Context,

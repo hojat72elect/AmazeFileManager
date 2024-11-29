@@ -105,13 +105,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hybrid file for handling all types of files
+ * Hybrid file for handling all types of files.
  */
-@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class HybridFile {
 
-    public static final String DOCUMENT_FILE_PREFIX =
-            "content://com.android.externalstorage.documents";
+    public static final String DOCUMENT_FILE_PREFIX = "content://com.android.externalstorage.documents";
     private static final Logger LOG = LoggerFactory.getLogger(HybridFile.class);
     private final DataUtils dataUtils = DataUtils.getInstance();
     protected String path;
@@ -193,24 +191,19 @@ public class HybridFile {
             boolean rootmode =
                     PreferenceManager.getDefaultSharedPreferences(context)
                             .getBoolean(PreferencesConstants.PREFERENCE_ROOTMODE, false);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                mode = OpenMode.FILE;
-                if (rootmode && !getFile().canRead()) {
-                    mode = OpenMode.ROOT;
-                }
-            } else {
-                if (ExternalSdCardOperation.isOnExtSdCard(getFile(), context)) {
-                    mode = OpenMode.FILE;
-                } else if (rootmode && !getFile().canRead()) {
-                    mode = OpenMode.ROOT;
-                }
 
-                // In some cases, non-numeric path is passed into HybridFile while mode is still
-                // CUSTOM here. We are forcing OpenMode.FILE in such case too. See #2225
-                if (OpenMode.UNKNOWN.equals(mode) || OpenMode.CUSTOM.equals(mode)) {
-                    mode = OpenMode.FILE;
-                }
+            if (ExternalSdCardOperation.isOnExtSdCard(getFile(), context)) {
+                mode = OpenMode.FILE;
+            } else if (rootmode && !getFile().canRead()) {
+                mode = OpenMode.ROOT;
             }
+
+            // In some cases, non-numeric path is passed into HybridFile while mode is still
+            // CUSTOM here. We are forcing OpenMode.FILE in such case too. See #2225
+            if (OpenMode.UNKNOWN.equals(mode) || OpenMode.CUSTOM.equals(mode)) {
+                mode = OpenMode.FILE;
+            }
+
         }
     }
 
@@ -1448,16 +1441,14 @@ public class HybridFile {
         } else {
             if (getFile().setLastModified(date)) return true;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                try {
-                    Files.setLastModifiedTime(getFile().toPath(), FileTime.fromMillis(date));
-                    return true;
-                } catch (IOException e) {
-                    LOG.error("Files#setLastModifiedTime", e);
-                    return false;
-                }
+            try {
+                Files.setLastModifiedTime(getFile().toPath(), FileTime.fromMillis(date));
+                return true;
+            } catch (IOException e) {
+                LOG.error("Files#setLastModifiedTime", e);
+                return false;
             }
-            return false;
+
         }
     }
 

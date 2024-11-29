@@ -88,13 +88,8 @@ public class TabFragment extends Fragment {
 
         fragmentManager = requireActivity().getSupportFragmentManager();
         dragPlaceholder = rootView.findViewById(R.id.drag_placeholder);
+        indicator = requireActivity().findViewById(R.id.indicator);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            indicator = requireActivity().findViewById(R.id.indicator);
-        } else {
-            circleDrawable1 = requireActivity().findViewById(R.id.tab_indicator1);
-            circleDrawable2 = requireActivity().findViewById(R.id.tab_indicator2);
-        }
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         savePaths = sharedPrefs.getBoolean(PREFERENCE_SAVED_PATHS, DEFAULT_SAVED_PATHS);

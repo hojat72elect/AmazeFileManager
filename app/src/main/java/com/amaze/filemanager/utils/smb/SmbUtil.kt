@@ -51,7 +51,7 @@ object SmbUtil {
         path: String,
     ): String {
         return buildPath(path, withPassword = {
-            PasswordUtil.encryptPassword(context, it)
+            PasswordUtil.encryptPassword(it)
         })
     }
 

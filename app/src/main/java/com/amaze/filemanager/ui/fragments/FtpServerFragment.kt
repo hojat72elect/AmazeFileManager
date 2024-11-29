@@ -895,7 +895,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     .edit()
                     .putString(
                         FtpService.KEY_PREFERENCE_PASSWORD,
-                        PasswordUtil.encryptPassword(this, password),
+                        PasswordUtil.encryptPassword(password),
                     )
                     .apply()
             }

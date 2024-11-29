@@ -51,16 +51,11 @@ public abstract class FileUtil {
             // standard way
             outStream = new FileOutputStream(target);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                // Storage Access Framework
-                DocumentFile targetDocument =
-                        ExternalSdCardOperation.getDocumentFile(target, false, context);
-                if (targetDocument == null) return null;
-                outStream = context.getContentResolver().openOutputStream(targetDocument.getUri());
-            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                // Workaround for Kitkat ext SD card
-                return MediaStoreHack.getOutputStream(context, target.getPath());
-            }
+            // Storage Access Framework
+            DocumentFile targetDocument =
+                    ExternalSdCardOperation.getDocumentFile(target, false, context);
+            if (targetDocument == null) return null;
+            outStream = context.getContentResolver().openOutputStream(targetDocument.getUri());
         }
         return outStream;
     }

@@ -169,9 +169,7 @@ object FileProperties {
             return 1
         }
         val folder = File(f)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-            isOnExtSdCard(folder, context)
-        ) {
+        if (isOnExtSdCard(folder, context)) {
             if (!folder.exists() || !folder.isDirectory) {
                 return 0
             }
@@ -181,12 +179,7 @@ object FileProperties {
                 return 1
             }
         } else {
-            return if (Build.VERSION.SDK_INT == 19 &&
-                isOnExtSdCard(folder, context)
-            ) {
-                // Assume that Kitkat workaround works
-                1
-            } else if (folder.canWrite()) {
+            return if (folder.canWrite()) {
                 1
             } else {
                 0
@@ -240,11 +233,7 @@ object FileProperties {
     ): String {
         return if (ANDROID_DEVICE_DATA_DIRS.containsPath(path)) {
             path
-        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
-            ANDROID_DEVICE_DATA_DIRS.any {
-                path.startsWith(it) && path != it
-            }
-        ) {
+        } else if (ANDROID_DEVICE_DATA_DIRS.any { path.startsWith(it) && path != it }) {
             val suffix =
                 path.substringAfter(Environment.getExternalStorageDirectory().absolutePath)
             val documentId = "$STORAGE_PRIMARY:${suffix.substring(1)}"

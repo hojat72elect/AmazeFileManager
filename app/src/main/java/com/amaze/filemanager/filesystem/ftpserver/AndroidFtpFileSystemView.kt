@@ -5,14 +5,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION_CODES.KITKAT
 import android.os.Build.VERSION_CODES.M
-import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import java.io.File
 import java.net.URI
 import org.apache.ftpserver.ftplet.FileSystemView
 import org.apache.ftpserver.ftplet.FtpFile
 
-@RequiresApi(KITKAT)
 class AndroidFtpFileSystemView(private var context: Context, root: String) : FileSystemView {
     private val rootPath = root
     private val rootDocumentFile = createDocumentFileFrom(rootPath)

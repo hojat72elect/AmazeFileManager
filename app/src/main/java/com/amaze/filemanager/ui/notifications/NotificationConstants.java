@@ -74,7 +74,6 @@ public class NotificationConstants {
      * You CANNOT call this from android < O. THis channel is set so it doesn't bother the user, but
      * it has importance.
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private static void createFtpChannel(Context context) {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -95,7 +94,6 @@ public class NotificationConstants {
      * You CANNOT call this from android < O. THis channel is set so it doesn't bother the user, with
      * the lowest importance.
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private static void createNormalChannel(Context context) {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

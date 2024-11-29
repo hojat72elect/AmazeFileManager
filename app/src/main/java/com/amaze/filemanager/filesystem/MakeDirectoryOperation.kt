@@ -39,25 +39,14 @@ object MakeDirectoryOperation {
         }
 
         // Try with Storage Access Framework.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-            ExternalSdCardOperation.isOnExtSdCard(file, context)
-        ) {
+        if (ExternalSdCardOperation.isOnExtSdCard(file, context)) {
             val document = ExternalSdCardOperation.getDocumentFile(file, true, context)
             document ?: return false
             // getDocumentFile implicitly creates the directory.
             return document.exists()
         }
 
-        // Try the Kitkat workaround.
-        return if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            try {
-                MediaStoreHack.mkdir(context, file)
-            } catch (e: IOException) {
-                false
-            }
-        } else {
-            false
-        }
+        return false
     }
 
     /**

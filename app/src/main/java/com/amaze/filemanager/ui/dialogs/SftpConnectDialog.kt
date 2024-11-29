@@ -686,7 +686,7 @@ class SftpConnectDialog : DialogFragment() {
                     hostKeyFingerprint,
                     username,
                     if (false == password?.isBlank()) {
-                        PasswordUtil.encryptPassword(requireContext(), password)?.replace("\n", "")
+                        PasswordUtil.encryptPassword(password)?.replace("\n", "")
                     } else {
                         password
                     },

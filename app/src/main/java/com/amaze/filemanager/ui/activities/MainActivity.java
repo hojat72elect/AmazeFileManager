@@ -75,7 +75,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.arch.core.util.Function;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -188,7 +187,6 @@ import kotlin.text.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@androidx.annotation.RequiresApi(api = android.os.Build.VERSION_CODES.TIRAMISU)
 public class MainActivity extends PermissionsActivity
         implements SmbConnectionListener,
         BookmarkCallback,
@@ -556,7 +554,7 @@ public class MainActivity extends PermissionsActivity
                     requestStoragePermission(this, true);
                 }
             }
-            if (SDK_INT >= Build.VERSION_CODES.TIRAMISU && !checkNotificationPermission()) {
+            if (!checkNotificationPermission()) {
                 requestNotificationPermission(true);
             }
         }
@@ -1379,7 +1377,6 @@ public class MainActivity extends PermissionsActivity
     /**
      * Updates everything related to USB devices MUST ALWAYS be called after onResume()
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void updateUsbInformation() {
         boolean isInformationUpdated = false;
         List<UsbOtgRepresentation> connectedDevices = OTGUtil.getMassStorageDevicesConnected(this);

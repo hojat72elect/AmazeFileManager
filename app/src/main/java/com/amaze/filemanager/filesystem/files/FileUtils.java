@@ -358,8 +358,7 @@ public class FileUtils {
                     .show();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                && !permissionsActivity.getPackageManager().canRequestPackageInstalls()) {
+        if (!permissionsActivity.getPackageManager().canRequestPackageInstalls()) {
             permissionsActivity.requestInstallApkPermission(
                     () -> installApk(f, permissionsActivity), true);
         }
@@ -367,16 +366,10 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         String type = "application/vnd.android.package-archive";
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri downloadedApk =
-                    FileProvider.getUriForFile(
-                            permissionsActivity.getApplicationContext(), permissionsActivity.getPackageName(), f);
-            intent.setDataAndType(downloadedApk, type);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        } else {
-            intent.setDataAndType(Uri.fromFile(f), type);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
+
+        Uri downloadedApk = FileProvider.getUriForFile(permissionsActivity.getApplicationContext(), permissionsActivity.getPackageName(), f);
+        intent.setDataAndType(downloadedApk, type);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         try {
             permissionsActivity.startActivity(intent);
@@ -417,14 +410,7 @@ public class FileUtils {
     }
 
     private static void applyNewDocFlag(Intent i) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        } else {
-            i.setFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-        }
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
     }
 
     /**
@@ -481,9 +467,8 @@ public class FileUtils {
                                     intent = new Intent(activity, DatabaseViewerActivity.class);
                                     intent.setAction(Intent.ACTION_VIEW);
                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_RETAIN_IN_RECENTS);
-                                    }
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_RETAIN_IN_RECENTS);
+
                                     // DatabaseViewerActivity only accepts java.io.File paths, need to strip the URI
                                     // to file's absolute path
                                     intent.putExtra(

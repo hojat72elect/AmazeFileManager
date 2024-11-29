@@ -35,27 +35,12 @@ object DeleteOperation {
         }
 
         // Try with Storage Access Framework.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val document = ExternalSdCardOperation.getDocumentFile(file, true, context)
-            if (document != null && document.delete()) {
-                return true
-            }
+
+        val document = ExternalSdCardOperation.getDocumentFile(file, true, context)
+        if (document != null && document.delete()) {
+            return true
         }
 
-        // Try the Kitkat workaround.
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            val resolver = context.contentResolver
-            val values = ContentValues()
-            values.put(MediaStore.MediaColumns.DATA, file.absolutePath)
-            resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-
-            // Delete the created entry, such that content provider will delete the file.
-            resolver.delete(
-                MediaStore.Files.getContentUri("external"),
-                MediaStore.MediaColumns.DATA + "=?",
-                arrayOf(file.absolutePath),
-            )
-        }
         return !file.exists()
     }
 
@@ -75,30 +60,12 @@ object DeleteOperation {
         if (file.delete() || fileDelete) return true
 
         // Try with Storage Access Framework.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-            ExternalSdCardOperation.isOnExtSdCard(file, context)
-        ) {
+        if (ExternalSdCardOperation.isOnExtSdCard(file, context)) {
             val document = ExternalSdCardOperation.getDocumentFile(file, false, context)
             document ?: return true
             return document.delete()
         }
 
-        // Try the Kitkat workaround.
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            val resolver = context.contentResolver
-            return try {
-                val uri = MediaStoreHack.getUriFromFile(file.absolutePath, context)
-                if (uri == null) {
-                    false
-                } else {
-                    resolver.delete(uri, null, null)
-                    !file.exists()
-                }
-            } catch (e: SecurityException) {
-                Log.e(LOG, "Security exception when checking for file " + file.absolutePath, e)
-                false
-            }
-        }
         return !file.exists()
     }
 }

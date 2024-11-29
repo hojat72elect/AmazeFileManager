@@ -2,7 +2,6 @@ package com.amaze.filemanager.filesystem.files;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.documentfile.provider.DocumentFile;
@@ -13,7 +12,6 @@ import com.amaze.filemanager.filesystem.ExternalSdCardOperation;
 import com.amaze.filemanager.filesystem.FileProperties;
 import com.amaze.filemanager.filesystem.HybridFile;
 import com.amaze.filemanager.filesystem.HybridFileParcelable;
-import com.amaze.filemanager.filesystem.MediaStoreHack;
 import com.amaze.filemanager.filesystem.SafRootHolder;
 import com.amaze.filemanager.filesystem.cloud.CloudUtil;
 import com.amaze.filemanager.utils.DataUtils;
@@ -131,21 +129,9 @@ public class GenericCopyUtil {
                         inChannel = new RandomAccessFile(file, "r").getChannel();
                     }
                 } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ContentResolver contentResolver = mContext.getContentResolver();
-                        DocumentFile documentSourceFile =
-                                ExternalSdCardOperation.getDocumentFile(file, mSourceFile.isDirectory(), mContext);
-
-                        bufferedInputStream =
-                                new BufferedInputStream(
-                                        contentResolver.openInputStream(documentSourceFile.getUri()),
-                                        DEFAULT_BUFFER_SIZE
-                                );
-                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                        InputStream inputStream1 =
-                                MediaStoreHack.getInputStream(mContext, file, mSourceFile.getSize());
-                        bufferedInputStream = new BufferedInputStream(inputStream1);
-                    }
+                    ContentResolver contentResolver = mContext.getContentResolver();
+                    DocumentFile documentSourceFile = ExternalSdCardOperation.getDocumentFile(file, mSourceFile.isDirectory(), mContext);
+                    bufferedInputStream = new BufferedInputStream(contentResolver.openInputStream(documentSourceFile.getUri()), DEFAULT_BUFFER_SIZE);
                 }
             }
 
@@ -189,22 +175,9 @@ public class GenericCopyUtil {
                         outChannel = new RandomAccessFile(file, "rw").getChannel();
                     }
                 } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ContentResolver contentResolver = mContext.getContentResolver();
-                        DocumentFile documentTargetFile =
-                                ExternalSdCardOperation.getDocumentFile(
-                                        file, mTargetFile.isDirectory(mContext), mContext);
-
-                        bufferedOutputStream =
-                                new BufferedOutputStream(
-                                        contentResolver.openOutputStream(documentTargetFile.getUri()),
-                                        DEFAULT_BUFFER_SIZE
-                                );
-                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                        // Workaround for Kitkat ext SD card
-                        bufferedOutputStream =
-                                new BufferedOutputStream(MediaStoreHack.getOutputStream(mContext, file.getPath()));
-                    }
+                    ContentResolver contentResolver = mContext.getContentResolver();
+                    DocumentFile documentTargetFile = ExternalSdCardOperation.getDocumentFile(file, mTargetFile.isDirectory(mContext), mContext);
+                    bufferedOutputStream = new BufferedOutputStream(contentResolver.openOutputStream(documentTargetFile.getUri()), DEFAULT_BUFFER_SIZE);
                 }
             }
 

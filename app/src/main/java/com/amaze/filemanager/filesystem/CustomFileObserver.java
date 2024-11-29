@@ -62,22 +62,13 @@ public class CustomFileObserver extends FileObserver {
 
     @Override
     public void startWatching() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
-            startPollingSystem();
-        } else {
             super.startWatching();
-        }
     }
 
     @Override
     public void stopWatching() {
         wasStopped = true;
-
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
-            stopPollingSystem();
-        } else {
-            super.stopWatching();
-        }
+        super.stopWatching();
     }
 
     @Override
@@ -153,7 +144,6 @@ public class CustomFileObserver extends FileObserver {
      * cases the event will be creation (if moved into) or deletion (if moved out of) or DELETE_SELF
      * instead of MOVE_SELF.
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startPollingSystem() {
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleWithFixedDelay(
@@ -164,12 +154,10 @@ public class CustomFileObserver extends FileObserver {
         ); // This doesn't work with milliseconds (don't know why)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void stopPollingSystem() {
         executor.shutdown();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static class FileTimerTask implements Runnable {
         private final FileObserver fileObserver;
         private final File file;
