@@ -1,7 +1,7 @@
 package com.amaze.filemanager.filesystem.ftp
 
 import android.annotation.SuppressLint
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.ftp.auth.FtpAuthenticationTask
 import com.amaze.filemanager.asynchronous.asynctasks.ssh.PemToKeyPairObservable
 import com.amaze.filemanager.asynchronous.asynctasks.ssh.SshAuthenticationTask
@@ -214,7 +214,7 @@ object NetCopyClientConnectionPool {
      * @see MainActivity.exit
      */
     fun shutdown() {
-        AppConfig.getInstance().runInBackground {
+        AmazeFileManagerApplication.getInstance().runInBackground {
             if (connections.isNotEmpty()) {
                 connections.values.forEach {
                     it.expire()
@@ -240,7 +240,7 @@ object NetCopyClientConnectionPool {
     @Suppress("TooGenericExceptionThrown")
     private fun createSshClient(url: String): NetCopyClient<SSHClient>? {
         val connInfo = NetCopyConnectionInfo(url)
-        val utilsHandler = AppConfig.getInstance().utilsHandler
+        val utilsHandler = AmazeFileManagerApplication.getInstance().utilsHandler
         val pem = utilsHandler.getSshAuthPrivateKey(url)
         val keyPair = AtomicReference<KeyPair?>(null)
         if (true == pem?.isNotEmpty()) {
@@ -332,7 +332,7 @@ object NetCopyClientConnectionPool {
         NetCopyConnectionInfo(url).run {
             val certInfo =
                 if (FTPS_URI_PREFIX == prefix) {
-                    AppConfig.getInstance().utilsHandler.getRemoteHostKey(url)
+                    AmazeFileManagerApplication.getInstance().utilsHandler.getRemoteHostKey(url)
                 } else {
                     null
                 }

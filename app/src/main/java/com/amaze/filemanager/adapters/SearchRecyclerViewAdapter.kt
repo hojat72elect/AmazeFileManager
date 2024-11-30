@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem.SearchResult
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.amaze.filemanager.ui.colors.ColorPreference
@@ -57,7 +57,7 @@ class SearchRecyclerViewAdapter :
         val (file, matchResult) = getItem(position)
 
         val colorPreference =
-            (AppConfig.getInstance().mainActivityContext as MainActivity).currentColorPreference
+            (AmazeFileManagerApplication.getInstance().mainActivityContext as MainActivity).currentColorPreference
 
         val fileName = SpannableString(file.name)
         fileName.setSpan(
@@ -92,15 +92,15 @@ class SearchRecyclerViewAdapter :
 
                 if (!file.isDirectory) {
                     file.openFile(
-                        AppConfig.getInstance().mainActivityContext as MainActivity?,
+                        AmazeFileManagerApplication.getInstance().mainActivityContext as MainActivity?,
                         false,
                     )
                 } else {
-                    (AppConfig.getInstance().mainActivityContext as MainActivity?)
+                    (AmazeFileManagerApplication.getInstance().mainActivityContext as MainActivity?)
                         ?.goToMain(file.path)
                 }
 
-                (AppConfig.getInstance().mainActivityContext as MainActivity?)
+                (AmazeFileManagerApplication.getInstance().mainActivityContext as MainActivity?)
                     ?.appbar?.searchView?.hideSearchView()
             }
         }

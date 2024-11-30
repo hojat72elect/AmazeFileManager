@@ -2,7 +2,6 @@ package com.amaze.filemanager.database;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.models.explorer.Tab;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,6 +58,6 @@ public class TabHandler {
 
     private static class TabHandlerHolder {
         private static final TabHandler INSTANCE =
-                new TabHandler(AppConfig.getInstance().getExplorerDatabase());
+                new TabHandler(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getExplorerDatabase());
     }
 }

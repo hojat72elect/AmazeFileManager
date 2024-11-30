@@ -10,12 +10,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.google.android.material.textfield.TextInputLayout
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-private val log: Logger = LoggerFactory.getLogger(AppConfig::class.java)
+private val log: Logger = LoggerFactory.getLogger(AmazeFileManagerApplication::class.java)
 
 /**
  * Marks a text input field as mandatory (appends * at end)
@@ -103,6 +103,6 @@ fun Intent.runIfDocumentsUIExists(
     if (this.resolveActivity(context.packageManager) != null) {
         callback.run()
     } else {
-        AppConfig.toast(context, R.string.no_app_found_intent)
+        AmazeFileManagerApplication.toast(context, R.string.no_app_found_intent)
     }
 }

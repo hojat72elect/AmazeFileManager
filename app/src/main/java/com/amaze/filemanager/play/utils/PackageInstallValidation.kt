@@ -2,7 +2,7 @@ package com.amaze.filemanager.play.utils
 
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.files.FileUtils
 import java.io.File
 
@@ -19,7 +19,7 @@ object PackageInstallValidation {
     @JvmStatic
     @Throws(PackageCannotBeInstalledException::class, IllegalStateException::class)
     fun validatePackageInstallability(f: File) {
-        AppConfig.getInstance().run {
+        AmazeFileManagerApplication.getInstance().run {
             val packageInfo: PackageInfo? =
                 packageManager.getPackageArchiveInfo(
                     f.absolutePath,

@@ -4,7 +4,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.amaze.filemanager.BuildConfig;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 import com.amaze.filemanager.filesystem.HybridFile;
@@ -302,8 +301,8 @@ public class CryptUtil {
                 new AESCrypt(password)
                         .encrypt(
                                 AESCrypt.AESCRYPT_SPEC_VERSION,
-                                sourceFile.getInputStream(AppConfig.getInstance()),
-                                targetFile.getOutputStream(AppConfig.getInstance()),
+                                sourceFile.getInputStream(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()),
+                                targetFile.getOutputStream(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()),
                                 progressHandler
                         );
             } else {

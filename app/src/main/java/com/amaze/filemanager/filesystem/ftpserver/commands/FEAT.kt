@@ -1,7 +1,7 @@
 package com.amaze.filemanager.filesystem.ftpserver.commands
 
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import org.apache.ftpserver.command.AbstractCommand
 import org.apache.ftpserver.ftplet.DefaultFtpReply
 import org.apache.ftpserver.ftplet.FtpReply
@@ -22,7 +22,7 @@ class FEAT : AbstractCommand() {
         session.write(
             DefaultFtpReply(
                 FtpReply.REPLY_211_SYSTEM_STATUS_REPLY,
-                AppConfig.getInstance().getString(R.string.ftp_command_FEAT),
+                AmazeFileManagerApplication.getInstance().getString(R.string.ftp_command_FEAT),
             ),
         )
     }

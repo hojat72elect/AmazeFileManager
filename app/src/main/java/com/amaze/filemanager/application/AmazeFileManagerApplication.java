@@ -33,7 +33,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.concurrent.Callable;
 import jcifs.Config;
 import jcifs.smb.SmbException;
 import org.acra.ACRA;
@@ -48,17 +47,16 @@ import org.slf4j.LoggerFactory;
 @AcraCore(
         buildConfigClass = BuildConfig.class,
         reportSenderFactoryClasses = AcraReportSenderFactory.class)
-public class AppConfig extends GlideApplication {
+public class AmazeFileManagerApplication extends GlideApplication {
 
     private static final String TRASH_BIN_BASE_PATH =
             Environment.getExternalStorageDirectory().getPath() + File.separator + ".AmazeData";
     private static ScreenUtils screenUtils;
-    private static AppConfig instance;
+    private static AmazeFileManagerApplication instance;
     private Logger log = null;
     private UtilitiesProvider utilsProvider;
     private UtilsHandler utilsHandler;
     private WeakReference<Context> mainActivityContext;
-    private UtilitiesDatabase utilitiesDatabase;
     private ExplorerDatabase explorerDatabase;
     private TrashBinConfig trashBinConfig;
     private TrashBin trashBin;
@@ -111,7 +109,7 @@ public class AppConfig extends GlideApplication {
         }
     }
 
-    public static synchronized AppConfig getInstance() {
+    public static synchronized AmazeFileManagerApplication getInstance() {
         return instance;
     }
 
@@ -128,7 +126,7 @@ public class AppConfig extends GlideApplication {
 
         CustomSshJConfig.init();
         explorerDatabase = ExplorerDatabase.initialize(this);
-        utilitiesDatabase = UtilitiesDatabase.initialize(this);
+        UtilitiesDatabase utilitiesDatabase = UtilitiesDatabase.initialize(this);
 
         utilsProvider = new UtilitiesProvider(this);
         utilsHandler = new UtilsHandler(this, utilitiesDatabase);
@@ -138,7 +136,7 @@ public class AppConfig extends GlideApplication {
         // disabling file exposure method check for api n+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-        log = LoggerFactory.getLogger(AppConfig.class);
+        log = LoggerFactory.getLogger(AmazeFileManagerApplication.class);
     }
 
     @Override
@@ -154,8 +152,8 @@ public class AppConfig extends GlideApplication {
 
     /**
      * Post a runnable to handler. Use this in case we don't have any restriction to execute after
-     * this runnable is executed, and {@link #runInBackground(Runnable)} in case we need to execute
-     * something after execution in background
+     * this runnable is executed, and {#runInBackground(Runnable)} in case we need to execute
+     * something after execution in background.
      */
     public void runInBackground(Runnable runnable) {
         Completable.fromRunnable(runnable).subscribeOn(Schedulers.io()).subscribe();
@@ -168,16 +166,6 @@ public class AppConfig extends GlideApplication {
      */
     public void runInApplicationThread(@NonNull Runnable r) {
         Completable.fromRunnable(r).subscribeOn(AndroidSchedulers.mainThread()).subscribe();
-    }
-
-    /**
-     * Convenience method to run a {@link Callable} in the main application thread. Use when the
-     * callable's return value is not processed.
-     *
-     * @param c {@link Callable} to run
-     */
-    public void runInApplicationThread(@NonNull Callable<Void> c) {
-        Completable.fromCallable(c).subscribeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 
     public UtilsHandler getUtilsHandler() {

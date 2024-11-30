@@ -81,7 +81,6 @@ import com.amaze.filemanager.LogHelper;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.adapters.data.StorageDirectoryParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.SaveOnDataUtilsChange;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
@@ -321,11 +320,11 @@ public class MainActivity extends PermissionsActivity
 
         dataUtils.registerOnDataChangedListener(new SaveOnDataUtilsChange(drawer));
 
-        AppConfig.getInstance().setMainActivityContext(this);
+        com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().setMainActivityContext(this);
 
         initialiseViews();
-        utilsHandler = AppConfig.getInstance().getUtilsHandler();
-        cloudHandler = new CloudHandler(this, AppConfig.getInstance().getExplorerDatabase());
+        utilsHandler = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getUtilsHandler();
+        cloudHandler = new CloudHandler(this, com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getExplorerDatabase());
 
         initialiseFab(); // TODO: 7/12/2017 not init when actionIntent != null
         mainActivityHelper = new MainActivityHelper(this);
@@ -689,7 +688,7 @@ public class MainActivity extends PermissionsActivity
                         data.append(AppConstants.NEW_LINE).append(extras.getString(Intent.EXTRA_TEXT));
                     }
                     String fileName = Long.toString(System.currentTimeMillis());
-                    AppConfig.getInstance()
+                    com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()
                             .runInBackground(
                                     () ->
                                             MakeFileOperation.mktextfile(
@@ -1077,7 +1076,7 @@ public class MainActivity extends PermissionsActivity
                                     dataUtils.getListOrGridForPath(mainFragment.getCurrentPath(), DataUtils.LIST);
                             if (mainFragment.getMainFragmentViewModel().isList()) {
                                 if (pathLayout == DataUtils.LIST) {
-                                    AppConfig.getInstance()
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()
                                             .runInBackground(
                                                     () -> utilsHandler.removeFromDatabase(
                                                             new OperationData(
@@ -1089,7 +1088,7 @@ public class MainActivity extends PermissionsActivity
                                 dataUtils.setPathAsGridOrList(mainFragment.getCurrentPath(), DataUtils.GRID);
                             } else {
                                 if (pathLayout == DataUtils.GRID) {
-                                    AppConfig.getInstance()
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()
                                             .runInBackground(
                                                     () -> {
                                                         utilsHandler.removeFromDatabase(
@@ -2307,7 +2306,7 @@ public class MainActivity extends PermissionsActivity
         } else {
             LOG.warn("MainFragment is null");
             if (showToastIfMainFragmentIsNull) {
-                AppConfig.toast(this, R.string.operation_unsuccesful);
+                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(this, R.string.operation_unsuccesful);
             }
         }
     }

@@ -14,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -25,7 +24,6 @@ import androidx.documentfile.provider.DocumentFile;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 import com.amaze.filemanager.fileoperations.filesystem.smbstreamer.Streamer;
 import com.amaze.filemanager.filesystem.HybridFile;
@@ -103,7 +101,7 @@ public class FileUtils {
 
     public static long folderSize(HybridFile directory, OnProgressUpdate<Long> updateState) {
         if (directory.isSimpleFile()) return folderSize(new File(directory.getPath()), updateState);
-        else return directory.folderSize(AppConfig.getInstance());
+        else return directory.folderSize(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance());
     }
 
     public static long folderSize(SmbFile directory) {

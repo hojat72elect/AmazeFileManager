@@ -4,7 +4,7 @@ import android.app.ProgressDialog
 import android.widget.Toast
 import androidx.annotation.MainThread
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.Task
 import java.util.concurrent.Callable
 
@@ -20,7 +20,7 @@ abstract class AbstractGetHostInfoTask<V, T : Callable<V>>(
      */
     @MainThread
     open fun onPreExecute() {
-        AppConfig.getInstance().run {
+        AmazeFileManagerApplication.getInstance().run {
             progressDialog =
                 ProgressDialog.show(
                     this.mainActivityContext,
@@ -36,8 +36,8 @@ abstract class AbstractGetHostInfoTask<V, T : Callable<V>>(
             progressDialog.dismiss()
         }
         Toast.makeText(
-            AppConfig.getInstance(),
-            AppConfig.getInstance()
+            AmazeFileManagerApplication.getInstance(),
+            AmazeFileManagerApplication.getInstance()
                 .resources
                 .getString(
                     R.string.ssh_connect_failed,

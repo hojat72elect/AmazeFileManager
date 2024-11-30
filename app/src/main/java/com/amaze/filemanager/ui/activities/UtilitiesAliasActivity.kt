@@ -4,7 +4,7 @@ import android.content.ActivityNotFoundException
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.databinding.UtilitiesAliasLayoutBinding
 import com.amaze.filemanager.ui.updateAUAlias
 import com.amaze.filemanager.utils.PackageUtils
@@ -34,7 +34,7 @@ class UtilitiesAliasActivity : AppCompatActivity() {
                 packageManager,
             )
         if (isAUInstalled) {
-            AppConfig.toast(this, R.string.amaze_utils_installed_alias)
+            AmazeFileManagerApplication.toast(this, R.string.amaze_utils_installed_alias)
             val intent =
                 packageManager.getLaunchIntentForPackage(
                     AboutActivity.PACKAGE_AMAZE_UTILS,

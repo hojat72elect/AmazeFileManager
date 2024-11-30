@@ -16,7 +16,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -29,7 +28,6 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil;
 import com.amaze.filemanager.asynchronous.services.ZipService;
@@ -435,7 +433,7 @@ public class MainActivityHelper {
             return result;
         } else if (OpenMode.DOCUMENT_FILE.equals(openMode)) {
             DocumentFile d =
-                    DocumentFile.fromTreeUri(AppConfig.getInstance(), SafRootHolder.getUriRoot());
+                    DocumentFile.fromTreeUri(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance(), SafRootHolder.getUriRoot());
             if (d == null) return DOESNT_EXIST;
             else {
                 return WRITABLE_OR_ON_SDCARD;

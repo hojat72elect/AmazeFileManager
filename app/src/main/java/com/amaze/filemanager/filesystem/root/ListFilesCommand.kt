@@ -2,7 +2,7 @@ package com.amaze.filemanager.filesystem.root
 
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.exceptions.ShellCommandInvalidException
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode
@@ -101,7 +101,7 @@ object ListFilesCommand : IRootCommand() {
                 "stat -c '%A %h %G %U %B %Y %N' " +
                         "$appendedPath*" + (if (showHidden) " $appendedPath.* " else "")
             val enforceLegacyFileListing: Boolean =
-                PreferenceManager.getDefaultSharedPreferences(AppConfig.getInstance())
+                PreferenceManager.getDefaultSharedPreferences(AmazeFileManagerApplication.getInstance())
                     .getBoolean(
                         PreferencesConstants.PREFERENCE_ROOT_LEGACY_LISTING,
                         false,
@@ -194,8 +194,8 @@ object ListFilesCommand : IRootCommand() {
                 }
             } else {
                 log.error("Error listing files at [$path]. Access permission denied?")
-                AppConfig.getInstance().run {
-                    AppConfig.toast(this, this.getString(R.string.error_permission_denied))
+                AmazeFileManagerApplication.getInstance().run {
+                    AmazeFileManagerApplication.toast(this, this.getString(R.string.error_permission_denied))
                 }
             }
         }

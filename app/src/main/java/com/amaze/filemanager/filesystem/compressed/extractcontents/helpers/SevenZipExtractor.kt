@@ -2,7 +2,7 @@ package com.amaze.filemanager.filesystem.compressed.extractcontents.helpers
 
 import android.content.Context
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.fileoperations.filesystem.compressed.ArchivePasswordCache
 import com.amaze.filemanager.fileoperations.sevenz.SevenZArchiveEntry
 import com.amaze.filemanager.fileoperations.sevenz.SevenZFile
@@ -127,7 +127,7 @@ class SevenZipExtractor(
             }
         }?.onFailure {
             throw it
-        } ?: AppConfig.toast(
+        } ?: AmazeFileManagerApplication.toast(
             context,
             context.getString(
                 R.string.error_archive_cannot_extract,

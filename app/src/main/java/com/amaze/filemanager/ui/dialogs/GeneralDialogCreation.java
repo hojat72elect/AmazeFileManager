@@ -1,6 +1,5 @@
 package com.amaze.filemanager.ui.dialogs;
 
-import static android.os.Build.VERSION.SDK_INT;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SORTBY_ONLY_THIS;
 
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -35,7 +33,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.asynctasks.CountItemsOrAndSizeTask;
 import com.amaze.filemanager.asynchronous.asynctasks.LoadFolderSpaceDataTask;
 import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
@@ -977,7 +974,7 @@ public class GeneralDialogCreation {
         MaterialDialog dialog = builder.show();
 
         new WarnableTextInputValidator(
-                AppConfig.getInstance().getMainActivityContext(),
+                com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getMainActivityContext(),
                 textfield,
                 wilTextfield,
                 dialog.getActionButton(DialogAction.POSITIVE),

@@ -3,7 +3,7 @@ package com.amaze.filemanager.utils.smb
 import android.content.Context
 import android.net.Uri
 import android.text.TextUtils
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.fileoperations.filesystem.DOESNT_EXIST
 import com.amaze.filemanager.fileoperations.filesystem.WRITABLE_ON_REMOTE
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo
@@ -94,7 +94,7 @@ object SmbUtil {
     @JvmStatic
     @Throws(MalformedURLException::class)
     fun create(path: String): SmbFile {
-        val uri = Uri.parse(getSmbDecryptedPath(AppConfig.getInstance(), path))
+        val uri = Uri.parse(getSmbDecryptedPath(AmazeFileManagerApplication.getInstance(), path))
         val disableIpcSigningCheck =
             uri.getQueryParameter(
                 PARAM_DISABLE_IPC_SIGNING_CHECK,

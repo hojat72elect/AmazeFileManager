@@ -1,6 +1,6 @@
 package com.amaze.filemanager.filesystem.ftpserver.commands
 
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.ftpserver.AndroidFileSystemFactory
 import java.io.File
 import org.apache.ftpserver.command.AbstractCommand
@@ -100,8 +100,8 @@ class AVBL : AbstractCommand() {
         subId: String,
         fileName: String? = null,
     ) {
-        val packageName = AppConfig.getInstance().packageName
-        val resources = AppConfig.getInstance().resources
+        val packageName = AmazeFileManagerApplication.getInstance().packageName
+        val resources = AmazeFileManagerApplication.getInstance().resources
         session.write(
             DefaultFtpReply(
                 code,

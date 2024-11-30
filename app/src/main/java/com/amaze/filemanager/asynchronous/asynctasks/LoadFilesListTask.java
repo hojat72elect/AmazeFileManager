@@ -20,7 +20,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Pair;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.SortHandler;
 import com.amaze.filemanager.database.UtilsHandler;
 import com.amaze.filemanager.fileoperations.exceptions.CloudPluginException;
@@ -161,7 +160,7 @@ public class LoadFilesListTask
                     list = listCloud(mainActivityViewModel);
                 } catch (CloudPluginException e) {
                     LOG.warn("failed to load cloud files", e);
-                    AppConfig.toast(context, context.getResources().getString(R.string.failed_no_connection));
+                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(context, context.getResources().getString(R.string.failed_no_connection));
                     return new Pair<>(openmode, Collections.emptyList());
                 }
                 break;
@@ -501,7 +500,7 @@ public class LoadFilesListTask
             return null;
         }
 
-        UtilsHandler utilsHandler = AppConfig.getInstance().getUtilsHandler();
+        UtilsHandler utilsHandler = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getUtilsHandler();
         final LinkedList<String> paths = utilsHandler.getHistoryLinkedList();
         ArrayList<LayoutElementParcelable> songs = new ArrayList<>();
         for (String f : paths) {
@@ -583,7 +582,7 @@ public class LoadFilesListTask
             return null;
         }
 
-        TrashBin trashBin = AppConfig.getInstance().getTrashBinInstance();
+        TrashBin trashBin = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getTrashBinInstance();
         List<LayoutElementParcelable> deletedFiles = new ArrayList<>();
 
         if (trashBin == null) return deletedFiles;
@@ -597,7 +596,7 @@ public class LoadFilesListTask
                     new HybridFile(
                             OpenMode.TRASH_BIN,
                             trashBinFile.getDeletedPath(
-                                    AppConfig.getInstance().getTrashBinInstance().getConfig()),
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getTrashBinInstance().getConfig()),
                             trashBinFile.getFileName(),
                             trashBinFile.isDirectory()
                     );

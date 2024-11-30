@@ -32,7 +32,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -59,7 +58,6 @@ import com.amaze.filemanager.adapters.glide.RecyclerPreloadSizeProvider;
 import com.amaze.filemanager.adapters.holders.EmptyViewHolder;
 import com.amaze.filemanager.adapters.holders.ItemViewHolder;
 import com.amaze.filemanager.adapters.holders.SpecialViewHolder;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 import com.amaze.filemanager.filesystem.PasteHelper;
 import com.amaze.filemanager.filesystem.files.CryptUtil;
@@ -196,7 +194,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     public void toggleChecked(int position, AppCompatImageView imageView) {
         if (getItemsDigested().size() <= position || position < 0) {
-            AppConfig.toast(context, R.string.operation_not_supported);
+            com.amaze.filemanager.application.AmazeFileManagerApplication.toast(context, R.string.operation_not_supported);
             return;
         }
 

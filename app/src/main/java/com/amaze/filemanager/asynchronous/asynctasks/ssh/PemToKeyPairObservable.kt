@@ -6,7 +6,7 @@ import android.widget.Toast
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.databinding.DialogSingleedittextBinding
 import com.amaze.filemanager.ui.views.WarnableTextInputLayout
 import com.amaze.filemanager.ui.views.WarnableTextInputValidator
@@ -56,12 +56,12 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
         }
         if (passwordFinder != null) {
             errorMessage =
-                AppConfig
+                AmazeFileManagerApplication
                     .getInstance()
                     .getString(R.string.ssh_key_invalid_passphrase)
         } else {
             errorMessage =
-                AppConfig
+                AmazeFileManagerApplication
                     .getInstance()
                     .getString(R.string.ssh_key_no_decoder_decrypt)
         }
@@ -79,11 +79,11 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
     ) {
         val builder =
             MaterialDialog.Builder(
-                AppConfig.getInstance().mainActivityContext!!,
+                AmazeFileManagerApplication.getInstance().mainActivityContext!!,
             )
         val dialogLayout =
             DialogSingleedittextBinding.inflate(
-                LayoutInflater.from(AppConfig.getInstance().mainActivityContext),
+                LayoutInflater.from(AmazeFileManagerApplication.getInstance().mainActivityContext),
             )
         val wilTextfield: WarnableTextInputLayout =
             dialogLayout.singleedittextWarnabletextinputlayout
@@ -117,7 +117,7 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
             }
         val dialog = builder.show()
         WarnableTextInputValidator(
-            AppConfig.getInstance().mainActivityContext,
+            AmazeFileManagerApplication.getInstance().mainActivityContext,
             textfield,
             wilTextfield,
             dialog.getActionButton(DialogAction.POSITIVE),
@@ -138,8 +138,8 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
 
     private fun toastOnParseError(result: Throwable) {
         Toast.makeText(
-            AppConfig.getInstance().mainActivityContext,
-            AppConfig.getInstance()
+            AmazeFileManagerApplication.getInstance().mainActivityContext,
+            AmazeFileManagerApplication.getInstance()
                 .resources
                 .getString(R.string.ssh_pem_key_parse_error, result.localizedMessage),
             Toast.LENGTH_LONG,

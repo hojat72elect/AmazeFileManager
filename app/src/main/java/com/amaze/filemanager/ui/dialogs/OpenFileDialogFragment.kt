@@ -19,7 +19,7 @@ import com.amaze.filemanager.adapters.data.AppDataParcelable
 import com.amaze.filemanager.adapters.data.OpenFileParcelable
 import com.amaze.filemanager.adapters.glide.AppsAdapterPreloadModel
 import com.amaze.filemanager.adapters.holders.AppHolder
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.databinding.FragmentOpenFileDialogBinding
 import com.amaze.filemanager.filesystem.files.FileUtils
 import com.amaze.filemanager.ui.activities.MainActivity
@@ -236,7 +236,7 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
          * Clears all default apps set preferences for mime types
          */
         fun clearPreferences(sharedPreferences: SharedPreferences) {
-            AppConfig.getInstance().runInBackground {
+            AmazeFileManagerApplication.getInstance().runInBackground {
                 val keys = HashSet<String>()
                 sharedPreferences.all.keys.forEach {
                     if (it.endsWith(KEY_PREFERENCES_DEFAULT) ||
@@ -412,7 +412,7 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
         appDataParcelableList: MutableList<AppDataParcelable>,
     ): AppDataParcelable? {
         if (appDataParcelableList.size == 0) {
-            AppConfig.toast(requireContext(), requireContext().getString(R.string.no_app_found))
+            AmazeFileManagerApplication.toast(requireContext(), requireContext().getString(R.string.no_app_found))
             FileUtils.openWith(uri, activity as PreferenceActivity, useNewStack!!)
             dismiss()
             return null

@@ -18,7 +18,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil;
 import com.amaze.filemanager.database.CryptHandler;
@@ -91,7 +90,7 @@ public class CopyService extends AbstractProgressiveService {
         final boolean move = intent.getBooleanExtra(TAG_COPY_MOVE, false);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         int accentColor =
-                ((AppConfig) getApplication())
+                ((com.amaze.filemanager.application.AmazeFileManagerApplication) getApplication())
                         .getUtilsProvider()
                         .getColorPreference()
                         .getCurrentUserColorPreferences(this, sharedPreferences)
@@ -515,7 +514,7 @@ public class CopyService extends AbstractProgressiveService {
                             targetFile,
                             () -> {
                                 // we ran out of memory to map the whole channel, let's switch to streams
-                                AppConfig.toast(c, c.getString(R.string.copy_low_memory));
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(c, c.getString(R.string.copy_low_memory));
                             },
                             ServiceWatcherUtil.UPDATE_POSITION
                     );

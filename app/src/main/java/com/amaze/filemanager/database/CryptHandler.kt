@@ -1,6 +1,6 @@
 package com.amaze.filemanager.database
 
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.database.models.explorer.EncryptedEntry
 import io.reactivex.schedulers.Schedulers
 import org.slf4j.Logger
@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 object CryptHandler {
     private val log: Logger = LoggerFactory.getLogger(CryptHandler::class.java)
-    private val database: ExplorerDatabase = AppConfig.getInstance().explorerDatabase
+    private val database: ExplorerDatabase = AmazeFileManagerApplication.getInstance().explorerDatabase
 
     /**
      * Add [EncryptedEntry] to database.

@@ -15,7 +15,7 @@ import android.provider.DocumentsContract
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.BuildConfig
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.services.AbstractProgressiveService.getPendingIntentFlag
 import com.amaze.filemanager.filesystem.ftpserver.AndroidFileSystemFactory
 import com.amaze.filemanager.filesystem.ftpserver.RootFileSystemFactory
@@ -130,7 +130,7 @@ class FtpService : Service(), Runnable {
                     isPasswordProtected = true
                 }.onFailure {
                     log.warn("failed to decrypt password in ftp service", it)
-                    AppConfig.toast(applicationContext, R.string.error)
+                    AmazeFileManagerApplication.toast(applicationContext, R.string.error)
                     preferences.edit().putString(KEY_PREFERENCE_PASSWORD, "").apply()
                     isPasswordProtected = false
                 }

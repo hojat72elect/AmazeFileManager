@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.CloudHandler;
 import com.amaze.filemanager.database.models.explorer.CloudEntry;
 import com.amaze.filemanager.fileoperations.exceptions.CloudPluginException;
@@ -62,7 +61,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to set app key", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.failed_cloud_api_key);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.failed_cloud_api_key);
                             } else {
                                 cancel(true);
                             }
@@ -118,7 +117,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to find cloud entry", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_error_plugin);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_error_plugin);
                                 mainActivity.deleteConnection(OpenMode.GDRIVE);
                             } else {
                                 cancel(true);
@@ -128,7 +127,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to authenticate cloud connection", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_fail_authenticate);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_fail_authenticate);
                                 mainActivity.deleteConnection(OpenMode.GDRIVE);
                             } else {
                                 cancel(true);
@@ -139,7 +138,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("Failed to load cloud conn due to network conditions or other error", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.failed_cloud_new_connection);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.failed_cloud_new_connection);
                                 mainActivity.deleteConnection(OpenMode.GDRIVE);
                             } else {
                                 cancel(true);
@@ -189,7 +188,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to find cloud entry", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_error_plugin);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_error_plugin);
                                 mainActivity.deleteConnection(OpenMode.DROPBOX);
                             } else {
                                 cancel(true);
@@ -199,7 +198,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to authenticate cloud connection", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_fail_authenticate);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_fail_authenticate);
                                 mainActivity.deleteConnection(OpenMode.DROPBOX);
                             } else cancel(true);
                             return false;
@@ -208,7 +207,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("Failed to load cloud conn due to network conditions or other error", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.failed_cloud_new_connection);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.failed_cloud_new_connection);
                                 mainActivity.deleteConnection(OpenMode.DROPBOX);
                             } else cancel(true);
                             return false;
@@ -253,7 +252,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to find cloud entry", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_error_plugin);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_error_plugin);
                                 mainActivity.deleteConnection(OpenMode.BOX);
                             } else cancel(true);
                             return false;
@@ -261,7 +260,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to authenticate cloud connection", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_fail_authenticate);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_fail_authenticate);
                                 mainActivity.deleteConnection(OpenMode.BOX);
                             } else cancel(true);
                             return false;
@@ -270,7 +269,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("Failed to load cloud conn due to network conditions or other error", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.failed_cloud_new_connection);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.failed_cloud_new_connection);
                                 mainActivity.deleteConnection(OpenMode.BOX);
                             } else cancel(true);
                             return false;
@@ -318,7 +317,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to find cloud entry", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_error_plugin);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_error_plugin);
                                 mainActivity.deleteConnection(OpenMode.ONEDRIVE);
                             } else cancel(true);
                             return false;
@@ -326,7 +325,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("failed to authenticate cloud connection", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.cloud_fail_authenticate);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.cloud_fail_authenticate);
                                 mainActivity.deleteConnection(OpenMode.ONEDRIVE);
                             } else cancel(true);
                             return false;
@@ -335,7 +334,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                             LOG.warn("Failed to load cloud conn due to network conditions or other error", e);
                             final MainActivity mainActivity = this.mainActivity.get();
                             if (mainActivity != null) {
-                                AppConfig.toast(mainActivity, R.string.failed_cloud_new_connection);
+                                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, R.string.failed_cloud_new_connection);
                                 mainActivity.deleteConnection(OpenMode.ONEDRIVE);
                             } else cancel(true);
                             return false;

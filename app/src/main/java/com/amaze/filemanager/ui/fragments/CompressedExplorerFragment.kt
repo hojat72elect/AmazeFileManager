@@ -36,7 +36,7 @@ import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback
 import com.amaze.filemanager.R
 import com.amaze.filemanager.adapters.CompressedExplorerAdapter
 import com.amaze.filemanager.adapters.data.CompressedObjectParcelable
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask
 import com.amaze.filemanager.asynchronous.services.ExtractService
 import com.amaze.filemanager.databinding.ActionmodeBinding
@@ -199,7 +199,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
             }
         listView?.visibility = View.VISIBLE
         listView?.layoutManager = LinearLayoutManager(activity)
-        val utilsProvider = AppConfig.getInstance().utilsProvider
+        val utilsProvider = AmazeFileManagerApplication.getInstance().utilsProvider
         when (utilsProvider.appTheme) {
             AppTheme.DARK ->
                 requireView()
@@ -307,7 +307,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
                         isCachedCompressedFile = true
                     } catch (e: IOException) {
                         Log.e(TAG, "Error opening URI $pathUri for reading", e)
-                        AppConfig.toast(
+                        AmazeFileManagerApplication.toast(
                             requireContext(),
                             requireContext()
                                 .getString(
@@ -627,7 +627,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
         GeneralDialogCreation.showPasswordDialog(
             requireContext(),
             (requireActivity() as MainActivity),
-            AppConfig.getInstance().utilsProvider.appTheme,
+            AmazeFileManagerApplication.getInstance().utilsProvider.appTheme,
             R.string.archive_password_prompt,
             R.string.authenticate_password,
             positiveCallback,
@@ -688,7 +688,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
             compressedExplorerAdapter =
                 CompressedExplorerAdapter(
                     activity,
-                    AppConfig.getInstance().utilsProvider,
+                    AmazeFileManagerApplication.getInstance().utilsProvider,
                     items,
                     this,
                     decompressor,

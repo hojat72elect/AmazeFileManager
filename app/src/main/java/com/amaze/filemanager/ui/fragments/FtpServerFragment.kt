@@ -41,7 +41,7 @@ import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.folderselector.FolderChooserDialog
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.services.ftp.FtpService
 import com.amaze.filemanager.asynchronous.services.ftp.FtpService.Companion.KEY_PREFERENCE_PATH
 import com.amaze.filemanager.asynchronous.services.ftp.FtpService.Companion.KEY_PREFERENCE_ROOT_FILESYSTEM
@@ -483,7 +483,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
             }
         } else {
             if (directoryUri.startsWith(ContentResolver.SCHEME_CONTENT)) {
-                AppConfig.toast(
+                AmazeFileManagerApplication.toast(
                     mainActivity,
                     getString(R.string.ftp_server_fallback_path_reset_prompt),
                 )
@@ -612,7 +612,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     resetFTPPath()
                     updateStatus()
 
-                    AppConfig.toast(
+                    AmazeFileManagerApplication.toast(
                         mainActivity,
                         getString(R.string.ftp_server_reset_notify),
                     )
@@ -943,7 +943,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         }
 
     private fun promptUserToRestartServer() {
-        if (isRunning()) AppConfig.toast(context, R.string.ftp_prompt_restart_server)
+        if (isRunning()) AmazeFileManagerApplication.toast(context, R.string.ftp_prompt_restart_server)
     }
 
     private fun promptUserToEnableWireless() {

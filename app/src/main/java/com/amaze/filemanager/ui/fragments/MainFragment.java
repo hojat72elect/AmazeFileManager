@@ -52,7 +52,6 @@ import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.RecyclerAdapter;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
 import com.amaze.filemanager.adapters.holders.ItemViewHolder;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.asynctasks.LoadFilesListTask;
 import com.amaze.filemanager.asynchronous.handlers.FileHandler;
@@ -166,7 +165,7 @@ public class MainFragment extends Fragment
                             SafRootHolder.setUriRoot(result.getData().getData());
                             loadlist(result.getData().getDataString(), false, OpenMode.DOCUMENT_FILE, true);
                         } else if (getContext() != null) {
-                            AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
+                            com.amaze.filemanager.application.AmazeFileManagerApplication.toast(requireContext(), getString(R.string.operation_unsuccesful));
                         }
                     }
             );
@@ -1144,7 +1143,7 @@ public class MainFragment extends Fragment
                         .runOnUiThread(
                                 () -> {
                                     int i;
-                                    AppConfig.toast(requireContext(), getString(R.string.unknown_error));
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(requireContext(), getString(R.string.unknown_error));
                                     if ((i =
                                             DataUtils.getInstance()
                                                     .containsServer(mainFragmentViewModel.getSmbPath()))

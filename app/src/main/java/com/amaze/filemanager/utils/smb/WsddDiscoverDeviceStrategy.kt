@@ -2,7 +2,7 @@ package com.amaze.filemanager.utils.smb
 
 import androidx.annotation.VisibleForTesting
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo.Companion.SLASH
 import com.amaze.filemanager.utils.ComputerParcelable
 import com.amaze.filemanager.utils.NetworkUtil
@@ -48,12 +48,12 @@ import org.xmlpull.v1.XmlPullParserFactory
  */
 class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStrategy {
     private val multicastRequestTemplate =
-        AppConfig.getInstance()
+        AmazeFileManagerApplication.getInstance()
             .resources.openRawResource(R.raw.wsdd_discovery)
             .reader(Charsets.UTF_8).readText()
 
     private val wsdRequestTemplate =
-        AppConfig.getInstance()
+        AmazeFileManagerApplication.getInstance()
             .resources.openRawResource(R.raw.wsd_request)
             .reader(Charsets.UTF_8).readText()
 
@@ -82,7 +82,7 @@ class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStra
 
     @Suppress("LabeledExpression")
     private fun multicastForDevice(callback: (ComputerParcelable) -> Unit) {
-        NetworkUtil.getLocalInetAddress(AppConfig.getInstance())?.let { addr ->
+        NetworkUtil.getLocalInetAddress(AmazeFileManagerApplication.getInstance())?.let { addr ->
             val multicastAddressV4 = InetAddress.getByName(BROADCAST_IPV4)
             val multicastAddressV6 = InetAddress.getByName(BROADCAST_IPV6_LINK_LOCAL)
 

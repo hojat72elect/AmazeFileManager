@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil
 import com.amaze.filemanager.filesystem.FileUtil
 import com.amaze.filemanager.filesystem.HybridFileParcelable
@@ -89,7 +89,7 @@ class ZipService : AbstractProgressiveService() {
         }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         accentColor =
-            (application as AppConfig)
+            (application as AmazeFileManagerApplication)
                 .utilsProvider
                 .colorPreference
                 .getCurrentUserColorPreferences(this, sharedPreferences).accent

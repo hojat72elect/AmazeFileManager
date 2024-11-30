@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.Build;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.Formatter;
@@ -42,7 +41,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.BuildConfig;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.StorageDirectoryParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.CloudHandler;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 import com.amaze.filemanager.fileoperations.filesystem.usb.SingletonUsbOtg;
@@ -209,9 +207,9 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     }
 
     private void setNavViewDimension(CustomNavigationView navView) {
-        int screenWidth = AppConfig.getInstance().getScreenUtils().getScreenWidthInDp();
+        int screenWidth = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getScreenUtils().getScreenWidthInDp();
         int desiredWidthInDp = screenWidth - ScreenUtils.TOOLBAR_HEIGHT_IN_DP;
-        int desiredWidthInPx = AppConfig.getInstance().getScreenUtils().convertDbToPx(desiredWidthInDp);
+        int desiredWidthInPx = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getScreenUtils().convertDbToPx(desiredWidthInDp);
 
         navView.setLayoutParams(
                 new DrawerLayout.LayoutParams(

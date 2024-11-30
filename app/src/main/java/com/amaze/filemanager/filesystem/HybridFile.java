@@ -12,20 +12,17 @@ import static com.amaze.filemanager.filesystem.ssh.SshClientUtils.sftpGetSize;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.arch.core.util.Function;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.CloudHandler;
 import com.amaze.filemanager.fileoperations.exceptions.CloudPluginException;
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException;
@@ -281,7 +278,7 @@ public class HybridFile {
         return OTGUtil.getDocumentFile(
                 path,
                 SafRootHolder.getUriRoot(),
-                AppConfig.getInstance(),
+                com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance(),
                 OpenMode.DOCUMENT_FILE,
                 createRecursive
         );
@@ -524,10 +521,10 @@ public class HybridFile {
 
                     public FTPFile executeWithFtpClient(@NonNull FTPClient ftpClient) throws IOException {
                         String path =
-                                NetCopyClientUtils.extractRemotePathFrom(getParent(AppConfig.getInstance()));
+                                NetCopyClientUtils.extractRemotePathFrom(getParent(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()));
                         ftpClient.changeWorkingDirectory(path);
                         for (FTPFile ftpFile : ftpClient.listFiles()) {
-                            if (ftpFile.getName().equals(getName(AppConfig.getInstance())))
+                            if (ftpFile.getName().equals(getName(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance())))
                                 return ftpFile;
                         }
                         return null;
@@ -607,7 +604,7 @@ public class HybridFile {
             case SFTP:
             case FTP:
             case SMB:
-                return isDirectory(AppConfig.getInstance());
+                return isDirectory(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance());
             case ROOT:
                 isDirectory = NativeOperations.isDirectory(path);
                 break;
@@ -701,7 +698,7 @@ public class HybridFile {
         switch (mode) {
             case SFTP:
             case FTP:
-                return folderSize(AppConfig.getInstance());
+                return folderSize(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance());
             case SMB:
                 SmbFile smbFile = getSmbFile();
                 size = smbFile != null ? FileUtils.folderSize(getSmbFile()) : 0;
@@ -983,7 +980,7 @@ public class HybridFile {
                                     }
                                 } catch (IOException e) {
                                     LOG.warn("IOException", e);
-                                    AppConfig.toast(
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                                             context,
                                             context.getString(
                                                     R.string.cannot_read_directory,
@@ -1132,7 +1129,7 @@ public class HybridFile {
                                 new FtpClientTemplate<InputStream>(getPath(), false) {
                                     public InputStream executeWithFtpClient(@NonNull FTPClient ftpClient)
                                             throws IOException {
-                                        String parent = getParent(AppConfig.getInstance());
+                                        String parent = getParent(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance());
                                         /*
                                          * Use temp file to hold the FTP file.
                                          *
@@ -1147,7 +1144,7 @@ public class HybridFile {
                                                 NetCopyClientUtils.extractRemotePathFrom(parent));
                                         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                                         InputStream fin =
-                                                ftpClient.retrieveFileStream(getName(AppConfig.getInstance()));
+                                                ftpClient.retrieveFileStream(getName(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()));
                                         FileOutputStream fout = new FileOutputStream(tmpFile);
                                         ByteStreamsKt.copyTo(fin, fout, GenericCopyUtil.DEFAULT_BUFFER_SIZE);
                                         fin.close();
@@ -1524,7 +1521,7 @@ public class HybridFile {
                                 @Override
                                 public Boolean execute(@NonNull SFTPClient client) throws IOException {
                                     String _path = NetCopyClientUtils.extractRemotePathFrom(path);
-                                    if (isDirectory(AppConfig.getInstance())) client.rmdir(_path);
+                                    if (isDirectory(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance())) client.rmdir(_path);
                                     else client.rm(_path);
                                     return client.statExistence(_path) == null;
                                 }
@@ -1568,7 +1565,7 @@ public class HybridFile {
 
     public void restoreFromBin(Context context) {
         List<TrashBinFile> trashBinFiles = Collections.singletonList(this.toTrashBinFile(context));
-        TrashBin trashBin = AppConfig.getInstance().getTrashBinInstance();
+        TrashBin trashBin = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getTrashBinInstance();
         if (trashBin != null) {
             trashBin.moveToBin(
                     trashBinFiles,
@@ -1588,7 +1585,7 @@ public class HybridFile {
 
     public boolean moveToBin(Context context) {
         List<TrashBinFile> trashBinFiles = Collections.singletonList(this.toTrashBinFile(context));
-        TrashBin trashBin = AppConfig.getInstance().getTrashBinInstance();
+        TrashBin trashBin = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getTrashBinInstance();
         if (trashBin != null) {
             trashBin.moveToBin(
                     trashBinFiles,
@@ -1606,7 +1603,7 @@ public class HybridFile {
     public boolean deletePermanentlyFromBin(Context context) {
         List<TrashBinFile> trashBinFiles =
                 Collections.singletonList(this.toTrashBinRestoreFile(context));
-        TrashBin trashBin = AppConfig.getInstance().getTrashBinInstance();
+        TrashBin trashBin = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getTrashBinInstance();
         AtomicBoolean isDelete = new AtomicBoolean(false);
         if (trashBin != null) {
             trashBin.deletePermanently(
@@ -1871,7 +1868,7 @@ public class HybridFile {
      * @return
      */
     public TrashBinFile toTrashBinRestoreFile(Context context) {
-        TrashBin trashBin = AppConfig.getInstance().getTrashBinInstance();
+        TrashBin trashBin = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getTrashBinInstance();
         for (TrashBinFile trashBinFile : trashBin.listFilesInBin()) {
             if (trashBinFile.getDeletedPath(trashBin.getConfig()).equals(path)) {
                 // finding path to restore tof

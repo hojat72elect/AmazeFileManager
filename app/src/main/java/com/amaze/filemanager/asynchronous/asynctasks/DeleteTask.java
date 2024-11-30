@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.preference.PreferenceManager;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.CryptHandler;
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
@@ -117,7 +116,7 @@ public class DeleteTask
                     new Intent(TAG_INTENT_FILTER_GENERAL)
                             .putParcelableArrayListExtra(TAG_INTENT_FILTER_FAILED_OPS, files));
         } else if (compressedExplorerFragment == null) {
-            AppConfig.toast(applicationContext, R.string.done);
+            com.amaze.filemanager.application.AmazeFileManagerApplication.toast(applicationContext, R.string.done);
         }
 
         if (compressedExplorerFragment != null) {

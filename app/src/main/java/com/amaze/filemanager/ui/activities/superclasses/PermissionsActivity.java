@@ -15,7 +15,6 @@ import androidx.core.app.ActivityCompat;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
 import com.amaze.filemanager.utils.Utils;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -237,11 +236,11 @@ public class PermissionsActivity extends ThemedActivity
                                 .setData(Uri.parse("package:$packageName"));
                 startActivity(intent);
             } catch (Exception e) {
-                AppConfig.toast(this, getString(R.string.grantfailed));
+                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(this, getString(R.string.grantfailed));
             }
         } catch (Exception e) {
             Log.e(TAG, "Failed to initial activity to grant all files access", e);
-            AppConfig.toast(this, getString(R.string.grantfailed));
+            com.amaze.filemanager.application.AmazeFileManagerApplication.toast(this, getString(R.string.grantfailed));
         }
     }
 

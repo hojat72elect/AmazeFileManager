@@ -17,7 +17,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.asynctasks.Task;
 import com.amaze.filemanager.asynchronous.asynctasks.TaskKt;
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil;
@@ -90,7 +89,7 @@ public class DecryptService extends AbstractProgressiveService {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int accentColor =
-                ((AppConfig) getApplication())
+                ((com.amaze.filemanager.application.AmazeFileManagerApplication) getApplication())
                         .getUtilsProvider()
                         .getColorPreference()
                         .getCurrentUserColorPreferences(this, sharedPreferences)

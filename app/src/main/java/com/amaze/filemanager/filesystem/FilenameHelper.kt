@@ -1,6 +1,6 @@
 package com.amaze.filemanager.filesystem
 
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo.Companion.SLASH
 import kotlin.math.absoluteValue
 
@@ -119,7 +119,7 @@ object FilenameHelper {
         removeRawNumbers: Boolean = false,
         startArg: Int = 1,
     ): HybridFile {
-        var filename = file.getName(AppConfig.getInstance())
+        var filename = file.getName(AmazeFileManagerApplication.getInstance())
         var dirname = file.path.pathDirname()
         var basename = filename.pathFileBasename()
         val extension = filename.pathFileExtension()
@@ -137,10 +137,10 @@ object FilenameHelper {
                 file.mode,
                 dirname,
                 filename,
-                file.isDirectory(AppConfig.getInstance()),
+                file.isDirectory(AmazeFileManagerApplication.getInstance()),
             )
 
-        while (retval.exists(AppConfig.getInstance())) {
+        while (retval.exists(AmazeFileManagerApplication.getInstance())) {
             filename =
                 if (extension.isNotBlank()) {
                     format(platform, basename, start++) + ".$extension"
@@ -152,7 +152,7 @@ object FilenameHelper {
                     file.mode,
                     dirname,
                     filename,
-                    file.isDirectory(AppConfig.getInstance()),
+                    file.isDirectory(AmazeFileManagerApplication.getInstance()),
                 )
         }
 

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.Task
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil
 import com.amaze.filemanager.asynchronous.services.CopyService
@@ -91,7 +91,7 @@ class MoveFilesTask(
         }
 
         // updating encrypted db entry if any encrypted file was moved
-        AppConfig.getInstance()
+        AmazeFileManagerApplication.getInstance()
             .runInBackground {
                 for (i in paths.indices) {
                     for (file in files[i]) {

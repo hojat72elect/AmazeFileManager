@@ -1,7 +1,6 @@
 package com.amaze.filemanager.ui.activities.superclasses;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.ui.colors.ColorPreferenceHelper;
 import com.amaze.filemanager.ui.provider.UtilitiesProvider;
 import com.amaze.filemanager.ui.theme.AppTheme;
@@ -11,8 +10,8 @@ import com.amaze.filemanager.ui.theme.AppTheme;
  */
 public class BasicActivity extends AppCompatActivity {
 
-    protected AppConfig getAppConfig() {
-        return (AppConfig) getApplication();
+    protected com.amaze.filemanager.application.AmazeFileManagerApplication getAppConfig() {
+        return (com.amaze.filemanager.application.AmazeFileManagerApplication) getApplication();
     }
 
     public ColorPreferenceHelper getColorPreference() {

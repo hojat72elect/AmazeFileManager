@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.models.explorer.Sort;
 import com.amaze.filemanager.filesystem.files.sort.SortType;
 import io.reactivex.schedulers.Schedulers;
@@ -74,6 +73,6 @@ public class SortHandler {
 
     private static class SortHandlerHolder {
         private static final SortHandler INSTANCE =
-                new SortHandler(AppConfig.getInstance().getExplorerDatabase());
+                new SortHandler(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getExplorerDatabase());
     }
 }

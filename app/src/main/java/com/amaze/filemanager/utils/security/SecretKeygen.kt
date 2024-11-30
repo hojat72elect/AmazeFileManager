@@ -6,7 +6,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
 import androidx.preference.PreferenceManager
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.files.CryptUtil
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -70,7 +70,7 @@ object SecretKeygen {
 
     @Throws(GeneralSecurityException::class, IOException::class)
     private fun getRsaSecretKey(): Key {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(AppConfig.getInstance())
+        val preferences = PreferenceManager.getDefaultSharedPreferences(AmazeFileManagerApplication.getInstance())
         val encodedString = preferences.getString(PREFERENCE_KEY, null)
         return if (encodedString != null) {
             SecretKeySpec(
@@ -78,7 +78,7 @@ object SecretKeygen {
                 "AES",
             )
         } else {
-            generateRsaKeyPair(AppConfig.getInstance())
+            generateRsaKeyPair(AmazeFileManagerApplication.getInstance())
             setKeyPreference()
             getRsaSecretKey()
         }
@@ -110,7 +110,7 @@ object SecretKeygen {
     /** Encrypts AES key and set into preference  */
     @Throws(GeneralSecurityException::class, IOException::class)
     private fun setKeyPreference() {
-        PreferenceManager.getDefaultSharedPreferences(AppConfig.getInstance()).run {
+        PreferenceManager.getDefaultSharedPreferences(AmazeFileManagerApplication.getInstance()).run {
             var encodedAesKey = getString(PREFERENCE_KEY, null)
             if (encodedAesKey == null) {
                 // generate encrypted aes key and save to preference

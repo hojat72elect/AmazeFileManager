@@ -9,7 +9,6 @@ import android.animation.ArgbEvaluator;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -27,7 +26,6 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.TabHandler;
 import com.amaze.filemanager.database.models.explorer.Tab;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
@@ -411,7 +409,7 @@ public class TabFragment extends Fragment {
                                             requireMainActivity().getAppTheme()
                                     );
                                 } else {
-                                    AppConfig.toast(requireContext(), getString(R.string.operation_unsuccesful));
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(requireContext(), getString(R.string.operation_unsuccesful));
                                 }
                                 return null;
                             },

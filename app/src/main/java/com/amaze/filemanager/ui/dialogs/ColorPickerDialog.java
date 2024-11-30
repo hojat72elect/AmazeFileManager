@@ -24,7 +24,6 @@ import androidx.preference.PreferenceDialogFragmentCompat;
 import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.Theme;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.ui.colors.UserColorPreferences;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 import com.amaze.filemanager.ui.theme.AppTheme;
@@ -268,7 +267,7 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
                     .apply();
 
             if (selectedIndex != CUSTOM_INDEX && selectedIndex != RANDOM_INDEX) {
-                AppConfig.getInstance()
+                com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()
                         .getUtilsProvider()
                         .getColorPreference()
                         .saveColorPreferences(

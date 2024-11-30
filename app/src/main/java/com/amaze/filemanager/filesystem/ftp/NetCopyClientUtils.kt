@@ -2,7 +2,7 @@ package com.amaze.filemanager.filesystem.ftp
 
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.fileoperations.filesystem.DOESNT_EXIST
 import com.amaze.filemanager.fileoperations.filesystem.FolderState
 import com.amaze.filemanager.fileoperations.filesystem.WRITABLE_ON_REMOTE
@@ -104,7 +104,7 @@ object NetCopyClientUtils {
         val uriWithoutProtocol: String = fullUri.substringAfter("://")
         return if (uriWithoutProtocol.substringBefore(AT).indexOf(COLON) > 0) {
             SmbUtil.getSmbEncryptedPath(
-                AppConfig.getInstance(),
+                AmazeFileManagerApplication.getInstance(),
                 fullUri,
             )
         } else {
@@ -124,7 +124,7 @@ object NetCopyClientUtils {
             val uriWithoutProtocol: String = fullUri.substringAfter("://")
             if (uriWithoutProtocol.lastIndexOf(COLON) > 0) {
                 SmbUtil.getSmbDecryptedPath(
-                    AppConfig.getInstance(),
+                    AmazeFileManagerApplication.getInstance(),
                     fullUri,
                 )
             } else {

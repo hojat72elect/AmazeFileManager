@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -369,7 +368,7 @@ public class DataUtils {
     public void clearHistory() {
         history.clear();
         if (dataChangeListener != null) {
-            AppConfig.getInstance().runInBackground(() -> dataChangeListener.onHistoryCleared());
+            com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().runInBackground(() -> dataChangeListener.onHistoryCleared());
         }
     }
 

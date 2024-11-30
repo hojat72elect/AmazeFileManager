@@ -3,7 +3,7 @@ package com.amaze.filemanager.asynchronous.asynctasks.ssh
 import android.app.AlertDialog
 import androidx.annotation.MainThread
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.Task
 import java.net.ConnectException
 import java.net.SocketException
@@ -31,9 +31,9 @@ class SshAuthenticationTask(
             SocketTimeoutException::class.java
                 .isAssignableFrom(error.javaClass)
         ) {
-            AppConfig.toast(
-                AppConfig.getInstance(),
-                AppConfig.getInstance()
+            AmazeFileManagerApplication.toast(
+                AmazeFileManagerApplication.getInstance(),
+                AmazeFileManagerApplication.getInstance()
                     .resources
                     .getString(
                         R.string.ssh_connect_failed,
@@ -48,7 +48,7 @@ class SshAuthenticationTask(
             val disconnectReason =
                 TransportException::class.java.cast(error)!!.disconnectReason
             if (DisconnectReason.HOST_KEY_NOT_VERIFIABLE == disconnectReason) {
-                AlertDialog.Builder(AppConfig.getInstance().mainActivityContext)
+                AlertDialog.Builder(AmazeFileManagerApplication.getInstance().mainActivityContext)
                     .setTitle(R.string.ssh_connect_failed_host_key_changed_title)
                     .setMessage(R.string.ssh_connect_failed_host_key_changed_message)
                     .setPositiveButton(R.string.ok) { dialog, _ ->
@@ -57,13 +57,13 @@ class SshAuthenticationTask(
                     .show()
             }
         } else if (password != null) {
-            AppConfig.toast(
-                AppConfig.getInstance(),
+            AmazeFileManagerApplication.toast(
+                AmazeFileManagerApplication.getInstance(),
                 R.string.ssh_authentication_failure_password,
             )
         } else if (privateKey != null) {
-            AppConfig.toast(
-                AppConfig.getInstance(),
+            AmazeFileManagerApplication.toast(
+                AmazeFileManagerApplication.getInstance(),
                 R.string.ssh_authentication_failure_key,
             )
         }

@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import com.afollestad.materialdialogs.MaterialDialog
 import com.amaze.filemanager.R
 import com.amaze.filemanager.adapters.ColorAdapter
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.databinding.DialogGridBinding
 import com.amaze.filemanager.ui.colors.ColorPreference
 import com.amaze.filemanager.ui.colors.UserColorPreferences
@@ -77,7 +77,7 @@ class ColorPrefsFragment : BasePrefsFragment() {
                     ColorPickerDialog.NO_DATA,
                 )
             if (colorPickerPref == ColorPickerDialog.RANDOM_INDEX) {
-                AppConfig.toast(getActivity(), R.string.set_random)
+                AmazeFileManagerApplication.toast(getActivity(), R.string.set_random)
             }
 
             activity.recreate()

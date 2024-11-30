@@ -2,7 +2,7 @@ package com.amaze.filemanager.filesystem.compressed.extractcontents.helpers
 
 import android.content.Context
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.fileoperations.utils.UpdatePosition
 import com.amaze.filemanager.filesystem.FileUtil
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
@@ -96,7 +96,7 @@ abstract class AbstractCommonsArchiveExtractor(
                 close()
                 outputFile.setLastModified(entry.lastModifiedDate.time)
             }
-        } ?: AppConfig.toast(
+        } ?: AmazeFileManagerApplication.toast(
             context,
             context.getString(
                 R.string.error_archive_cannot_extract,

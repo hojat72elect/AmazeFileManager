@@ -3,7 +3,7 @@ package com.amaze.filemanager.asynchronous.asynctasks.compress
 import android.content.Context
 import com.amaze.filemanager.R
 import com.amaze.filemanager.adapters.data.CompressedObjectParcelable
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
 import java.io.FileInputStream
 import java.io.IOException
@@ -39,7 +39,7 @@ abstract class AbstractCommonsArchiveHelperCallable(
                     entry?.run {
                         var name = name
                         if (!CompressedHelper.isEntryPathValid(name)) {
-                            AppConfig.toast(
+                            AmazeFileManagerApplication.toast(
                                 context.get(),
                                 context.get()!!
                                     .getString(R.string.multiple_invalid_archive_entries),

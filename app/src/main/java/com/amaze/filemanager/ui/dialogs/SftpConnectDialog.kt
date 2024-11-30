@@ -23,7 +23,7 @@ import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.internal.MDButton
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.ftp.AbstractGetHostInfoTask
 import com.amaze.filemanager.asynchronous.asynctasks.ftp.hostcert.FtpsGetHostCertificateTask
 import com.amaze.filemanager.asynchronous.asynctasks.ssh.GetSshHostFingerprintTask
@@ -117,7 +117,7 @@ class SftpConnectDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         ctx = WeakReference(activity)
         binding = SftpDialogBinding.inflate(layoutInflater)
-        val utilsProvider: UtilitiesProvider = AppConfig.getInstance().utilsProvider
+        val utilsProvider: UtilitiesProvider = AmazeFileManagerApplication.getInstance().utilsProvider
         val edit = requireArguments().getBoolean(ARG_EDIT, false)
 
         initForm(edit)
@@ -298,9 +298,9 @@ class SftpConnectDialog : DialogFragment() {
                         )
                     if (i > -1) {
                         DataUtils.getInstance().removeServer(i)
-                        AppConfig.getInstance()
+                        AmazeFileManagerApplication.getInstance()
                             .runInBackground {
-                                AppConfig.getInstance().utilsHandler.removeFromDatabase(
+                                AmazeFileManagerApplication.getInstance().utilsHandler.removeFromDatabase(
                                     OperationData(
                                         UtilsHandler.Operation.SFTP,
                                         path,
@@ -386,7 +386,7 @@ class SftpConnectDialog : DialogFragment() {
     ) {
         connectionSettings.run {
             // Get original SSH host key
-            AppConfig.getInstance().utilsHandler.getRemoteHostKey(
+            AmazeFileManagerApplication.getInstance().utilsHandler.getRemoteHostKey(
                 NetCopyClientUtils.deriveUriFrom(
                     prefix,
                     hostname,
@@ -696,7 +696,7 @@ class SftpConnectDialog : DialogFragment() {
                     if (DataUtils.getInstance().containsServer(encryptedPath) == -1) {
                         DataUtils.getInstance().addServer(arrayOf(connectionName, encryptedPath))
                         (activity as MainActivity).drawer.refreshDrawer()
-                        AppConfig.getInstance().utilsHandler.saveToDatabase(
+                        AmazeFileManagerApplication.getInstance().utilsHandler.saveToDatabase(
                             OperationData(
                                 UtilsHandler.Operation.SFTP,
                                 encryptedPath,
@@ -749,8 +749,8 @@ class SftpConnectDialog : DialogFragment() {
         DataUtils.getInstance().addServer(arrayOf(connectionName, encryptedPath))
         DataUtils.getInstance().servers.sortWith(BookSorter())
         (activity as MainActivity).drawer.refreshDrawer()
-        AppConfig.getInstance().runInBackground {
-            AppConfig.getInstance().utilsHandler.updateSsh(
+        AmazeFileManagerApplication.getInstance().runInBackground {
+            AmazeFileManagerApplication.getInstance().utilsHandler.updateSsh(
                 connectionName,
                 requireArguments().getString(ARG_NAME)!!,
                 encryptedPath,

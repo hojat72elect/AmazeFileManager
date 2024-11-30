@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.amaze.filemanager.R
 import com.amaze.filemanager.adapters.data.LayoutElementParcelable
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem.BasicSearch
 import com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem.DeepSearch
 import com.amaze.filemanager.asynchronous.asynctasks.searchfilesystem.IndexedSearch
@@ -197,7 +197,7 @@ class MainActivityViewModel(val applicationContext: Application) :
                     it.generateBaseFile()
                         .toTrashBinFile(applicationContext)
                 }
-            AppConfig.getInstance().trashBinInstance.moveToBin(
+            AmazeFileManagerApplication.getInstance().trashBinInstance.moveToBin(
                 trashBinFilesList,
                 true,
                 object : MoveFilesCallback {
@@ -243,7 +243,7 @@ class MainActivityViewModel(val applicationContext: Application) :
                     filesToRestore.add(restoreFile)
                 }
             }
-            AppConfig.getInstance().trashBinInstance.restore(
+            AmazeFileManagerApplication.getInstance().trashBinInstance.restore(
                 filesToRestore,
                 true,
                 object : MoveFilesCallback {
@@ -254,7 +254,7 @@ class MainActivityViewModel(val applicationContext: Application) :
                         val sourceFile = File(source)
                         val destFile = File(dest)
                         if (destFile.exists()) {
-                            AppConfig.toast(
+                            AmazeFileManagerApplication.toast(
                                 applicationContext,
                                 applicationContext.getString(R.string.fileexist),
                             )
@@ -294,7 +294,7 @@ class MainActivityViewModel(val applicationContext: Application) :
             viewModelScope.launch(Dispatchers.IO) {
                 trashBinFilesLiveData?.postValue(
                     ArrayList(
-                        AppConfig.getInstance().trashBinInstance.listFilesInBin()
+                        AmazeFileManagerApplication.getInstance().trashBinInstance.listFilesInBin()
                             .map {
                                 HybridFile(OpenMode.FILE, it.path, it.fileName, it.isDirectory)
                                     .generateLayoutElement(

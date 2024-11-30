@@ -20,7 +20,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil;
 import com.amaze.filemanager.fileoperations.filesystem.compressed.ArchivePasswordCache;
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper;
@@ -84,7 +83,7 @@ public class ExtractService extends AbstractProgressiveService {
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int accentColor =
-                ((AppConfig) getApplication())
+                ((com.amaze.filemanager.application.AmazeFileManagerApplication) getApplication())
                         .getUtilsProvider()
                         .getColorPreference()
                         .getCurrentUserColorPreferences(this, sharedPreferences)
@@ -321,14 +320,14 @@ public class ExtractService extends AbstractProgressiveService {
                     return (extractor.getInvalidArchiveEntries().size() == 0);
                 } catch (Extractor.EmptyArchiveNotice e) {
                     LOG.error("Archive " + compressedPath + " is an empty archive");
-                    AppConfig.toast(
+                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                             getApplicationContext(),
                             extractService.getString(R.string.error_empty_archive, compressedPath)
                     );
                     return true;
                 } catch (Extractor.BadArchiveNotice e) {
                     LOG.error("Archive " + compressedPath + " is a corrupted archive.", e);
-                    AppConfig.toast(
+                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                             getApplicationContext(),
                             e.getCause() != null && TextUtils.isEmpty(e.getCause().getMessage())
                                     ? getString(R.string.error_bad_archive_without_info, compressedPath)
@@ -344,7 +343,7 @@ public class ExtractService extends AbstractProgressiveService {
                         LOG.debug("Archive is password protected.", e);
                         if (ArchivePasswordCache.getInstance().containsKey(compressedPath)) {
                             ArchivePasswordCache.getInstance().remove(compressedPath);
-                            AppConfig.toast(
+                            com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                                     getApplicationContext(),
                                     extractService.getString(R.string.error_archive_password_incorrect)
                             );
@@ -355,14 +354,14 @@ public class ExtractService extends AbstractProgressiveService {
                     } else if (e.getCause() != null
                             && UnsupportedRarV5Exception.class.isAssignableFrom(e.getCause().getClass())) {
                         LOG.error("RAR " + compressedPath + " is unsupported V5 archive", e);
-                        AppConfig.toast(
+                        com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                                 getApplicationContext(),
                                 extractService.getString(R.string.error_unsupported_v5_rar, compressedPath)
                         );
                         return false;
                     } else {
                         LOG.error("Error while extracting file " + compressedPath, e);
-                        AppConfig.toast(getApplicationContext(), extractService.getString(R.string.error));
+                        com.amaze.filemanager.application.AmazeFileManagerApplication.toast(getApplicationContext(), extractService.getString(R.string.error));
                         paused = true;
                         publishProgress(e);
                     }
@@ -381,9 +380,9 @@ public class ExtractService extends AbstractProgressiveService {
             IOException result = values[0];
             ArchivePasswordCache.getInstance().remove(compressedPath);
             GeneralDialogCreation.showPasswordDialog(
-                    AppConfig.getInstance().getMainActivityContext(),
-                    (MainActivity) AppConfig.getInstance().getMainActivityContext(),
-                    AppConfig.getInstance().getUtilsProvider().getAppTheme(),
+                    com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getMainActivityContext(),
+                    (MainActivity) com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getMainActivityContext(),
+                    com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getUtilsProvider().getAppTheme(),
                     R.string.archive_password_prompt,
                     R.string.authenticate_password,
                     (dialog, which) -> {
@@ -418,7 +417,7 @@ public class ExtractService extends AbstractProgressiveService {
             extractService.stopSelf();
 
             if (!hasInvalidEntries)
-                AppConfig.toast(
+                com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                         getApplicationContext(), getString(R.string.multiple_invalid_archive_entries));
         }
 
@@ -431,7 +430,7 @@ public class ExtractService extends AbstractProgressiveService {
         private void toastOnParseError(IOException result) {
             Toast.makeText(
                             getApplicationContext(),
-                            AppConfig.getInstance()
+                            com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()
                                     .getResources()
                                     .getString(
                                             R.string.cannot_extract_archive,

@@ -1,7 +1,6 @@
 package com.amaze.filemanager.asynchronous;
 
 import androidx.annotation.NonNull;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.database.UtilsHandler;
 import com.amaze.filemanager.database.models.OperationData;
 import com.amaze.filemanager.ui.views.drawer.Drawer;
@@ -9,7 +8,7 @@ import com.amaze.filemanager.utils.DataUtils;
 import java.lang.ref.WeakReference;
 
 public class SaveOnDataUtilsChange implements DataUtils.DataChangeListener {
-    private final UtilsHandler utilsHandler = AppConfig.getInstance().getUtilsHandler();
+    private final UtilsHandler utilsHandler = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getUtilsHandler();
 
     private final WeakReference<Drawer> drawer;
 

@@ -10,7 +10,7 @@ import androidx.preference.PreferenceCategory
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.database.UtilsHandler
 import com.amaze.filemanager.database.models.OperationData
 import com.amaze.filemanager.databinding.DialogTwoedittextsBinding
@@ -71,7 +71,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
 
     private fun showCreateDialog() {
         val fabSkin = activity.accent
-        val utilsHandler = AppConfig.getInstance().utilsHandler
+        val utilsHandler = AmazeFileManagerApplication.getInstance().utilsHandler
         val dialogBinding = DialogTwoedittextsBinding.inflate(LayoutInflater.from(requireContext()))
 
         val v = dialogBinding.root
@@ -152,7 +152,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
 
     private fun showEditDialog(p: PathSwitchPreference) {
         val fabSkin = activity.accent
-        val utilsHandler = AppConfig.getInstance().utilsHandler
+        val utilsHandler = AmazeFileManagerApplication.getInstance().utilsHandler
         val dialogBinding = DialogTwoedittextsBinding.inflate(LayoutInflater.from(requireContext()))
 
         val v = dialogBinding.root
@@ -190,7 +190,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
                 bookmarksList?.addPreference(p)
                 val values = arrayOf(editText1.text.toString(), editText2.text.toString())
                 dataUtils.addBook(values)
-                AppConfig.getInstance()
+                AmazeFileManagerApplication.getInstance()
                     .runInBackground {
                         utilsHandler.renameBookmark(
                             oldName,
@@ -206,7 +206,7 @@ class BookmarksPrefsFragment : BasePrefsFragment() {
 
     private fun showDeleteDialog(p: PathSwitchPreference) {
         val fabSkin = activity.accent
-        val utilsHandler = AppConfig.getInstance().utilsHandler
+        val utilsHandler = AmazeFileManagerApplication.getInstance().utilsHandler
 
         val dialog =
             MaterialDialog.Builder(activity)

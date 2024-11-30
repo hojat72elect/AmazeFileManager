@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.documentfile.provider.DocumentFile;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException;
 import com.amaze.filemanager.fileoperations.exceptions.StreamNotFoundException;
 import com.amaze.filemanager.filesystem.EditableFileAbstraction;
@@ -61,7 +60,7 @@ public class WriteTextFileCallable implements Callable<Unit> {
                 Objects.requireNonNull(fileAbstraction.uri);
                 if (fileAbstraction.uri.getAuthority().equals(context.get().getPackageName())) {
                     DocumentFile documentFile =
-                            DocumentFile.fromSingleUri(AppConfig.getInstance(), fileAbstraction.uri);
+                            DocumentFile.fromSingleUri(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance(), fileAbstraction.uri);
                     if (documentFile != null && documentFile.exists() && documentFile.canWrite()) {
                         outputStream = contentResolver.openOutputStream(fileAbstraction.uri, "wt");
                     } else {

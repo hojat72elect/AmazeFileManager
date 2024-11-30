@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.amaze.filemanager.R
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.ui.activities.MainActivity
 import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity
 import com.amaze.filemanager.ui.provider.UtilitiesProvider
@@ -40,7 +40,7 @@ class SmbSearchDialog : DialogFragment() {
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
-        utilsProvider = AppConfig.getInstance().utilsProvider
+        utilsProvider = AmazeFileManagerApplication.getInstance().utilsProvider
         accentColor = (activity as ThemedActivity).accent
     }
 

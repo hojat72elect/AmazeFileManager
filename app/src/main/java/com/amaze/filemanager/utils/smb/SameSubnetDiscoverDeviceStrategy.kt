@@ -1,6 +1,6 @@
 package com.amaze.filemanager.utils.smb
 
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.networktools.PortScan
 import com.amaze.filemanager.utils.ComputerParcelable
 import com.amaze.filemanager.utils.NetworkUtil
@@ -76,7 +76,7 @@ class SameSubnetDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDevi
     }
 
     private fun getNeighbourhoodHosts(): List<InetAddress> {
-        val deviceAddress = NetworkUtil.getLocalInetAddress(AppConfig.getInstance())
+        val deviceAddress = NetworkUtil.getLocalInetAddress(AmazeFileManagerApplication.getInstance())
         return deviceAddress?.let { addr ->
             if (addr is Inet6Address) {
                 // IPv6 neigbourhood hosts can be very big - that should use wsdd instead; hence

@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import android.os.storage.StorageManager
 import android.provider.DocumentsContract
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.database.CloudHandler
 import com.amaze.filemanager.filesystem.DeleteOperation.deleteFile
 import com.amaze.filemanager.filesystem.ExternalSdCardOperation.isOnExtSdCard
@@ -256,7 +256,7 @@ object FileProperties {
     fun getDeviceStorageRemainingSpace(volume: String = STORAGE_PRIMARY): Long {
         return if (STORAGE_PRIMARY == volume) {
 
-            AppConfig.getInstance().getSystemService(StorageStatsManager::class.java)
+            AmazeFileManagerApplication.getInstance().getSystemService(StorageStatsManager::class.java)
                 .getFreeBytes(StorageManager.UUID_DEFAULT)
 
         } else {

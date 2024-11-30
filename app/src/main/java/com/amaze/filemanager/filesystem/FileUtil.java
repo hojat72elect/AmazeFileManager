@@ -4,13 +4,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 import com.amaze.filemanager.R;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.exceptions.NotAllowedException;
 import com.amaze.filemanager.exceptions.OperationWouldOverwriteException;
 import com.amaze.filemanager.ui.activities.MainActivity;
@@ -152,7 +150,7 @@ public abstract class FileUtil {
                                     break;
                                 case SFTP:
                                     // FIXME: implement support
-                                    com.amaze.filemanager.application.AppConfig.toast(mainActivity, mainActivity.getString(com.amaze.filemanager.R.string.not_allowed));
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, mainActivity.getString(com.amaze.filemanager.R.string.not_allowed));
                                     emitter.onError(new kotlin.NotImplementedError());
                                     return;
                                 case DROPBOX:
@@ -260,11 +258,11 @@ public abstract class FileUtil {
                             @Override
                             public void onError(@NonNull Throwable e) {
                                 if (e instanceof OperationWouldOverwriteException) {
-                                    AppConfig.toast(mainActivity, mainActivity.getString(R.string.cannot_overwrite));
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(mainActivity, mainActivity.getString(R.string.cannot_overwrite));
                                     return;
                                 }
                                 if (e instanceof NotAllowedException) {
-                                    AppConfig.toast(
+                                    com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                                             mainActivity, mainActivity.getResources().getString(R.string.not_allowed));
                                 }
                                 LOG.warn("Failed to write uri to storage", e);

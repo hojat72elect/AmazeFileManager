@@ -3,7 +3,6 @@ package com.amaze.filemanager.asynchronous.asynctasks.texteditor.read;
 import android.content.ContentResolver;
 import androidx.annotation.WorkerThread;
 import androidx.documentfile.provider.DocumentFile;
-import com.amaze.filemanager.application.AppConfig;
 import com.amaze.filemanager.fileoperations.exceptions.ShellNotRunningException;
 import com.amaze.filemanager.fileoperations.exceptions.StreamNotFoundException;
 import com.amaze.filemanager.filesystem.EditableFileAbstraction;
@@ -53,10 +52,10 @@ public class ReadTextFileCallable implements Callable<ReturnedValueOnReadFile> {
             case CONTENT:
                 Objects.requireNonNull(fileAbstraction.uri);
 
-                final AppConfig appConfig = AppConfig.getInstance();
+                final com.amaze.filemanager.application.AmazeFileManagerApplication amazeFileManagerApplication = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance();
 
-                if (fileAbstraction.uri.getAuthority().equals(appConfig.getPackageName())) {
-                    DocumentFile documentFile = DocumentFile.fromSingleUri(appConfig, fileAbstraction.uri);
+                if (fileAbstraction.uri.getAuthority().equals(amazeFileManagerApplication.getPackageName())) {
+                    DocumentFile documentFile = DocumentFile.fromSingleUri(amazeFileManagerApplication, fileAbstraction.uri);
 
                     if (documentFile != null && documentFile.exists() && documentFile.canWrite()) {
                         inputStream = contentResolver.openInputStream(documentFile.getUri());

@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.amaze.filemanager.R
 import com.amaze.filemanager.adapters.data.CompressedObjectParcelable
-import com.amaze.filemanager.application.AppConfig
+import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.compressed.CompressedHelper
 import java.io.File
 import java.lang.ref.WeakReference
@@ -118,7 +118,7 @@ class ZipHelperCallable(
         while (headers.hasNext()) {
             val entry = headers.next()
             if (!CompressedHelper.isEntryPathValid(entry.fileName)) {
-                AppConfig.toast(
+                AmazeFileManagerApplication.toast(
                     context.get(),
                     context.get()!!.getString(R.string.multiple_invalid_archive_entries),
                 )
