@@ -62,7 +62,6 @@ gson = "2.9.1"
 rxAndroid = "2.1.1"
 rxJava = "2.2.9"
 okHttp = "4.9.0"
-acraCore = "5.7.0"
 leakcanaryAndroid = "2.7"
 mpAndroidChart = "v3.0.2"
 concurrentTrees = "2.6.1"
@@ -163,7 +162,6 @@ xz = { module = "org.tukaani:xz", version.ref = "xz" }
 zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
 junrar = { module = "com.github.junrar:junrar", version.ref = "junrar" }
 
-acra-core = { module = "ch.acra:acra-core", version.ref = "acraCore" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
 
 amaze-trashBin = { module = "com.github.TeamAmaze:AmazeTrashBin", version.ref = "amazeTrashBin" }

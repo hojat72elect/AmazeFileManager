@@ -185,12 +185,6 @@
             android:theme="@style/aboutBlack" />
 
         <activity
-            android:name=".crashreport.ErrorActivity"
-            android:configChanges="uiMode"
-            android:label="Error"
-            android:theme="@style/appCompatBlack" />
-
-        <activity
             android:name=".ui.activities.UtilitiesAliasActivity"
             android:excludeFromRecents="true"
             android:exported="true"

@@ -12,10 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
-import com.amaze.filemanager.BuildConfig;
-import com.amaze.filemanager.R;
-import com.amaze.filemanager.crashreport.AcraReportSenderFactory;
-import com.amaze.filemanager.crashreport.ErrorActivity;
 import com.amaze.filemanager.database.ExplorerDatabase;
 import com.amaze.filemanager.database.UtilitiesDatabase;
 import com.amaze.filemanager.database.UtilsHandler;
@@ -35,18 +31,9 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import jcifs.Config;
 import jcifs.smb.SmbException;
-import org.acra.ACRA;
-import org.acra.annotation.AcraCore;
-import org.acra.config.ACRAConfigurationException;
-import org.acra.config.CoreConfiguration;
-import org.acra.config.CoreConfigurationBuilder;
-import org.acra.data.StringFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AcraCore(
-        buildConfigClass = BuildConfig.class,
-        reportSenderFactoryClasses = AcraReportSenderFactory.class)
 public class AmazeFileManagerApplication extends GlideApplication {
 
     private static final String TRASH_BIN_BASE_PATH =
@@ -142,7 +129,6 @@ public class AmazeFileManagerApplication extends GlideApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        initACRA();
     }
 
     @Override
@@ -188,41 +174,6 @@ public class AmazeFileManagerApplication extends GlideApplication {
 
     public ExplorerDatabase getExplorerDatabase() {
         return explorerDatabase;
-    }
-
-    /**
-     * Called in {@link #attachBaseContext(Context)} after calling the {@code super} method. Should be
-     * overridden if MultiDex is enabled, since it has to be initialized before ACRA.
-     */
-    protected void initACRA() {
-        if (ACRA.isACRASenderServiceProcess()) {
-            return;
-        }
-
-        try {
-            final CoreConfiguration acraConfig =
-                    new CoreConfigurationBuilder(this)
-                            .setBuildConfigClass(BuildConfig.class)
-                            .setReportFormat(StringFormat.JSON)
-                            .setSendReportsInDevMode(true)
-                            .setEnabled(true)
-                            .build();
-            ACRA.init(this, acraConfig);
-        } catch (final ACRAConfigurationException ace) {
-            if (log != null) {
-                log.warn("failed to initialize ACRA", ace);
-            }
-            ErrorActivity.reportError(
-                    this,
-                    ace,
-                    null,
-                    ErrorActivity.ErrorInfo.make(
-                            ErrorActivity.ERROR_UNKNOWN,
-                            "Could not initialize ACRA crash report",
-                            R.string.app_ui_crash
-                    )
-            );
-        }
     }
 
     public TrashBin getTrashBinInstance() {
