@@ -188,7 +188,7 @@
             android:name=".ui.activities.UtilitiesAliasActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/Custom.Dialog.Dark"></activity>
+            android:theme="@style/Custom.Dialog.Dark" />
 
         <activity-alias
             android:name="amazeutilsalias"
@@ -252,14 +252,13 @@
 
         <service
             android:name=".asynchronous.services.ExtractService"
-            android:label="Extracting"></service>
+            android:label="Extracting" />
         <service
             android:name=".asynchronous.services.ZipService"
-            android:label="Compressing"></service>
+            android:label="Compressing" />
         <service
             android:name=".asynchronous.services.CopyService"
-            android:label="Copying"></service>
-
+            android:label="Copying" />
         <service
             android:name=".asynchronous.services.EncryptService"
             android:label="@string/crypt_encrypting" />
