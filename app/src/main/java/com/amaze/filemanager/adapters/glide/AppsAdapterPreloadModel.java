@@ -18,9 +18,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 10/12/2017, at 15:38.
- */
 public class AppsAdapterPreloadModel implements ListPreloader.PreloadModelProvider<String> {
 
     private final Logger LOG = LoggerFactory.getLogger(AppsAdapterPreloadModel.class);

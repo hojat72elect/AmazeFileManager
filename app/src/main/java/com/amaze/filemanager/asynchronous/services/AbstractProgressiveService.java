@@ -28,9 +28,6 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 28/11/2017, at 19:32.
- */
 public abstract class AbstractProgressiveService extends Service
         implements ServiceWatcherUtil.ServiceStatusCallbacks {
     private final Logger LOG = LoggerFactory.getLogger(AbstractProgressiveService.class);

@@ -24,8 +24,6 @@ import java.util.List;
 
 /**
  * Loads data for chart in FileUtils.showPropertiesDialog()
- *
- * @author Emmanuel Messulam<emmanuelbendavid@gmail.com> on 12/5/2017, at 00:07.
  */
 public class LoadFolderSpaceDataTask extends AsyncTask<Void, Long, Pair<String, List<PieEntry>>> {
 

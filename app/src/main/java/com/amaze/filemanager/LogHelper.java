@@ -6,9 +6,6 @@ import org.slf4j.LoggerFactory;
 public final class LogHelper {
     private static final Logger LOG = LoggerFactory.getLogger(LogHelper.class);
 
-    private LogHelper() {
-    }
-
     public static void logOnProductionOrCrash(String message) {
         if (BuildConfig.DEBUG) {
             throw new IllegalStateException(message);

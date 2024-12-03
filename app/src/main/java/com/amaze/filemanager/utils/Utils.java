@@ -1,6 +1,5 @@
 package com.amaze.filemanager.utils;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,13 +7,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.storage.StorageVolume;
 import android.text.format.DateUtils;
@@ -26,14 +22,11 @@ import android.widget.Toast;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import com.amaze.filemanager.BuildConfig;
 import com.amaze.filemanager.R;
@@ -49,15 +42,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import android.annotation.SuppressLint;
 
 /**
- * Contains useful functions and methods (NOTHING HERE DEALS WITH FILES)
- *
- * @author Emmanuel on 14/5/2017, at 14:39.
+ * Contains useful functions and methods (NOTHING HERE DEALS WITH FILES).
  */
 public class Utils {
 
-    public static final String EMAIL_NOREPLY_REPORTS = "no-reply@teamamaze.xyz";
     public static final String EMAIL_SUPPORT = "support@teamamaze.xyz";
     private static final int INDEX_NOT_FOUND = -1;
     private static final String INPUT_INTENT_BLACKLIST_COLON = ";";
@@ -295,6 +286,7 @@ public class Utils {
         return snackbar;
     }
 
+    @SuppressLint("RestrictedApi")
     public static Snackbar showCutCopySnackBar(
             MainActivity mainActivity,
             CharSequence text,

@@ -10,9 +10,6 @@ import com.amaze.filemanager.filesystem.HybridFileParcelable;
 import com.amaze.filemanager.filesystem.files.FileUtils;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author Emmanuel on 12/5/2017, at 19:40.
- */
 public class CountItemsOrAndSizeTask extends AsyncTask<Void, Pair<Integer, Long>, String> {
 
     private final Context context;

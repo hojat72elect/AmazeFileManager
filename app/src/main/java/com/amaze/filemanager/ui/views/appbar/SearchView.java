@@ -58,8 +58,6 @@ import kotlinx.coroutines.Job;
 
 /**
  * SearchView, a simple view to search
- *
- * @author Emmanuel on 2/8/2017, at 23:30.
  */
 public class SearchView {
 

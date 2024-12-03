@@ -46,8 +46,6 @@ import java.util.Objects;
  *
  * <p>BottomBar, it lays under the toolbar, used to show data of what is being displayed in the
  * MainFragment, for example directory, folder and file amounts, etc.
- *
- * @author Emmanuel on 2/8/2017, at 23:31.
  */
 public class BottomBar implements View.OnTouchListener {
     private static final int PATH_ANIM_START_DELAY = 0;

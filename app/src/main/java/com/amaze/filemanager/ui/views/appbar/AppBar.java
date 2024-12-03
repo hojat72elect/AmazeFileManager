@@ -11,12 +11,10 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstan
 import com.google.android.material.appbar.AppBarLayout;
 
 /**
- * layout_appbar.xml contains the layout for AppBar and BottomBar
+ * layout_appbar.xml contains the layout for AppBar and BottomBar.
  *
- * <p>This is a class containing containing methods to each section of the AppBar, creating the
+ * <p>This is a class containing methods to each section of the AppBar, creating the
  * object loads the views.
- *
- * @author Emmanuel on 2/8/2017, at 23:27.
  */
 public class AppBar {
 

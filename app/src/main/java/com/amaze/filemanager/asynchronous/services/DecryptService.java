@@ -36,14 +36,10 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 28/11/2017, at 20:59.
- */
 public class DecryptService extends AbstractProgressiveService {
 
     public static final String TAG_SOURCE = "crypt_source"; // source file to encrypt or decrypt
     public static final String TAG_DECRYPT_PATH = "decrypt_path";
-    public static final String TAG_OPEN_MODE = "open_mode";
 
     public static final String TAG_BROADCAST_CRYPT_CANCEL = "crypt_cancel";
     private final Logger LOG = LoggerFactory.getLogger(DecryptService.class);
