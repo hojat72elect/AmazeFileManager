@@ -12,12 +12,19 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
 /**
- * Ensures that Glide's generated API is created for the Gallery sample.
+ * Creates a custom Glide module for our application (?but is it really necessary?).
+ * This is where we can customize Glide's behavior.
  */
 @GlideModule
 public class AmazeFileManagerModule extends AppGlideModule {
+
+    /**
+     * The heart of the module, where we register custom components.
+     */
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, Registry registry) {
+
+        // registers a custom ModelLoader for loading images of APKs inside the device memory.
         registry.prepend(String.class, Drawable.class, new ApkImageModelLoaderFactory(context));
         registry.prepend(String.class, Bitmap.class, new CloudIconModelFactory(context));
     }
