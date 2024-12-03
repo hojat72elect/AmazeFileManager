@@ -16,7 +16,7 @@ import com.bumptech.glide.module.AppGlideModule;
  * This is where we can customize Glide's behavior.
  */
 @GlideModule
-public class AmazeFileManagerModule extends AppGlideModule {
+public class AmazeFileManagerGlideModule extends AppGlideModule {
 
     /**
      * The heart of the module, where we register custom components.
