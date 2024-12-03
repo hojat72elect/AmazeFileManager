@@ -7,8 +7,8 @@ import com.amaze.filemanager.R
 import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.databinding.UtilitiesAliasLayoutBinding
 import com.amaze.filemanager.ui.updateAUAlias
-import com.amaze.filemanager.utils.PackageUtils
 import com.amaze.filemanager.utils.Utils
+import com.amaze.filemanager.utils.PackageUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

@@ -70,10 +70,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-/**
- * Created by yashwanthreddyg on 10-06-2016. Edited by Luca D'Amico (Luca91) on 25 Jul 2017 (Fixed
- * FTP Server while usi
- */
 @Suppress("TooManyFunctions")
 class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
     private val log: Logger = LoggerFactory.getLogger(FtpServerFragment::class.java)
@@ -950,7 +946,7 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
         // No wifi, no data, no connection at all
         snackbar =
             Utils.showThemedSnackbar(
-                activity as MainActivity?,
+                activity as MainActivity,
                 getString(R.string.ftp_server_prompt_connect_to_network),
                 BaseTransientBottomBar.LENGTH_INDEFINITE,
                 R.string.ftp_server_open_settings,

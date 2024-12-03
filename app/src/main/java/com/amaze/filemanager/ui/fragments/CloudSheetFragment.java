@@ -28,9 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**
- * Created by vishal on 18/2/17.
- *
- * <p>Class represents implementation of a new cloud connection sheet dialog
+ * Class represents implementation of a new cloud connection sheet dialog.
  */
 public class CloudSheetFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 

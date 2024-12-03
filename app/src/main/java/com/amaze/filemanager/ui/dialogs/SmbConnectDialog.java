@@ -34,7 +34,6 @@ import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity;
 import com.amaze.filemanager.ui.provider.UtilitiesProvider;
 import com.amaze.filemanager.utils.PasswordUtil;
 import com.amaze.filemanager.utils.SimpleTextWatcher;
-import com.amaze.filemanager.utils.Utils;
 import com.amaze.filemanager.utils.smb.SmbUtil;
 import com.google.android.material.textfield.TextInputLayout;
 import java.io.IOException;

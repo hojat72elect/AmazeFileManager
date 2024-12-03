@@ -24,7 +24,6 @@ import com.amaze.filemanager.filesystem.HybridFileParcelable
 import com.amaze.filemanager.filesystem.MakeDirectoryOperation
 import com.amaze.filemanager.filesystem.files.FileUtils
 import com.amaze.filemanager.ui.activities.MainActivity
-import com.amaze.filemanager.utils.Utils
 import java.lang.ref.WeakReference
 import java.util.LinkedList
 import kotlinx.coroutines.CompletableDeferred

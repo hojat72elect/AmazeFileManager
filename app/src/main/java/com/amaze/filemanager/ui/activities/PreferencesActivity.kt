@@ -20,8 +20,8 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.BasePrefsFragment
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
 import com.amaze.filemanager.ui.fragments.preferencefragments.PrefsFragment
 import com.amaze.filemanager.ui.theme.AppTheme
-import com.amaze.filemanager.utils.PreferenceUtils
 import com.amaze.filemanager.utils.Utils
+import com.amaze.filemanager.utils.PreferenceUtils
 import com.readystatesoftware.systembartint.SystemBarTintManager
 import java.io.File
 

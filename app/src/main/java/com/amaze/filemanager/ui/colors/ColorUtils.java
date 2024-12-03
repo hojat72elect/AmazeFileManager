@@ -7,9 +7,6 @@ import com.amaze.filemanager.R;
 import com.amaze.filemanager.ui.icons.Icons;
 import com.amaze.filemanager.utils.Utils;
 
-/**
- * @author Emmanuel on 24/5/2017, at 18:56.
- */
 public class ColorUtils {
 
     public static void colorizeIcons(

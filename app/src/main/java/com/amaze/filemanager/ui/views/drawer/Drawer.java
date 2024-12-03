@@ -62,11 +62,11 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.QuickAccessesPrefs
 import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.utils.BookSorter;
 import com.amaze.filemanager.utils.DataUtils;
+import com.amaze.filemanager.utils.Utils;
 import com.amaze.filemanager.utils.OTGUtil;
 import com.amaze.filemanager.utils.PackageUtils;
 import com.amaze.filemanager.utils.ScreenUtils;
 import com.amaze.filemanager.utils.TinyDB;
-import com.amaze.filemanager.utils.Utils;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
 import com.cloudrail.si.services.Dropbox;

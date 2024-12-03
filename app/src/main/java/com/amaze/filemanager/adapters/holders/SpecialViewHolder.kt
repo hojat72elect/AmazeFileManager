@@ -37,8 +37,7 @@ class SpecialViewHolder(
             else -> throw IllegalStateException(": $type")
         }
 
-        // if(utilsProvider.getAppTheme().equals(AppTheme.DARK))
-        //    view.setBackgroundResource(R.color.holo_dark_background);
+
         if (utilsProvider.appTheme == AppTheme.LIGHT) {
             txtTitle.setTextColor(Utils.getColor(c, R.color.text_light))
         } else {

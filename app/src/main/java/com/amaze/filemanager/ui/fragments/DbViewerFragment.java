@@ -17,9 +17,7 @@ import com.amaze.filemanager.ui.activities.DatabaseViewerActivity;
 import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.utils.Utils;
 
-/**
- * Created by Vishal on 06-02-2015.
- */
+
 public class DbViewerFragment extends Fragment {
     public DatabaseViewerActivity databaseViewerActivity;
     public AppCompatTextView loadingText;

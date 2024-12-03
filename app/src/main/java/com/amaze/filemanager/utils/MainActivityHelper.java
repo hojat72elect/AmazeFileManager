@@ -341,7 +341,7 @@ public class MainActivityHelper {
                     public void exists(HybridFile file) {
                         context.runOnUiThread(
                                 () -> {
-                                    if (toast != null) toast.cancel();
+                                    toast.cancel();
                                     Toast.makeText(
                                                     mainActivity, context.getString(R.string.fileexist), Toast.LENGTH_SHORT)
                                             .show();

@@ -10,9 +10,7 @@ import com.amaze.filemanager.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Created by vishal on 18/1/17.
- *
- * <p>Class sets text color based on current theme, without explicit method call in app lifecycle To
+ * Class sets text color based on current theme, without explicit method call in app lifecycle To
  * be used only under themed activity context
  */
 public class ThemedTextView extends AppCompatTextView {

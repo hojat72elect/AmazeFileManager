@@ -261,7 +261,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
         }
         holder.rl.setSelected(false);
         if (itemsChecked[position]) {
-            // holder.genericIcon.setImageDrawable(compressedExplorerFragment.getResources().getDrawable(R.drawable.abc_ic_cab_done_holo_dark));
+
             holder.checkImageView.setVisibility(View.VISIBLE);
             gradientDrawable.setColor(Utils.getColor(context, R.color.goback_item));
             holder.rl.setSelected(true);

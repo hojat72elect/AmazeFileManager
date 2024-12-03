@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Special immutable class for handling cut/copy operations.
- *
- * @author Emmanuel on 5/9/2017, at 09:59.
  */
 public final class PasteHelper implements Parcelable {
 
