@@ -1,5 +1,6 @@
 package com.amaze.filemanager.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,7 +43,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import android.annotation.SuppressLint;
 
 /**
  * Contains useful functions and methods (NOTHING HERE DEALS WITH FILES).
@@ -115,8 +115,8 @@ public class Utils {
      * @param str2 - the second String, may be null
      * @return the portion of str2 where it differs from str1; returns the empty String if they are
      * equal
-     * <p>Stolen from Apache's StringUtils
-     * (https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/org/apache/commons/lang/StringUtils.html#difference(java.lang.String,%20java.lang.String))
+     * <p>Stolen from
+     * (<a href="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/org/apache/commons/lang/StringUtils.html#difference(java.lang.String,%20java.lang.String)">Apache's StringUtils</a>)
      */
     public static String differenceStrings(String str1, String str2) {
         if (str1 == null) return str2;
@@ -159,11 +159,6 @@ public class Utils {
 
     public static void enableScreenRotation(@NonNull Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-    }
-
-    public static boolean isDeviceInLandScape(Activity activity) {
-        return activity.getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     /**
@@ -263,7 +258,7 @@ public class Utils {
     }
 
     public static boolean isNullOrEmpty(final String string) {
-        return string == null || string.length() == 0;
+        return string == null || string.isEmpty();
     }
 
     public static Snackbar showThemedSnackbar(
