@@ -15,8 +15,6 @@ import com.amaze.filemanager.ui.views.CircularColorsView
 
 /**
  * This is the external notification that shows some text and a CircularColorsView.
- *
- * @author Emmanuel on 6/10/2017, at 15:36.
  */
 class SelectedColorsPreference(context: Context, attrs: AttributeSet) :
     DialogPreference(context, attrs) {
@@ -79,42 +77,6 @@ class SelectedColorsPreference(context: Context, attrs: AttributeSet) :
 
         val myState = state as ColorPickerDialog.SavedState
         selectedIndex = myState.selectedItem
-        super.onRestoreInstanceState(myState.superState) // onBindDialogView(View view)
-        // select(selectedItem, true)
-    }
-
-    /**
-     * Set colours' visibility.
-     */
-    fun setColorsVisibility(visibility: Int) {
-        this.visibility = visibility
-        notifyChanged()
-    }
-
-    /**
-     * Sets the divider's colour.
-     */
-    fun setDividerColor(color: Int) {
-        backgroundColor = color
-    }
-
-    /**
-     * set colours to specified and notify colour changed.
-     */
-    fun setColors(
-        color: Int,
-        color1: Int,
-        color2: Int,
-        color3: Int,
-    ) {
-        colors = intArrayOf(color, color1, color2, color3)
-        notifyChanged()
-    }
-
-    /**
-     * notify colour changed.
-     */
-    fun invalidateColors() {
-        notifyChanged()
+        super.onRestoreInstanceState(myState.superState)
     }
 }

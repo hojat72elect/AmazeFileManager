@@ -858,7 +858,7 @@ public class MainActivity extends PermissionsActivity
      */
     public void goToMain(String path, boolean hideFab) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // title.setText(R.string.app_name);
+
         TabFragment tabFragment = new TabFragment();
         if (intent != null && intent.getAction() != null) {
             if (INTENT_ACTION_OPEN_QUICK_ACCESS.equals(intent.getAction())) {

@@ -9,11 +9,9 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstan
  */
 public class AppThemeManager {
     private final Context context;
-    private final SharedPreferences preferences;
     private AppThemePreference appThemePreference;
 
     public AppThemeManager(SharedPreferences preferences, Context context) {
-        this.preferences = preferences;
         this.context = context;
         String themeId = preferences.getString(PreferencesConstants.FRAGMENT_THEME, "4");
         appThemePreference = AppThemePreference.getTheme(Integer.parseInt(themeId));

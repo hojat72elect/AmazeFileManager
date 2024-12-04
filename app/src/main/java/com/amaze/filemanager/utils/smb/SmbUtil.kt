@@ -1,9 +1,7 @@
 package com.amaze.filemanager.utils.smb
 
-import android.content.Context
 import android.net.Uri
 import android.text.TextUtils
-import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.fileoperations.filesystem.DOESNT_EXIST
 import com.amaze.filemanager.fileoperations.filesystem.WRITABLE_ON_REMOTE
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo
@@ -22,10 +20,7 @@ import jcifs.smb.SmbFile
 import org.slf4j.LoggerFactory
 
 /**
- * Created by Vishal on 30-05-2017.
- *
- *
- * Class provides various utility methods for SMB client
+ * Class provides various utility methods for SMB client.
  */
 object SmbUtil {
     @JvmStatic
@@ -36,7 +31,6 @@ object SmbUtil {
     /** Parse path to decrypt smb password  */
     @JvmStatic
     fun getSmbDecryptedPath(
-        context: Context,
         path: String,
     ): String {
         return buildPath(path, withPassword = {
@@ -47,7 +41,6 @@ object SmbUtil {
     /** Parse path to encrypt smb password  */
     @JvmStatic
     fun getSmbEncryptedPath(
-        context: Context,
         path: String,
     ): String {
         return buildPath(path, withPassword = {
@@ -94,7 +87,7 @@ object SmbUtil {
     @JvmStatic
     @Throws(MalformedURLException::class)
     fun create(path: String): SmbFile {
-        val uri = Uri.parse(getSmbDecryptedPath(AmazeFileManagerApplication.getInstance(), path))
+        val uri = Uri.parse(getSmbDecryptedPath(path))
         val disableIpcSigningCheck =
             uri.getQueryParameter(
                 PARAM_DISABLE_IPC_SIGNING_CHECK,
@@ -119,15 +112,14 @@ object SmbUtil {
      * for you already
      * @return [NtlmPasswordAuthenticator] instance
      */
-    fun createFrom(userInfo: String?): NtlmPasswordAuthenticator {
+    private fun createFrom(userInfo: String?): NtlmPasswordAuthenticator {
         return if (!TextUtils.isEmpty(userInfo)) {
             var dom: String? = null
-            var user: String? = null
+            val user: String?
             var pass: String? = null
-            var i: Int
             var u: Int
             val end = userInfo!!.length
-            i = 0
+            var i = 0
             u = 0
             while (i < end) {
                 val c = userInfo[i]
@@ -148,11 +140,11 @@ object SmbUtil {
     }
 
     /**
-     * SMB version of [MainActivityHelper.checkFolder].
+     * SMB version of MainActivityHelper.checkFolder.
      *
      * @param path SMB path
-     * @return [com.amaze.filemanager.filesystem.FolderStateKt.DOESNT_EXIST] if specified SMB
-     * path doesn't exist on server, else [com.amaze.filemanager.filesystem.FolderStateKt.WRITABLE_ON_REMOTE]
+     * @return com.amaze.filemanager.filesystem.FolderStateKt.DOESNT_EXIST if specified SMB
+     * path doesn't exist on server, else com.amaze.filemanager.filesystem.FolderStateKt.WRITABLE_ON_REMOTE.
      */
     @Suppress("LabeledExpression")
     @JvmStatic

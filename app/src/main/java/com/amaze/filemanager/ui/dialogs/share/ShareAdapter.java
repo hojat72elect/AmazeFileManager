@@ -15,9 +15,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
 import java.util.ArrayList;
 
-/**
- * Created by Arpit on 01-07-2015 edited by Emmanuel Messulam <emmanuelbendavid@gmail.com>
- */
 class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
 
     private final ArrayList<Intent> items;

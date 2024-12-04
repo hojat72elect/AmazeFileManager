@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_singleedittext"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -9,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/md_dialog_frame_margin"
-        android:paddingRight="@dimen/md_dialog_frame_margin">
+        android:paddingRight="@dimen/md_dialog_frame_margin"
+        tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/singleedittext_input"

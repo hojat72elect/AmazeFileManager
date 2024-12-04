@@ -6,9 +6,6 @@ import java.net.NetworkInterface
 import java.net.SocketException
 import java.util.regex.Pattern
 
-/**
- * Created by mat on 14/12/15.
- */
 object IPTools {
     /*
      * Ip matching patterns from

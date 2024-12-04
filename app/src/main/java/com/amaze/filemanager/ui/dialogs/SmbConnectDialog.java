@@ -301,7 +301,7 @@ public class SmbConnectDialog extends DialogFragment {
                         s =
                                 new String[]{
                                         conName.getText().toString(),
-                                        SmbUtil.getSmbEncryptedPath(getActivity(), smbFile.getPath())
+                                        SmbUtil.getSmbEncryptedPath(smbFile.getPath())
                                 };
                     } catch (Exception e) {
                         LOG.warn("failed to load smb dialog info", e);

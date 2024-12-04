@@ -4,8 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 /**
- * Class stores the [AbstractProgressiveService] progress variables. This class also acts
- * as data carrier to communicate with [ProcessViewerFragment]
+ * Class stores the AbstractProgressiveService progress variables. This class also acts
+ * as data carrier to communicate with ProcessViewerFragment
  *
  * @param name name of source file being copied
  * @param amountOfSourceFiles total number of source files to be copied

@@ -13,6 +13,6 @@
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingLeft="@dimen/material_generic"
         android:paddingRight="@dimen/material_generic"
-        android:textSize="@dimen/list_header_textsize"></androidx.appcompat.widget.AppCompatTextView>
+        android:textSize="@dimen/list_header_textsize" />
 
 </RelativeLayout>

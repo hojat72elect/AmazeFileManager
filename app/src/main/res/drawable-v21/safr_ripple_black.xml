@@ -13,9 +13,6 @@
                 <color android:color="#424242" />
             </item>
 
-            <!--<item>
-                <color android:color="@color/holo_dark_background" />
-            </item>-->
             <item android:state_pressed="true">
                 <color android:color="@color/holo_dark_background" />
             </item>

@@ -6,8 +6,6 @@ import com.amaze.filemanager.asynchronous.asynctasks.compress.CompressedHelperCa
 import com.amaze.filemanager.asynchronous.management.ServiceWatcherUtil
 import com.amaze.filemanager.asynchronous.services.ExtractService
 
-/** @author Emmanuel on 20/11/2017, at 17:14.
- */
 abstract class Decompressor(protected var context: Context) {
     lateinit var filePath: String
 

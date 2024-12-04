@@ -3,9 +3,7 @@ package com.amaze.filemanager.utils;
 import com.amaze.filemanager.ui.fragments.ProcessViewerFragment;
 
 /**
- * Created by arpitkh96 on 18/8/16.
- *
- * <p>Base class to handle progress of services operation Utilized for generation of notification,
+ * Base class to handle progress of services operation Utilized for generation of notification,
  * talking to {@link ProcessViewerFragment} through {@link DatapointParcelable}
  */
 public class ProgressHandler {

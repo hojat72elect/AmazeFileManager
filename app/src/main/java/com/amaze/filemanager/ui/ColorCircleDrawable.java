@@ -6,10 +6,8 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.NonNull;
 
-/**
- * Created by yaroslav on 26.01.16.
- */
 public class ColorCircleDrawable extends Drawable {
     private final Paint mPaint;
     private int mRadius = 0;
@@ -27,7 +25,7 @@ public class ColorCircleDrawable extends Drawable {
     }
 
     @Override
-    protected void onBoundsChange(final Rect bounds) {
+    protected void onBoundsChange(@NonNull final Rect bounds) {
         super.onBoundsChange(bounds);
         mRadius = Math.min(bounds.width(), bounds.height()) / 2;
     }

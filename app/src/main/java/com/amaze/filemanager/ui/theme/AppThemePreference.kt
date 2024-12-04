@@ -52,7 +52,7 @@ enum class AppThemePreference(val id: Int, val canBeLight: Boolean) {
     /**
      * Returns the correct [AppTheme] based on [isNightMode] and [isBatterySaver].
      */
-    fun getSimpleTheme(
+    private fun getSimpleTheme(
         isNightMode: Boolean,
         isBatterySaver: Boolean,
     ): AppTheme {
@@ -97,11 +97,11 @@ enum class AppThemePreference(val id: Int, val canBeLight: Boolean) {
     }
 
     companion object {
-        const val LIGHT_INDEX = 0
-        const val DARK_INDEX = 1
-        const val TIME_INDEX = 2
-        const val BLACK_INDEX = 3
-        const val SYSTEM_INDEX = 4
+        private const val LIGHT_INDEX = 0
+        private const val DARK_INDEX = 1
+        private const val TIME_INDEX = 2
+        private const val BLACK_INDEX = 3
+        private const val SYSTEM_INDEX = 4
 
         /**
          * Returns the correct AppTheme . If [index] == TIME_INDEX, TIMED is returned.

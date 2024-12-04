@@ -6,15 +6,12 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.amaze.filemanager.R
 
-/** @author Emmanuel on 17/4/2017, at 22:22.
- */
 class PathSwitchPreference(
     context: Context,
     private val onEdit: (PathSwitchPreference) -> Unit,
     private val onDelete: (PathSwitchPreference) -> Unit,
 ) : Preference(context) {
-    var lastItemClicked = -1
-        private set
+
 
     init {
         widgetLayoutResource = R.layout.namepathswitch_preference

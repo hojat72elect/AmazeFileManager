@@ -7,9 +7,6 @@ import androidx.annotation.StringRes;
 import com.amaze.filemanager.R;
 import com.google.android.material.textfield.TextInputLayout;
 
-/**
- * @author Emmanuel Messulam <emmanuelbendavid@gmail.com> on 31/1/2018, at 14:50.
- */
 public class WarnableTextInputLayout extends TextInputLayout {
 
     private boolean isStyleWarning = false;

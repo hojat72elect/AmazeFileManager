@@ -47,32 +47,32 @@
         android:layout_height="wrap_content"
         app:key="extractpath"
         app:summary="@string/archive_summary"
-        app:title="@string/archive_extract_folder"></Preference>
+        app:title="@string/archive_extract_folder" />
     <PreferenceCategory android:title="@string/trash_bin">
         <Preference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:key="retention_num_of_files"
             app:summary="@string/trash_bin_retention_num_of_files_summary"
-            app:title="@string/trash_bin_retention_num_of_files_title"></Preference>
+            app:title="@string/trash_bin_retention_num_of_files_title" />
         <Preference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:key="retention_days"
             app:summary="@string/trash_bin_retention_days_summary"
-            app:title="@string/trash_bin_retention_days_title"></Preference>
+            app:title="@string/trash_bin_retention_days_title" />
         <Preference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:key="retention_bytes"
             app:summary="@string/trash_bin_retention_bytes_summary"
-            app:title="@string/trash_bin_retention_bytes_title"></Preference>
+            app:title="@string/trash_bin_retention_bytes_title" />
         <Preference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:key="cleanup_interval"
             app:summary="@string/trash_bin_cleanup_interval_summary"
-            app:title="@string/trash_bin_cleanup_interval_title"></Preference>
+            app:title="@string/trash_bin_cleanup_interval_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/advanced_search">
 

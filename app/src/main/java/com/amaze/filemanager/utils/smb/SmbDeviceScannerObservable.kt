@@ -1,6 +1,5 @@
 package com.amaze.filemanager.utils.smb
 
-import androidx.annotation.VisibleForTesting
 import com.amaze.filemanager.utils.ComputerParcelable
 import com.amaze.filemanager.utils.smb.SmbDeviceScannerObservable.DiscoverDeviceStrategy
 import io.reactivex.Observable
@@ -30,13 +29,11 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
         fun onCancel()
     }
 
-    var discoverDeviceStrategies: Array<DiscoverDeviceStrategy> =
+    private var discoverDeviceStrategies: Array<DiscoverDeviceStrategy> =
         arrayOf(
             WsddDiscoverDeviceStrategy(),
             SameSubnetDiscoverDeviceStrategy(),
         )
-        @VisibleForTesting set
-        @VisibleForTesting get
 
     private lateinit var observer: Observer<in ComputerParcelable>
 
@@ -66,7 +63,7 @@ class SmbDeviceScannerObservable : Observable<ComputerParcelable>() {
                 discoverDeviceStrategies.map { strategy ->
                     fromCallable {
                         strategy.discoverDevices { addr ->
-                            observer.onNext(ComputerParcelable(addr.addr, addr.name))
+                            observer.onNext(ComputerParcelable(addr.address, addr.name))
                         }
                     }.subscribeOn(Schedulers.io())
                 },

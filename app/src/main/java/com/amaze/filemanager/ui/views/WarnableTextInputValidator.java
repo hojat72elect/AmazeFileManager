@@ -9,6 +9,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatEditText;
 import com.amaze.filemanager.R;
 import com.amaze.filemanager.utils.SimpleTextWatcher;
+import androidx.annotation.NonNull;
 
 public final class WarnableTextInputValidator extends SimpleTextWatcher
         implements View.OnFocusChangeListener, View.OnTouchListener {
@@ -44,7 +45,7 @@ public final class WarnableTextInputValidator extends SimpleTextWatcher
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
-            int state = doValidate(false);
+            int state = doValidate();
             button.setEnabled(state != ReturnState.STATE_ERROR);
         }
     }
@@ -55,19 +56,18 @@ public final class WarnableTextInputValidator extends SimpleTextWatcher
     }
 
     public boolean performClick() {
-        boolean blockTouchEvent = doValidate(false) == ReturnState.STATE_ERROR;
-        return blockTouchEvent;
+        return doValidate() == com.amaze.filemanager.ui.views.WarnableTextInputValidator.ReturnState.STATE_ERROR;
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-        doValidate(false);
+    public void afterTextChanged(@NonNull Editable s) {
+        doValidate();
     }
 
     /**
      * @return ReturnState.state
      */
-    private int doValidate(boolean onlySetWarning) {
+    private int doValidate() {
         ReturnState state = validator.isTextValid(editText.getText().toString());
         switch (state.state) {
             case ReturnState.STATE_NORMAL:
@@ -76,10 +76,8 @@ public final class WarnableTextInputValidator extends SimpleTextWatcher
                 button.setEnabled(true);
                 break;
             case ReturnState.STATE_ERROR:
-                if (!onlySetWarning) {
-                    textInputLayout.setError(context.getString(state.text));
-                    setEditTextIcon(errorDrawable);
-                }
+                textInputLayout.setError(context.getString(state.text));
+                setEditTextIcon(errorDrawable);
                 button.setEnabled(false);
                 break;
             case ReturnState.STATE_WARNING:

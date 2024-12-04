@@ -22,8 +22,7 @@ public class Icons {
             DOCUMENTS = 12,
             TEXT = 13,
             VIDEO = 14,
-            ENCRYPTED = 15,
-            GIF = 16;
+            ENCRYPTED = 15;
 
     // construct a with an approximation of the capacity
     private static final HashMap<String, Integer> sMimeIconIds = new HashMap<>(1 + (int) (114 / 0.75));

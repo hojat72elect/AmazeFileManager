@@ -16,7 +16,6 @@ import com.googlecode.concurrenttrees.radix.node.concrete.voidvalue.VoidValue;
 import com.googlecode.concurrenttrees.radixinverted.ConcurrentInvertedRadixTree;
 import com.googlecode.concurrenttrees.radixinverted.InvertedRadixTree;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -80,41 +79,6 @@ public class DataUtils {
     public int containsBooks(String[] a) {
         return contains(a, books);
     }
-
-    /**
-     * Checks whether cloud account of certain type is present or not
-     *
-     * @param serviceType the {@link OpenMode} of account to check
-     * @return the index of account, -1 if not found
-     */
-    public synchronized int containsAccounts(OpenMode serviceType) {
-        int i = 0;
-        for (CloudStorage storage : accounts) {
-
-            switch (serviceType) {
-                case BOX:
-                    if (storage instanceof Box) return i;
-                    break;
-                case DROPBOX:
-                    if (storage instanceof Dropbox) return i;
-                    break;
-                case GDRIVE:
-                    if (storage instanceof GoogleDrive) return i;
-                    break;
-                case ONEDRIVE:
-                    if (storage instanceof OneDrive) return i;
-                    break;
-                default:
-                    return -1;
-            }
-            i++;
-        }
-        return -1;
-    }
-
-  /*public int containsAccounts(CloudEntry cloudEntry) {
-      return contains(a, accounts);
-  }*/
 
     public void clear() {
         hiddenfiles = new ConcurrentRadixTree<>(new DefaultCharArrayNodeFactory());
@@ -273,7 +237,7 @@ public class DataUtils {
     }
 
     public void sortBook() {
-        Collections.sort(books, new BookSorter());
+        books.sort(new BookSorter());
     }
 
     public synchronized ArrayList<String[]> getServers() {

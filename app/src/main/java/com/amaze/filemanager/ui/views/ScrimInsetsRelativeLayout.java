@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import androidx.core.view.ViewCompat;
 import com.amaze.filemanager.R;
 
-/*
+/**
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(Rect)}, i.e. the area above UI chrome
  * (status and navigation bars, overlay action bars).
  */
@@ -18,7 +18,7 @@ public class ScrimInsetsRelativeLayout extends RelativeLayout {
     private final Rect mTempRect = new Rect();
     private Drawable mInsetForeground;
     private Rect mInsets;
-    private OnInsetsCallback mOnInsetsCallback;
+
 
     public ScrimInsetsRelativeLayout(Context context) {
         super(context);
@@ -36,11 +36,7 @@ public class ScrimInsetsRelativeLayout extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        final TypedArray a =
-                context.obtainStyledAttributes(attrs, R.styleable.ScrimInsetsFrameLayout, defStyle, 0);
-        if (a == null) {
-            return;
-        }
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ScrimInsetsFrameLayout, defStyle, 0);
         mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsFrameLayout_insetForeground);
         a.recycle();
 
@@ -52,9 +48,7 @@ public class ScrimInsetsRelativeLayout extends RelativeLayout {
         mInsets = new Rect(insets);
         setWillNotDraw(mInsetForeground == null);
         ViewCompat.postInvalidateOnAnimation(this);
-        if (mOnInsetsCallback != null) {
-            mOnInsetsCallback.onInsetsChanged(insets);
-        }
+
         return true; // consume insets
     }
 
@@ -108,17 +102,4 @@ public class ScrimInsetsRelativeLayout extends RelativeLayout {
         }
     }
 
-    /**
-     * Allows the calling container to specify a callback for custom processing when insets change
-     * (i.e. when {@link #fitSystemWindows(Rect)} is called. This is useful for setting padding on UI
-     * elements based on UI chrome insets (e.g. a Google Map or a ListView). When using with ListView
-     * or GridView, remember to set clipToPadding to false.
-     */
-    public void setOnInsetsCallback(OnInsetsCallback onInsetsCallback) {
-        mOnInsetsCallback = onInsetsCallback;
-    }
-
-    public interface OnInsetsCallback {
-        void onInsetsChanged(Rect insets);
-    }
 }

@@ -34,9 +34,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 /**
- * This class contains the functionality of the PopupMenu for each file in the MainFragment
- *
- * @author Emmanuel on 25/5/2017, at 16:39. Edited by bowiechen on 2019-10-19.
+ * This class contains the functionality of the PopupMenu for each file in the MainFragment.
  */
 public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClickListener {
 
@@ -76,6 +74,7 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
         setOnMenuItemClickListener(this);
     }
 
+    @android.annotation.SuppressLint("NonConstantResourceId")
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -183,7 +182,7 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
                         encryptButtonCallbackInterfaceAuthenticate =
                         new EncryptDecryptUtils.EncryptButtonCallbackInterface() {
                             @Override
-                            public void onButtonPressed(Intent intent, String password)
+                            public void onButtonPressed(@NonNull Intent intent, @NonNull String password)
                                     throws GeneralSecurityException, IOException {
                                 EncryptDecryptUtils.startEncryption(
                                         context, rowItem.generateBaseFile().getPath(), password, intent);
@@ -195,10 +194,9 @@ public class ItemPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemClic
 
                 if (!preferences
                         .getString(
-                                PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD,
-                                PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD_DEFAULT
-                        )
-                        .equals("")) {
+                                com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD,
+                                com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_CRYPT_MASTER_PASSWORD_DEFAULT
+                        ).isEmpty()) {
                     EncryptWithPresetPasswordSaveAsDialog.show(
                             context,
                             encryptIntent,

@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
-import android.os.Build
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
@@ -77,8 +76,8 @@ object NetworkUtil {
             return if (ipAddress == 0) null else intToInet(ipAddress)
         }
         runCatching {
-            NetworkInterface.getNetworkInterfaces().iterator().forEach { netinterface ->
-                netinterface.inetAddresses.iterator().forEach { address ->
+            NetworkInterface.getNetworkInterfaces().iterator().forEach { networkInterface ->
+                networkInterface.inetAddresses.iterator().forEach { address ->
                     // this is the condition that sometimes gives problems
                     if (!address.isLoopbackAddress &&
                         !address.isLinkLocalAddress &&

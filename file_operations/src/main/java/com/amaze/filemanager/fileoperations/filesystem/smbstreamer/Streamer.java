@@ -8,26 +8,17 @@ import jcifs.smb.SmbFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Arpit on 06-07-2015.
- */
 public class Streamer extends StreamServer {
 
     public static final int PORT = 7871;
     public static final String URL = "http://127.0.0.1:" + PORT;
     private static final Logger LOG = LoggerFactory.getLogger(Streamer.class);
-    // protected List<SmbFile> extras; //those can be subtitles
-    // private InputStream stream;
-    // private long length;
     private static Streamer instance;
     private static final Pattern pattern =
             Pattern.compile(
                     "^.*\\.(?i)(mp3|wma|wav|aac|ogg|m4a|flac|mp4|avi|mpg|mpeg|3gp|3gpp|mkv|flv|rmvb)$");
     long length = 0;
     private SmbFile file;
-
-    // private CBItem source;
-    // private String mime;
 
     protected Streamer(int port) throws IOException {
         super(port, new File("."));
@@ -56,7 +47,6 @@ public class Streamer extends StreamServer {
 
     public void setStreamSrc(SmbFile file, long len) {
         this.file = file;
-        // this.extras = extraFiles;
         this.length = len;
     }
 
@@ -73,14 +63,7 @@ public class Streamer extends StreamServer {
         SmbFile sourceFile = null;
         String name = getNameFromPath(uri);
         if (file != null && file.getName().equals(name)) sourceFile = file;
-    /*else if(extras!=null){
-        for(SmbFile i : extras){
-            if(i!=null && i.getName().equals(name)){
-                sourceFile = i;
-                break;
-            }
-        }
-    }*/
+
         if (sourceFile == null)
             res = new Response(StreamServer.HTTP_NOTFOUND, StreamServer.MIME_PLAINTEXT, null);
         else {
@@ -102,9 +85,6 @@ public class Streamer extends StreamServer {
             }
             LOG.debug("Request: " + range + " from: " + startFrom + ", to: " + endAt);
 
-            // Change return code and add Content-Range header when skipping
-            // is requested
-            // source.open();
             final StreamSource source = new StreamSource(sourceFile, length);
             long fileLen = source.length();
             if (range != null && startFrom > 0) {
@@ -132,9 +112,7 @@ public class Streamer extends StreamServer {
             }
         }
 
-        res.addHeader("Accept-Ranges", "bytes"); // Announce that the file
-        // server accepts partial
-        // content requestes
+        res.addHeader("Accept-Ranges", "bytes");
         return res;
     }
 }

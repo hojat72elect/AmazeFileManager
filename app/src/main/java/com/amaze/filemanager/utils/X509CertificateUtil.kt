@@ -6,9 +6,9 @@ import net.schmizz.sshj.common.ByteArrayUtils
 import org.json.JSONObject
 
 object X509CertificateUtil {
-    const val SUBJECT = "subject"
-    const val ISSUER = "issuer"
-    const val SERIAL = "serial"
+    private const val SUBJECT = "subject"
+    private const val ISSUER = "issuer"
+    private const val SERIAL = "serial"
     const val FINGERPRINT = "sha256Fingerprint"
 
     private fun colonSeparatedHex(array: ByteArray) =

@@ -30,7 +30,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.slf4j.LoggerFactory
 
-/** Created by arpitkh996 on 16-01-2016 edited by Emmanuel Messulam <emmanuelbendavid></emmanuelbendavid>@gmail.com>  */
 class SmbSearchDialog : DialogFragment() {
     private lateinit var utilsProvider: UtilitiesProvider
     private lateinit var listViewAdapter: ListViewAdapter
@@ -132,7 +131,7 @@ class SmbSearchDialog : DialogFragment() {
          * Called by [ComputerParcelableViewModel], add found computer to list view
          */
         fun add(computer: ComputerParcelable) {
-            if (computer.addr == "-1" && computer.name == "-1") {
+            if (computer.address == "-1" && computer.name == "-1") {
                 items.add(computer)
             } else {
                 items.add(items.size - 1, computer)
@@ -147,7 +146,7 @@ class SmbSearchDialog : DialogFragment() {
         fun removeDummy() {
             items.remove(
                 items.find {
-                    it.addr == "-1" && it.name == "-1"
+                    it.address == "-1" && it.name == "-1"
                 },
             )
             notifyDataSetChanged()
@@ -164,7 +163,7 @@ class SmbSearchDialog : DialogFragment() {
          * Answers if the list is empty = only has the dummy [ComputerParcelable] instance
          */
         fun dummyOnly(): Boolean {
-            return items.size == 1 && items.last().addr == "-1"
+            return items.size == 1 && items.last().address == "-1"
         }
 
         override fun onCreateViewHolder(
@@ -201,7 +200,7 @@ class SmbSearchDialog : DialogFragment() {
                     val mainActivity = activity as MainActivity
                     mainActivity.showSMBDialog(
                         listViewAdapter.items[position].name,
-                        listViewAdapter.items[position].addr,
+                        listViewAdapter.items[position].address,
                         false,
                     )
                 }

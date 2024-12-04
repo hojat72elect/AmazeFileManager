@@ -10,8 +10,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
+import android.annotation.SuppressLint;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,7 +84,7 @@ public class FastScroller extends FrameLayout {
 
     private void setUpBarBackground() {
         InsetDrawable insetDrawable;
-        int resolveColor = resolveColor(getContext(), R.attr.colorControlNormal);
+        int resolveColor = resolveColor(getContext());
         insetDrawable =
                 new InsetDrawable(
                         new ColorDrawable(resolveColor),
@@ -96,13 +96,14 @@ public class FastScroller extends FrameLayout {
         this.bar.setBackgroundDrawable(insetDrawable);
     }
 
-    int resolveColor(@NonNull Context context, @AttrRes int i) {
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(new int[]{i});
+    int resolveColor(@NonNull Context context) {
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(new int[]{2130968808});
         int color = obtainStyledAttributes.getColor(0, 0);
         obtainStyledAttributes.recycle();
         return color;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public boolean onTouchEvent(@NonNull MotionEvent motionEvent) {
         if (motionEvent.getAction() == 0 || motionEvent.getAction() == 2) {
             this.handle.setPressed(true);

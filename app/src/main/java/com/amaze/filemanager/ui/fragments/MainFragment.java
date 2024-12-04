@@ -515,8 +515,7 @@ public class MainFragment extends Fragment
             @Nullable Uri resultUri = Utils.getUriForBaseFile(requireActivity(), baseFile);
             if (resultUri != null) {
                 resultUris.put(baseFile, resultUri);
-                LOG.debug(
-                        resultUri + "\t" + MimeTypes.getMimeType(baseFile.getPath(), baseFile.isDirectory()));
+                LOG.debug("{}\t{}", resultUri, MimeTypes.getMimeType(baseFile.getPath(), baseFile.isDirectory()));
             } else {
                 failedPaths.add(baseFile.getPath());
             }
@@ -660,7 +659,7 @@ public class MainFragment extends Fragment
             List<UriPermission> uriPermissions =
                     requireContext().getContentResolver().getPersistedUriPermissions();
 
-            if (uriPermissions != null && uriPermissions.size() > 0) {
+            if (!uriPermissions.isEmpty()) {
                 for (UriPermission p : uriPermissions) {
                     if (p.isReadPermission() && actualPath.startsWith(p.getUri().toString())) {
                         hasAccessToSpecialFolder = true;
@@ -786,7 +785,7 @@ public class MainFragment extends Fragment
                     || (mainFragmentViewModel.getIsCloudOpenMode()
                     && !mainFragmentViewModel.getIsOnCloudRoot()))
                     && !isOtg
-                    && (mainFragmentViewModel.getListElements().size() == 0
+                    && (mainFragmentViewModel.getListElements().isEmpty()
                     || !mainFragmentViewModel
                     .getListElements()
                     .get(0)
@@ -795,7 +794,7 @@ public class MainFragment extends Fragment
                 mainFragmentViewModel.getListElements().add(0, getBackElement());
             }
 
-            if (mainFragmentViewModel.getListElements().size() == 0) {
+            if (mainFragmentViewModel.getListElements().isEmpty()) {
                 nofilesview.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setEnabled(false);
@@ -875,9 +874,7 @@ public class MainFragment extends Fragment
                             : mainFragmentViewModel.getColumns()
             );
             mToolbarContainer.addOnOffsetChangedListener(
-                    (appBarLayout, verticalOffset) -> {
-                        fastScroller.updateHandlePosition(verticalOffset, 112);
-                    });
+                    (appBarLayout, verticalOffset) -> fastScroller.updateHandlePosition(verticalOffset, 112));
             fastScroller.registerOnTouchListener(
                     () -> {
                         if (mainFragmentViewModel.getStopAnims() && adapter != null) {
@@ -1014,7 +1011,7 @@ public class MainFragment extends Fragment
                             if (!isValidFilename || text.startsWith(" ")) {
                                 return new WarnableTextInputValidator.ReturnState(
                                         WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.invalid_name);
-                            } else if (text.length() < 1) {
+                            } else if (text.isEmpty()) {
                                 return new WarnableTextInputValidator.ReturnState(
                                         WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.field_empty);
                             }
@@ -1472,7 +1469,7 @@ public class MainFragment extends Fragment
         try {
             int[] location = new int[2];
             viewHolder.baseItemView.getLocationOnScreen(location);
-            LOG.info("Current x and y " + location[0] + " " + location[1]);
+            LOG.info("Current x and y {} {}", location[0], location[1]);
             if (location[1] < requireMainActivity().getAppbar().getAppbarLayout().getHeight()) {
                 listView.scrollToPosition(Math.max(viewHolder.getAdapterPosition() - 5, 0));
             } else if (location[1] + viewHolder.baseItemView.getHeight()

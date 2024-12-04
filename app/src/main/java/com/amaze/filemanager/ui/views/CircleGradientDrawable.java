@@ -7,8 +7,8 @@ import androidx.annotation.ColorInt;
 import com.amaze.filemanager.ui.theme.AppTheme;
 
 /**
- * Created by vishal on 30/5/16. Class used to create background of check icon on selection with a
- * Custom {@link Color} and Stroke (boundary)
+ * Class used to create background of check icon on selection with a
+ * Custom {@link Color} and Stroke (boundary).
  */
 public class CircleGradientDrawable extends GradientDrawable {
 
@@ -16,18 +16,6 @@ public class CircleGradientDrawable extends GradientDrawable {
     private static final String STROKE_COLOR_LIGHT = "#EEEEEE";
     private static final String STROKE_COLOR_DARK = "#424242";
     private final DisplayMetrics mDisplayMetrics;
-
-    /**
-     * Constructor
-     *
-     * @param color    the hex color of circular icon
-     * @param appTheme current theme light/dark which will determine the boundary color
-     * @param metrics  to convert the boundary width for {@link #setStroke} method from dp to px
-     */
-    public CircleGradientDrawable(String color, AppTheme appTheme, DisplayMetrics metrics) {
-        this(appTheme, metrics);
-        setColor(Color.parseColor(color));
-    }
 
     /**
      * Constructor
@@ -47,15 +35,14 @@ public class CircleGradientDrawable extends GradientDrawable {
         setShape(OVAL);
         setSize(1, 1);
         setStroke(
-                dpToPx(STROKE_WIDTH),
+                dpToPx(),
                 (appTheme.equals(AppTheme.DARK) || appTheme.equals(AppTheme.BLACK))
                         ? Color.parseColor(STROKE_COLOR_DARK)
                         : Color.parseColor(STROKE_COLOR_LIGHT)
         );
     }
 
-    private int dpToPx(int dp) {
-        int px = Math.round(mDisplayMetrics.density * dp);
-        return px;
+    private int dpToPx() {
+        return Math.round(mDisplayMetrics.density * CircleGradientDrawable.STROKE_WIDTH);
     }
 }

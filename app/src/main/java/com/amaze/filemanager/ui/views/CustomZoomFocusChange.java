@@ -11,9 +11,9 @@ public class CustomZoomFocusChange implements View.OnFocusChangeListener {
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
-            Utils.zoom(1f, 1f, new PointF(v.getWidth() / 2, v.getHeight() / 2), v);
+            Utils.zoom(1f, 1f, new PointF(v.getWidth() / 2F, v.getHeight() / 2F), v);
         } else {
-            Utils.zoom(1.2f, 1.2f, new PointF(v.getWidth() / 2, v.getHeight() / 2), v);
+            Utils.zoom(1.2f, 1.2f, new PointF(v.getWidth() / 2F, v.getHeight() / 2F), v);
         }
     }
 }

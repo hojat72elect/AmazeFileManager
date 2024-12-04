@@ -6,12 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amaze.filemanager.adapters.RecyclerAdapter;
 
-/**
- * Created by Arpit on 23-04-2015.
- */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
@@ -20,7 +18,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private final boolean show;
     private final boolean showtopbottomdividers;
-    private int leftPaddingPx = 0, rightPaddingPx = 0;
+    private final int leftPaddingPx;
+    private final int rightPaddingPx;
 
     public DividerItemDecoration(Context context, boolean showtopbottomdividers, boolean show) {
         final TypedArray typedArray = context.obtainStyledAttributes(ATTRS);
@@ -33,7 +32,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.onDraw(c, parent, state);
 
         if (!show) return;
@@ -70,7 +69,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(
-            Rect outRect, View view, RecyclerView parent, RecyclerView.State state
+            @NonNull Rect outRect,
+            @NonNull View view,
+            @NonNull RecyclerView parent,
+            @NonNull RecyclerView.State state
     ) {
         super.getItemOffsets(outRect, view, parent, state);
 

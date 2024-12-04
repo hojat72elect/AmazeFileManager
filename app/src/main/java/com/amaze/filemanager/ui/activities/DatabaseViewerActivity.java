@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Vishal on 02-02-2015.
- */
 public class DatabaseViewerActivity extends ThemedActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseViewerActivity.class);

@@ -5,10 +5,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 
 /**
- * Created by vishal on 23/2/17.
- *
- * <p>Class determines whether there was a config change
- *
+ * Class determines whether there was a config change
  * <p>Supposed to be used to determine recursive callbacks to fragment/activity/loader Make sure to
  * recycle after you're done
  */

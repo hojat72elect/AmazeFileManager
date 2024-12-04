@@ -4,9 +4,6 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
 
-/**
- * Created by mat on 13/12/15.
- */
 object PortScanTCP {
     /**
      * Check if a port is open with TCP

@@ -23,7 +23,7 @@ class ScreenUtils(act: Activity) {
      * Converts real Pixels in screen to Density Pixels
      * It uses context to retrieve the density.
      */
-    fun convertPxToDb(px: Float): Int =
+    private fun convertPxToDb(px: Float): Int =
         activity?.let {
             (px / it.resources.displayMetrics.density).roundToInt()
         } ?: 0
@@ -35,17 +35,8 @@ class ScreenUtils(act: Activity) {
             return displayMetrics.widthPixels
         }
 
-    private val screenHeightInPx: Int
-        get() {
-            val displayMetrics = DisplayMetrics()
-            activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-            return displayMetrics.heightPixels
-        }
-
     val screenWidthInDp: Int
         get() = convertPxToDb(screenWidthInPx.toFloat())
-    val screeHeightInDb: Int
-        get() = convertPxToDb(screenHeightInPx.toFloat())
 
     companion object {
         const val TOOLBAR_HEIGHT_IN_DP = 128 // 160 dpi

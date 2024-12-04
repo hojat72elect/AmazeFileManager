@@ -1,6 +1,5 @@
 package com.amaze.filemanager.utils
 
-/** Created by Arpit on 20-11-2015.  */
 class BookSorter : Comparator<Array<String>> {
     override fun compare(
         lhs: Array<String>,

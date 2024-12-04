@@ -31,9 +31,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * Provides useful interfaces and methods for encryption/decryption
- *
- * @author Emmanuel on 25/5/2017, at 16:55.
+ * Provides useful interfaces and methods for encryption/decryption.
  */
 object EncryptDecryptUtils {
     const val DECRYPT_BROADCAST: String = "decrypt_broadcast"

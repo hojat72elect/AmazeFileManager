@@ -16,19 +16,18 @@ import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.TextAppearanceSpan;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
+import android.annotation.SuppressLint;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -60,12 +59,10 @@ import com.amaze.filemanager.ui.fragments.FtpServerFragment;
 import com.amaze.filemanager.ui.fragments.MainFragment;
 import com.amaze.filemanager.ui.fragments.preferencefragments.QuickAccessesPrefsFragment;
 import com.amaze.filemanager.ui.theme.AppTheme;
-import com.amaze.filemanager.utils.BookSorter;
 import com.amaze.filemanager.utils.DataUtils;
 import com.amaze.filemanager.utils.Utils;
 import com.amaze.filemanager.utils.OTGUtil;
 import com.amaze.filemanager.utils.PackageUtils;
-import com.amaze.filemanager.utils.ScreenUtils;
 import com.amaze.filemanager.utils.TinyDB;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -75,9 +72,6 @@ import com.cloudrail.si.services.OneDrive;
 import com.google.android.material.navigation.NavigationView;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -90,7 +84,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     public static final int[] GROUPS = {
             STORAGES_GROUP, SERVERS_GROUP, CLOUDS_GROUP, FOLDERS_GROUP, QUICKACCESSES_GROUP, LASTGROUP
     };
-    private static final Logger LOG = LoggerFactory.getLogger(Drawer.class);
+
     @NonNull
     private final MainActivity mainActivity;
     private final DataUtils dataUtils;
@@ -99,12 +93,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     private final DrawerLayout mDrawerLayout;
     private final CustomNavigationView navView;
     private final RelativeLayout drawerHeaderParent;
-    private final View drawerHeaderLayout;
-    private final View drawerHeaderView;
     private final AppCompatImageView donateImageView;
-    private final AppCompatImageView telegramImageView;
-    private final AppCompatImageView instagramImageView;
-    private final AppCompatTextView appVersion;
     private volatile int phoneStorageCount =
             0; // number of storage available (internal/external/otg etc)
     private boolean isDrawerLocked = false;
@@ -117,18 +106,18 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
      */
     private boolean isOnTablet = false;
 
-    @android.annotation.SuppressLint("WrongViewCast")
+    @SuppressLint("WrongViewCast")
     public Drawer(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         dataUtils = DataUtils.getInstance();
 
-        drawerHeaderLayout = mainActivity.getLayoutInflater().inflate(R.layout.drawerheader, null);
+        View drawerHeaderLayout = mainActivity.getLayoutInflater().inflate(R.layout.drawerheader, null);
         drawerHeaderParent = drawerHeaderLayout.findViewById(R.id.drawer_header_parent);
-        drawerHeaderView = drawerHeaderLayout.findViewById(R.id.drawer_header);
+        View drawerHeaderView = drawerHeaderLayout.findViewById(R.id.drawer_header);
         donateImageView = drawerHeaderLayout.findViewById(R.id.donate);
-        telegramImageView = drawerHeaderLayout.findViewById(R.id.telegram);
-        instagramImageView = drawerHeaderLayout.findViewById(R.id.instagram);
-        appVersion = drawerHeaderLayout.findViewById(R.id.app_version);
+        AppCompatImageView telegramImageView = drawerHeaderLayout.findViewById(R.id.telegram);
+        AppCompatImageView instagramImageView = drawerHeaderLayout.findViewById(R.id.instagram);
+        AppCompatTextView appVersion = drawerHeaderLayout.findViewById(R.id.app_version);
         if (BuildConfig.DEBUG) {
             appVersion.setVisibility(View.VISIBLE);
         }
@@ -206,16 +195,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
     }
 
-    private void setNavViewDimension(CustomNavigationView navView) {
-        int screenWidth = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getScreenUtils().getScreenWidthInDp();
-        int desiredWidthInDp = screenWidth - ScreenUtils.TOOLBAR_HEIGHT_IN_DP;
-        int desiredWidthInPx = com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance().getScreenUtils().convertDbToPx(desiredWidthInDp);
-
-        navView.setLayoutParams(
-                new DrawerLayout.LayoutParams(
-                        desiredWidthInPx, LinearLayout.LayoutParams.MATCH_PARENT, Gravity.START));
-    }
-
     /**
      * Refactors lock mode based on orientation
      */
@@ -224,7 +203,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
             isOnTablet = true;
             mDrawerLayout.setScrimColor(Color.TRANSPARENT);
             open();
-            lock(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            lock();
         } else {
             unlockIfNotOnTablet();
             close();
@@ -289,8 +268,8 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
         dataUtils.setStorages(storageDirectoryPaths);
 
-        if (dataUtils.getServers().size() > 0) {
-            Collections.sort(dataUtils.getServers(), new BookSorter());
+        if (!dataUtils.getServers().isEmpty()) {
+            dataUtils.getServers().sort(new com.amaze.filemanager.utils.BookSorter());
             synchronized (dataUtils.getServers()) {
                 for (String[] file : dataUtils.getServers()) {
                     addNewItem(
@@ -374,13 +353,13 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             });
                 }
             }
-            Collections.sort(accountAuthenticationList, new BookSorter());
+            accountAuthenticationList.sort(new com.amaze.filemanager.utils.BookSorter());
         }
 
         if (mainActivity.getBoolean(PREFERENCE_SHOW_SIDEBAR_FOLDERS)) {
-            if (dataUtils.getBooks().size() > 0) {
+            if (!dataUtils.getBooks().isEmpty()) {
 
-                Collections.sort(dataUtils.getBooks(), new BookSorter());
+                dataUtils.getBooks().sort(new com.amaze.filemanager.utils.BookSorter());
 
                 synchronized (dataUtils.getBooks()) {
                     for (String[] file : dataUtils.getBooks()) {
@@ -413,8 +392,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.quick,
                         new MenuMetadata("5", true),
-                        R.drawable.ic_star_white_24dp,
-                        null
+                        R.drawable.ic_star_white_24dp
                 );
             }
             if (quickAccessPref[1]) {
@@ -424,8 +402,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.recent,
                         new MenuMetadata("6", true),
-                        R.drawable.ic_history_white_24dp,
-                        null
+                        R.drawable.ic_history_white_24dp
                 );
             }
             if (quickAccessPref[2]) {
@@ -435,8 +412,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.images,
                         new MenuMetadata("0", true),
-                        R.drawable.ic_photo_library_white_24dp,
-                        null
+                        R.drawable.ic_photo_library_white_24dp
                 );
             }
             if (quickAccessPref[3]) {
@@ -446,8 +422,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.videos,
                         new MenuMetadata("1", true),
-                        R.drawable.ic_video_library_white_24dp,
-                        null
+                        R.drawable.ic_video_library_white_24dp
                 );
             }
             if (quickAccessPref[4]) {
@@ -457,8 +432,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.audio,
                         new MenuMetadata("2", true),
-                        R.drawable.ic_library_music_white_24dp,
-                        null
+                        R.drawable.ic_library_music_white_24dp
                 );
             }
             if (quickAccessPref[5]) {
@@ -468,8 +442,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.documents,
                         new MenuMetadata("3", true),
-                        R.drawable.ic_library_books_white_24dp,
-                        null
+                        R.drawable.ic_library_books_white_24dp
                 );
             }
             if (quickAccessPref[6]) {
@@ -479,8 +452,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                         order++,
                         R.string.apks,
                         new MenuMetadata("4", true),
-                        R.drawable.ic_apk_library_white_24dp,
-                        null
+                        R.drawable.ic_apk_library_white_24dp
                 );
             }
         }
@@ -506,8 +478,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             if (!isDrawerLocked) close();
                             else onDrawerClosed();
                         }),
-                R.drawable.ic_ftp_white_24dp,
-                null
+                R.drawable.ic_ftp_white_24dp
         );
 
         addNewItem(
@@ -531,8 +502,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                                 mainActivity.startActivity(new Intent(mainActivity, UtilitiesAliasActivity.class));
                             }
                         }),
-                R.drawable.ic_round_connect_without_contact_24,
-                null
+                R.drawable.ic_round_connect_without_contact_24
         );
 
         addNewItem(
@@ -556,8 +526,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                                 mainActivity.startActivity(new Intent(mainActivity, UtilitiesAliasActivity.class));
                             }
                         }),
-                R.drawable.ic_round_analytics_24,
-                null
+                R.drawable.ic_round_analytics_24
         );
 
         // initially load trash bin items with "7" but ones listed they're referred as
@@ -568,8 +537,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 order++,
                 R.string.trash_bin,
                 new MenuMetadata("7", true),
-                R.drawable.round_delete_outline_24,
-                null
+                R.drawable.round_delete_outline_24
         );
 
         addNewItem(
@@ -593,14 +561,13 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             if (!isDrawerLocked) close();
                             else onDrawerClosed();
                         }),
-                R.drawable.ic_android_white_24dp,
-                null
+                R.drawable.ic_android_white_24dp
         );
 
         addNewItem(
                 menu,
                 LASTGROUP,
-                order++,
+                order,
                 R.string.setting,
                 new MenuMetadata(
                         () -> {
@@ -608,8 +575,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                             mainActivity.startActivity(in);
                             mainActivity.finish();
                         }),
-                R.drawable.ic_settings_white_24dp,
-                null
+                R.drawable.ic_settings_white_24dp
         );
 
         for (int i = 0; i < navView.getMenu().size(); i++) {
@@ -632,16 +598,15 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     }
 
     private void addNewItem(
-            Menu menu,
+            android.view.Menu menu,
             int group,
             int order,
             @StringRes int text,
             MenuMetadata meta,
-            @DrawableRes int icon,
-            @DrawableRes Integer actionViewIcon
+            @DrawableRes int icon
     ) {
         addNewItem(
-                menu, group, order, mainActivity.getString(text), meta, icon, actionViewIcon, null, null);
+                menu, group, order, mainActivity.getString(text), meta, icon, null, null, null);
     }
 
     private void addNewItem(
@@ -670,7 +635,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         if (BuildConfig.DEBUG && menu.findItem(order) != null)
             throw new IllegalStateException("Item already id exists: " + order);
 
-        MenuItem item = null;
+        MenuItem item;
 
         if (freeSpace != null && totalSpace != null)
             item =
@@ -698,8 +663,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 imageView.setColorFilter(Color.WHITE);
             }
 
-            MenuItem finalItem = item;
-            item.getActionView().setOnClickListener((view) -> onNavigationItemActionClick(finalItem));
+            item.getActionView().setOnClickListener((view) -> onNavigationItemActionClick(item));
         }
     }
 
@@ -711,10 +675,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
 
     public boolean isLocked() {
         return isDrawerLocked;
-    }
-
-    public boolean isOnTablet() {
-        return isOnTablet;
     }
 
     public boolean isOpen() {
@@ -774,7 +734,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                     FileUtils.checkForPath(mainActivity, meta.path, mainActivity.isRootExplorer());
                 }
 
-                if (dataUtils.getAccounts().size() > 0
+                if (!dataUtils.getAccounts().isEmpty()
                         && (meta.path.startsWith(CloudHandler.CLOUD_PREFIX_BOX)
                         || meta.path.startsWith(CloudHandler.CLOUD_PREFIX_DROPBOX)
                         || meta.path.startsWith(CloudHandler.CLOUD_PREFIX_ONE_DRIVE)
@@ -865,10 +825,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
     }
 
-    public int getPhoneStorageCount() {
-        return phoneStorageCount;
-    }
-
     public void selectCorrectDrawerItemForPath(final String path) {
         Integer id = dataUtils.findLongestContainingDrawerItem(path);
 
@@ -950,17 +906,12 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
     }
 
     /**
-     * @param mode {@link DrawerLayout#LOCK_MODE_LOCKED_CLOSED}, {@link
-     *             DrawerLayout#LOCK_MODE_LOCKED_OPEN} or {@link DrawerLayout#LOCK_MODE_UNDEFINED}
      * @throws IllegalArgumentException if you try to {{@link DrawerLayout#LOCK_MODE_LOCKED_OPEN} or
      *                                  {@link DrawerLayout#LOCK_MODE_UNDEFINED} on a tablet
      */
-    private void lock(int mode) {
-        if (isOnTablet && mode != DrawerLayout.LOCK_MODE_LOCKED_OPEN) {
-            throw new IllegalArgumentException("You can't lock closed or unlock drawer in tablet!");
-        }
+    private void lock() {
 
-        mDrawerLayout.setDrawerLockMode(mode, navView);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, navView);
         isDrawerLocked = true;
     }
 

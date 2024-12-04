@@ -383,7 +383,7 @@ public class ProcessViewerFragment extends Fragment {
      * Creates an instance for {@link LineDataSet} which will store the entries
      */
     private LineDataSet createDataSet() {
-        LineDataSet lineDataset = new LineDataSet(new ArrayList<Entry>(), null);
+        LineDataSet lineDataset = new LineDataSet(new ArrayList<>(), null);
 
         lineDataset.setLineWidth(1.75f);
         lineDataset.setCircleRadius(5f);

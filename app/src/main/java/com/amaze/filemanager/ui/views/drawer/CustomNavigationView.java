@@ -1,7 +1,6 @@
 package com.amaze.filemanager.ui.views.drawer;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -108,11 +107,11 @@ public class CustomNavigationView extends NavigationView
      * thrown (the actual class not found is
      * "android.support.design.widget.NavigationView$SavedState") and I seem to only be able to
      * replicate on Marshmallow (someone else replicated in N through O_MR1 see
-     * https://github.com/TeamAmaze/AmazeFileManager/issues/1400#issuecomment-413086603). Trying to
+     * <a href="https://github.com/TeamAmaze/AmazeFileManager/issues/1400#issuecomment-413086603">this article</a>). Trying to
      * find the class and returning false if Class.forName() throws "ClassNotFoundException" doesn't
      * work because the class seems to have been loaded with the current loader (not the one the
-     * unmarshaller uses); of course I have no idea of what any of this means so I could be wrong. For
-     * the crash see https://github.com/TeamAmaze/AmazeFileManager/issues/1101.
+     * unmarshaller uses); of course I have no idea of what any of this means so I could be wrong. For more info about
+     * the crash see <a href="https://github.com/TeamAmaze/AmazeFileManager/issues/1101">this issue</a>.
      */
     public boolean isNavigationViewSavedStateMissing() {
         return true;
@@ -121,7 +120,7 @@ public class CustomNavigationView extends NavigationView
     static class SavedState extends BaseSavedState {
         // required field that makes Parcelables from a Parcel
         public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
+                new Parcelable.Creator<>() {
                     public SavedState createFromParcel(Parcel in) {
                         return new SavedState(in);
                     }

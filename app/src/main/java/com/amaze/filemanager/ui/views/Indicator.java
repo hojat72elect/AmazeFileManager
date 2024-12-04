@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -30,7 +31,6 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     private static final int DEFAULT_DOT_SIZE = 8; // dp
     private static final int DEFAULT_GAP = 12; // dp
     private static final int DEFAULT_ANIM_DURATION = 400; // ms
-    private static final int DEFAULT_UNSELECTED_COLOUR = 0x80ffffff; // 50% white
     private static final int DEFAULT_SELECTED_COLOUR = 0xffffffff; // 100% white
 
     // constants
@@ -49,8 +49,6 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     private final int dotDiameter;
     private final int gap;
     private final long animDuration;
-    private final int unselectedColour;
-    private final int selectedColour;
     // derived from attributes
     private final float dotRadius;
     private final float halfDotRadius;
@@ -82,8 +80,6 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     private float[] dotRevealFractions;
     private boolean isAttachedToWindow;
     private boolean pageChanging;
-    // animation
-    private ValueAnimator moveAnimation;
     private PendingRetreatAnimator retreatAnimation;
     private PendingRevealAnimator[] revealAnimations;
 
@@ -101,23 +97,17 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
         final int density = (int) context.getResources().getDisplayMetrics().density;
 
         // Load attributes
-        final TypedArray a =
-                getContext().obtainStyledAttributes(attrs, R.styleable.Indicator, defStyle, 0);
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Indicator, defStyle, 0);
 
-        dotDiameter =
-                a.getDimensionPixelSize(R.styleable.Indicator_dotDiameter, DEFAULT_DOT_SIZE * density);
-        dotRadius = dotDiameter / 2;
+        dotDiameter = a.getDimensionPixelSize(R.styleable.Indicator_dotDiameter, DEFAULT_DOT_SIZE * density);
+        dotRadius = dotDiameter / 2F;
         halfDotRadius = dotRadius / 2;
         gap = a.getDimensionPixelSize(R.styleable.Indicator_dotGap, DEFAULT_GAP * density);
-        animDuration =
-                a.getInteger(com.amaze.filemanager.R.styleable.Indicator_animationDuration, DEFAULT_ANIM_DURATION);
+        animDuration = a.getInteger(com.amaze.filemanager.R.styleable.Indicator_animationDuration, DEFAULT_ANIM_DURATION);
         animHalfDuration = animDuration / 2;
-        selectedColour =
-                a.getColor(R.styleable.Indicator_currentPageIndicatorColor, DEFAULT_SELECTED_COLOUR);
+        int selectedColour = a.getColor(R.styleable.Indicator_currentPageIndicatorColor, DEFAULT_SELECTED_COLOUR);
         // half transparent accent color
-        unselectedColour =
-                Color.argb(
-                        80, Color.red(selectedColour), Color.green(selectedColour), Color.blue(selectedColour));
+        int unselectedColour = Color.argb(80, Color.red(selectedColour), Color.green(selectedColour), Color.blue(selectedColour));
 
         a.recycle();
 
@@ -159,14 +149,13 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
         requestLayout();
     }
 
-    private void calculateDotPositions(int width, int height) {
+    private void calculateDotPositions(int width) {
         int left = getPaddingLeft();
         int top = getPaddingTop();
         int right = width - getPaddingRight();
-        int bottom = height - getPaddingBottom();
 
         int requiredWidth = getRequiredWidth();
-        float startLeft = left + ((right - left - requiredWidth) / 2) + dotRadius;
+        float startLeft = left + ((right - left - requiredWidth) / 2F) + dotRadius;
 
         dotCenterX = new float[pageCount];
         for (int i = 0; i < pageCount; i++) {
@@ -234,7 +223,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
                 break;
         }
         setMeasuredDimension(width, height);
-        calculateDotPositions(width, height);
+        calculateDotPositions(width);
     }
 
     private int getDesiredHeight() {
@@ -250,12 +239,12 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     }
 
     @Override
-    public void onViewAttachedToWindow(View view) {
+    public void onViewAttachedToWindow(@NonNull View view) {
         isAttachedToWindow = true;
     }
 
     @Override
-    public void onViewDetachedFromWindow(View view) {
+    public void onViewDetachedFromWindow(@NonNull View view) {
         isAttachedToWindow = false;
     }
 
@@ -397,7 +386,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
             unselectedDotPath.arcTo(rectF, 90, 180, true);
 
             // bezier to the middle top of the join
-            endX1 = centerX + dotRadius + (gap / 2);
+            endX1 = centerX + dotRadius + (gap / 2F);
             endY1 = dotCenterY - (adjustedFraction * dotRadius);
             controlX1 = endX1 - (adjustedFraction * dotRadius);
             controlY1 = dotTopY;
@@ -494,7 +483,8 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
         // retreat animations when it has moved 75% of the way.
         // The retreat animation in turn will kick of reveal anims when the
         // retreat has passed any dots to be revealed
-        moveAnimation = createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps);
+        // animation
+        ValueAnimator moveAnimation = createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps);
         moveAnimation.start();
     }
 
@@ -512,8 +502,8 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
                         now,
                         steps,
                         now > was
-                                ? new RightwardStartPredicate(moveTo - ((moveTo - selectedDotX) * 0.25f))
-                                : new LeftwardStartPredicate(moveTo + ((selectedDotX - moveTo) * 0.25f))
+                                ? new com.amaze.filemanager.ui.views.Indicator.RightwardStartPredicate(moveTo - ((moveTo - selectedDotX) * 0.25f))
+                                : new com.amaze.filemanager.ui.views.Indicator.LeftwardStartPredicate(moveTo + ((selectedDotX - moveTo) * 0.25f))
                 );
         retreatAnimation.addListener(
                 new AnimatorListenerAdapter() {
@@ -622,7 +612,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     /**
      * A {@link ValueAnimator} that starts once a given predicate returns true.
      */
-    abstract class PendingStartAnimator extends ValueAnimator {
+    abstract static class PendingStartAnimator extends ValueAnimator {
 
         protected boolean hasStarted;
         protected StartPredicate predicate;
@@ -677,7 +667,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
                 // create the reveal animations that will run when the retreat passes them
                 for (int i = 0; i < steps; i++) {
                     revealAnimations[i] =
-                            new PendingRevealAnimator(was + i, new RightwardStartPredicate(dotCenterX[was + i]));
+                            new PendingRevealAnimator(was + i, new com.amaze.filemanager.ui.views.Indicator.RightwardStartPredicate(dotCenterX[was + i]));
                     dotsToHide[i] = was + i;
                 }
                 addUpdateListener(
@@ -695,7 +685,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
                 // create the reveal animations that will run when the retreat passes them
                 for (int i = 0; i < steps; i++) {
                     revealAnimations[i] =
-                            new PendingRevealAnimator(was - i, new LeftwardStartPredicate(dotCenterX[was - i]));
+                            new PendingRevealAnimator(was - i, new com.amaze.filemanager.ui.views.Indicator.LeftwardStartPredicate(dotCenterX[was - i]));
                     dotsToHide[i] = was - i;
                 }
                 addUpdateListener(
@@ -768,7 +758,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     /**
      * A predicate used to start an animation when a test passes
      */
-    abstract class StartPredicate {
+    abstract static class StartPredicate {
 
         protected float thresholdValue;
 
@@ -782,7 +772,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     /**
      * A predicate used to start an animation when a given value is greater than a threshold
      */
-    private class RightwardStartPredicate extends StartPredicate {
+    private static class RightwardStartPredicate extends StartPredicate {
 
         public RightwardStartPredicate(float thresholdValue) {
             super(thresholdValue);
@@ -796,7 +786,7 @@ public class Indicator extends View implements View.OnAttachStateChangeListener 
     /**
      * A predicate used to start an animation then a given value is less than a threshold
      */
-    private class LeftwardStartPredicate extends StartPredicate {
+    private static class LeftwardStartPredicate extends StartPredicate {
 
         public LeftwardStartPredicate(float thresholdValue) {
             super(thresholdValue);

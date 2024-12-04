@@ -7,7 +7,6 @@ import static com.amaze.filemanager.utils.PreferenceUtils.DEFAULT_SAVED_PATHS;
 
 import android.animation.ArgbEvaluator;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
@@ -29,7 +28,6 @@ import com.amaze.filemanager.R;
 import com.amaze.filemanager.database.TabHandler;
 import com.amaze.filemanager.database.models.explorer.Tab;
 import com.amaze.filemanager.fileoperations.filesystem.OpenMode;
-import com.amaze.filemanager.ui.ColorCircleDrawable;
 import com.amaze.filemanager.ui.ExtensionsKt;
 import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.ui.colors.UserColorPreferences;
@@ -67,10 +65,8 @@ public class TabFragment extends Fragment {
      * ink indicators for viewpager only for Lollipop+
      */
     private Indicator indicator;
-    /**
-     * views for circlular drawables below android lollipop
-     */
-    private AppCompatImageView circleDrawable1, circleDrawable2;
+
+
     /**
      * colors relative to current visible tab
      */
@@ -114,9 +110,6 @@ public class TabFragment extends Fragment {
 
             try {
                 viewPager.setCurrentItem(lastOpenTab, true);
-                if (circleDrawable1 != null && circleDrawable2 != null) {
-                    updateIndicator(viewPager.getCurrentItem());
-                }
             } catch (Exception e) {
                 LOG.warn("failed to set current viewpager item", e);
             }
@@ -210,7 +203,7 @@ public class TabFragment extends Fragment {
             sharedPrefs.edit().putInt(PREFERENCE_CURRENT_TAB, MainActivity.currentTab).apply();
         }
 
-        if (fragments.size() != 0) {
+        if (!fragments.isEmpty()) {
             if (fragmentManager == null) {
                 return;
             }
@@ -266,7 +259,7 @@ public class TabFragment extends Fragment {
                 sharedPrefs.edit().putBoolean(PreferencesConstants.PREFERENCE_ROOTMODE, true).apply();
             }
         } else {
-            if (path != null && path.length() != 0) {
+            if (path != null && !path.isEmpty()) {
                 if (MainActivity.currentTab == 0) {
                     addTab(tab1, path, hideFabInCurrentMainFragment);
                     addTab(tab2, "", false);
@@ -287,7 +280,7 @@ public class TabFragment extends Fragment {
         MainFragment main = new MainFragment();
         Bundle b = new Bundle();
 
-        if (path != null && path.length() != 0) {
+        if (path != null && !path.isEmpty()) {
             b.putString("lastpath", path);
             b.putInt("openmode", OpenMode.UNKNOWN.ordinal());
         } else {
@@ -312,16 +305,6 @@ public class TabFragment extends Fragment {
     public Fragment getFragmentAtIndex(int pos) {
         if (fragments.size() == 2 && pos < 2) return fragments.get(pos);
         else return null;
-    }
-
-    // updating indicator color as per the current viewpager tab
-    void updateIndicator(int index) {
-        if (index != 0 && index != 1) return;
-
-        int accentColor = requireMainActivity().getAccent();
-
-        circleDrawable1.setImageDrawable(new ColorCircleDrawable(accentColor));
-        circleDrawable2.setImageDrawable(new ColorCircleDrawable(Color.GRAY));
     }
 
     public ConstraintLayout getDragPlaceholder() {
@@ -476,7 +459,6 @@ public class TabFragment extends Fragment {
                 }
             }
 
-            if (circleDrawable1 != null && circleDrawable2 != null) updateIndicator(p1);
         }
 
         @Override

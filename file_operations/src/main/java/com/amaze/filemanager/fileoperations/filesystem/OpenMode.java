@@ -1,9 +1,7 @@
 package com.amaze.filemanager.fileoperations.filesystem;
 
 /**
- * Created by vishal on 10/11/16.
- *
- * <p>Class denotes the type of file being handled
+ * Class denotes the type of file being handled.
  */
 public enum OpenMode {
     UNKNOWN,

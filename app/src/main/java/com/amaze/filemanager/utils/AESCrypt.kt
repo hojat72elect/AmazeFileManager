@@ -32,8 +32,6 @@ import kotlin.text.Charsets.UTF_8
  * Thread-safety and sharing: this class is not thread-safe.<br></br>
  * <tt>AESCrypt</tt> objects can be used as Commands (create, use once and dispose),
  * or reused to perform multiple operations (not concurrently though).
- *
- * @author Vócali Sistemas Inteligentes
  */
 
 /**
@@ -51,8 +49,6 @@ import kotlin.text.Charsets.UTF_8
  * Wishlist:
  * - implement ChaCha20-Poly1305 cipher, which is faster for mobile devices at the cost of only
  *   Amaze and implementations that knows Amaze can decrypt. Shall add flags in extensions header
- *
- * @author TranceLove <airwave209gt@gmail.com>
  *
  */
 class AESCrypt(password: String) {

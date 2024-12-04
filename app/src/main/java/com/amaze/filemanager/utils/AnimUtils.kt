@@ -21,7 +21,7 @@ object AnimUtils {
     }
 
     /**
-     * Animates filenames textview to marquee after a delay. Make sure to set [ ][TextView.setSelected] to false in order to stop the marquee later
+     * Animates filenames textview to marquee after a delay. Make sure to set TextView.setSelected to false in order to stop the marquee later
      */
     @JvmStatic
     fun marqueeAfterDelay(

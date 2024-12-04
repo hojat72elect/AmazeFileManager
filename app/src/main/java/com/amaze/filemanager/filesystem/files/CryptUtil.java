@@ -26,8 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by vishal on 6/4/17.
- *
  * <p>Class provide helper methods to encrypt/decrypt various type of files, or passwords We take
  * the password from user before encrypting file. First, the password is encrypted against the key
  * created in keystore in android {@see #encryptPassword(String)}. We're using AES encryption with

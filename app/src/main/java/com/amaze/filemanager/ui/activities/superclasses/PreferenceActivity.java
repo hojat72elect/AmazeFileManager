@@ -30,9 +30,6 @@ import androidx.preference.PreferenceManager;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 import com.amaze.filemanager.utils.PreferenceUtils;
 
-/**
- * @author Emmanuel on 24/8/2017, at 23:13.
- */
 public class PreferenceActivity extends BasicActivity {
 
     private SharedPreferences sharedPrefs;

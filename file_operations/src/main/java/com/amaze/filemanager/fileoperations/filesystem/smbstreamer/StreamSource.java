@@ -1,9 +1,5 @@
 package com.amaze.filemanager.fileoperations.filesystem.smbstreamer;
 
-/**
- * Created by Arpit on 06-07-2015.
- */
-
 import android.webkit.MimeTypeMap;
 import com.amaze.filemanager.fileoperations.filesystem.streams.RandomAccessStream;
 import java.io.IOException;

@@ -18,11 +18,6 @@ import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.utils.NetworkUtil;
 import java.net.InetAddress;
 
-/**
- * Created by yashwanthreddyg on 19-06-2016.
- *
- * <p>Edited by zent-co on 30-07-2019
- */
 public class FtpNotification {
 
     private static NotificationCompat.Builder buildNotification(
@@ -74,6 +69,7 @@ public class FtpNotification {
         return builder.build();
     }
 
+    @android.annotation.SuppressLint("MissingPermission")
     public static void updateNotification(Context context, boolean noStopButton) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
@@ -106,7 +102,4 @@ public class FtpNotification {
         notificationManager.notify(NotificationConstants.FTP_ID, builder.build());
     }
 
-    private static void removeNotification(Context context) {
-        NotificationManagerCompat.from(context).cancelAll();
-    }
 }

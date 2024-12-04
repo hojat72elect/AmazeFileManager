@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import com.amaze.filemanager.filesystem.files.CryptUtil;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 public final class MimeTypes {
 
@@ -119,7 +118,7 @@ public final class MimeTypes {
         final String extension = getExtension(path);
 
         // mapping extension to system mime types
-        if (extension != null && !extension.isEmpty()) {
+        if (!extension.isEmpty()) {
             final String extensionLowerCase = extension.toLowerCase(Locale.getDefault());
             final MimeTypeMap mime = MimeTypeMap.getSingleton();
             type = mime.getMimeTypeFromExtension(extensionLowerCase);
@@ -129,10 +128,6 @@ public final class MimeTypes {
         }
         if (type == null) type = ALL_MIME_TYPES;
         return type;
-    }
-
-    public static boolean mimeTypeMatch(String mime, String input) {
-        return Pattern.matches(mime.replace("*", ".*"), input);
     }
 
     /**

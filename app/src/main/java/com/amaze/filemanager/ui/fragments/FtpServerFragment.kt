@@ -431,7 +431,6 @@ class FtpServerFragment : Fragment(R.layout.fragment_ftp) {
                     ) == PackageManager.PERMISSION_DENIED
                 ) {
                     mainActivity.accent.run {
-                        val c = mainActivity.applicationContext
 
                         MaterialDialog.Builder(mainActivity)
                             .content(R.string.ftp_prompt_accept_first_start_saf_access)

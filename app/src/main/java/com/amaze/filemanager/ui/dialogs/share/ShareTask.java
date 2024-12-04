@@ -16,9 +16,6 @@ import com.amaze.filemanager.utils.PackageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Arpit on 01-07-2015.
- */
 public class ShareTask extends AsyncTask<String, String, Void> {
     private final AppTheme appTheme;
 

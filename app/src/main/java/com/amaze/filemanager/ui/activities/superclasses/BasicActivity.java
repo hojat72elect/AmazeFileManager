@@ -5,9 +5,6 @@ import com.amaze.filemanager.ui.colors.ColorPreferenceHelper;
 import com.amaze.filemanager.ui.provider.UtilitiesProvider;
 import com.amaze.filemanager.ui.theme.AppTheme;
 
-/**
- * Created by rpiotaix on 17/10/16.
- */
 public class BasicActivity extends AppCompatActivity {
 
     protected com.amaze.filemanager.application.AmazeFileManagerApplication getAppConfig() {

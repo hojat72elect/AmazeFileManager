@@ -1,6 +1,5 @@
 package com.amaze.filemanager.utils.smb
 
-import androidx.annotation.VisibleForTesting
 import com.amaze.filemanager.R
 import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.filesystem.ftp.NetCopyConnectionInfo.Companion.SLASH
@@ -43,8 +42,6 @@ import org.xmlpull.v1.XmlPullParserFactory
  *
  * Manually setting [multicastSocketFactory] Allows customized method to be specified for creating [MulticastSocket]
  * for convenience of testing.
- *
- * @author TranceLove <airwave209gt at gmail.com>
  */
 class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStrategy {
     private val multicastRequestTemplate =
@@ -64,11 +61,7 @@ class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStra
             Pair("User-Agent", "wsd"),
         )
 
-    var multicastSocketFactory: () -> MulticastSocket = DEFAULT_MULTICAST_SOCKET_FACTORY
-        @VisibleForTesting
-        get
-        @VisibleForTesting
-        set
+    private var multicastSocketFactory: () -> MulticastSocket = DEFAULT_MULTICAST_SOCKET_FACTORY
 
     private val queue = OkHttpClient()
 
@@ -82,7 +75,7 @@ class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStra
 
     @Suppress("LabeledExpression")
     private fun multicastForDevice(callback: (ComputerParcelable) -> Unit) {
-        NetworkUtil.getLocalInetAddress(AmazeFileManagerApplication.getInstance())?.let { addr ->
+        NetworkUtil.getLocalInetAddress(AmazeFileManagerApplication.getInstance())?.let {
             val multicastAddressV4 = InetAddress.getByName(BROADCAST_IPV4)
             val multicastAddressV6 = InetAddress.getByName(BROADCAST_IPV6_LINK_LOCAL)
 
@@ -230,8 +223,8 @@ class WsddDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDeviceStra
                     it.setInput(StringReader(xml))
                 }
             val retval = WeakHashMap<String, String>()
-            var currentTag: String = ""
-            var currentValue: String = ""
+            var currentTag = ""
+            var currentValue = ""
             var event = xmlParser.eventType
             try {
                 while (event != XmlPullParser.END_DOCUMENT) {

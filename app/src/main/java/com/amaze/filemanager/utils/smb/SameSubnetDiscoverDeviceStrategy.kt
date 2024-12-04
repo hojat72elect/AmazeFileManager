@@ -60,15 +60,15 @@ class SameSubnetDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDevi
                     }
                 }.filter {
                     it is InetAddress
-                }.doOnNext { addr ->
-                    addr as InetAddress
+                }.doOnNext { address ->
+                    address as InetAddress
                     callback.invoke(
                         ComputerParcelable(
-                            addr.hostAddress,
-                            if (addr.hostName == addr.hostAddress) {
-                                addr.canonicalHostName
+                            address.hostAddress!!,
+                            if (address.hostName == address.hostAddress) {
+                                address.canonicalHostName
                             } else {
-                                addr.hostName
+                                address.hostName
                             },
                         ),
                     )
@@ -77,13 +77,13 @@ class SameSubnetDiscoverDeviceStrategy : SmbDeviceScannerObservable.DiscoverDevi
 
     private fun getNeighbourhoodHosts(): List<InetAddress> {
         val deviceAddress = NetworkUtil.getLocalInetAddress(AmazeFileManagerApplication.getInstance())
-        return deviceAddress?.let { addr ->
-            if (addr is Inet6Address) {
+        return deviceAddress?.let { address ->
+            if (address is Inet6Address) {
                 // IPv6 neigbourhood hosts can be very big - that should use wsdd instead; hence
                 // empty list here
                 emptyList()
             } else {
-                val networkPrefix: String = addr.hostAddress.substringBeforeLast('.')
+                val networkPrefix: String = address.hostAddress!!.substringBeforeLast('.')
                 (1..254).map {
                     InetAddress.getByName("$networkPrefix.$it")
                 }

@@ -7,9 +7,6 @@ import com.amaze.filemanager.ui.colors.ColorPreferenceHelper;
 import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.ui.theme.AppThemeManager;
 
-/**
- * Created by piotaixr on 16/01/17.
- */
 public class UtilitiesProvider {
     private final ColorPreferenceHelper colorPreference;
     private final AppThemeManager appThemeManager;

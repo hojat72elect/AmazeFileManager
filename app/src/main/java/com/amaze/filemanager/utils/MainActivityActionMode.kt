@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference
 
 class MainActivityActionMode(private val mainActivityReference: WeakReference<MainActivity>) :
     ActionMode.Callback {
-    var actionModeView: View? = null
+    private var actionModeView: View? = null
     var actionMode: ActionMode? = null
     var pasteHelper: PasteHelper? = null
 

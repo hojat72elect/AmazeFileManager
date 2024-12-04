@@ -9,9 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
 
-/**
- * @author Emmanuel on 6/10/2017, at 15:41.
- */
 public class CircularColorsView extends View {
 
     private static final float DISTANCE_PERCENTUAL = 0.08f;

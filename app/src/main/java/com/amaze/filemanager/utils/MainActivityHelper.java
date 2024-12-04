@@ -54,7 +54,6 @@ import com.amaze.filemanager.ui.fragments.MainFragment;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 import com.amaze.filemanager.ui.views.WarnableTextInputValidator;
 import com.amaze.filemanager.utils.smb.SmbUtil;
-import com.leinardi.android.speeddial.SpeedDialView;
 import java.io.File;
 import java.util.ArrayList;
 import org.slf4j.Logger;
@@ -75,7 +74,7 @@ public class MainActivityHelper {
                             Toast.makeText(mainActivity, "Media Mounted", Toast.LENGTH_SHORT).show();
                             String a = intent.getData().getPath();
                             if (a != null
-                                    && a.trim().length() != 0
+                                    && !a.trim().isEmpty()
                                     && new File(a).exists()
                                     && new File(a).canExecute()) {
                                 dataUtils.getStorages().add(a);
@@ -91,7 +90,6 @@ public class MainActivityHelper {
                 }
             };
     private final int accentColor;
-    private SpeedDialView.OnActionSelectedListener fabActionListener;
 
     public MainActivityHelper(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -106,13 +104,13 @@ public class MainActivityHelper {
         mat.theme(mainActivity.getAppTheme().getMaterialDialogTheme());
         mat.positiveColor(accentColor);
         mat.positiveText(R.string.cancel);
-        String content = context.getString(R.string.operation_fail_following);
+        StringBuilder content = new StringBuilder(context.getString(com.amaze.filemanager.R.string.operation_fail_following));
         int k = 1;
         for (HybridFileParcelable s : failedOps) {
-            content = content + "\n" + (k) + ". " + s.getName(context);
+            content.append("\n").append(k).append(". ").append(s.getName(context));
             k++;
         }
-        mat.content(content);
+        mat.content(content.toString());
         mat.build().show();
     }
 
@@ -127,7 +125,7 @@ public class MainActivityHelper {
                 R.string.newfolder,
                 "",
                 (dialog, which) -> {
-                    AppCompatEditText textfield =
+                    AppCompatEditText textField =
                             dialog.getCustomView().findViewById(R.id.singleedittext_input);
                     String parentPath = path;
                     if (OpenMode.DOCUMENT_FILE.equals(openMode)) {
@@ -135,7 +133,7 @@ public class MainActivityHelper {
                     }
                     mkDir(
                             new HybridFile(openMode, parentPath),
-                            new HybridFile(openMode, parentPath, textfield.getText().toString().trim(), true),
+                            new HybridFile(openMode, parentPath, textField.getText().toString().trim(), true),
                             ma
                     );
                     dialog.dismiss();
@@ -146,7 +144,7 @@ public class MainActivityHelper {
                     if (!isValidFilename || text.startsWith(" ")) {
                         return new WarnableTextInputValidator.ReturnState(
                                 WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.invalid_name);
-                    } else if (text.length() < 1) {
+                    } else if (text.isEmpty()) {
                         return new WarnableTextInputValidator.ReturnState(
                                 WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.field_empty);
                     }
@@ -167,11 +165,11 @@ public class MainActivityHelper {
                 R.string.newfile,
                 AppConstants.NEW_FILE_DELIMITER.concat(AppConstants.NEW_FILE_EXTENSION_TXT),
                 (dialog, which) -> {
-                    AppCompatEditText textfield =
+                    AppCompatEditText textField =
                             dialog.getCustomView().findViewById(R.id.singleedittext_input);
                     mkFile(
                             new HybridFile(openMode, path),
-                            new HybridFile(openMode, path, textfield.getText().toString().trim(), false),
+                            new HybridFile(openMode, path, textField.getText().toString().trim(), false),
                             ma
                     );
                     dialog.dismiss();
@@ -181,7 +179,7 @@ public class MainActivityHelper {
 
                     // The redundant equalsIgnoreCase() is needed since ".txt" itself does not end with .txt
                     // (i.e. recommended as ".txt.txt"
-                    if (text.length() > 0) {
+                    if (!text.isEmpty()) {
                         if (!isValidFilename || text.startsWith(" ")) {
                             return new WarnableTextInputValidator.ReturnState(
                                     WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.invalid_name);
@@ -233,11 +231,9 @@ public class MainActivityHelper {
         dialog.show();
 
         // place cursor at the beginning
-        AppCompatEditText textfield = dialog.getCustomView().findViewById(R.id.singleedittext_input);
-        textfield.post(
-                () -> {
-                    textfield.setSelection(0);
-                });
+        AppCompatEditText textField = dialog.getCustomView().findViewById(R.id.singleedittext_input);
+        textField.post(
+                () -> textField.setSelection(0));
     }
 
     public String getIntegralNames(String path) {
@@ -319,7 +315,7 @@ public class MainActivityHelper {
             final String newName,
             final boolean isDirectory,
             final Activity context,
-            boolean rootmode
+            boolean rootMode
     ) {
         final Toast toast =
                 Toast.makeText(context, context.getString(R.string.renaming), Toast.LENGTH_SHORT);
@@ -334,7 +330,7 @@ public class MainActivityHelper {
         Operations.rename(
                 oldFile,
                 newFile,
-                rootmode,
+                rootMode,
                 context,
                 new Operations.ErrorCallBack() {
                     @Override
@@ -356,7 +352,7 @@ public class MainActivityHelper {
                     public void launchSAF(final HybridFile file, final HybridFile file1) {
                         context.runOnUiThread(
                                 () -> {
-                                    if (toast != null) toast.cancel();
+                                    toast.cancel();
                                     mainActivity.oppathe = file.getPath();
                                     mainActivity.oppathe1 = file1.getPath();
                                     mainActivity.operation = RENAME;
@@ -408,7 +404,7 @@ public class MainActivityHelper {
                     public void invalidName(final HybridFile file) {
                         context.runOnUiThread(
                                 () -> {
-                                    if (toast != null) toast.cancel();
+                                    toast.cancel();
                                     Toast.makeText(
                                                     context,
                                                     context.getString(R.string.invalid_name) + ": " + file.getName(context),
@@ -429,8 +425,7 @@ public class MainActivityHelper {
         if (OpenMode.SMB.equals(openMode)) {
             return SmbUtil.checkFolder(path);
         } else if (OpenMode.SFTP.equals(openMode) || OpenMode.FTP.equals(openMode)) {
-            int result = NetCopyClientUtils.INSTANCE.checkFolder(path);
-            return result;
+            return NetCopyClientUtils.INSTANCE.checkFolder(path);
         } else if (OpenMode.DOCUMENT_FILE.equals(openMode)) {
             DocumentFile d =
                     DocumentFile.fromTreeUri(com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance(), SafRootHolder.getUriRoot());
@@ -494,14 +489,14 @@ public class MainActivityHelper {
                         ma.getActivity()
                                 .runOnUiThread(
                                         () -> {
-                                            if (toast != null) toast.cancel();
+                                            toast.cancel();
                                             Toast.makeText(
                                                             mainActivity,
                                                             mainActivity.getString(R.string.fileexist),
                                                             Toast.LENGTH_SHORT
                                                     )
                                                     .show();
-                                            if (ma != null && ma.getActivity() != null) {
+                                            if (ma.getActivity() != null) {
                                                 // retry with dialog prompted again
                                                 mkfile(
                                                         file.getMode(),
@@ -518,7 +513,7 @@ public class MainActivityHelper {
                         ma.getActivity()
                                 .runOnUiThread(
                                         () -> {
-                                            if (toast != null) toast.cancel();
+                                            toast.cancel();
                                             mainActivity.oppathe = path.getPath();
                                             mainActivity.operation = NEW_FILE;
                                             guideDialogForLEXA(mainActivity.oppathe);
@@ -552,7 +547,7 @@ public class MainActivityHelper {
                         ma.getActivity()
                                 .runOnUiThread(
                                         () -> {
-                                            if (toast != null) toast.cancel();
+                                            toast.cancel();
                                             Toast.makeText(
                                                             ma.getActivity(),
                                                             ma.getString(R.string.invalid_name)
@@ -582,14 +577,14 @@ public class MainActivityHelper {
                         ma.getActivity()
                                 .runOnUiThread(
                                         () -> {
-                                            if (toast != null) toast.cancel();
+                                            toast.cancel();
                                             Toast.makeText(
                                                             mainActivity,
                                                             mainActivity.getString(R.string.fileexist),
                                                             Toast.LENGTH_SHORT
                                                     )
                                                     .show();
-                                            if (ma != null && ma.getActivity() != null) {
+                                            if (ma.getActivity() != null) {
                                                 // retry with dialog prompted again
                                                 mkdir(
                                                         file.getMode(),
@@ -602,7 +597,7 @@ public class MainActivityHelper {
 
                     @Override
                     public void launchSAF(HybridFile file) {
-                        if (toast != null) toast.cancel();
+                        toast.cancel();
                         ma.getActivity()
                                 .runOnUiThread(
                                         () -> {
@@ -639,7 +634,7 @@ public class MainActivityHelper {
                         ma.getActivity()
                                 .runOnUiThread(
                                         () -> {
-                                            if (toast != null) toast.cancel();
+                                            toast.cancel();
                                             Toast.makeText(
                                                             ma.getActivity(),
                                                             ma.getString(R.string.invalid_name)
@@ -655,7 +650,7 @@ public class MainActivityHelper {
     }
 
     public void deleteFiles(ArrayList<HybridFileParcelable> files, boolean doDeletePermanently) {
-        if (files == null || files.size() == 0) return;
+        if (files == null || files.isEmpty()) return;
         if (files.get(0).isSmb() || files.get(0).isFtp()) {
             new DeleteTask(mainActivity, doDeletePermanently).execute(files);
             return;
@@ -675,7 +670,7 @@ public class MainActivityHelper {
         final File parent = file.getParentFile();
         if (parent == null) {
             Toast.makeText(mainActivity, R.string.error, Toast.LENGTH_SHORT).show();
-            LOG.warn("File's parent is null " + file.getPath());
+            LOG.warn("File's parent is null {}", file.getPath());
             return;
         }
 

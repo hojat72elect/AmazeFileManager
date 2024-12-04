@@ -1,5 +1,6 @@
 package com.amaze.filemanager.ui.selection
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
@@ -59,6 +60,7 @@ class SelectionPopupMenu(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.select_all -> {

@@ -85,9 +85,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Here are a lot of function that create material dialogs
- *
- * @author Emmanuel on 17/5/2017, at 13:27.
+ * Here are a lot of functions for creating material dialogs.
  */
 public class GeneralDialogCreation {
 

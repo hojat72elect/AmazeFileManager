@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
 
 
 /**
@@ -85,7 +86,7 @@ public class CustomLinearSmoothScroller extends RecyclerView.SmoothScroller {
      * {@inheritDoc}
      */
     @Override
-    protected void onTargetFound(View targetView, RecyclerView.State state, Action action) {
+    protected void onTargetFound(@NonNull View targetView, @NonNull RecyclerView.State state, @NonNull Action action) {
         final int dx = calculateDxToMakeVisible(targetView, getHorizontalSnapPreference());
         final int dy = calculateDyToMakeVisible(targetView, getVerticalSnapPreference());
         final int distance = (int) Math.sqrt(dx * dx + dy * dy);
@@ -99,7 +100,7 @@ public class CustomLinearSmoothScroller extends RecyclerView.SmoothScroller {
      * {@inheritDoc}
      */
     @Override
-    protected void onSeekTargetStep(int dx, int dy, RecyclerView.State state, Action action) {
+    protected void onSeekTargetStep(int dx, int dy, @NonNull RecyclerView.State state, @NonNull Action action) {
         // TODO(b/72745539): Is there ever a time when onSeekTargetStep should be called when
         // getChildCount returns 0?  Should this logic be extracted out of this method such that
         // this method is not called if getChildCount() returns 0?
@@ -107,7 +108,7 @@ public class CustomLinearSmoothScroller extends RecyclerView.SmoothScroller {
             stop();
             return;
         }
-        //noinspection PointlessBooleanExpression
+
         if (DEBUG
                 && mTargetVector != null
                 && ((mTargetVector.x * dx < 0 || mTargetVector.y * dy < 0))) {

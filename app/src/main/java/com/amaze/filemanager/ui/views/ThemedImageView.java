@@ -9,9 +9,7 @@ import com.amaze.filemanager.ui.activities.superclasses.BasicActivity;
 import com.amaze.filemanager.ui.theme.AppTheme;
 
 /**
- * Created by vishal on 18/2/17.
- *
- * <p>A custom image view which adds an extra attribute to determine a source image when in material
+ * A custom image view which adds an extra attribute to determine a source image when in material
  * dark preference
  */
 public class ThemedImageView extends androidx.appcompat.widget.AppCompatImageView {

@@ -4,6 +4,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import androidx.annotation.NonNull;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -51,7 +52,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import kotlinx.coroutines.Job;
@@ -75,7 +75,6 @@ public class SearchView {
     private final AppCompatTextView deepSearchTV;
 
     private final ChipGroup recentChipGroup;
-    private final RecyclerView recyclerView;
 
     private final SearchRecyclerViewAdapter searchRecyclerViewAdapter;
 
@@ -124,7 +123,7 @@ public class SearchView {
         recentHintTV = mainActivity.findViewById(R.id.searchRecentHintTV);
         searchResultsHintTV = mainActivity.findViewById(R.id.searchResultsHintTV);
         deepSearchTV = mainActivity.findViewById(R.id.searchDeepSearchTV);
-        recyclerView = mainActivity.findViewById(R.id.searchRecyclerView);
+        RecyclerView recyclerView = mainActivity.findViewById(R.id.searchRecyclerView);
         searchResultsSortHintTV = mainActivity.findViewById(R.id.searchResultsSortHintTV);
         searchResultsSortButton = mainActivity.findViewById(R.id.searchResultsSortButton);
         searchResultsSortAscDrawable =
@@ -365,8 +364,7 @@ public class SearchView {
     private void updateResultList(List<SearchResult> newResults, String searchTerm) {
         if (newResults != null) {
             ArrayList<SearchResult> items = new ArrayList<>(newResults);
-            Collections.sort(
-                    items, new SearchResultListSorter(DirSortBy.NONE_ON_TOP, sortType, searchTerm));
+            items.sort(new SearchResultListSorter(DirSortBy.NONE_ON_TOP, sortType, searchTerm));
             searchRecyclerViewAdapter.submitList(items);
             searchRecyclerViewAdapter.notifyDataSetChanged();
         } else {
@@ -413,11 +411,11 @@ public class SearchView {
         animator.addListener(
                 new Animator.AnimatorListener() {
                     @Override
-                    public void onAnimationStart(Animator animation) {
+                    public void onAnimationStart(@NonNull Animator animation) {
                     }
 
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onAnimationEnd(@NonNull Animator animation) {
                         searchViewEditText.requestFocus();
                         InputMethodManager imm =
                                 (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -426,11 +424,11 @@ public class SearchView {
                     }
 
                     @Override
-                    public void onAnimationCancel(Animator animation) {
+                    public void onAnimationCancel(@NonNull Animator animation) {
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animator animation) {
+                    public void onAnimationRepeat(@NonNull Animator animation) {
                     }
                 });
     }
@@ -542,11 +540,11 @@ public class SearchView {
         animator.addListener(
                 new Animator.AnimatorListener() {
                     @Override
-                    public void onAnimationStart(Animator animation) {
+                    public void onAnimationStart(@NonNull Animator animation) {
                     }
 
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onAnimationEnd(@NonNull Animator animation) {
                         searchViewLayout.setVisibility(View.GONE);
                         enabled = false;
                         InputMethodManager inputMethodManager =
@@ -556,11 +554,11 @@ public class SearchView {
                     }
 
                     @Override
-                    public void onAnimationCancel(Animator animation) {
+                    public void onAnimationCancel(@NonNull Animator animation) {
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animator animation) {
+                    public void onAnimationRepeat(@NonNull Animator animation) {
                     }
                 });
     }
