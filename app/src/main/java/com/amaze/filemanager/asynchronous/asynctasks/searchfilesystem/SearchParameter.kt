@@ -8,12 +8,12 @@ enum class SearchParameter {
     ;
 
     /**
-     * Returns [SearchParameters] containing [this] and [other]
+     * Returns [SearchParameters] containing `this` and [other].
      */
     infix fun and(other: SearchParameter): SearchParameters = SearchParameters.of(this, other)
 
     /**
-     * Returns [SearchParameters] containing [this] and [other]
+     * Returns [SearchParameters] containing `this` and [other].
      */
     operator fun plus(other: SearchParameter): SearchParameters = this and other
 }

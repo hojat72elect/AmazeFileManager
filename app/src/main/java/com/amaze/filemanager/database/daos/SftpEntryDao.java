@@ -37,16 +37,6 @@ public interface SftpEntryDao {
     @Query("SELECT * FROM " + TABLE_SFTP)
     Single<List<SftpEntry>> list();
 
-    @Query(
-            "SELECT * FROM "
-                    + TABLE_SFTP
-                    + " WHERE "
-                    + COLUMN_NAME
-                    + " = :name AND "
-                    + COLUMN_PATH
-                    + " = :path")
-    Single<SftpEntry> findByNameAndPath(String name, String path);
-
     @Query("SELECT * FROM " + TABLE_SFTP + " WHERE " + COLUMN_NAME + " = :name")
     Single<SftpEntry> findByName(String name);
 

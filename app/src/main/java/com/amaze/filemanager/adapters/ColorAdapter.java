@@ -46,7 +46,7 @@ public class ColorAdapter extends ArrayAdapter<Integer> implements AdapterView.O
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         CheckableCircleView colorView;
-        if (convertView != null && convertView instanceof CheckableCircleView) {
+        if (convertView instanceof CheckableCircleView) {
             colorView = (CheckableCircleView) convertView;
         } else {
             colorView = (CheckableCircleView) inflater.inflate(R.layout.dialog_grid_item, parent, false);

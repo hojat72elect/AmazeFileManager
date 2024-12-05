@@ -40,8 +40,5 @@ object PackageInstallValidation {
     /**
      * Exception indicating specified package cannot be installed
      */
-    class PackageCannotBeInstalledException : Exception {
-        constructor(reason: Throwable) : super(reason)
-        constructor(reason: String) : super(reason)
-    }
+    class PackageCannotBeInstalledException(reason: String) : Exception(reason)
 }

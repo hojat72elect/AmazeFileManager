@@ -10,14 +10,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +30,6 @@ import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.ui.theme.AppThemePreference;
 import com.amaze.filemanager.utils.PreferenceUtils;
 import com.amaze.filemanager.utils.Utils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class ThemedActivity extends PreferenceActivity {
     /**
@@ -148,21 +144,6 @@ public class ThemedActivity extends PreferenceActivity {
         return getColorPreference().getCurrentUserColorPreferences(this, getPrefs()).getAccent();
     }
 
-    private void setKitkatStatusBarMargin(View parentView) {
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        // tintManager.setStatusBarTintColor(Color.parseColor((currentTab==1 ? skinTwo : skin)));
-        FrameLayout.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) parentView.getLayoutParams();
-        SystemBarTintManager.SystemBarConfig config = tintManager.getConfig();
-        p.setMargins(0, config.getStatusBarHeight(), 0, 0);
-    }
-
-    private void setKitkatStatusBarTint() {
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintColor(getPrimary());
-    }
-
     public @ColorInt int getPrimary() {
         return ColorPreferenceHelper.getPrimary(getCurrentColorPreference(), getCurrentTab());
     }
@@ -174,144 +155,133 @@ public class ThemedActivity extends PreferenceActivity {
 
     void setTheme() {
         AppTheme theme = getAppTheme();
-        if (Build.VERSION.SDK_INT >= 21) {
+        String stringRepresentation = String.format("#%06X", (0xFFFFFF & getAccent()));
 
-            String stringRepresentation = String.format("#%06X", (0xFFFFFF & getAccent()));
+        switch (stringRepresentation.toUpperCase()) {
+            case "#F44336":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_red);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK)) setTheme(com.amaze.filemanager.R.style.pref_accent_black_red);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_red);
+                break;
 
-            switch (stringRepresentation.toUpperCase()) {
-                case "#F44336":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_red);
-                    else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_red);
-                    else setTheme(R.style.pref_accent_dark_red);
-                    break;
+            case "#E91E63":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_pink);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK)) setTheme(com.amaze.filemanager.R.style.pref_accent_black_pink);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_pink);
+                break;
 
-                case "#E91E63":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_pink);
-                    else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_pink);
-                    else setTheme(R.style.pref_accent_dark_pink);
-                    break;
+            case "#9C27B0":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_purple);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_purple);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_purple);
+                break;
 
-                case "#9C27B0":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_purple);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_purple);
-                    else setTheme(R.style.pref_accent_dark_purple);
-                    break;
+            case "#673AB7":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_light_deep_purple);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_deep_purple);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_deep_purple);
+                break;
 
-                case "#673AB7":
-                    if (theme.equals(AppTheme.LIGHT))
-                        setTheme(R.style.pref_accent_light_deep_purple);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_deep_purple);
-                    else setTheme(R.style.pref_accent_dark_deep_purple);
-                    break;
+            case "#3F51B5":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_indigo);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_indigo);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_indigo);
+                break;
 
-                case "#3F51B5":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_indigo);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_indigo);
-                    else setTheme(R.style.pref_accent_dark_indigo);
-                    break;
+            case "#2196F3":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_blue);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK)) setTheme(com.amaze.filemanager.R.style.pref_accent_black_blue);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_blue);
+                break;
 
-                case "#2196F3":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_blue);
-                    else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_blue);
-                    else setTheme(R.style.pref_accent_dark_blue);
-                    break;
+            case "#03A9F4":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_light_light_blue);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_light_blue);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_light_blue);
+                break;
 
-                case "#03A9F4":
-                    if (theme.equals(AppTheme.LIGHT))
-                        setTheme(R.style.pref_accent_light_light_blue);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_light_blue);
-                    else setTheme(R.style.pref_accent_dark_light_blue);
-                    break;
+            case "#00BCD4":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_cyan);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK)) setTheme(com.amaze.filemanager.R.style.pref_accent_black_cyan);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_cyan);
+                break;
 
-                case "#00BCD4":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_cyan);
-                    else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_cyan);
-                    else setTheme(R.style.pref_accent_dark_cyan);
-                    break;
+            case "#009688":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_teal);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK)) setTheme(com.amaze.filemanager.R.style.pref_accent_black_teal);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_teal);
+                break;
 
-                case "#009688":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_teal);
-                    else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_teal);
-                    else setTheme(R.style.pref_accent_dark_teal);
-                    break;
+            case "#4CAF50":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_green);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_green);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_green);
+                break;
 
-                case "#4CAF50":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_green);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_green);
-                    else setTheme(R.style.pref_accent_dark_green);
-                    break;
+            case "#8BC34A":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_light_light_green);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_light_green);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_light_green);
+                break;
 
-                case "#8BC34A":
-                    if (theme.equals(AppTheme.LIGHT))
-                        setTheme(R.style.pref_accent_light_light_green);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_light_green);
-                    else setTheme(R.style.pref_accent_dark_light_green);
-                    break;
+            case "#FFC107":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_amber);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_amber);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_amber);
+                break;
 
-                case "#FFC107":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_amber);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_amber);
-                    else setTheme(R.style.pref_accent_dark_amber);
-                    break;
+            case "#FF9800":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_orange);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_orange);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_orange);
+                break;
 
-                case "#FF9800":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_orange);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_orange);
-                    else setTheme(R.style.pref_accent_dark_orange);
-                    break;
+            case "#FF5722":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_light_deep_orange);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_deep_orange);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_deep_orange);
+                break;
 
-                case "#FF5722":
-                    if (theme.equals(AppTheme.LIGHT))
-                        setTheme(R.style.pref_accent_light_deep_orange);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_deep_orange);
-                    else setTheme(R.style.pref_accent_dark_deep_orange);
-                    break;
+            case "#795548":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_brown);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_brown);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_brown);
+                break;
 
-                case "#795548":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_brown);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_brown);
-                    else setTheme(R.style.pref_accent_dark_brown);
-                    break;
+            case "#212121":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_black);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_black);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_black);
+                break;
 
-                case "#212121":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_black);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_black);
-                    else setTheme(R.style.pref_accent_dark_black);
-                    break;
+            case "#607D8B":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_blue_grey);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_blue_grey);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_blue_grey);
+                break;
 
-                case "#607D8B":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_blue_grey);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_blue_grey);
-                    else setTheme(R.style.pref_accent_dark_blue_grey);
-                    break;
-
-                case "#004D40":
-                    if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_super_su);
-                    else if (theme.equals(AppTheme.BLACK))
-                        setTheme(R.style.pref_accent_black_super_su);
-                    else setTheme(R.style.pref_accent_dark_super_su);
-                    break;
-            }
-        } else {
-            if (theme.equals(AppTheme.LIGHT)) {
-                setTheme(R.style.appCompatLight);
-            } else if (theme.equals(AppTheme.BLACK)) {
-                setTheme(R.style.appCompatBlack);
-            } else {
-                setTheme(R.style.appCompatDark);
-            }
+            case "#004D40":
+                if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.LIGHT)) setTheme(com.amaze.filemanager.R.style.pref_accent_light_super_su);
+                else if (theme.equals(com.amaze.filemanager.ui.theme.AppTheme.BLACK))
+                    setTheme(com.amaze.filemanager.R.style.pref_accent_black_super_su);
+                else setTheme(com.amaze.filemanager.R.style.pref_accent_dark_super_su);
+                break;
         }
     }
 

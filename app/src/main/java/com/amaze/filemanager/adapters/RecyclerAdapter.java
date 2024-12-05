@@ -514,27 +514,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.offset += 30;
     }
 
-    /**
-     * Adds item to the end of the list, don't use this unless you are dynamically loading the
-     * adapter, after you are finished you must call createHeaders
-     */
-    public void addItem(@NonNull LayoutElementParcelable element) {
-        // TODO: simplify if condition
-        if (mainFragment.getMainFragmentViewModel() != null
-                && mainFragment.getMainFragmentViewModel().isList()
-                && getItemsDigested().size() > 0) {
-            getItemsDigested().add(getItemsDigested().size() - 1, new ListItem(element));
-        } else if (mainFragment.getMainFragmentViewModel() != null
-                && mainFragment.getMainFragmentViewModel().isList()) {
-            getItemsDigested().add(new ListItem(element));
-            getItemsDigested().add(new ListItem(EMPTY_LAST_ITEM));
-        } else {
-            getItemsDigested().add(new ListItem(element));
-        }
-
-        notifyItemInserted(getItemCount());
-    }
-
     public void setItems(
             @NonNull RecyclerView recyclerView, @NonNull List<LayoutElementParcelable> elements
     ) {
@@ -575,7 +554,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (mainFragment.getMainFragmentViewModel() != null
                 && mainFragment.getMainFragmentViewModel().isList()
-                && listItems.size() > 0
+                && !listItems.isEmpty()
                 && (invalidate || isItemsDigestedNullOrEmpty())) {
             listItems.add(new ListItem(EMPTY_LAST_ITEM));
             uris.add(null);
@@ -636,7 +615,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             headers[1] = true;
                             getItemsDigested().add(i, new ListItem(TYPE_HEADER_FILES));
                             uris.add(i, null);
-                            continue; // leave this continue for symmetry
                         }
                     }
                 }
@@ -894,7 +872,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.genericIcon.setVisibility(View.VISIBLE);
                 // if the file type is any unknown variable
                 String ext = !rowItem.isDirectory ? MimeTypes.getExtension(rowItem.title) : null;
-                if (ext != null && ext.trim().length() != 0) {
+                if (ext != null && !ext.trim().isEmpty()) {
                     holder.genericText.setText(ext);
                     holder.genericIcon.setImageDrawable(null);
                     holder.genericIcon.setVisibility(View.INVISIBLE);
@@ -1004,11 +982,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Glide.with(mainFragment).clear(holder.baseItemView);
 
         holder.checkImageViewGrid.setColorFilter(accentColor);
-        holder.baseItemView.setOnClickListener(
-                v -> {
-                    mainFragment.onListItemClicked(
-                            isBackButton, holder.getAdapterPosition(), rowItem, holder.checkImageViewGrid);
-                });
+        holder.baseItemView.setOnClickListener(v -> mainFragment.onListItemClicked(isBackButton, holder.getAdapterPosition(), rowItem, holder.checkImageViewGrid));
         holder.txtTitle.setText(rowItem.title);
         holder.imageView1.setVisibility(View.INVISIBLE);
         holder.genericIcon.setVisibility(View.VISIBLE);
@@ -1047,6 +1021,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 switch (rowItem.filetype) {
                     case Icons.VIDEO:
+                    case Icons.IMAGE:
                         if (!getBoolean(PREFERENCE_SHOW_THUMB))
                             iconBackground.setBackgroundColor(videoColor);
                         break;
@@ -1071,10 +1046,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     case Icons.APK:
                         if (!getBoolean(PREFERENCE_SHOW_THUMB))
                             iconBackground.setBackgroundColor(apkColor);
-                        break;
-                    case Icons.IMAGE:
-                        if (!getBoolean(PREFERENCE_SHOW_THUMB))
-                            iconBackground.setBackgroundColor(videoColor);
                         break;
                     default:
                         iconBackground.setBackgroundColor(iconSkinColor);
@@ -1268,7 +1239,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         GradientDrawable gradientDrawable = (GradientDrawable) viewHolder.genericIcon.getBackground();
 
         RequestListener<Drawable> requestListener =
-                new RequestListener<Drawable>() {
+                new RequestListener<>() {
 
                     @Override
                     public boolean onLoadFailed(
@@ -1342,7 +1313,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         view.setVisibility(View.INVISIBLE);
 
         RequestListener<Drawable> requestListener =
-                new RequestListener<Drawable>() {
+                new RequestListener<>() {
                     @Override
                     public boolean onLoadFailed(
                             @Nullable GlideException e, Object model, Target target, boolean isFirstResource

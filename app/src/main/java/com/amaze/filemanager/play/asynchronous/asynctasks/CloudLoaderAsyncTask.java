@@ -71,7 +71,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     case 2:
                         // DRIVE
                         try {
-                            CloudEntry cloudEntryGdrive = null;
+                            CloudEntry cloudEntryGdrive;
                             CloudEntry savedCloudEntryGdrive;
                             GoogleDrive cloudStorageDrive;
                             final MainActivity mainActivity = this.mainActivity.get();
@@ -149,7 +149,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     case 3:
                         // DROPBOX
                         try {
-                            CloudEntry cloudEntryDropbox = null;
+                            CloudEntry cloudEntryDropbox;
                             CloudEntry savedCloudEntryDropbox;
                             CloudStorage cloudStorageDropbox;
                             final MainActivity mainActivity = this.mainActivity.get();
@@ -216,7 +216,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     case 4:
                         // BOX
                         try {
-                            CloudEntry cloudEntryBox = null;
+                            CloudEntry cloudEntryBox;
                             CloudEntry savedCloudEntryBox;
                             CloudStorage cloudStorageBox;
                             final MainActivity mainActivity = this.mainActivity.get();
@@ -278,7 +278,7 @@ public class CloudLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     case 5:
                         // ONEDRIVE
                         try {
-                            CloudEntry cloudEntryOnedrive = null;
+                            CloudEntry cloudEntryOnedrive;
                             CloudEntry savedCloudEntryOnedrive;
                             CloudStorage cloudStorageOnedrive;
                             final MainActivity mainActivity = this.mainActivity.get();

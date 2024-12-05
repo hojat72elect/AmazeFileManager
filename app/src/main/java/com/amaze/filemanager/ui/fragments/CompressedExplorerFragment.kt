@@ -701,7 +701,7 @@ class CompressedExplorerFragment : Fragment(), BottomBarButtonPath {
         folder = 0
         file = 0
         items?.forEach { item ->
-            if (item.type == CompressedObjectParcelable.TYPE_GOBACK) Unit // do nothing
+            if (item.type == CompressedObjectParcelable.TYPE_GO_BACK) Unit // do nothing
             if (item.directory) folder++ else file++
         }
         stopAnims = true

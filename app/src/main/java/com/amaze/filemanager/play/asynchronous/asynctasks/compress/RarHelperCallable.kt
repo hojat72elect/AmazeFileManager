@@ -15,8 +15,8 @@ import org.apache.commons.compress.archivers.ArchiveException
 /**
  * AsyncTask to load RAR file items.
  *
- * @param realFileDirectory the location of the zip file
- * @param dir relativeDirectory to access inside the zip file
+ * @param fileLocation the location of the zip file
+ * @param relativeDirectory relativeDirectory to access inside the zip file
  */
 class RarHelperCallable(
     private val fileLocation: String,
@@ -39,14 +39,10 @@ class RarHelperCallable(
                     continue
                 }
                 val isInBaseDir = (
-                        (relativeDirDiffSeparator == null || relativeDirDiffSeparator == "") &&
+                        (relativeDirDiffSeparator == "") &&
                                 !name.contains("\\")
                         )
-                val isInRelativeDir = (
-                        relativeDirDiffSeparator != null && name.contains("\\") &&
-                                name.substring(0, name.lastIndexOf("\\"))
-                                == relativeDirDiffSeparator
-                        )
+                val isInRelativeDir = name.contains("\\") && (name.substring(0, name.lastIndexOf("\\")) == relativeDirDiffSeparator)
                 if (isInBaseDir || isInRelativeDir) {
                     elements.add(
                         CompressedObjectParcelable(

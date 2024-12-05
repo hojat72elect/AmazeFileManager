@@ -80,6 +80,7 @@ public class CopyService extends AbstractProgressiveService {
         registerReceiver(receiver3, new IntentFilter(TAG_BROADCAST_COPY_CANCEL));
     }
 
+    @android.annotation.SuppressLint("NotificationId0")
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         Bundle b = new Bundle();
@@ -250,7 +251,7 @@ public class CopyService extends AbstractProgressiveService {
             copy = new Copy();
             copy.execute(sourceFiles, targetPath, move, openMode);
 
-            if (copy.failedFOps.size() == 0) {
+            if (copy.failedFOps.isEmpty()) {
 
                 // adding/updating new encrypted db entry if any encrypted file was copied/moved
                 for (HybridFileParcelable sourceFile : sourceFiles) {
@@ -291,14 +292,12 @@ public class CopyService extends AbstractProgressiveService {
 
             // even directories can end with CRYPT_EXTENSION
             if (sourceFile.isDirectory() && !sourceFile.getName(c).endsWith(CryptUtil.CRYPT_EXTENSION)) {
+                // iterating each file inside source files which were copied to find instance of
+                // any copied / moved encrypted file
                 sourceFile.forEachChildrenFile(
                         getApplicationContext(),
                         isRootExplorer,
-                        file -> {
-                            // iterating each file inside source files which were copied to find instance of
-                            // any copied / moved encrypted file
-                            findAndReplaceEncryptedEntry(file);
-                        }
+                        this::findAndReplaceEncryptedEntry
                 );
             } else {
 
@@ -391,7 +390,7 @@ public class CopyService extends AbstractProgressiveService {
                                 break;
                             }
                         } catch (Exception e) {
-                            LOG.error("Got exception checkout: " + f1.getPath(), e);
+                            LOG.error("Got exception checkout: {}", f1.getPath(), e);
 
                             failedFOps.add(sourceFiles.get(i));
                             for (int j = i + 1; j < sourceFiles.size(); j++)
@@ -413,10 +412,6 @@ public class CopyService extends AbstractProgressiveService {
                             progressHandler.setSourceFilesProcessed(++sourceProgress);
                             progressHandler.setFileName(sourceFiles.get(i).getName(c));
                             copyRoot(sourceFiles.get(i), hFile, move);
-              /*if(checkFiles(new HybridFile(sourceFiles.get(i).getMode(),path),
-              new HybridFile(OpenMode.ROOT,targetPath+"/"+name))){
-                  failedFOps.add(sourceFiles.get(i));
-              }*/
                         }
                     }
                 } else {

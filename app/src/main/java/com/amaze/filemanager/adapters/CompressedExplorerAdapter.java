@@ -211,7 +211,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
                 ));
 
 
-        if (rowItem.type == CompressedObjectParcelable.TYPE_GOBACK) {
+        if (rowItem.type == CompressedObjectParcelable.TYPE_GO_BACK) {
             Glide.with(compressedExplorerFragment)
                     .load(R.drawable.ic_arrow_left_white_24dp)
                     .into(holder.genericIcon);
@@ -241,14 +241,14 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
 
         holder.rl.setOnLongClickListener(
                 view -> {
-                    if (rowItem.type != CompressedObjectParcelable.TYPE_GOBACK) {
+                    if (rowItem.type != CompressedObjectParcelable.TYPE_GO_BACK) {
                         toggleChecked(position, holder.checkImageView);
                     }
                     return true;
                 });
         holder.genericIcon.setOnClickListener(
                 view -> {
-                    if (rowItem.type != CompressedObjectParcelable.TYPE_GOBACK) {
+                    if (rowItem.type != CompressedObjectParcelable.TYPE_GO_BACK) {
                         toggleChecked(position, holder.checkImageView);
                     } else {
                         compressedExplorerFragment.goBack();
@@ -269,7 +269,7 @@ public class CompressedExplorerAdapter extends RecyclerView.Adapter<CompressedIt
 
         holder.rl.setOnClickListener(
                 p1 -> {
-                    if (rowItem.type == CompressedObjectParcelable.TYPE_GOBACK)
+                    if (rowItem.type == CompressedObjectParcelable.TYPE_GO_BACK)
                         compressedExplorerFragment.goBack();
                     else {
                         if (compressedExplorerFragment.selection) {

@@ -264,7 +264,7 @@ public class DecryptService extends AbstractProgressiveService {
                     } catch (AESCrypt.DecryptFailureException ignored) {
 
                     } catch (Exception e) {
-                        LOG.error("Error decrypting " + baseFile.getPath(), e);
+                        LOG.error("Error decrypting {}", baseFile.getPath(), e);
                         failedOps.add(baseFile);
                     }
                 }

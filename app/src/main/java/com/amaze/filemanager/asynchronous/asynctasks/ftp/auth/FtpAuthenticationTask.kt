@@ -5,7 +5,6 @@ import com.amaze.filemanager.R
 import com.amaze.filemanager.application.AmazeFileManagerApplication
 import com.amaze.filemanager.asynchronous.asynctasks.Task
 import com.amaze.filemanager.filesystem.ftp.NetCopyClientConnectionPool.FTP_URI_PREFIX
-import java.net.ConnectException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import org.apache.commons.net.ftp.FTPClient
@@ -42,8 +41,7 @@ class FtpAuthenticationTask(
 
     @MainThread
     override fun onError(error: Throwable) {
-        if (error is SocketException || error is SocketTimeoutException || error is ConnectException
-        ) {
+        if (error is SocketException || error is SocketTimeoutException) {
             AmazeFileManagerApplication.toast(
                 AmazeFileManagerApplication.getInstance(),
                 AmazeFileManagerApplication.getInstance()

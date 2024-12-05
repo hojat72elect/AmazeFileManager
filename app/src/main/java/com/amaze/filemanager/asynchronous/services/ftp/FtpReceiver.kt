@@ -8,9 +8,8 @@ import androidx.core.content.ContextCompat
 import com.amaze.filemanager.BuildConfig.DEBUG
 import com.amaze.filemanager.asynchronous.services.ftp.FtpService.Companion.isRunning
 
-
 class FtpReceiver : BroadcastReceiver() {
-    private val TAG = FtpReceiver::class.java.simpleName
+
 
     override fun onReceive(
         context: Context,
@@ -32,5 +31,9 @@ class FtpReceiver : BroadcastReceiver() {
         }.onFailure {
             Log.e(TAG, "Failed to start/stop on intent ${it.message}")
         }
+    }
+
+    companion object{
+        private val TAG = FtpReceiver::class.java.simpleName
     }
 }

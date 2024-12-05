@@ -1201,11 +1201,11 @@ public class MainFragment extends Fragment
         );
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
     public void onResume() {
         super.onResume();
-        (requireActivity())
-                .registerReceiver(receiver2, new IntentFilter(MainActivity.KEY_INTENT_LOAD_LIST));
+        requireActivity().registerReceiver(receiver2, new IntentFilter(MainActivity.KEY_INTENT_LOAD_LIST));
 
         resumeDecryptOperations();
         startFileObserver();

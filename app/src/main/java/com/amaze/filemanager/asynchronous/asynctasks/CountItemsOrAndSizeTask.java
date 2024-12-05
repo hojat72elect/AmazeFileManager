@@ -28,7 +28,7 @@ public class CountItemsOrAndSizeTask extends AsyncTask<Void, Pair<Integer, Long>
 
     @Override
     protected String doInBackground(Void[] params) {
-        String items = "";
+        String items;
         long fileLength = file.length(context);
 
         if (file.isDirectory(context)) {

@@ -10,13 +10,7 @@ import com.amaze.filemanager.ui.views.ThemedTextView
 class CompressedItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     // each data item is just a string in this case
     @JvmField
-    val pictureIcon: AppCompatImageView = view.findViewById(R.id.picture_icon)
-
-    @JvmField
     val genericIcon: AppCompatImageView = view.findViewById(R.id.generic_icon)
-
-    @JvmField
-    val apkIcon: AppCompatImageView = view.findViewById(R.id.apk_icon)
 
     @JvmField
     val txtTitle: ThemedTextView = view.findViewById(R.id.firstline)
@@ -26,8 +20,6 @@ class CompressedItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     @JvmField
     val date: AppCompatTextView = view.findViewById(R.id.date)
-
-    val perm: AppCompatTextView = view.findViewById(R.id.permis)
 
     @JvmField
     val rl: View = view.findViewById(R.id.second)

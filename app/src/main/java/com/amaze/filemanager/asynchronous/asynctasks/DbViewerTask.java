@@ -124,8 +124,6 @@ public class DbViewerTask extends AsyncTask<Void, Integer, Void> {
                             break;
                         case 4:
                             // #FIELD_TYPE_BLOB
-              /*byte[] blob = c.getBlob(i);
-              blobString = new String(blob);*/
                             temp[i] = "(BLOB)";
                             break;
                     }

@@ -19,14 +19,4 @@ public class AsyncTaskResult<T> {
         this.exception = exception;
     }
 
-    /**
-     * Callback interface for use in {@link android.os.AsyncTask}. Think Promise callback in JS.
-     */
-    public interface Callback<T> {
-
-        /**
-         * Implement logic on what to do with the result here.
-         */
-        void onResult(T result);
-    }
 }

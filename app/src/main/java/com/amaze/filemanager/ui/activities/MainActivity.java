@@ -1131,7 +1131,7 @@ public class MainActivity extends PermissionsActivity
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@androidx.annotation.NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         drawer.onConfigurationChanged(newConfig);

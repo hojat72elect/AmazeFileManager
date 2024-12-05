@@ -44,7 +44,7 @@ public class DeleteTask
     private ArrayList<HybridFileParcelable> files;
     private CompressedExplorerFragment compressedExplorerFragment;
 
-    public DeleteTask(@NonNull Context applicationContext, @NonNull boolean doDeletePermanently) {
+    public DeleteTask(@NonNull Context applicationContext, boolean doDeletePermanently) {
         this.applicationContext = applicationContext.getApplicationContext();
         this.doDeletePermanently = doDeletePermanently;
         rootMode =
@@ -76,7 +76,7 @@ public class DeleteTask
     ) {
         files = p1[0];
         boolean wasDeleted = true;
-        if (files.size() == 0) return new AsyncTaskResult<>(true);
+        if (files.isEmpty()) return new AsyncTaskResult<>(true);
 
         for (HybridFileParcelable file : files) {
             try {
@@ -105,7 +105,7 @@ public class DeleteTask
     public void onPostExecute(AsyncTaskResult<Boolean> result) {
 
         Intent intent = new Intent(MainActivity.KEY_INTENT_LOAD_LIST);
-        if (files.size() > 0) {
+        if (!files.isEmpty()) {
             String path = files.get(0).getParent(applicationContext);
             intent.putExtra(MainActivity.KEY_INTENT_LOAD_LIST_FILE, path);
             applicationContext.sendBroadcast(intent);

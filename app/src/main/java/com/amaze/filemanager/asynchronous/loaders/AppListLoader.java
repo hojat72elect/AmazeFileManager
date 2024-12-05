@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.text.format.Formatter;
 import androidx.loader.content.AsyncTaskLoader;
 import com.amaze.filemanager.adapters.data.AppDataParcelable;
@@ -14,7 +13,6 @@ import com.amaze.filemanager.utils.InterestingConfigChange;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +59,6 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
                         PackageManager.MATCH_UNINSTALLED_PACKAGES
                                 | PackageManager.MATCH_DISABLED_UNTIL_USED_COMPONENTS);
 
-        if (apps == null) return Collections.emptyList();
         mApps = new ArrayList<>(apps.size());
         PackageInfo androidInfo = null;
         try {
@@ -94,7 +91,7 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
 
             AppDataParcelable elem =
                     new AppDataParcelable(
-                            label == null ? object.packageName : label,
+                            label,
                             object.sourceDir,
                             splitPathList,
                             object.packageName,
@@ -109,28 +106,17 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
             mApps.add(elem);
         }
 
-        Collections.sort(mApps, new AppDataSorter(sortBy, isAscending));
+        mApps.sort(new AppDataSorter(sortBy, isAscending));
         return mApps;
     }
 
     @Override
     public void deliverResult(List<AppDataParcelable> data) {
-        if (isReset()) {
 
-            if (data != null) onReleaseResources(data); // TODO onReleaseResources() is empty
-        }
-
-        // preserving old data for it to be closed
-        List<AppDataParcelable> oldData = mApps;
         mApps = data;
         if (isStarted()) {
             // loader has been started, if we have data, return immediately
             super.deliverResult(mApps);
-        }
-
-        // releasing older resources as we don't need them now
-        if (oldData != null) {
-            onReleaseResources(oldData); // TODO onReleaseResources() is empty
         }
     }
 
@@ -161,8 +147,6 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
     @Override
     public void onCanceled(List<AppDataParcelable> data) {
         super.onCanceled(data);
-
-        onReleaseResources(data); // TODO onReleaseResources() is empty
     }
 
     @Override
@@ -173,7 +157,6 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
 
         // we're free to clear resources
         if (mApps != null) {
-            onReleaseResources(mApps); // TODO onReleaseResources() is empty
             mApps = null;
         }
 
@@ -184,13 +167,6 @@ public class AppListLoader extends AsyncTaskLoader<List<AppDataParcelable>> {
         }
 
         InterestingConfigChange.recycle();
-    }
-
-    /**
-     * We would want to release resources here List is nothing we would want to close
-     */
-    // TODO do something
-    private void onReleaseResources(List<AppDataParcelable> layoutElementList) {
     }
 
     /**

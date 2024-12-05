@@ -240,7 +240,7 @@ public class ServiceWatcherUtil {
         @Override
         public void run() {
             if (watcherRepeatingRunnable == null || !watcherRepeatingRunnable.isAlive()) {
-                if (pendingIntents.size() == 0) {
+                if (pendingIntents.isEmpty()) {
                     cancel(false);
                 } else {
                     if (pendingIntents.size() == 1) {

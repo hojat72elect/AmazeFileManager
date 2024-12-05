@@ -54,16 +54,14 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
                 return
             }
         }
-        if (passwordFinder != null) {
-            errorMessage =
-                AmazeFileManagerApplication
-                    .getInstance()
-                    .getString(R.string.ssh_key_invalid_passphrase)
+        errorMessage = if (passwordFinder != null) {
+            AmazeFileManagerApplication
+                .getInstance()
+                .getString(R.string.ssh_key_invalid_passphrase)
         } else {
-            errorMessage =
-                AmazeFileManagerApplication
-                    .getInstance()
-                    .getString(R.string.ssh_key_no_decoder_decrypt)
+            AmazeFileManagerApplication
+                .getInstance()
+                .getString(R.string.ssh_key_no_decoder_decrypt)
         }
         emitter.onError(IOException(errorMessage))
     }
@@ -95,7 +93,7 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
             .autoDismiss(false)
             .title(R.string.ssh_key_prompt_passphrase)
             .positiveText(R.string.ok)
-            .onPositive { dialog: MaterialDialog, which: DialogAction? ->
+            .onPositive { dialog: MaterialDialog, _: DialogAction? ->
                 passwordFinder =
                     object : PasswordFinder {
                         override fun reqPassword(resource: Resource<*>?): CharArray {
@@ -110,7 +108,7 @@ class PemToKeyPairObservable(private val pemFile: ByteArray) : ObservableOnSubsc
                 positiveCallback.invoke()
             }
             .negativeText(R.string.cancel)
-            .onNegative { dialog: MaterialDialog, which: DialogAction? ->
+            .onNegative { dialog: MaterialDialog, _: DialogAction? ->
                 dialog.dismiss()
                 toastOnParseError(exception)
                 negativeCallback.invoke()

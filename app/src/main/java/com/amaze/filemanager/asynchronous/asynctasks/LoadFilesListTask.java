@@ -203,9 +203,7 @@ public class LoadFilesListTask
                                             ))
                             .setPositiveButton(
                                     android.R.string.ok,
-                                    (dialog, which) -> {
-                                        dialog.dismiss();
-                                    }
+                                    (dialog, which) -> dialog.dismiss()
                             )
                             .show();
                 } else {
@@ -308,7 +306,7 @@ public class LoadFilesListTask
             }
         }
 
-        Collections.sort(list, new FileListSorter(viewModel.getDsort(), sortType));
+        list.sort(new FileListSorter(viewModel.getDsort(), sortType));
     }
 
     private @Nullable LayoutElementParcelable createListParcelables(HybridFileParcelable baseFile) {
@@ -338,22 +336,20 @@ public class LoadFilesListTask
             }
         }
 
-        LayoutElementParcelable layoutElement =
-                new LayoutElementParcelable(
-                        context,
-                        baseFile.getName(context),
-                        baseFile.getPath(),
-                        baseFile.getPermission(),
-                        baseFile.getLink(),
-                        size,
-                        longSize,
-                        false,
-                        baseFile.getDate() + "",
-                        baseFile.isDirectory(),
-                        showThumbs,
-                        baseFile.getMode()
-                );
-        return layoutElement;
+        return new LayoutElementParcelable(
+                context,
+                baseFile.getName(context),
+                baseFile.getPath(),
+                baseFile.getPermission(),
+                baseFile.getLink(),
+                size,
+                longSize,
+                false,
+                baseFile.getDate() + "",
+                baseFile.isDirectory(),
+                showThumbs,
+                baseFile.getMode()
+        );
     }
 
     private List<LayoutElementParcelable> listImages() {
@@ -455,7 +451,7 @@ public class LoadFilesListTask
             } while (cursor.moveToNext());
         }
         cursor.close();
-        Collections.sort(docs, (lhs, rhs) -> -1 * Long.valueOf(lhs.date).compareTo(rhs.date));
+        docs.sort((lhs, rhs) -> -1 * Long.compare(lhs.date, rhs.date));
         return docs;
     }
 
@@ -588,8 +584,6 @@ public class LoadFilesListTask
         if (trashBin == null) return deletedFiles;
 
         List<TrashBinFile> filesInBin = trashBin.listFilesInBin();
-
-        if (filesInBin == null) return deletedFiles;
 
         for (TrashBinFile trashBinFile : filesInBin) {
             HybridFile hybridFile =

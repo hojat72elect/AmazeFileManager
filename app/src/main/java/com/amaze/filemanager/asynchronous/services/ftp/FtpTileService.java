@@ -1,9 +1,7 @@
 package com.amaze.filemanager.asynchronous.services.ftp;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.widget.Toast;

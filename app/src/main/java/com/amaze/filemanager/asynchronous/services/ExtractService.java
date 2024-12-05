@@ -317,16 +317,16 @@ public class ExtractService extends AbstractProgressiveService {
                     } else {
                         extractor.extractEverything();
                     }
-                    return (extractor.getInvalidArchiveEntries().size() == 0);
+                    return (extractor.getInvalidArchiveEntries().isEmpty());
                 } catch (Extractor.EmptyArchiveNotice e) {
-                    LOG.error("Archive " + compressedPath + " is an empty archive");
+                    LOG.error("Archive {} is an empty archive", compressedPath);
                     com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                             getApplicationContext(),
                             extractService.getString(R.string.error_empty_archive, compressedPath)
                     );
                     return true;
                 } catch (Extractor.BadArchiveNotice e) {
-                    LOG.error("Archive " + compressedPath + " is a corrupted archive.", e);
+                    LOG.error("Archive {} is a corrupted archive.", compressedPath, e);
                     com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                             getApplicationContext(),
                             e.getCause() != null && TextUtils.isEmpty(e.getCause().getMessage())
@@ -353,14 +353,14 @@ public class ExtractService extends AbstractProgressiveService {
                         publishProgress(e);
                     } else if (e.getCause() != null
                             && UnsupportedRarV5Exception.class.isAssignableFrom(e.getCause().getClass())) {
-                        LOG.error("RAR " + compressedPath + " is unsupported V5 archive", e);
+                        LOG.error("RAR {} is unsupported V5 archive", compressedPath, e);
                         com.amaze.filemanager.application.AmazeFileManagerApplication.toast(
                                 getApplicationContext(),
                                 extractService.getString(R.string.error_unsupported_v5_rar, compressedPath)
                         );
                         return false;
                     } else {
-                        LOG.error("Error while extracting file " + compressedPath, e);
+                        LOG.error("Error while extracting file {}", compressedPath, e);
                         com.amaze.filemanager.application.AmazeFileManagerApplication.toast(getApplicationContext(), extractService.getString(R.string.error));
                         paused = true;
                         publishProgress(e);

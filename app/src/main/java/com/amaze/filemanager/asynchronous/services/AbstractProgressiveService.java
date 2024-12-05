@@ -320,7 +320,7 @@ public abstract class AbstractProgressiveService extends Service
 
         if (!move) getNotificationManager().cancelAll();
 
-        if (failedOps.size() == 0) return;
+        if (failedOps.isEmpty()) return;
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(
                         getApplicationContext(), NotificationConstants.CHANNEL_NORMAL_ID);

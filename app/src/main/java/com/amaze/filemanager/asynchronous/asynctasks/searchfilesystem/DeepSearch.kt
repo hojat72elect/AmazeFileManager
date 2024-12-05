@@ -14,13 +14,8 @@ class DeepSearch(
     context: Context,
     private val openMode: OpenMode,
 ) : FileSearch(query, path, searchParameters) {
-    private val LOG = LoggerFactory.getLogger(DeepSearch::class.java)
 
-    private val applicationContext: Context
-
-    init {
-        applicationContext = context.applicationContext
-    }
+    private val applicationContext: Context = context.applicationContext
 
     /**
      * Search for occurrences of a given text in file names and publish the result.
@@ -53,5 +48,9 @@ class DeepSearch(
         } else {
             LOG.warn("Cannot search " + directory.path + ": Permission Denied")
         }
+    }
+
+    companion object{
+        private val LOG = LoggerFactory.getLogger(DeepSearch::class.java)
     }
 }

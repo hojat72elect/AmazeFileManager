@@ -17,9 +17,9 @@ class ZipHelperCallable(
     c: Context,
     realFileDirectory: String,
     dir: String?,
-    goback: Boolean,
-) :
-    CompressedHelperCallable(goback) {
+    goBack: Boolean,
+) : CompressedHelperCallable(goBack) {
+
     private val context: WeakReference<Context> = WeakReference(c)
     private val fileLocation: Uri = Uri.parse(realFileDirectory)
     private val relativeDirectory: String? = dir

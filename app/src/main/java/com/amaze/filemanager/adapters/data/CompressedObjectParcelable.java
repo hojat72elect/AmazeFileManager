@@ -6,9 +6,9 @@ import com.amaze.filemanager.ui.icons.Icons;
 import java.util.Comparator;
 
 public class CompressedObjectParcelable implements Parcelable {
-    public static final int TYPE_GOBACK = -1, TYPE_NORMAL = 0;
+    public static final int TYPE_GO_BACK = -1, TYPE_NORMAL = 0;
     public static final Parcelable.Creator<CompressedObjectParcelable> CREATOR =
-            new Parcelable.Creator<CompressedObjectParcelable>() {
+            new Parcelable.Creator<>() {
                 public CompressedObjectParcelable createFromParcel(Parcel in) {
                     return new CompressedObjectParcelable(in);
                 }
@@ -42,7 +42,7 @@ public class CompressedObjectParcelable implements Parcelable {
      */
     public CompressedObjectParcelable() {
         this.directory = true;
-        this.type = TYPE_GOBACK;
+        this.type = TYPE_GO_BACK;
         this.path = null;
         this.name = null;
         this.date = 0;
@@ -53,7 +53,7 @@ public class CompressedObjectParcelable implements Parcelable {
 
     private CompressedObjectParcelable(Parcel im) {
         type = im.readInt();
-        if (type == TYPE_GOBACK) {
+        if (type == TYPE_GO_BACK) {
             directory = true;
             path = null;
             name = null;
@@ -79,7 +79,7 @@ public class CompressedObjectParcelable implements Parcelable {
 
     public void writeToParcel(Parcel p1, int p2) {
         p1.writeInt(type);
-        if (type != TYPE_GOBACK) {
+        if (type != TYPE_GO_BACK) {
             p1.writeInt(directory ? 1 : 0);
             p1.writeString(path);
             p1.writeString(name);
@@ -120,15 +120,15 @@ public class CompressedObjectParcelable implements Parcelable {
         int result = (directory ? 1 : 0);
         result = 31 * result + type;
         result = 31 * result + name.hashCode();
-        result = 31 * result + (int) (size ^ (size >>> 32));
+        result = 31 * result + Long.hashCode(size);
         return result;
     }
 
     public static class Sorter implements Comparator<CompressedObjectParcelable> {
         @Override
         public int compare(CompressedObjectParcelable file1, CompressedObjectParcelable file2) {
-            if (file1.type == CompressedObjectParcelable.TYPE_GOBACK) return -1;
-            else if (file2.type == CompressedObjectParcelable.TYPE_GOBACK) return 1;
+            if (file1.type == CompressedObjectParcelable.TYPE_GO_BACK) return -1;
+            else if (file2.type == CompressedObjectParcelable.TYPE_GO_BACK) return 1;
             else if (file1.directory && !file2.directory) {
                 return -1;
             } else if (file2.directory && !(file1).directory) {

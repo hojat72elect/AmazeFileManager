@@ -21,7 +21,6 @@ import com.amaze.filemanager.filesystem.HybridFile;
 import com.amaze.filemanager.filesystem.ssh.CustomSshJConfig;
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants;
 import com.amaze.filemanager.ui.provider.UtilitiesProvider;
-import com.amaze.filemanager.utils.ScreenUtils;
 import com.amaze.trashbin.TrashBin;
 import com.amaze.trashbin.TrashBinConfig;
 import io.reactivex.Completable;
@@ -38,7 +37,6 @@ public class AmazeFileManagerApplication extends GlideApplication {
 
     private static final String TRASH_BIN_BASE_PATH =
             Environment.getExternalStorageDirectory().getPath() + File.separator + ".AmazeData";
-    private static ScreenUtils screenUtils;
     private static AmazeFileManagerApplication instance;
     private Logger log = null;
     private UtilitiesProvider utilsProvider;
@@ -158,10 +156,6 @@ public class AmazeFileManagerApplication extends GlideApplication {
         return utilsHandler;
     }
 
-    public ScreenUtils getScreenUtils() {
-        return screenUtils;
-    }
-
     @Nullable
     public Context getMainActivityContext() {
         return mainActivityContext.get();
@@ -169,7 +163,6 @@ public class AmazeFileManagerApplication extends GlideApplication {
 
     public void setMainActivityContext(@NonNull Activity activity) {
         mainActivityContext = new WeakReference<>(activity);
-        screenUtils = new ScreenUtils(activity);
     }
 
     public ExplorerDatabase getExplorerDatabase() {
