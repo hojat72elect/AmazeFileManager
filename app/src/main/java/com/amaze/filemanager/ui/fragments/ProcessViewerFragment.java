@@ -445,7 +445,7 @@ public class ProcessViewerFragment extends Fragment {
         public void onServiceConnected(ComponentName name, IBinder service) {
             ObtainableServiceBinder<? extends AbstractProgressiveService> binder =
                     (ObtainableServiceBinder<? extends AbstractProgressiveService>) service;
-            AbstractProgressiveService specificService = binder.getService();
+            AbstractProgressiveService specificService = binder.service;
 
             for (int i = 0; i < specificService.getDataPackageSize(); i++) {
                 DatapointParcelable dataPackage = specificService.getDataPackage(i);
