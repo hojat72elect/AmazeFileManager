@@ -130,7 +130,7 @@ public class ExtractService extends AbstractProgressiveService {
 
         long totalSize = getTotalSize(file);
 
-        progressHandler.setSourceSize(1);
+        progressHandler.setSourceFiles(1);
         progressHandler.setTotalSize(totalSize);
         progressHandler.setProgressListener((speed) -> publishResults(speed, false, false));
 
@@ -295,7 +295,7 @@ public class ExtractService extends AbstractProgressiveService {
 
                                     @Override
                                     public boolean isCancelled() {
-                                        return progressHandler.getCancelled();
+                                        return progressHandler.isCancelled();
                                     }
                                 },
                                 ServiceWatcherUtil.UPDATE_POSITION

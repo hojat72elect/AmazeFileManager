@@ -182,11 +182,15 @@ class ZipService : AbstractProgressiveService() {
                 // setting up service watchers and initial data packages
                 // finding total size on background thread (this is necessary condition for SMB!)
                 val totalBytes = FileUtils.getTotalBytes(baseFiles, zipService.applicationContext)
-                progressHandler.sourceSize = baseFiles.size
+                progressHandler.sourceFiles = baseFiles.size
                 progressHandler.totalSize = totalBytes
 
-                progressHandler.setProgressListener { speed: Long ->
-                    publishResults(speed, false, false)
+                progressHandler.progressListener = object : ProgressHandler.ProgressListener {
+
+                    override fun onProgressed(speed: Long) {
+                        publishResults(speed, false, false)
+                    }
+
                 }
                 zipService.addFirstDatapoint(
                     baseFiles[0].getName(applicationContext),
@@ -222,7 +226,7 @@ class ZipService : AbstractProgressiveService() {
          * Deletes the destination file zip file if exists
          */
         fun cancel() {
-            progressHandler.cancelled = true
+            progressHandler.isCancelled = true
             val zipFile = File(zipPath)
             if (zipFile.exists()) zipFile.delete()
         }
@@ -270,14 +274,14 @@ class ZipService : AbstractProgressiveService() {
             file: File,
             path: String,
         ) {
-            if (progressHandler.cancelled) return
+            if (progressHandler.isCancelled) return
             if (!file.isDirectory) {
                 zos.putNextEntry(createZipEntry(file, path))
                 val buf = ByteArray(GenericCopyUtil.DEFAULT_BUFFER_SIZE)
                 var len: Int
                 BufferedInputStream(FileInputStream(file)).use { bufferedInputStream ->
                     while (bufferedInputStream.read(buf).also { len = it } > 0) {
-                        if (!progressHandler.cancelled) {
+                        if (!progressHandler.isCancelled) {
                             zos.write(buf, 0, len)
                             ServiceWatcherUtil.position += len.toLong()
                         } else {
@@ -327,7 +331,7 @@ class ZipService : AbstractProgressiveService() {
                 context: Context,
                 intent: Intent,
             ) {
-                progressHandler.cancelled = true
+                progressHandler.isCancelled = true
             }
         }
 

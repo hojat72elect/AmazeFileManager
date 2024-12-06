@@ -236,7 +236,7 @@ public class CopyService extends AbstractProgressiveService {
             long totalSize = FileUtils.getTotalBytes(sourceFiles, c);
             int totalSourceFiles = sourceFiles.size();
 
-            progressHandler.setSourceSize(totalSourceFiles);
+            progressHandler.setSourceFiles(totalSourceFiles);
             progressHandler.setTotalSize(totalSize);
 
             progressHandler.setProgressListener((speed) -> publishResults(speed, false, move));
@@ -375,7 +375,7 @@ public class CopyService extends AbstractProgressiveService {
                                                 mode, targetPath, sourceFiles.get(i).getName(c), f1.isDirectory());
                             }
 
-                            if (!progressHandler.getCancelled()) {
+                            if (!progressHandler.isCancelled()) {
 
                                 if ((f1.getMode() == OpenMode.ROOT || mode == OpenMode.ROOT) && isRootExplorer) {
                                     // either source or target are in root
@@ -401,7 +401,7 @@ public class CopyService extends AbstractProgressiveService {
 
                 } else if (isRootExplorer) {
                     for (int i = 0; i < sourceFiles.size(); i++) {
-                        if (!progressHandler.getCancelled()) {
+                        if (!progressHandler.isCancelled()) {
                             HybridFile hFile =
                                     new HybridFile(
                                             mode,
@@ -421,7 +421,7 @@ public class CopyService extends AbstractProgressiveService {
 
                 // making sure to delete files after copy operation is done
                 // and not if the copy was cancelled
-                if (move && !progressHandler.getCancelled()) {
+                if (move && !progressHandler.isCancelled()) {
                     ArrayList<HybridFileParcelable> toDelete = new ArrayList<>();
                     for (HybridFileParcelable a : sourceFiles) {
                         if (!failedFOps.contains(a)) toDelete.add(a);
@@ -458,7 +458,7 @@ public class CopyService extends AbstractProgressiveService {
             )
                     throws IOException {
 
-                if (progressHandler.getCancelled()) return;
+                if (progressHandler.isCancelled()) return;
                 if (sourceFile.isDirectory()) {
 
                     if (!targetFile.exists()) {
@@ -475,7 +475,7 @@ public class CopyService extends AbstractProgressiveService {
                     }
                     targetFile.setLastModified(sourceFile.lastModified());
 
-                    if (progressHandler.getCancelled()) return;
+                    if (progressHandler.isCancelled()) return;
                     sourceFile.forEachChildrenFile(
                             c,
                             false,

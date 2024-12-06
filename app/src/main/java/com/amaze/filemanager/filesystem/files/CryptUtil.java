@@ -158,7 +158,7 @@ public class CryptUtil {
     )
             throws GeneralSecurityException, IOException {
 
-        if (progressHandler.getCancelled()) return;
+        if (progressHandler.isCancelled()) return;
         if (sourceFile.isDirectory()) {
 
             final HybridFile hFile =
@@ -237,7 +237,7 @@ public class CryptUtil {
     )
             throws GeneralSecurityException, IOException {
 
-        if (progressHandler.getCancelled()) return;
+        if (progressHandler.isCancelled()) return;
         if (sourceFile.isDirectory()) {
 
             // succeed #CRYPT_EXTENSION at end of directory/file name
@@ -335,7 +335,7 @@ public class CryptUtil {
 
         try {
             while ((count = inputStream.read(buffer)) != -1) {
-                if (!progressHandler.getCancelled()) {
+                if (!progressHandler.isCancelled()) {
                     cipherOutputStream.write(buffer, 0, count);
                     ServiceWatcherUtil.position += count;
                 } else break;

@@ -360,7 +360,7 @@ public class GenericCopyUtil {
             throws IOException {
         ByteBuffer buffer = ByteBuffer.allocateDirect(DEFAULT_TRANSFER_QUANTUM);
         long count;
-        while ((from.read(buffer) != -1 || buffer.position() > 0) && !progressHandler.getCancelled()) {
+        while ((from.read(buffer) != -1 || buffer.position() > 0) && !progressHandler.isCancelled()) {
             buffer.flip();
             count = to.write(buffer);
             updatePosition.updatePosition(count);

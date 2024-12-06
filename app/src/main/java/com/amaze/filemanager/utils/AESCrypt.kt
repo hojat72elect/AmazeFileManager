@@ -230,7 +230,7 @@ class AESCrypt(password: String) {
         var len: Int
         var last = 0
         while (`in`.read(text).also { len = it } > 0) {
-            if (!progressHandler.cancelled) {
+            if (!progressHandler.isCancelled) {
                 cipher.update(text, 0, BLOCK_SIZE, text)
                 hmac.update(text)
                 out.write(text) // Crypted file data block.

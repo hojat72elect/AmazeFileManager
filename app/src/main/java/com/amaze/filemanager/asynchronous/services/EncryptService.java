@@ -235,7 +235,7 @@ public class EncryptService extends AbstractProgressiveService {
                 if (baseFile.isDirectory()) totalSize = baseFile.folderSize(context);
                 else totalSize = baseFile.length(context);
 
-                progressHandler.setSourceSize(1);
+                progressHandler.setSourceFiles(1);
                 progressHandler.setTotalSize(totalSize);
                 progressHandler.setProgressListener((speed) -> publishResults(speed, false, false));
                 serviceWatcherUtil = new ServiceWatcherUtil(progressHandler);

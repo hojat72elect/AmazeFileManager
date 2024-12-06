@@ -143,7 +143,7 @@ public abstract class AbstractProgressiveService extends Service
      * @param move       if the files are to be moved
      */
     public final void publishResults(long speed, boolean isComplete, boolean move) {
-        if (!getProgressHandler().getCancelled()) {
+        if (!getProgressHandler().isCancelled()) {
             String fileName = getProgressHandler().getFileName();
             long totalSize = getProgressHandler().getTotalSize();
             long writtenSize = getProgressHandler().getWrittenSize();
@@ -238,7 +238,7 @@ public abstract class AbstractProgressiveService extends Service
             DatapointParcelable intent =
                     new DatapointParcelable(
                             fileName,
-                            getProgressHandler().getSourceSize(),
+                            getProgressHandler().getSourceFiles(),
                             getProgressHandler().getSourceFilesProcessed(),
                             totalSize,
                             writtenSize,

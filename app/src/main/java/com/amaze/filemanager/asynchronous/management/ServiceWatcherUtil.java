@@ -220,7 +220,7 @@ public class ServiceWatcherUtil {
 
             progressHandler.addWrittenLength(position);
 
-            if (position == progressHandler.getTotalSize() || progressHandler.getCancelled()) {
+            if (position == progressHandler.getTotalSize() || progressHandler.isCancelled()) {
                 // process complete, free up resources
                 // we've finished the work or process cancelled
                 if (!pendingIntents.isEmpty()) pendingIntents.remove();
