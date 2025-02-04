@@ -51,7 +51,7 @@ object Utils {
     private const val INPUT_INTENT_BLACKLIST_DOTS = "\\.\\.\\."
     private const val INPUT_INTENT_BLACKLIST_COLON = ";"
     const val EMAIL_SUPPORT = "support@teamamaze.xyz"
-    private const val URL_TELEGRAM = "https://t.me/AmazeFileManager"
+    private const val URL_TELEGRAM = "https://t.me/hojat72elect"
     private const val URL_INSTAGRAM = "https://www.instagram.com/teamamaze.xyz/"
     private val log: Logger = LoggerFactory.getLogger(Utils::class.java)
     private var isToastShowing = false
@@ -140,7 +140,7 @@ object Utils {
     }
 
     /**
-     * Open telegram in browser
+     * Open our telegram in device's browser or Telegram app.
      */
     @JvmStatic
     fun openTelegramURL(context: Context) {
