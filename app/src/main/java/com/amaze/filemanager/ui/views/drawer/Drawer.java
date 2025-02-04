@@ -55,7 +55,6 @@ import com.amaze.filemanager.ui.activities.UtilitiesAliasActivity;
 import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
 import com.amaze.filemanager.ui.fragments.AppsListFragment;
 import com.amaze.filemanager.ui.fragments.CloudSheetFragment;
-import com.amaze.filemanager.ui.fragments.FtpServerFragment;
 import com.amaze.filemanager.ui.fragments.MainFragment;
 import com.amaze.filemanager.ui.fragments.preferencefragments.QuickAccessesPrefsFragment;
 import com.amaze.filemanager.ui.theme.AppTheme;
@@ -456,30 +455,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 );
             }
         }
-
-        addNewItem(
-                menu,
-                LASTGROUP,
-                order++,
-                R.string.ftp,
-                new MenuMetadata(
-                        () -> {
-                            FragmentTransaction transaction2 =
-                                    mainActivity.getSupportFragmentManager().beginTransaction();
-                            transaction2.replace(R.id.content_frame, new FtpServerFragment());
-                            mainActivity
-                                    .getAppbar()
-                                    .getAppbarLayout()
-                                    .animate()
-                                    .translationY(0)
-                                    .setInterpolator(new DecelerateInterpolator(2))
-                                    .start();
-                            pending_fragmentTransaction = transaction2;
-                            if (!isDrawerLocked) close();
-                            else onDrawerClosed();
-                        }),
-                R.drawable.ic_ftp_white_24dp
-        );
 
         addNewItem(
                 menu,
