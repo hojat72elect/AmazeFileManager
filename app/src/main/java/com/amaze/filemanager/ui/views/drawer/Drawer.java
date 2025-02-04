@@ -6,7 +6,6 @@ import static com.amaze.filemanager.filesystem.ftp.NetCopyClientConnectionPool.S
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_SIDEBAR_FOLDERS;
 import static com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants.PREFERENCE_SHOW_SIDEBAR_QUICKACCESSES;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -48,10 +47,8 @@ import com.amaze.filemanager.filesystem.RootHelper;
 import com.amaze.filemanager.filesystem.cloud.CloudUtil;
 import com.amaze.filemanager.filesystem.files.FileUtils;
 import com.amaze.filemanager.ui.ExtensionsKt;
-import com.amaze.filemanager.ui.activities.AboutActivity;
 import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.ui.activities.PreferencesActivity;
-import com.amaze.filemanager.ui.activities.UtilitiesAliasActivity;
 import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
 import com.amaze.filemanager.ui.fragments.AppsListFragment;
 import com.amaze.filemanager.ui.fragments.CloudSheetFragment;
@@ -61,7 +58,6 @@ import com.amaze.filemanager.ui.theme.AppTheme;
 import com.amaze.filemanager.utils.DataUtils;
 import com.amaze.filemanager.utils.Utils;
 import com.amaze.filemanager.utils.OTGUtil;
-import com.amaze.filemanager.utils.PackageUtils;
 import com.amaze.filemanager.utils.TinyDB;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Box;
@@ -458,28 +454,13 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
             }
         }
 
+        // todo: this option of the drawer should be connected to Amaze Utilities app.
         addNewItem(
                 menu,
                 LASTGROUP,
                 order++,
                 R.string.analyse_storage,
-                new MenuMetadata(
-                        () -> {
-                            boolean isAUInstalled =
-                                    PackageUtils.Companion.appInstalledOrNot(
-                                            AboutActivity.PACKAGE_AMAZE_UTILS, mainActivity.getPackageManager());
-                            if (isAUInstalled) {
-                                try {
-                                    Utils.openURL("amaze://teamamaze.xyz/analyse", mainActivity);
-                                } catch (ActivityNotFoundException e) {
-                                    mainActivity.startActivity(
-                                            new Intent(mainActivity, UtilitiesAliasActivity.class));
-                                }
-                            } else {
-                                mainActivity.startActivity(new Intent(mainActivity, UtilitiesAliasActivity.class));
-                            }
-                        }),
-                R.drawable.ic_round_analytics_24
+                new MenuMetadata(() -> Toast.makeText(mainActivity, "We haven't added this feature to the app just yet!!!!", Toast.LENGTH_LONG).show()), R.drawable.ic_round_analytics_24
         );
 
         // initially load trash bin items with "7" but ones listed they're referred as
