@@ -1,6 +1,5 @@
 package com.amaze.filemanager.ui.dialogs
 
-import androidx.annotation.Nullable
 import androidx.annotation.StringRes
 import com.afollestad.materialdialogs.MaterialDialog
 import com.amaze.filemanager.ui.activities.superclasses.ThemedActivity
@@ -21,7 +20,7 @@ object AlertDialog {
         @StringRes content: Int,
         @StringRes title: Int,
         @StringRes positiveButtonText: Int = android.R.string.ok,
-        @Nullable onPositive: MaterialDialog.SingleButtonCallback? = null,
+        onPositive: MaterialDialog.SingleButtonCallback? = null,
         contentIsHtml: Boolean = false,
     ) {
         val accentColor: Int = activity.accent

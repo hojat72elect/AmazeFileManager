@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.preference.PreferenceManager;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -70,6 +72,10 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,8 +87,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Here are a lot of functions for creating material dialogs.
@@ -338,15 +342,10 @@ public class GeneralDialogCreation {
                 int tempCounterFiles = values[0];
                 int tempCounterDirectories = values[1];
 
-                // Hide category and list for directories when zero.
                 if (tempCounterDirectories == 0) {
 
-                    if (tempCounterDirectories == 0) {
-
-                        categoryDirectories.setVisibility(View.GONE);
-                        listDirectories.setVisibility(View.GONE);
-                    }
-                    // Hide category and list for files when zero.
+                    categoryDirectories.setVisibility(View.GONE);
+                    listDirectories.setVisibility(View.GONE);
                 }
 
                 if (tempCounterFiles == 0) {
@@ -535,15 +534,11 @@ public class GeneralDialogCreation {
                 int tempCounterFiles = values[0];
                 int tempCounterDirectories = values[1];
 
-                // Hide category and list for directories when zero.
+
                 if (tempCounterDirectories == 0) {
 
-                    if (tempCounterDirectories == 0) {
-
-                        categoryDirectories.setVisibility(View.GONE);
-                        listDirectories.setVisibility(View.GONE);
-                    }
-                    // Hide category and list for files when zero.
+                    categoryDirectories.setVisibility(View.GONE);
+                    listDirectories.setVisibility(View.GONE);
                 }
 
                 if (tempCounterFiles == 0) {
@@ -861,12 +856,7 @@ public class GeneralDialogCreation {
         materialDialog.show();
         materialDialog.getActionButton(DialogAction.NEGATIVE).setEnabled(false);
 
-    /*
-    View bottomSheet = c.findViewById(R.id.design_bottom_sheet);
-    BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.STATE_DRAGGING);
-    */
+
     }
 
     public static void showCloudDialog(
@@ -977,7 +967,7 @@ public class GeneralDialogCreation {
                 wilTextfield,
                 dialog.getActionButton(DialogAction.POSITIVE),
                 (text) -> {
-                    if (text.length() < 1) {
+                    if (text.isEmpty()) {
                         return new WarnableTextInputValidator.ReturnState(
                                 WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.field_empty);
                     }
@@ -1013,7 +1003,7 @@ public class GeneralDialogCreation {
     }
 
     public static MaterialDialog showOpenFileDeeplinkDialog(
-            final HybridFile file, final MainActivity m, final String content, Runnable openCallback
+            final MainActivity m, final String content, Runnable openCallback
     ) {
         int accentColor = m.getAccent();
         return new MaterialDialog.Builder(m)
@@ -1107,7 +1097,7 @@ public class GeneralDialogCreation {
                 (text) -> {
                     boolean isValidFilename = FileProperties.isValidFilename(text);
 
-                    if (isValidFilename && text.length() > 0 && !text.toLowerCase().endsWith(".zip")) {
+                    if (isValidFilename && !text.isEmpty() && !text.toLowerCase().endsWith(".zip")) {
                         return new WarnableTextInputValidator.ReturnState(
                                 WarnableTextInputValidator.ReturnState.STATE_WARNING,
                                 R.string.compress_file_suggest_zip_extension
@@ -1116,7 +1106,7 @@ public class GeneralDialogCreation {
                         if (!isValidFilename) {
                             return new WarnableTextInputValidator.ReturnState(
                                     WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.invalid_name);
-                        } else if (text.length() < 1) {
+                        } else if (text.isEmpty()) {
                             return new WarnableTextInputValidator.ReturnState(
                                     WarnableTextInputValidator.ReturnState.STATE_ERROR, R.string.field_empty);
                         }
@@ -1164,13 +1154,9 @@ public class GeneralDialogCreation {
         a.negativeText(R.string.ascending).positiveColor(accentColor);
         a.positiveText(R.string.descending).negativeColor(accentColor);
         a.onNegative(
-                (dialog, which) -> {
-                    onSortTypeSelected(m, sharedPref, onlyThisFloders, dialog, SortOrder.ASC);
-                });
+                (dialog, which) -> onSortTypeSelected(m, sharedPref, onlyThisFloders, dialog, SortOrder.ASC));
         a.onPositive(
-                (dialog, which) -> {
-                    onSortTypeSelected(m, sharedPref, onlyThisFloders, dialog, SortOrder.DESC);
-                });
+                (dialog, which) -> onSortTypeSelected(m, sharedPref, onlyThisFloders, dialog, SortOrder.DESC));
         a.title(R.string.sort_by);
         a.build().show();
     }
@@ -1218,14 +1204,13 @@ public class GeneralDialogCreation {
         final AppCompatCheckBox exeown = v.findViewById(R.id.cexeown);
         final AppCompatCheckBox exegroup = v.findViewById(R.id.cexegroup);
         final AppCompatCheckBox exeother = v.findViewById(R.id.cexeother);
-        String perm = f;
-        if (perm.length() < 6) {
+        if (f.length() < 6) {
             v.setVisibility(View.GONE);
             but.setVisibility(View.GONE);
             Toast.makeText(context, R.string.not_allowed, Toast.LENGTH_SHORT).show();
             return;
         }
-        ArrayList<Boolean[]> arrayList = FileUtils.parse(perm);
+        ArrayList<Boolean[]> arrayList = FileUtils.parse(f);
         Boolean[] read = arrayList.get(0);
         Boolean[] write = arrayList.get(1);
         final Boolean[] exe = arrayList.get(2);
@@ -1313,10 +1298,8 @@ public class GeneralDialogCreation {
         a.negativeColor(accentColor);
 
         a.onPositive(
-                (dialog, which) -> {
-                    mainFragment.loadlist(
-                            dialog.getInputEditText().getText().toString(), false, OpenMode.UNKNOWN, false);
-                });
+                (dialog, which) -> mainFragment.loadlist(
+                        dialog.getInputEditText().getText().toString(), false, OpenMode.UNKNOWN, false));
 
         a.show();
     }

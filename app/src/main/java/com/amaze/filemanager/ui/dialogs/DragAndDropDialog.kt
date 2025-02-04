@@ -20,8 +20,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class DragAndDropDialog : DialogFragment() {
-    var pasteLocation: String? = null
-    var operationFiles: ArrayList<HybridFileParcelable>? = null
+    private var pasteLocation: String? = null
+    private var operationFiles: ArrayList<HybridFileParcelable>? = null
     var mainActivity: MainActivity? = null
 
     companion object {

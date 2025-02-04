@@ -2,11 +2,9 @@ package com.amaze.filemanager.ui.activities
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.Toolbar
@@ -20,9 +18,8 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.BasePrefsFragment
 import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstants
 import com.amaze.filemanager.ui.fragments.preferencefragments.PrefsFragment
 import com.amaze.filemanager.ui.theme.AppTheme
-import com.amaze.filemanager.utils.Utils
 import com.amaze.filemanager.utils.PreferenceUtils
-import com.readystatesoftware.systembartint.SystemBarTintManager
+import com.amaze.filemanager.utils.Utils
 import java.io.File
 
 class PreferencesActivity : ThemedActivity(), FolderChooserDialog.FolderCallback {
@@ -114,39 +111,30 @@ class PreferencesActivity : ThemedActivity(), FolderChooserDialog.FolderCallback
         val primaryColor =
             ColorPreferenceHelper
                 .getPrimary(currentColorPreference, MainActivity.currentTab)
-        if (Build.VERSION.SDK_INT == 20 || Build.VERSION.SDK_INT == 19) {
-            val tintManager = SystemBarTintManager(this)
-            tintManager.isStatusBarTintEnabled = true
-            tintManager.setStatusBarTintColor(primaryColor)
-            val layoutParams =
-                findViewById<View>(R.id.activity_preferences).layoutParams
-                        as ViewGroup.MarginLayoutParams
-            val config = tintManager.config
-            layoutParams.setMargins(0, config.statusBarHeight, 0, 0)
-        } else if (Build.VERSION.SDK_INT >= 21) {
-            val colouredNavigation = getBoolean(PreferencesConstants.PREFERENCE_COLORED_NAVIGATION)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            val tabStatusColor = PreferenceUtils.getStatusColor(primaryColor)
-            window.statusBarColor = tabStatusColor
-            when {
-                colouredNavigation -> {
-                    window.navigationBarColor = tabStatusColor
-                }
 
-                appTheme == AppTheme.BLACK -> {
-                    window.navigationBarColor = Color.BLACK
-                }
+        val colouredNavigation = getBoolean(PreferencesConstants.PREFERENCE_COLORED_NAVIGATION)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        val tabStatusColor = PreferenceUtils.getStatusColor(primaryColor)
+        window.statusBarColor = tabStatusColor
+        when {
+            colouredNavigation -> {
+                window.navigationBarColor = tabStatusColor
+            }
 
-                appTheme == AppTheme.DARK -> {
-                    window.navigationBarColor = Utils.getColor(this, R.color.holo_dark_background)
-                }
+            appTheme == AppTheme.BLACK -> {
+                window.navigationBarColor = Color.BLACK
+            }
 
-                appTheme == AppTheme.LIGHT -> {
-                    window.navigationBarColor = Color.WHITE
-                }
+            appTheme == AppTheme.DARK -> {
+                window.navigationBarColor = Utils.getColor(this, R.color.holo_dark_background)
+            }
+
+            appTheme == AppTheme.LIGHT -> {
+                window.navigationBarColor = Color.WHITE
             }
         }
+
         if (appTheme == AppTheme.BLACK) {
             window.decorView.setBackgroundColor(Utils.getColor(this, android.R.color.black))
         }

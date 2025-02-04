@@ -792,7 +792,7 @@ public class LoadFilesListTask
                         return null;
                     }
             );
-            if (list.size() > MainActivityViewModel.Companion.getCACHE_LOCAL_LIST_THRESHOLD()) {
+            if (list.size() > MainActivityViewModel.CACHE_LOCAL_LIST_THRESHOLD) {
                 mainActivityViewModel.putInCache(path, list);
             }
             if (null != currentOpenMode[0]) {

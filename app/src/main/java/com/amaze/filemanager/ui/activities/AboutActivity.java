@@ -97,14 +97,10 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
                         });
 
         mAppBarLayout.addOnOffsetChangedListener(
-                (appBarLayout, verticalOffset) -> {
-                    mTitleTextView.setAlpha(
-                            Math.abs(verticalOffset / (float) appBarLayout.getTotalScrollRange()));
-                });
+                (appBarLayout, verticalOffset) -> mTitleTextView.setAlpha(
+                        Math.abs(verticalOffset / (float) appBarLayout.getTotalScrollRange())));
         mAppBarLayout.setOnFocusChangeListener(
-                (v, hasFocus) -> {
-                    mAppBarLayout.setExpanded(hasFocus, true);
-                });
+                (v, hasFocus) -> mAppBarLayout.setExpanded(hasFocus, true));
 
         if (getBoolean(PREFERENCE_COLORED_NAVIGATION)) {
             getWindow().setNavigationBarColor(PreferenceUtils.getStatusColor(getPrimary()));
@@ -130,12 +126,12 @@ public class AboutActivity extends ThemedActivity implements View.OnClickListene
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
         float vidAspectRatio = (float) HEADER_WIDTH / (float) HEADER_HEIGHT;
-        LOG.debug(vidAspectRatio + "");
+        LOG.debug("{}", vidAspectRatio);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         float reqHeightAsPerAspectRatio = (float) screenWidth * vidAspectRatio;
-        LOG.debug(reqHeightAsPerAspectRatio + "");
+        LOG.debug("{}", reqHeightAsPerAspectRatio);
 
-        LOG.debug("new width: " + screenWidth + " and height: " + reqHeightAsPerAspectRatio);
+        LOG.debug("new width: {} and height: {}", screenWidth, reqHeightAsPerAspectRatio);
 
         layoutParams.width = screenWidth;
         layoutParams.height = (int) reqHeightAsPerAspectRatio;

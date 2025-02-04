@@ -3,12 +3,11 @@ package com.amaze.filemanager.ui.dialogs;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.preference.PreferenceManager;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amaze.filemanager.R;
@@ -48,7 +47,6 @@ public class RenameBookmark extends DialogFragment {
         title = getArguments().getString("title");
         path = getArguments().getString("path");
         int accentColor = getArguments().getInt("accentColor");
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
 
         if (dataUtils.containsBooks(new String[]{title, path}) != -1) {
             final MaterialDialog materialDialog;
@@ -69,13 +67,12 @@ public class RenameBookmark extends DialogFragment {
             final TextInputLayout t2 = v2.findViewById(R.id.t2);
             final AppCompatEditText conName = v2.findViewById(R.id.editText4);
             conName.setText(title);
-            final String s1 = getString(R.string.cant_be_empty, c.getString(R.string.name));
             final String s2 = getString(R.string.cant_be_empty, c.getString(R.string.path));
             conName.addTextChangedListener(
                     new SimpleTextWatcher() {
                         @Override
                         public void afterTextChanged(Editable s) {
-                            if (conName.getText().toString().length() == 0) t1.setError(s2);
+                            if (conName.getText().toString().isEmpty()) t1.setError(s2);
                             else t1.setError("");
                         }
                     });
@@ -91,9 +88,9 @@ public class RenameBookmark extends DialogFragment {
                             v -> {
                                 String t = ip.getText().toString();
                                 String name = conName.getText().toString();
-                                int i = -1;
+                                int i;
                                 if ((i = dataUtils.containsBooks(new String[]{title, path})) != -1) {
-                                    if (!t.equals(title) && t.length() >= 1) {
+                                    if (!t.equals(title) && !t.isEmpty()) {
                                         dataUtils.removeBook(i);
                                         dataUtils.addBook(new String[]{name, t});
                                         dataUtils.sortBook();

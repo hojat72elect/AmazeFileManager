@@ -291,7 +291,7 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
 
         val modelProvider = AppsAdapterPreloadModel(this, true)
         val sizeProvider = ViewPreloadSizeProvider<String>()
-        var preloader =
+        val preloader =
             RecyclerViewPreloader(
                 Glide.with(this),
                 modelProvider,
@@ -392,7 +392,7 @@ class OpenFileDialogFragment : BaseBottomSheetFragment(), AdjustListViewForTv<Ap
             val label = it.loadLabel(packageManager).toString()
             val appDataParcelable =
                 AppDataParcelable(
-                    if (label.isNotEmpty()) label else it.activityInfo.packageName,
+                    label.ifEmpty { it.activityInfo.packageName },
                     "",
                     null,
                     it.activityInfo.packageName,

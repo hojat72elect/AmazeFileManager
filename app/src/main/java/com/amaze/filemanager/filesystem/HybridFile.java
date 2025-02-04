@@ -1711,7 +1711,7 @@ public class HybridFile {
                             ));
             MaterialDialog dialog =
                     GeneralDialogCreation.showOpenFileDeeplinkDialog(
-                            this, activity, dialogContent.get(), () -> openFileInternal(activity));
+                            activity, dialogContent.get(), () -> openFileInternal(activity));
             dialog.show();
             getMd5Checksum(
                     activity,

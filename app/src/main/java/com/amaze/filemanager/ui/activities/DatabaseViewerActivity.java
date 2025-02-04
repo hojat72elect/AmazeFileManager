@@ -28,7 +28,6 @@ public class DatabaseViewerActivity extends ThemedActivity {
     public Toolbar toolbar;
     public SQLiteDatabase sqLiteDatabase;
     boolean delete = false;
-    private String path;
     private ListView listView;
     private ArrayList<String> arrayList;
     private ArrayAdapter arrayAdapter;
@@ -46,7 +45,7 @@ public class DatabaseViewerActivity extends ThemedActivity {
         boolean useNewStack = getBoolean(PREFERENCE_TEXTEDITOR_NEWSTACK);
         getSupportActionBar().setDisplayHomeAsUpEnabled(!useNewStack);
 
-        path = getIntent().getStringExtra("path");
+        String path = getIntent().getStringExtra("path");
 
         if (path == null) {
             Toast.makeText(this, R.string.operation_not_supported, Toast.LENGTH_SHORT).show();
@@ -120,9 +119,7 @@ public class DatabaseViewerActivity extends ThemedActivity {
                         finish();
                     }
                     runOnUiThread(
-                            () -> {
-                                listView.setAdapter(arrayAdapter);
-                            });
+                            () -> listView.setAdapter(arrayAdapter));
                 })
                 .start();
     }

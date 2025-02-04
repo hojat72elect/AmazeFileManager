@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import androidx.appcompat.widget.Toolbar;
 
 public class TextEditorActivity extends ThemedActivity
         implements TextWatcher, View.OnClickListener {
@@ -66,7 +67,6 @@ public class TextEditorActivity extends ThemedActivity
     ScrollView scrollView;
     private Typeface inputTypefaceDefault;
     private Typeface inputTypefaceMono;
-    private androidx.appcompat.widget.Toolbar toolbar;
     private SearchTextTask searchTextTask;
     private ConstraintLayout searchViewLayout;
     private Snackbar loadingSnackbar;
@@ -110,7 +110,7 @@ public class TextEditorActivity extends ThemedActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         viewModel = new ViewModelProvider(this).get(TextEditorActivityViewModel.class);
@@ -436,7 +436,7 @@ public class TextEditorActivity extends ThemedActivity
                             textEditorActivity.colorSearchResult(searchResultIndex, getPrimary());
                         }
 
-                        if (data.size() != 0) {
+                        if (!data.isEmpty()) {
                             textEditorActivity.upButton.setEnabled(true);
                             textEditorActivity.downButton.setEnabled(true);
 

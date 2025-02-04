@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -121,7 +120,7 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
     }
 
     @Override
-    public void onBindDialogView(View view) {
+    public void onBindDialogView(@NonNull View view) {
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         int accentColor =
                 ((UserColorPreferences) requireArguments().getParcelable(ARG_COLOR_PREF)).getAccent();
@@ -223,17 +222,16 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
 
         RadioButton radio = child.findViewById(R.id.select);
         radio.setOnClickListener(clickListener);
-        if (Build.VERSION.SDK_INT >= 21) {
-            ColorStateList colorStateList =
-                    new ColorStateList(
-                            new int[][]{
-                                    {-android.R.attr.state_enabled}, // disabled
-                                    {android.R.attr.state_enabled} // enabled
-                            },
-                            new int[]{accentColor, accentColor}
-                    );
-            radio.setButtonTintList(colorStateList);
-        }
+
+        ColorStateList colorStateList =
+                new ColorStateList(
+                        new int[][]{
+                                {-android.R.attr.state_enabled}, // disabled
+                                {android.R.attr.state_enabled} // enabled
+                        },
+                        new int[]{accentColor, accentColor}
+                );
+        radio.setButtonTintList(colorStateList);
         return child;
     }
 
@@ -312,7 +310,7 @@ public class ColorPickerDialog extends PreferenceDialogFragmentCompat {
     public static class SavedState extends BaseSavedState {
 
         public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
+                new Parcelable.Creator<>() {
                     public SavedState createFromParcel(Parcel in) {
                         return new SavedState(in);
                     }

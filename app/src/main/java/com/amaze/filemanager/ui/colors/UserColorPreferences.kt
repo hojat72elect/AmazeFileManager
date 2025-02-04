@@ -2,7 +2,7 @@ package com.amaze.filemanager.ui.colors
 
 import android.os.Parcelable
 import androidx.annotation.ColorInt
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class UserColorPreferences(

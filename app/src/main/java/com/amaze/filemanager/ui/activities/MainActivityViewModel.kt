@@ -35,8 +35,7 @@ import org.slf4j.LoggerFactory
 class MainActivityViewModel(val applicationContext: Application) :
     AndroidViewModel(applicationContext) {
     var mediaCacheHash: List<List<LayoutElementParcelable>?> = List(5) { null }
-    var listCache: LruCache<String, List<LayoutElementParcelable>> = LruCache(50)
-    var trashBinFilesLiveData: MutableLiveData<MutableList<LayoutElementParcelable>?>? = null
+    private var listCache: LruCache<String, List<LayoutElementParcelable>> = LruCache(50)
 
     /** The [LiveData] of the last triggered search */
     var lastSearchLiveData: LiveData<List<SearchResult>> = MutableLiveData(listOf())
@@ -50,7 +49,7 @@ class MainActivityViewModel(val applicationContext: Application) :
         /**
          * size of list to be cached for local files
          */
-        val CACHE_LOCAL_LIST_THRESHOLD: Int = 100
+        const val CACHE_LOCAL_LIST_THRESHOLD: Int = 100
         private val LOG = LoggerFactory.getLogger(MainActivityViewModel::class.java)
     }
 
@@ -188,47 +187,6 @@ class MainActivityViewModel(val applicationContext: Application) :
     }
 
     /**
-     * TODO: Documentation
-     */
-    fun moveToBinLightWeight(mediaFileInfoList: List<LayoutElementParcelable>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val trashBinFilesList =
-                mediaFileInfoList.map {
-                    it.generateBaseFile()
-                        .toTrashBinFile(applicationContext)
-                }
-            AmazeFileManagerApplication.getInstance().trashBinInstance.moveToBin(
-                trashBinFilesList,
-                true,
-                object : MoveFilesCallback {
-                    override fun invoke(
-                        originalFilePath: String,
-                        trashBinDestination: String,
-                    ): Boolean {
-                        val source = File(originalFilePath)
-                        val dest = File(trashBinDestination)
-                        if (!source.renameTo(dest)) {
-                            return false
-                        }
-                        val hybridFile =
-                            HybridFile(
-                                OpenMode.TRASH_BIN,
-                                originalFilePath,
-                            )
-                        scanFile(applicationContext, arrayOf(hybridFile))
-                        val intent = Intent(MainActivity.KEY_INTENT_LOAD_LIST)
-                        hybridFile.getParent(applicationContext)?.let {
-                            intent.putExtra(MainActivity.KEY_INTENT_LOAD_LIST_FILE, it)
-                            applicationContext.sendBroadcast(intent)
-                        }
-                        return true
-                    }
-                },
-            )
-        }
-    }
-
-    /**
      * Restore files from trash bin
      */
     fun restoreFromBin(mediaFileInfoList: List<LayoutElementParcelable>) {
@@ -284,28 +242,4 @@ class MainActivityViewModel(val applicationContext: Application) :
         }
     }
 
-    /**
-     * TODO: Documentation
-     */
-    fun progressTrashBinFilesLiveData(): MutableLiveData<MutableList<LayoutElementParcelable>?> {
-        if (trashBinFilesLiveData == null) {
-            trashBinFilesLiveData = MutableLiveData()
-            trashBinFilesLiveData?.value = null
-            viewModelScope.launch(Dispatchers.IO) {
-                trashBinFilesLiveData?.postValue(
-                    ArrayList(
-                        AmazeFileManagerApplication.getInstance().trashBinInstance.listFilesInBin()
-                            .map {
-                                HybridFile(OpenMode.FILE, it.path, it.fileName, it.isDirectory)
-                                    .generateLayoutElement(
-                                        applicationContext,
-                                        false,
-                                    )
-                            },
-                    ),
-                )
-            }
-        }
-        return trashBinFilesLiveData!!
-    }
 }

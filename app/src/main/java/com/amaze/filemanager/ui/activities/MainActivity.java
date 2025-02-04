@@ -164,7 +164,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import kotlin.collections.ArraysKt;
 import kotlin.jvm.functions.Function1;
@@ -647,7 +646,7 @@ public class MainActivity extends PermissionsActivity
     private void saveExternalIntent(final List<Uri> uris) {
         executeWithMainFragment(
                 mainFragment -> {
-                    if (uris != null && uris.size() > 0) {
+                    if (uris != null && !uris.isEmpty()) {
                         File folder = new File(mainFragment.getCurrentPath());
                         int result = mainActivityHelper.checkFolder(folder, MainActivity.this);
                         if (result == WRITABLE_OR_ON_SDCARD) {
@@ -1090,11 +1089,9 @@ public class MainActivity extends PermissionsActivity
                                 if (pathLayout == DataUtils.GRID) {
                                     com.amaze.filemanager.application.AmazeFileManagerApplication.getInstance()
                                             .runInBackground(
-                                                    () -> {
-                                                        utilsHandler.removeFromDatabase(
-                                                                new OperationData(
-                                                                        UtilsHandler.Operation.GRID, mainFragment.getCurrentPath()));
-                                                    });
+                                                    () -> utilsHandler.removeFromDatabase(
+                                                            new OperationData(
+                                                                    UtilsHandler.Operation.GRID, mainFragment.getCurrentPath())));
                                 }
 
                                 utilsHandler.saveToDatabase(
@@ -1382,7 +1379,7 @@ public class MainActivity extends PermissionsActivity
                                 break;
                             case COPY: // copying
                                 // legacy compatibility
-                                if (oparrayList != null && oparrayList.size() != 0) {
+                                if (oparrayList != null && !oparrayList.isEmpty()) {
                                     oparrayListList = new ArrayList<>();
                                     oparrayListList.add(oparrayList);
                                     oparrayList = null;
@@ -1641,15 +1638,6 @@ public class MainActivity extends PermissionsActivity
         newFileFab.setOnFocusChangeListener(new CustomZoomFocusChange());
         newFolderFab.setNextFocusDownId(newFileFab.getId());
         newFolderFab.setOnFocusChangeListener(new CustomZoomFocusChange());
-    }
-
-    private void fabButtonClick(FabWithLabelView cloudFab) {
-        if (floatingActionButton.isOpen()) {
-            floatingActionButton.close(true);
-        } else {
-            floatingActionButton.open(true);
-            cloudFab.requestFocus();
-        }
     }
 
     private FabWithLabelView initFabTitle(
@@ -1941,7 +1929,7 @@ public class MainActivity extends PermissionsActivity
                         .subscribe();
             }
             dataUtils.addServer(s);
-            Collections.sort(dataUtils.getServers(), new BookSorter());
+            dataUtils.getServers().sort(new BookSorter());
             drawer.refreshDrawer();
         }
     }

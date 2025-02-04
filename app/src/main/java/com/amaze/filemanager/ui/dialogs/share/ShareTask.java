@@ -35,7 +35,7 @@ public class ShareTask extends AsyncTask<String, String, Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        if (sharingUris.size() > 0) {
+        if (!sharingUris.isEmpty()) {
             String mime = strings[0];
             boolean bluetooth_present = false;
             Intent shareIntent = new Intent().setAction(getShareIntentAction()).setType(mime);
