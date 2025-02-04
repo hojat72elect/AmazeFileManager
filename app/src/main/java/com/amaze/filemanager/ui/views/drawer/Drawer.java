@@ -122,7 +122,9 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
         donateImageView.setOnClickListener(v -> Toast.makeText(mainActivity, "You can donate money to us later, not yet!", Toast.LENGTH_LONG).show());
         telegramImageView.setOnClickListener(v -> Utils.openTelegramURL(mainActivity));
-        instagramImageView.setOnClickListener(v -> Utils.openInstagramURL(mainActivity));
+
+        // TODO : this should later refer to our instagram account.
+        instagramImageView.setOnClickListener(v -> Toast.makeText(mainActivity, " We don't have an instagram account right now", Toast.LENGTH_LONG).show());
 
         navView = mainActivity.findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);

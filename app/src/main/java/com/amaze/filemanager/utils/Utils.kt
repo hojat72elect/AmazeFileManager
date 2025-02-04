@@ -52,7 +52,7 @@ object Utils {
     private const val INPUT_INTENT_BLACKLIST_COLON = ";"
     const val EMAIL_SUPPORT = "support@teamamaze.xyz"
     private const val URL_TELEGRAM = "https://t.me/hojat72elect"
-    private const val URL_INSTAGRAM = "https://www.instagram.com/teamamaze.xyz/"
+
     private val log: Logger = LoggerFactory.getLogger(Utils::class.java)
     private var isToastShowing = false
     private const val INDEX_NOT_FOUND = -1
@@ -129,14 +129,6 @@ object Utils {
         if (view != null) {
             (mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view.windowToken, 0)
         }
-    }
-
-    /**
-     * Open instagram in browser
-     */
-    @JvmStatic
-    fun openInstagramURL(context: Context) {
-        openURL(URL_INSTAGRAM, context)
     }
 
     /**
