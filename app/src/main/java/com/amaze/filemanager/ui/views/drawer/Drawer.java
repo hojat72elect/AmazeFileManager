@@ -18,7 +18,6 @@ import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.annotation.ColorInt;
@@ -50,7 +49,6 @@ import com.amaze.filemanager.ui.ExtensionsKt;
 import com.amaze.filemanager.ui.activities.MainActivity;
 import com.amaze.filemanager.ui.activities.PreferencesActivity;
 import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
-import com.amaze.filemanager.ui.fragments.AppsListFragment;
 import com.amaze.filemanager.ui.fragments.CloudSheetFragment;
 import com.amaze.filemanager.ui.fragments.MainFragment;
 import com.amaze.filemanager.ui.fragments.preferencefragments.QuickAccessesPrefsFragment;
@@ -474,6 +472,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 R.drawable.round_delete_outline_24
         );
 
+        // todo: this option of the drawer should be connected to Amaze Utilities app.
         addNewItem(
                 menu,
                 LASTGROUP,
@@ -481,19 +480,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 R.string.apps,
                 new MenuMetadata(
                         () -> {
-                            FragmentTransaction transaction2 =
-                                    mainActivity.getSupportFragmentManager().beginTransaction();
-                            transaction2.replace(R.id.content_frame, new AppsListFragment());
-                            mainActivity
-                                    .getAppbar()
-                                    .getAppbarLayout()
-                                    .animate()
-                                    .translationY(0)
-                                    .setInterpolator(new DecelerateInterpolator(2))
-                                    .start();
-                            pending_fragmentTransaction = transaction2;
-                            if (!isDrawerLocked) close();
-                            else onDrawerClosed();
+                            Toast.makeText(mainActivity, "We haven't added this feature to the app just yet!!!!", Toast.LENGTH_LONG).show();
                         }),
                 R.drawable.ic_android_white_24dp
         );
