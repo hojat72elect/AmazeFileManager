@@ -460,30 +460,6 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 menu,
                 LASTGROUP,
                 order++,
-                R.string.wifip2p,
-                new MenuMetadata(
-                        () -> {
-                            boolean isAUInstalled =
-                                    PackageUtils.Companion.appInstalledOrNot(
-                                            AboutActivity.PACKAGE_AMAZE_UTILS, mainActivity.getPackageManager());
-                            if (isAUInstalled) {
-                                try {
-                                    Utils.openURL("amaze://teamamaze.xyz/transfer", mainActivity);
-                                } catch (ActivityNotFoundException e) {
-                                    mainActivity.startActivity(
-                                            new Intent(mainActivity, UtilitiesAliasActivity.class));
-                                }
-                            } else {
-                                mainActivity.startActivity(new Intent(mainActivity, UtilitiesAliasActivity.class));
-                            }
-                        }),
-                R.drawable.ic_round_connect_without_contact_24
-        );
-
-        addNewItem(
-                menu,
-                LASTGROUP,
-                order++,
                 R.string.analyse_storage,
                 new MenuMetadata(
                         () -> {
