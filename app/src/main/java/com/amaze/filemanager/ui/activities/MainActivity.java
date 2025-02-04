@@ -1576,9 +1576,6 @@ public class MainActivity extends PermissionsActivity
 
     public void initializeFabActionViews() {
         // NOTE: SpeedDial inverts insert index than FABsmenu
-        FabWithLabelView cloudFab =
-                initFabTitle(
-                        R.id.menu_new_cloud, R.string.cloud_connection, R.drawable.ic_cloud_white_24dp);
         FabWithLabelView newFileFab =
                 initFabTitle(R.id.menu_new_file, R.string.file, R.drawable.ic_insert_drive_file_white_48dp);
         FabWithLabelView newFolderFab =
@@ -1612,12 +1609,9 @@ public class MainActivity extends PermissionsActivity
                     return true;
                 });
 
-        floatingActionButton.setOnClickListener(
-                view -> fabButtonClick(cloudFab));
+
         floatingActionButton.setOnFocusChangeListener(new CustomZoomFocusChange());
         floatingActionButton.getMainFab().setOnFocusChangeListener(new CustomZoomFocusChange());
-        floatingActionButton.setNextFocusUpId(cloudFab.getId());
-        floatingActionButton.getMainFab().setNextFocusUpId(cloudFab.getId());
         floatingActionButton.setOnKeyListener(
                 (v, keyCode, event) -> {
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -1634,8 +1628,6 @@ public class MainActivity extends PermissionsActivity
                                 pasteHelper.getSnackbar().getView()
                                         .findViewById(R.id.snackBarActionButton)
                                         .requestFocus();
-                        } else if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
-                            fabButtonClick(cloudFab);
                         } else if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
                             onBackPressed();
                         } else {
@@ -1644,10 +1636,7 @@ public class MainActivity extends PermissionsActivity
                     }
                     return true;
                 });
-        cloudFab.setNextFocusDownId(floatingActionButton.getMainFab().getId());
-        cloudFab.setNextFocusUpId(newFileFab.getId());
-        cloudFab.setOnFocusChangeListener(new CustomZoomFocusChange());
-        newFileFab.setNextFocusDownId(cloudFab.getId());
+
         newFileFab.setNextFocusUpId(newFolderFab.getId());
         newFileFab.setOnFocusChangeListener(new CustomZoomFocusChange());
         newFolderFab.setNextFocusDownId(newFileFab.getId());
